@@ -37,7 +37,6 @@ The widget supports following params:
 ## Supported tokens
 - OMG
 - KNC
-- EOS
 - SNT
 - ELF
 - POWR
