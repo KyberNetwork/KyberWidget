@@ -9,14 +9,13 @@ const SelectAddressModal = (props) => {
       onRequestClose={props.onRequestClose}
       contentLabel="Select Address"
       content={
-          <div id="cold-wallet">
-              <div class="address-list-path">
-                  {props.content}
-              </div>
+        <div id="cold-wallet">
+          <div class="address-list-path">
+            {props.content}
           </div>
-
+        </div>
       }
-  />
+    />
   )
 }
 

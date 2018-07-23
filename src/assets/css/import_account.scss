@@ -1,321 +1,332 @@
-// .import-account-modal {
-//   @include breakpoint(medium) {
-//     &.large {
-//       // top: 125px;
-//       width: 70%;
-//     }
-//   }
 $animationTime: 0.5s;
 
-  #import-account {
-    padding-top: 50px;
-    text-align: center;
+#import-account {
+  padding-top: 50px;
+  text-align: center;
 
-    @include screen-min-width(large){
-      padding-bottom: 40px;
-    }
+  #import-acc {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+  }
 
-    #import-acc {
-      display: inline-block;
-    }
+  .title {
+    color: #fff;
+    text-align: left;
+    font-size: 42px;
+    letter-spacing: -0.9px;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+    font-family: $font-cera;
+    animation: fade-in $animationTime forwards;
+  }
 
-    .title {
-      color: #fff;
-      text-align: left;
-      font-size: 42px;
-      letter-spacing: -0.9px;
-      opacity: 0;
-      padding: 0;
-      margin: 0;
-      font-family: $font-cera;
-      animation: fade-in $animationTime forwards;
-    }
+  .sub-title {
+    font-size: 0.8rem;
+    color: $white;
+    padding: 0px 50px 30px 50px;
+  }
 
-    .sub-title {
-      font-size: 0.8rem;
-      color: $white;
-      padding: 0px 50px 30px 50px;
-    }
+  .import-account {
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-bottom: 30px;
 
-    .import-account {
-      display: flex;
+    &__item {
+      background: white;
+      max-height: 170px;
+      box-shadow: 0 1px 10px #b7b5b5;
       position: relative;
+      bottom: -280px;
+      text-align: center;
+      transition: all .3s;
+      animation: moving-up $animationTime forwards;
+      width: calc(50% - 10px);
+      margin: 0 10px 20px;
+      padding-top: 30px;
 
-      &__item {
-        padding-top: 50px;
-        background: white;
-        width: 185px;
-        max-height: 170px;
-        margin: 0 12px 25px;
-        box-shadow: 0 1px 10px #b7b5b5;
-        position: relative;
-        bottom: -280px;
-        text-align: center;
-        transition: all .3s;
-        animation: moving-up $animationTime forwards;
+      .column-block {
+        margin-bottom: 0;
+      }
 
-        &:first-child {
-          margin-left: 0;
+      .importer {
+        &__button {
+          padding: 8px 5px;
+          line-height: 1.2;
         }
 
+        &__name {
+          font-size: 16px;
+        }
+
+        &.metamask {
+          display: flex;
+        }
+      }
+
+      .how-to-use {
+        display: none;
+      }
+
+      &:first-child {
+        margin: 0 0 20px;
+        width: 100%;
+        text-align: left;
+
         .importer {
-          &__name {
-            font-size: 20px;
-            margin: 10px 0;
-            font-weight: 600;
-            font-family: $font-cera;
+          padding-bottom: 60px;
+
+          &__symbol {
+            display: inline-block;
+            text-align: center;
           }
 
           &__button {
-            color: white;
-            font-size: 0.8rem;            
-            width: 100%;
-            cursor: pointer;
-            padding: 13px 0;
-            margin-bottom: 15px;
-            border-radius: 3px;
-            background-image: linear-gradient(to right, $swap-color 50%, $color-swap-light 50%);
-            background-size: 200% 100%;
-            position: relative;
-            transition: all .3s;
-
-            &::after {
-              content: '';
-              position: absolute;
-              width: 6px;
-              height: 9px;
-              right: 5px;
-              top: 50%;
-              opacity: 0;
-              transform: translateY(-50%);
-              background: url($image-path + 'angle-right.svg') no-repeat;
-              background-size: contain;
-              transition: opacity .25s;
-            }
-
-            &:hover {
-              background-position: -100% 0;
-
-              &::after {
-                opacity: 1;
-              }
-            }
-          }
-          
-          .more-info {
-            font-size: 14px;
-            text-align: left;
-            color: #999;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 1.25rem;
+            margin: 0 auto;
+            width: calc(100% - 1.25rem);
           }
 
-          &__button,
           .more-info {
-            opacity: 0;
-            animation: fade-in $animationTime forwards;
+            display: inline-block;
+            margin-left: 30px;
           }
         }
+      }
 
-        .how-to-use {
-          width: 20px;
-          height: 20px;
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          background-image: url(../img/landing/notice.svg);
+      &:nth-child(3) {
+        margin-right: 10px;
+      }
+
+      &:nth-child(odd) {
+        margin-right: 0;
+      }
+
+      &:nth-child(even) {
+        margin-left: 0;
+      }
+
+      .importer {
+        &__name {
+          font-size: 20px;
+          margin: 10px 0;
+          font-weight: 600;
+          font-family: $font-cera;
+        }
+
+        &__button {
+          color: white;
+          font-size: 0.8rem;
+          width: 100%;
+          cursor: pointer;
+          padding: 13px 15px;
+          margin-bottom: 15px;
+          border-radius: 3px;
+          background-image: linear-gradient(to right, $swap-color 50%, $color-swap-light 50%);
+          background-size: 200% 100%;
+          position: relative;
+          transition: all .3s;
+
+          &::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 9px;
+            right: 5px;
+            top: 50%;
+            opacity: 0;
+            transform: translateY(-50%);
+            background: url($image-path + 'angle-right.svg') no-repeat;
+            background-size: contain;
+            transition: opacity .25s;
+          }
 
           &:hover {
-            background-image: url(../img/landing/notice_grey.svg);
+            background-position: -100% 0;
+
+            &::after {
+              opacity: 1;
+            }
           }
         }
-      }
 
-      @include screen-max-width(xlarge) {
-        flex-wrap: wrap;
-        justify-content: center;
-        padding-bottom: 30px;
-
-        &__item {
-          width: 32%;
-          margin: 0 1% 15px;
-
-          &:first-child {
-            margin-left: 0;
-          }
-
-          &:nth-child(3) {
-            margin-right: 0;
-          }
+        .more-info {
+          font-size: 14px;
+          text-align: left;
+          color: #999;
         }
-      }
 
-      @include screen-max-width(mid-small) {
-        &__item {
-          width: calc(50% - 10px);
-          margin: 0 10px 20px;
-          padding-top: 30px;
-
-          .column-block {
-            margin-bottom: 0;
-          }
-
-          .importer {
-            &__button {
-              padding: 8px 5px;
-              line-height: 1.2;
-            }
-
-            &__name {
-              font-size: 16px;
-            }
-
-            &.metamask {
-              display: flex;
-            }
-          }
-
-          .how-to-use {
-            display: none;
-          }
-
-          &:first-child {
-            margin: 0 0 20px;
-            width: 100%;
-            text-align: left;
-
-            .importer {
-              padding-bottom: 60px;
-
-              &__symbol {
-                display: inline-block;
-                text-align: center;
-              }
-
-              &__button {
-                position: absolute;
-                left: 0;
-                right: 0;
-                bottom: 1.25rem;
-                margin: 0 auto;
-                width: calc(100% - 1.25rem);
-              }
-
-              .more-info {
-                display: inline-block;
-                margin-left: 30px;
-              }
-            }
-          }
-
-          &:nth-child(3) {
-            margin-right: 10px;
-          }
-
-          &:nth-child(odd) {
-            margin-right: 0;
-          }
-
-          &:nth-child(even) {
-            margin-left: 0;
-          }
+        &__button,
+        .more-info {
+          opacity: 0;
+          animation: fade-in $animationTime forwards;
         }
       }
     }
 
-    @include screen-max-width(medium) {
-      padding-top: 40px;
+    &-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      padding: 20px;
+      background-color: white;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50px);
+      transition: all .3s;
 
-      @keyframes moving-up {
-        to {
-          bottom: 0;
-          max-height: 1000px;
+      &__title {
+        font-family: $font-cera;
+        font-size: 22px;
+        letter-spacing: -0.4px;
+      }
+
+      &__info {
+        border: 1px solid $swap-color;
+        padding: 10px 20px;
+        margin: 30px 0;
+        border-radius: 5px;
+
+        &-type {
+          &-image {
+            min-width: 50px;
+            margin-bottom: 4px;
+          }
+
+          &-text {
+            color: $base-color;
+            font-size: 13px;
+            font-weight: bold;
+          }
+        }
+
+        &-text {
+
         }
       }
-    }
 
-    @include screen-max-width(mid-small) {
-      .title {
-        font-size: 30px;
-        text-align: left;
+      &__error {
+        color: $error-color;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+
+      &__button {
+        color: $base-color;
+        font-weight: 600;
+        width: 35%;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid $swap-color;
+        cursor: pointer;
+        transition: all .3s;
+
+        &-container {
+          margin-top: 30px;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        &:hover {
+          color: white;
+          border-color: $color-swap-light;
+          background-color: $color-swap-light;
+        }
+      }
+
+      &__private-key {
+        position: relative;
+
+        &-input {
+          width: 100%;
+          height: 45px;
+          background-color: white;
+          color: #666;
+          padding: 0 40px;
+          border-radius: 4px;
+          text-align: center;
+          margin: 0;
+
+          &.security{
+            font-family: 'text-security-disc';
+            font-size: 25px;
+          }
+        }
+
+        &-icon {
+          width: 15px;
+          height: 15px;
+          top: 14px;
+          left: 12px;
+          position: absolute;
+          background: url(../img/lock.svg) center no-repeat;
+          background-size: contain;
+        }
+
+        &-toggle {
+          width: 20px;
+          height: 20px;
+          top: 12px;
+          right: 12px;
+          position: absolute;
+          background: url(../img/unlock-pass.svg) center no-repeat;
+          background-size: contain;
+          cursor: pointer;
+        }
+
+        &.unlock .toggle {
+          background-image: url(../img/lock-pass.svg);
+        }
+      }
+
+      &__ledger {
+
+      }
+
+      &--active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
       }
     }
+  }
+
+  @include screen-max-width(medium) {
+    padding-top: 40px;
 
     @keyframes moving-up {
       to {
-        bottom: -20px;
-        max-height: 500px;
-      }
-    }
-
-    @keyframes fade-in {
-      to {
-        opacity: 1;
+        bottom: 0;
+        max-height: 1000px;
       }
     }
   }
 
-// }
-
-.import-privatekey {
-  padding: 0px;
-  .title {
-    font-size: 1.2rem;
-    font-weight: normal;
-    text-align: center;
-    margin-bottom: 20px;
-    margin-top: 0;
-    padding-top: 70px;
-  }
-  // .content {
-  //   padding-left: 30px;
-  // }
-  .overlap {
-    justify-content: center;
-    background-color: #fcfcfc;
-    margin-top: 10px;
-    .accent {
-      // margin-top: 50px;
-      line-height: 55px;
-      padding: 0 35px;
-      background: #ef8102;
-      font-size: 1.3rem;
-      border-radius: 4px;
-      box-shadow: 0 10px 15px #ccc;
+  @include screen-max-width(mid-small) {
+    .title {
+      font-size: 30px;
+      text-align: left;
     }
   }
-  #private_key {
-    text-align: left;
-    width: 100%;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    color: #666666;
-    height: 50px;
+
+  @keyframes moving-up {
+    to {
+      bottom: -20px;
+      max-height: 500px;
+    }
   }
-}
-.input-reveal{
-  .toggle{
-    right: 12px;
-    left: unset;
-    background-image: url(../img/unlock-pass.svg);
-  }
-  &.unlock .toggle {
-    background-image: url(../img/lock-pass.svg);
-  }
-  .tootip{
-    opacity: .4;
-    display: block;
-    width: 20px;
-    height: 20px;
-    background-repeat: no-repeat;
-    background-size: contains;
-    background-position: center;
-    position: absolute;
-    top: 50%;
-    margin-top: -10px;
-    left: 12px;
-    -webkit-transition: opacity .5s ease-in-out;
-    -o-transition: opacity .5s ease-in-out;
-    transition: opacity .5s ease-in-out;
-    background-image: url(../img/lock.svg);
+
+  @keyframes fade-in {
+    to {
+      opacity: 1;
+    }
   }
 }

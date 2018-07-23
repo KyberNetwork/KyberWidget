@@ -1,16 +1,17 @@
 import React from "react"
 import { connect } from "react-redux"
-import { ImportByPKeyView } from "../../components/ImportAccount"
-import { importNewAccount, throwError, pKeyChange, throwPKeyError, openPkeyModal, closePkeyModal } from "../../actions/accountActions"
+import ImportByPKeyContent from "../../components/ImportAccount/PrivateKey/ImportByPKeyContent"
+import { importNewAccount, throwError, pKeyChange, throwPKeyError, openImportAccount } from "../../actions/accountActions"
 import { addressFromPrivateKey } from "../../utils/keys"
 import { getTranslate } from 'react-localize-redux'
 
 @connect((store) => {
-  var tokens = store.tokens.tokens
-  var supportTokens = []
+  var tokens = store.tokens.tokens;
+  var supportTokens = [];
   Object.keys(tokens).forEach((key) => {
     supportTokens.push(tokens[key])
-  })
+  });
+
   return {
     account: store.account,
     ethereum: store.connection.ethereum,
@@ -20,13 +21,26 @@ import { getTranslate } from 'react-localize-redux'
 })
 
 export default class ImportByPrivateKey extends React.Component {
-
-  openModal() {
-    this.props.dispatch(openPkeyModal());
+  handleSubmit() {
+    let privateKey = document.getElementById("private_key").value;
+    this.importPrivateKey(privateKey);
   }
 
-  closeModal() {
-    this.props.dispatch(closePkeyModal());    
+  submit(e) {
+    if (e.key === 'Enter') {
+      handleSubmit(e)
+    }
+  }
+
+  toggleShowPw() {
+    let input = document.getElementById('private_key')
+    if (input.classList.contains('security')) {
+      input.classList.remove('security')
+      input.parentElement.classList.add('unlock')
+    } else if (input.type == 'text') {
+      input.classList.add('security')
+      input.parentElement.classList.remove('unlock')
+    }
   }
 
   inputChange(e) {
@@ -37,31 +51,29 @@ export default class ImportByPrivateKey extends React.Component {
   importPrivateKey(privateKey) {
     try {
       if (privateKey.match(/^0[x | X].{3,}$/)) {
-          privateKey = privateKey.substring(2)
-      }    
+        privateKey = privateKey.substring(2)
+      }
       let address = addressFromPrivateKey(privateKey)
-      this.props.dispatch(closePkeyModal());    
       this.props.dispatch(importNewAccount(address,
-        "privateKey",
-        privateKey,
-        this.props.ethereum,
-        this.props.tokens))
+          "privateKey",
+          privateKey,
+          this.props.ethereum,
+          this.props.tokens))
     }
     catch (e) {
       console.log(e)
       this.props.dispatch(throwPKeyError(this.props.translate("error.invalid_private_key") || 'Invalid private key'))
     }
-
   }
 
   render() {
     return (
-      <ImportByPKeyView
-        importPrivateKey={this.importPrivateKey.bind(this)}
-        modalOpen={this.openModal.bind(this)}
-        onRequestClose={this.closeModal.bind(this)}
-        isOpen={this.props.account.pKey.modalOpen}
+      <ImportByPKeyContent
         onChange={this.inputChange.bind(this)}
+        onHandleSubmit={this.handleSubmit.bind(this)}
+        onCloseImportAccount={this.props.onCloseImportAccount}
+        onSubmit={this.submit}
+        onToggleShowPw={this.toggleShowPw}
         pKeyError={this.props.account.pKey.error}
         translate={this.props.translate}
       />

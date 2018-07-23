@@ -2,7 +2,6 @@ import React from "react"
 import TermAndServices from "../../containers/CommonElements/TermAndServices";
 import { connect } from "react-redux"
 import { getTranslate } from 'react-localize-redux';
-import config from '../../config';
 import Web3Service from "../../services/web3"
 
 import {acceptTermOfService} from "../../actions/globalActions"

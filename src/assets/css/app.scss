@@ -480,22 +480,3 @@ html body{
     }
   }
 }
-
-// .exchange-icon{
-//   text-align: center;
-//   margin-top: 50px;
-// }
-
-#private_key{
-  background-color: #ACD0C6;
-  color: white;
-  width: 250px;
-  //border-bottom: 1px solid #ddd;
-  // &:focus{
-  //   background-color: transparent
-  // }
-  &.security{
-    font-family: 'text-security-disc';
-    font-size: 25px;
-  }
-}
