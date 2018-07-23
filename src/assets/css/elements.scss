@@ -155,6 +155,9 @@ input.error {
     &.next{
       cursor: pointer;
     }
+    &.disable{
+      pointer-events: none;
+    }
   }
   &.process-submit{
     background: white;

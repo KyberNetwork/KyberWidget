@@ -2,22 +2,27 @@ import { take, put, call, fork, select, takeEvery, all, cancel } from 'redux-sag
 import { delay } from 'redux-saga'
 import * as actions from '../actions/accountActions'
 import { clearSession, setGasPrice, setBalanceToken } from "../actions/globalActions"
-import { fetchExchangeEnable } from "../actions/exchangeActions"
+//import { fetchExchangeEnable, setApprove } from "../actions/exchangeActions"
+
+
+
+
+import * as exchangeActions from "../actions/exchangeActions"
 
 import { openInfoModal } from '../actions/utilActions'
 import * as common from "./common"
 import * as analytics from "../utils/analytics"
 
 import { goToRoute, updateAllRate, updateAllRateComplete } from "../actions/globalActions"
-import { randomToken, setRandomExchangeSelectedToken, setCapExchange, thowErrorNotPossessKGt, closeImportAccountExchange } from "../actions/exchangeActions"
-import { setRandomTransferSelectedToken, closeImportAccountTransfer } from "../actions/transferActions"
+
 //import { randomForExchange } from "../utils/random"
 
 import * as service from "../services/accounts"
 import constants from "../services/constants"
 import { Rate, updateAllRatePromise } from "../services/rate"
 
-import { findNetworkName } from "../utils/converter"
+import * as converter from "../utils/converter"
+import * as commonFunc from "../utils/common"
 
 import { getTranslate } from 'react-localize-redux'
 import { store } from '../store';
@@ -92,30 +97,71 @@ export function* importNewAccount(action) {
     analytics.loginWallet(type)
     
 
-    if (screen === "exchange"){
-      yield put(closeImportAccountExchange())
+    // if (screen === "exchange"){
+    //   yield put(closeImportAccountExchange())
+    // }else{
+    //   yield put(closeImportAccountTransfer())
+    // }
+    
+
+    //check whether user need approve
+    if ((type === "keystore") || (type === "privateKey")){
+      yield put(exchangeActions.setApprove(false))
     }else{
-      yield put(closeImportAccountTransfer())
+      var state = store.getState()
+      var exchange = state.exchange
+      var tokenMaps = {}
+      Object.values(tokens).map(token => {
+        var token = { ...token }
+        tokenMaps[token.symbol] = token
+      })
+
+      if ((exchange.sourceTokenSymbol === exchange.destTokenSymbol) || (exchange.sourceTokenSymbol === "ETH")){
+        yield put(exchangeActions.setApprove(false))
+      }else{
+        //get source amount 
+        var sourceAmount = 0
+        if (exchange.isHaveDestAmount){
+          var minConversionRate = converter.toTWei(exchange.snapshot.minConversionRate)
+          sourceAmount = converter.caculateSourceAmount(exchange.snapshot.destAmount, minConversionRate, 6)
+          sourceAmount = converter.toTWei(sourceAmount, tokenMaps[exchange.sourceTokenSymbol].decimal)
+        }else{
+          sourceAmount = converter.toTWei(exchange.sourceAmount, tokenMaps[exchange.sourceTokenSymbol].decimal)
+        }
+
+         //get allowance
+          var remain = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", tokenMaps[exchange.sourceTokenSymbol].address, address)
+          remain = converter.hexToBigNumber(remain)
+
+          console.log("check_remain")
+          console.log(remain.toString())
+          console.log(sourceAmount)
+          if (converter.compareTwoNumber(remain, sourceAmount) !== -1) {
+            yield put(exchangeActions.setApprove(false))
+          }else{
+            yield put(exchangeActions.setApprove(true))
+          }
+
+      }
+
+     
     }
     
+    yield put(exchangeActions.goToStep(3))
 
 //    yield put(goToRoute(constants.BASE_HOST + '/swap'))
 
-    yield put(fetchExchangeEnable())
+    yield put(exchangeActions.fetchExchangeEnable())
 
     var maxCapOneExchange = yield call([ethereum, ethereum.call], "getMaxCapAtLatestBlock", address)
-    yield put(setCapExchange(maxCapOneExchange))
+    yield put(exchangeActions.setCapExchange(maxCapOneExchange))
 
     if (+maxCapOneExchange == 0){
       var linkReg = 'https://kybernetwork.zendesk.com'
-      yield put(thowErrorNotPossessKGt(translate("error.not_possess_kgt", {link: linkReg}) || "There seems to be a problem with your address, please contact us for more details"))
+      yield put(exchangeActions.thowErrorNotPossessKGt(translate("error.not_possess_kgt", {link: linkReg}) || "There seems to be a problem with your address, please contact us for more details"))
     }
     //update token and token balance
-    var newTokens = {}
-    Object.values(tokens).map(token => {
-      var token = { ...token }
-      newTokens[token.symbol] = token
-    })
+    
 
     yield call(ethereum.fetchRateExchange)
 
@@ -152,8 +198,8 @@ export function* importMetamask(action) {
   try {
     const currentId = yield call([web3Service, web3Service.getNetworkId])
     if (parseInt(currentId, 10) !== networkId) {
-      var currentName = findNetworkName(parseInt(currentId, 10))
-      var expectedName = findNetworkName(networkId)
+      var currentName = commonFunc.findNetworkName(parseInt(currentId, 10))
+      var expectedName = commonFunc.findNetworkName(networkId)
       if (currentName) {
         yield put(actions.throwError(translate("error.network_not_match", { currentName: currentName, expectedName: expectedName }) || "Network is not match"))
         return

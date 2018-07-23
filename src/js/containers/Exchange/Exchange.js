@@ -1,8 +1,8 @@
 import React from "react"
 import { connect } from "react-redux"
-import {ExchangeBody, MinRate} from "../Exchange"
+import { ExchangeBody, MinRate, Payment, ErrorPayment } from "../Exchange"
 //import {GasConfig} from "../TransactionCommon"
-import {AdvanceConfigLayout, GasConfig} from "../../components/TransactionCommon"
+import { AdvanceConfigLayout, GasConfig } from "../../components/TransactionCommon"
 
 
 
@@ -16,6 +16,7 @@ import { default as _ } from 'underscore'
 import { clearSession } from "../../actions/globalActions"
 
 import { ImportAccount } from "../ImportAccount"
+
 
 //import {HeaderTransaction} from "../TransactionCommon"
 
@@ -31,22 +32,22 @@ import { ImportAccount } from "../ImportAccount"
   const account = store.account.account
   // if (account === false) {
   //   console.log("go to exchange")
-    // if (currentLang[0] === 'en') {
-    //   window.location.href = "/swap"  
-    // } else {
-    //   window.location.href = `/swap?lang=${currentLang}`
-    // }
- // }
+  // if (currentLang[0] === 'en') {
+  //   window.location.href = "/swap"  
+  // } else {
+  //   window.location.href = `/swap?lang=${currentLang}`
+  // }
+  // }
   const translate = getTranslate(store.locale)
   const tokens = store.tokens.tokens
   const exchange = store.exchange
   const ethereum = store.connection.ethereum
-  
-  return {
-      translate, exchange, tokens, account, ethereum,
-      params: {...props.match.params},
 
-    }  
+  return {
+    translate, exchange, tokens, account, ethereum,
+    params: { ...props.match.params }, global: store.global
+
+  }
 })
 
 
@@ -61,7 +62,7 @@ export default class Exchange extends React.Component {
   // componentDidMount = () =>{
   //   if ((this.props.params.source.toLowerCase() !== this.props.exchange.sourceTokenSymbol.toLowerCase()) || 
   //       (this.props.params.dest.toLowerCase() !== this.props.exchange.destTokenSymbol.toLowerCase()) ){
-          
+
   //         var sourceSymbol = this.props.params.source.toUpperCase()
   //         var sourceAddress = this.props.tokens[sourceSymbol].address
 
@@ -74,7 +75,7 @@ export default class Exchange extends React.Component {
   // }
   validateTxFee = (gasPrice) => {
     var validateWithFee = validators.verifyBalanceForTransaction(this.props.tokens['ETH'].balance, this.props.exchange.sourceTokenSymbol,
-    this.props.exchange.sourceAmount, this.props.exchange.gas + this.props.exchange.gas_approve, gasPrice)
+      this.props.exchange.sourceAmount, this.props.exchange.gas + this.props.exchange.gas_approve, gasPrice)
 
     if (validateWithFee) {
       this.props.dispatch(exchangeActions.thowErrorEthBalance("error.eth_balance_not_enough_for_fee"))
@@ -91,20 +92,20 @@ export default class Exchange extends React.Component {
 
   specifyGasPrice = (value) => {
     this.props.dispatch(exchangeActions.specifyGasPrice(value + ""))
-    if (this.props.account !== false){
+    if (this.props.account !== false) {
       this.lazyValidateTransactionFee(value)
     }
   }
 
   inputGasPriceHandler = (value) => {
-   // this.setState({selectedGas: "undefined"})
+    // this.setState({selectedGas: "undefined"})
     this.specifyGasPrice(value)
   }
 
   selectedGasHandler = (value, level) => {
 
     //this.setState({selectedGas: level})
-    this.props.dispatch(exchangeActions.seSelectedGas(level)) 
+    this.props.dispatch(exchangeActions.seSelectedGas(level))
     this.specifyGasPrice(value)
   }
 
@@ -112,43 +113,59 @@ export default class Exchange extends React.Component {
   //   this.props.dispatch(clearSession())
   // }
 
-  render() {    
-    if (this.props.exchange.isOpenImportAcount){
-      return <ImportAccount screen="exchange"/>
+  render() {
+    if (this.props.global.haltPayment){
+      return <ErrorPayment />
     }
-    var gasPrice = converter.stringToBigNumber(converter.gweiToEth(this.props.exchange.gasPrice))
-    var totalGas = gasPrice.multipliedBy(this.props.exchange.gas + this.props.exchange.gas_approve)
-    var page = "exchange"
-    var gasConfig = (
-      <GasConfig 
-        gas={this.props.exchange.gas + this.props.exchange.gas_approve}
-        gasPrice={this.props.exchange.gasPrice}
-        maxGasPrice={this.props.exchange.maxGasPrice}
-        gasHandler={this.specifyGas}
-        inputGasPriceHandler={this.inputGasPriceHandler}
-        selectedGasHandler={this.selectedGasHandler}
-        gasPriceError={this.props.exchange.errors.gasPriceError}
-        gasError={this.props.exchange.errors.gasError}
-        totalGas={totalGas.toString()}
-        translate={this.props.translate}        
-        gasPriceSuggest={this.props.exchange.gasPriceSuggest}    
-        selectedGas = {this.props.exchange.selectedGas}
-        page = {page}
-      />
-    )
 
-    var minRate = <MinRate />    
-    var advanceConfig = <AdvanceConfigLayout minRate = {minRate} gasConfig = {gasConfig} translate = {this.props.translate}/>
-    var exchangeBody = <ExchangeBody advanceLayout = {advanceConfig} />
+    if (this.props.exchange.step === 1) {
 
-    // var headerTransaction = <HeaderTransaction page="exchange" />
+      var gasPrice = converter.stringToBigNumber(converter.gweiToEth(this.props.exchange.gasPrice))
+      var totalGas = gasPrice.multipliedBy(this.props.exchange.gas + this.props.exchange.gas_approve)
+      var page = "exchange"
+      var gasConfig = (
+        <GasConfig
+          gas={this.props.exchange.gas + this.props.exchange.gas_approve}
+          gasPrice={this.props.exchange.gasPrice}
+          maxGasPrice={this.props.exchange.maxGasPrice}
+          gasHandler={this.specifyGas}
+          inputGasPriceHandler={this.inputGasPriceHandler}
+          selectedGasHandler={this.selectedGasHandler}
+          gasPriceError={this.props.exchange.errors.gasPriceError}
+          gasError={this.props.exchange.errors.gasError}
+          totalGas={totalGas.toString()}
+          translate={this.props.translate}
+          gasPriceSuggest={this.props.exchange.gasPriceSuggest}
+          selectedGas={this.props.exchange.selectedGas}
+          page={page}
+        />
+      )
 
-    return (
-      <div class="frame exchange-frame">          
-        <div className="row">
-          {exchangeBody}
+      var minRate = ""
+      if (this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol){
+        minRate = <MinRate />
+      }
+
+      var advanceConfig = <AdvanceConfigLayout minRate={minRate} gasConfig={gasConfig} translate={this.props.translate} />
+      var exchangeBody = <ExchangeBody advanceLayout={advanceConfig} />
+
+      // var headerTransaction = <HeaderTransaction page="exchange" />
+
+      return (
+        <div class="frame exchange-frame">
+          <div className="row">
+            {exchangeBody}
+          </div>
         </div>
-      </div>     
-    )
+      )
+    }
+
+    if (this.props.exchange.step === 2) {
+      return <ImportAccount screen="exchange" />
+    }
+
+    if (this.props.exchange.step === 3) {
+      return <Payment />
+    }
   }
 }

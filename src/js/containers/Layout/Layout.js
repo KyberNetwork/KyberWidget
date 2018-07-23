@@ -16,7 +16,7 @@ import constanst from "../../services/constants"
 
 import history from "../../history"
 
-import { clearSession, changeLanguage, initParamsGlobal } from "../../actions/globalActions"
+import { clearSession, changeLanguage, initParamsGlobal, haltPayment } from "../../actions/globalActions"
 import {initParamsExchange} from "../../actions/exchangeActions"
 
 import { openInfoModal } from "../../actions/utilActions"
@@ -28,6 +28,7 @@ import { default as _ } from 'underscore';
 import { LayoutView } from "../../components/Layout"
 import { getTranslate } from 'react-localize-redux'
 import * as common from "../../utils/common"
+import * as validator from "../../utils/validators"
 
 import Language from "../../../../lang"
 
@@ -40,6 +41,7 @@ import Language from "../../../../lang"
     connected: store.global.connected,
     showBalance: store.global.showBalance,
     utils: store.utils,
+    tokens: store.tokens.tokens,
     account: store.account,
     translate: getTranslate(store.locale),
     locale: store.locale
@@ -79,8 +81,61 @@ export default class Layout extends React.Component {
     var receiveAddr = common.getParameterByName("receiveAddr")
     var receiveToken = common.getParameterByName("receiveToken")
     var receiveAmount = common.getParameterByName("receiveAmount")
-    this.props.dispatch(initParamsExchange(receiveAddr, receiveToken, receiveAmount));
+    var callback = common.getParameterByName("callback")
+    var network = common.getParameterByName("network")
+    var paramForwarding = common.getParameterByName("paramForwarding")
+    var signer = common.getParameterByName("signer")
+    var commissionID = common.getParameterByName("commissionID")
 
+    
+
+    var errors = {}
+    if (validator.verifyAccount(receiveAddr)){
+      errors["receiveAddr"] = "Receive address must be a valid ethereum address"
+    }
+    if (!this.props.tokens[receiveToken.toUpperCase()]){
+      errors["receiveToken"] = "Receive token is not supported by kyber"
+    }
+
+    if (receiveAmount){
+      receiveAmount = parseFloat(receiveAmount) // second argument is NOT optional
+      // console.log("receive_amount")
+      // console.log(receiveAmount)
+      if (isNaN(receiveAmount)) {
+        errors["receiveAmount"] = "Receive amount is invalid number"
+      }
+      if (receiveAmount <= 0){
+        errors["receiveAmount"] = "Receive amount must be positive number"
+      }
+    }
+
+    
+    if (commissionID){
+      if (validator.verifyAccount(commissionID)){
+        errors["commissionID"] = "Commission address must be a valid ethereum address"
+      }
+    }
+
+    if (signer){
+      var invalidAddresses = []
+      var addressArr = signer.split("_")
+      
+      addressArr.map(address => {
+        if (validator.verifyAccount(address)){
+          invalidAddresses.push(address)
+        }
+      })      
+      if (invalidAddresses.length > 0){
+        errors["signer"] = "Signer include invalid addresses"
+      }      
+    }
+    
+    if (validator.anyErrors(errors)){
+      this.props.dispatch(haltPayment(errors))
+    }else{
+      var tokenAddr = this.props.tokens[receiveToken].address
+      this.props.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, network, paramForwarding, signer, commissionID));
+    }
   }
 
   checkTimmer() {

@@ -9,6 +9,7 @@ import * as globalActions from "../actions/globalActions"
 import Web3Service from "../services/web3"
 import BLOCKCHAIN_INFO from "../../../env"
 import * as converter from "../utils/converter"
+import * as common from "../utils/common"
 
 import { getTranslate } from 'react-localize-redux'
 import NotiService from "../services/noti_service/noti_service"
@@ -60,8 +61,8 @@ function* watchMetamaskAccount(ethereum, web3Service) {
           const currentId = yield call([web3Service, web3Service.getNetworkId])
           const networkId = BLOCKCHAIN_INFO.networkId
           if (parseInt(currentId, 10) !== networkId) {
-            const currentName = converter.findNetworkName(parseInt(currentId, 10))
-            const expectedName = converter.findNetworkName(networkId)
+            const currentName = common.findNetworkName(parseInt(currentId, 10))
+            const expectedName = common.findNetworkName(networkId)
             yield put(globalActions.throwErrorMematamask(translate("error.network_not_match", {expectedName: expectedName, currentName: currentName}) || `Metamask should be on ${expectedName}. Currently on ${currentName}`))
             return
           }

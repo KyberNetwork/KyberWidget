@@ -227,3 +227,10 @@ export function initParamsGlobal(params){
     payload: {params}
   }
 }
+
+export function haltPayment(errors){
+  return {
+    type: "GLOBAL.HALT_PAYMENT",
+    payload: {errors}
+  }
+}

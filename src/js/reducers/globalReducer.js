@@ -24,7 +24,9 @@ const initState = {
     balance: "",
     error: "Address is loading"
   },
-  params:{}
+  params:{},
+  haltPayment: false,
+  errorsPayment:{}
 }
 
 const global = (state = initState, action) => {
@@ -138,6 +140,14 @@ const global = (state = initState, action) => {
     case "GLOBAL.INIT_PARAMS":{
       const {params} = action.payload
       return Object.assign({}, state, { params: {...params} })
+    }
+
+    case "GLOBAL.HALT_PAYMENT":{
+      const {errors} = action.payload
+      var newState = {...state}
+      newState.haltPayment = true
+      newState.errorsPayment = {...errors}
+      return newState
     }
   }
   return state

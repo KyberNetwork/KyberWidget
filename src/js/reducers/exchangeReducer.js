@@ -77,19 +77,19 @@ const exchange = (state = initState, action) => {
         newState.errors[key] = ""
       }
       
-      newState.sourceAmount = ""
-      newState.destAmount = 0
+      //newState.sourceAmount = ""
+      //newState.destAmount = 0
 
       newState.selected = true
       newState.isEditRate = false
       return newState
     }
     case "EXCHANGE.CHECK_SELECT_TOKEN": {
-      if (newState.sourceTokenSymbol === newState.destTokenSymbol) {
-        newState.errors.selectSameToken = "error.select_same_token"
-        newState.errors.selectTokenToken = ''
-        return newState
-      }
+      // if (newState.sourceTokenSymbol === newState.destTokenSymbol) {
+      //   newState.errors.selectSameToken = "error.select_same_token"
+      //   newState.errors.selectTokenToken = ''
+      //   return newState
+      // }
       // if ((newState.sourceTokenSymbol !== "ETH") &&
       //   (newState.destTokenSymbol !== "ETH")) {
       //   newState.errors.selectSameToken = ''
@@ -355,14 +355,15 @@ const exchange = (state = initState, action) => {
     }
     case "EXCHANGE.CACULATE_AMOUNT_SNAPSHOT": {
       if (newState.snapshot.errors.selectSameToken || state.snapshot.errors.selectTokenToken) return newState
-      if (newState.snapshot.inputFocus == "dest") {
-        newState.snapshot.sourceAmount = converter.caculateSourceAmount(state.snapshot.destAmount, state.snapshot.offeredRate, 6)
-      } else {
-        newState.snapshot.destAmount = converter.caculateDestAmount(state.snapshot.sourceAmount, state.snapshot.offeredRate, 6)
-      }
+
+      newState.snapshot.sourceAmount = converter.caculateSourceAmount(state.snapshot.destAmount, state.snapshot.offeredRate, 6)
+
+      // if (newState.snapshot.inputFocus == "dest") {
+      //   newState.snapshot.sourceAmount = converter.caculateSourceAmount(state.snapshot.destAmount, state.snapshot.offeredRate, 6)
+      // } else {
+      //   newState.snapshot.destAmount = converter.caculateDestAmount(state.snapshot.sourceAmount, state.snapshot.offeredRate, 6)
+      // }
       newState.snapshot.isFetchingRate = false
-    //  console.log("***************")
-    //  console.log(newState)
       return newState
     }
     case "EXCHANGE.INPUT_CHANGE": {
@@ -564,12 +565,42 @@ const exchange = (state = initState, action) => {
       newState.isOpenImportAcount = false
       return newState
     }
-    case "EXCHANGE.SAVE_PARAMS_EXCHANGE":{
-      const {receiveAddr, receiveToken, receiveAmount, tokenAddr} = action.payload
+    case "EXCHANGE.INIT_PARAMS_EXCHANGE":{
+      const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, network, paramForwarding, signer, commissionID} = action.payload
       newState.destTokenSymbol = receiveToken
       newState.destAmount = receiveAmount
+      if (receiveAmount === null){
+        newState.isHaveDestAmount = false
+      }else{
+        newState.isHaveDestAmount = true
+      }
       newState.destToken = tokenAddr
       newState.receiveAddr = receiveAddr
+
+      newState.callback = callback
+      newState.network = network
+      newState.paramForwarding = paramForwarding
+      newState.signer = signer
+      newState.commissionID = commissionID
+      
+      return newState
+    }
+    // case "EXCHANGE.SAVE_PARAMS_EXCHANGE":{
+    //   const {receiveAddr, receiveToken, receiveAmount, tokenAddr} = action.payload
+    //   newState.destTokenSymbol = receiveToken
+    //   newState.destAmount = receiveAmount
+    //   if (receiveAmount === null){
+    //     newState.isHaveDestAmount = false
+    //   }else{
+    //     newState.isHaveDestAmount = true
+    //   }
+    //   newState.destToken = tokenAddr
+    //   newState.receiveAddr = receiveAddr
+    //   return newState
+    // }
+    case "EXCHANGE.SET_APPROVE":{
+      const {isNeedApprove} = action.payload
+      newState.isNeedApprove = isNeedApprove
       return newState
     }
     case "GLOBAL.CLEAR_SESSION_FULFILLED":{

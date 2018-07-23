@@ -31,7 +31,9 @@ const ETHER_ADDRESS = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
 var secondKey = Object.keys(BLOCKCHAIN_INFO.tokens)[1]
 
 const INIT_EXCHANGE_FORM_STATE = {
-  isOpenImportAcount: false,
+  //isOpenImportAcount: false,
+
+
   kyber_enabled: false,
   advanced: false,
   termAgree: true,
@@ -42,10 +44,12 @@ const INIT_EXCHANGE_FORM_STATE = {
   sourceTokenSymbol: "ETH",
   sourceAmount: "",
   destAmount: "",
+  isHaveDestAmount: true,
   destToken: BLOCKCHAIN_INFO.tokens[secondKey].address,
   destTokenSymbol: secondKey,
   receiveAddr: "",
 
+  isNeedApprove: false,
   destAddress: "",
   inputFocus: "source",
 
@@ -85,7 +89,7 @@ const INIT_EXCHANGE_FORM_STATE = {
   maxGasPrice: 50,
   isEditGasPrice: false,
 
-  step: 2,
+  step: 1,
   broadcasting: true,
   bcError: "",
   txHash: "",

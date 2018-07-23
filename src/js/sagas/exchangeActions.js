@@ -70,6 +70,11 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   analytics.trackCoinExchange(data)
   analytics.completeTrade(hash, "kyber", "exchange")
 
+  //submit callback
+  yield fork(common.submitCallback, hash)
+
+  
+
   //console.log({txRaw, hash, account, data})
   const tx = new Tx(
     hash, account.address, ethUtil.bufferToInt(txRaw.gas),
@@ -83,13 +88,13 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   yield put(actions.resetSignError())
 
 
-  try{
-    var state = store.getState()
-    var notiService = state.global.notiService
-    notiService.callFunc("setNewTx",{hash: hash})
-  }catch(e){
-    console.log(e)
-  }
+  // try{
+  //   var state = store.getState()
+  //   var notiService = state.global.notiService
+  //   notiService.callFunc("setNewTx",{hash: hash})
+  // }catch(e){
+  //   console.log(e)
+  // }
   
 
 
@@ -231,9 +236,9 @@ export function* processApproveByColdWallet(action) {
 
     //increase nonce 
     yield put(incManualNonceAccount(account.address))
-
-    yield put(actions.hideApprove())
-    yield put(actions.showConfirm())
+    yield put(actions.setApprove(false))
+    // yield put(actions.hideApprove())
+    // yield put(actions.showConfirm())
     yield put(actions.fetchGasSuccess())
   } catch (e) {
     console.log(e)
@@ -262,9 +267,9 @@ export function* processApproveByMetamask(action) {
     //return
     //increase nonce 
     yield put(incManualNonceAccount(account.address))
-
-    yield put(actions.hideApprove())
-    yield put(actions.showConfirm())
+    yield put(actions.setApprove(false))
+    // yield put(actions.hideApprove())
+    // yield put(actions.showConfirm())
     yield put(actions.fetchGasSuccess())
   } catch (e) {
     yield put(actions.setSignError(e))
@@ -1470,11 +1475,11 @@ export function* initParamsToken(action){
   var tokens = state.tokens.tokens
   var exchange = state.exchange
 
-  const {receiveAddr, receiveToken, receiveAmount} = action.payload
-  var tokenAddr = tokens[receiveToken].address
+  const {receiveAddr, receiveToken, tokenAddr, receiveAmount} = action.payload
+  //var tokenAddr = tokens[receiveToken].address
 
   //save data exchange
-  yield put(actions.saveInitParams(receiveAddr, receiveToken, receiveAmount, tokenAddr))
+  //yield put(actions.saveInitParams(receiveAddr, receiveToken, receiveAmount, tokenAddr))
 
   //fetch rate
   var sourceTokenSymbol = exchange.sourceTokenSymbol

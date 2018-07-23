@@ -77,22 +77,81 @@ export default class ExchangeBody extends React.Component {
   constructor(){
     super()
     this.state = {
-      focus : ""
+      focus : "",
+      acceptedTerm: false
     }
+  }
+
+
+  acceptedTerm = () => {
+    var checked = document.getElementById('term-agree').checked
+    console.log("term_value")
+    console.log(checked)
+    if (checked){
+      this.setState({acceptedTerm: true})
+    }else{
+      this.setState({acceptedTerm: false})
+    }
+    
+  }
+
+  importAccount = () =>{    
+    if (!this.state.acceptedTerm){
+      return
+    }
+
+    var isValidate = true
+    //validate errors
+
+    if (!this.props.exchange.kyber_enabled){
+      this.props.dispatch(exchangeActions.thowErrorSourceAmount("Kyber swap is not enabled"))
+      isValidate = false
+    }
+
+    if (!this.props.exchange.isHaveDestAmount){
+      var srcAmount = parseFloat(this.props.exchange.sourceAmount)
+      if (isNaN(srcAmount)) {
+        this.props.dispatch(exchangeActions.thowErrorSourceAmount("error.source_amount_is_not_number"))
+        isValidate = false
+      }    
+    }
+    
+
+    var gasPrice = parseFloat(this.props.exchange.gasPrice)
+    if (isNaN(gasPrice)) {
+      this.props.dispatch(exchangeActions.thowErrorGasPrice("error.gas_price_not_number"))
+      isValidate = false
+    }else {
+      if (gasPrice > this.props.exchange.maxGasPrice) {
+        this.props.dispatch(exchangeActions.thowErrorGasPrice("error.gas_price_limit"))
+        isValidate = false
+      }
+    }
+
+    if (!isValidate){
+      return
+    }
+
+    this.props.dispatch(exchangeActions.goToStep(2))
+
+    //set snapshot
+    this.props.dispatch(exchangeActions.setSnapshot(this.props.exchange))
+    this.props.dispatch(exchangeActions.updateRateSnapshot(this.props.ethereum))
   }
 
   chooseToken = (symbol, address, type) => {
     this.props.dispatch(exchangeActions.selectTokenAsync(symbol, address, type, this.props.ethereum))
-    var path
-    if (type === "source"){
-      path = constansts.BASE_HOST + "/swap/" + symbol.toLowerCase() + "_" + this.props.exchange.destTokenSymbol.toLowerCase()
-    }else{
-      path = constansts.BASE_HOST + "/swap/" + this.props.exchange.sourceTokenSymbol.toLowerCase() + "_" + symbol.toLowerCase()
-    }
-    if (this.props.currentLang !== "en"){
-      path += "?lang=" + this.props.currentLang
-    }
-    this.props.dispatch(globalActions.goToRoute(path))
+
+    // var path
+    // if (type === "source"){
+    //   path = constansts.BASE_HOST + "/swap/" + symbol.toLowerCase() + "_" + this.props.exchange.destTokenSymbol.toLowerCase()
+    // }else{
+    //   path = constansts.BASE_HOST + "/swap/" + this.props.exchange.sourceTokenSymbol.toLowerCase() + "_" + symbol.toLowerCase()
+    // }
+    // if (this.props.currentLang !== "en"){
+    //   path += "?lang=" + this.props.currentLang
+    // }
+    // this.props.dispatch(globalActions.goToRoute(path))
   }
 
   dispatchUpdateRateExchange = (sourceValue) => {
@@ -275,16 +334,16 @@ export default class ExchangeBody extends React.Component {
     }
   }
 
-  swapToken = () => {
-    this.props.dispatch(exchangeActions.swapToken())
-    this.props.ethereum.fetchRateExchange(true)
+  // swapToken = () => {
+  //   this.props.dispatch(exchangeActions.swapToken())
+  //   this.props.ethereum.fetchRateExchange(true)
 
-    var path = constansts.BASE_HOST + "/swap/" + this.props.exchange.destTokenSymbol.toLowerCase() + "_" + this.props.exchange.sourceTokenSymbol.toLowerCase()
-    if (this.props.currentLang !== "en"){
-      path += "?lang=" + this.props.currentLang
-    }
-    this.props.dispatch(globalActions.goToRoute(path))
-  }
+  //   var path = constansts.BASE_HOST + "/swap/" + this.props.exchange.destTokenSymbol.toLowerCase() + "_" + this.props.exchange.sourceTokenSymbol.toLowerCase()
+  //   if (this.props.currentLang !== "en"){
+  //     path += "?lang=" + this.props.currentLang
+  //   }
+  //   this.props.dispatch(globalActions.goToRoute(path))
+  // }
 
   analyze = () => {
     var ethereum = this.props.ethereum
@@ -429,14 +488,24 @@ export default class ExchangeBody extends React.Component {
     />
     }
 
-    var addressBalanceLayout = ""
-    if (this.props.account.account !== false){      
-      addressBalanceLayout = (<AddressBalance setAmount={this.setAmount}
-                                            balance={addressBalance}
-                                            translate={this.props.translate}/>)
+    // var addressBalanceLayout = ""
+    // if (this.props.account.account !== false){      
+    //   addressBalanceLayout = (<AddressBalance setAmount={this.setAmount}
+    //                                         balance={addressBalance}
+    //                                         translate={this.props.translate}/>)
   
+    // }
+    // console.log("exchange_data")
+    // console.log(this.props.exchange.destAmount)
+
+    var classNamePaymentbtn
+    if (!validators.anyErrors(this.props.exchange.errors) && this.state.acceptedTerm && !this.props.exchange.isSelectToken) {
+      //className += " animated infinite pulse next"
+      classNamePaymentbtn = "button accent next"
+    }else{
+      classNamePaymentbtn = "button accent disable"
     }
-    
+
     return (
       <ExchangeBodyLayout step={this.props.exchange.step}
         tokenSourceSelect={tokenSourceSelect}
@@ -447,7 +516,7 @@ export default class ExchangeBody extends React.Component {
         errors={errors}
         input={input}
 
-        addressBalanceLayout = {addressBalanceLayout}
+//        addressBalanceLayout = {addressBalanceLayout}
 
         sourceTokenSymbol={this.props.exchange.sourceTokenSymbol}
         destTokenSymbol = {this.props.exchange.destTokenSymbol}
@@ -461,6 +530,12 @@ export default class ExchangeBody extends React.Component {
         balanceList = {accountBalance}
         focus = {this.state.focus}
         networkError ={this.props.global.network_error}
+
+        exchange = {this.props.exchange}
+
+        importAccount = {this.importAccount}
+        acceptedTerm = {this.acceptedTerm}
+        classNamePaymentbtn = {classNamePaymentbtn}
       />
     )
   }
