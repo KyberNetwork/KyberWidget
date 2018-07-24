@@ -26,7 +26,7 @@ const ImportAccountView = (props) => {
 
   return (
     <div id="import-account">
-      <div className="landing-background"></div>
+      {/*<div className="landing-background"></div>*/}
       <div className="frame">
         <div className="container">
           <div className="small-centered" id="import-acc">

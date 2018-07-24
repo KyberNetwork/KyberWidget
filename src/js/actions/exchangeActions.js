@@ -116,12 +116,12 @@ export function toggleAdvance() {
   }
 }
 
-export function setRandomExchangeSelectedToken(random) {
-  return {
-    type: "EXCHANGE.SET_RANDOM_SELECTED_TOKEN",
-    payload: random
-  }
-}
+// export function setRandomExchangeSelectedToken(random) {
+//   return {
+//     type: "EXCHANGE.SET_RANDOM_SELECTED_TOKEN",
+//     payload: random
+//   }
+// }
 
 export function updateRateExchange(source, dest,
   sourceAmount, sourceTokenSymbol, isManual = false) {
@@ -551,7 +551,7 @@ export function removeApproveTx(symbol){
 }
 
 export function setSnapshot(data){
-  data.isFetchingRate = true
+  //data.isFetchingRate = true
   return {
     type: "EXCHANGE.SET_SNAPSHOT",
     payload: data
@@ -601,16 +601,32 @@ export function closeImportAccountExchange(){
     type: "EXCHANGE.CLOSE_IMPORT_ACCOUNT"
   }
 }
-export function initParamsExchange(receiveAddr, receiveToken, receiveAmount){
+export function initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, network, paramForwarding, signer, commissionID){
   return {
     type: "EXCHANGE.INIT_PARAMS_EXCHANGE",
-    payload: {receiveAddr, receiveToken, receiveAmount}
+    payload: {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, network, paramForwarding, signer, commissionID}
   }
 }
 
-export function saveInitParams(receiveAddr, receiveToken, receiveAmount, tokenAddr){
+// export function saveInitParams(receiveAddr, receiveToken, receiveAmount, tokenAddr){
+//   return {
+//     type: "EXCHANGE.SAVE_PARAMS_EXCHANGE",
+//     payload: {receiveAddr, receiveToken, receiveAmount, tokenAddr}
+//   }
+// }
+
+
+export function setApprove(isNeedApprove){
   return {
-    type: "EXCHANGE.SAVE_PARAMS_EXCHANGE",
-    payload: {receiveAddr, receiveToken, receiveAmount, tokenAddr}
+    type: "EXCHANGE.SET_APPROVE",
+    payload: {isNeedApprove}
+  }
+}
+
+
+export function throwErrorExchange(key, val){
+  return {
+    type: "EXCHANGE.THROW_ERROR_EXCHANGE",
+    payload: {key, val}
   }
 }

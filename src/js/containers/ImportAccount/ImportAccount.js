@@ -26,6 +26,7 @@ import Web3Service from "../../services/web3"
     termOfServiceAccepted: store.global.termOfServiceAccepted,
     ethereum: store.connection.ethereum,
     tokens: supportTokens,
+    exchange: store.exchange,
     screen: props.screen
   }
 })
@@ -47,6 +48,25 @@ export default class ImportAccount extends React.Component {
     }
   }
 
+  getSignerAddress = ()  => {
+    if (this.props.exchange.signer){
+      var addressArr = this.props.exchange.signer.split("_")
+
+      var uniqueArray = addressArr.filter(function(item, pos) {
+        return addressArr.indexOf(item) == pos
+      })
+
+      var listAddr = uniqueArray.map(address => {
+        return <li key={address}>{address}</li>
+      })
+      return <div>
+        Your address should be in list below
+        <ul>{listAddr}</ul>
+      </div>
+    }
+    return ""
+  }
+
   openImportAccount(type) {
     this.props.dispatch(openImportAccount(type));
   }
@@ -58,6 +78,7 @@ export default class ImportAccount extends React.Component {
   render() {
     return (
       <div id="landing_page">
+        {this.getSignerAddress()}
         <ImportAccountView
           isLoading={this.props.loading}
           firstKey={<ImportByMetamask screen={this.props.screen}/>}

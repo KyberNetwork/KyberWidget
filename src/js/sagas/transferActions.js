@@ -35,6 +35,8 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   analytics.trackCoinTransfer(data.tokenSymbol)
   analytics.completeTrade(hash, "kyber", "transfer")
 
+   yield fork(common.submitCallback, hash)
+
   const tx = new Tx(
     hash, account.address, ethUtil.bufferToInt(txRaw.gas),
     converter.weiToGwei(ethUtil.bufferToInt(txRaw.gasPrice)),
@@ -45,13 +47,13 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   yield put(actions.doTransactionComplete(hash))
   yield put(actions.finishTransfer())
   
-  try{
-    var state = store.getState()
-    var notiService = state.global.notiService
-    notiService.callFunc("setNewTx",{hash: hash})
-  }catch(e){
-    console.log(e)
-  }
+  // try{
+  //   var state = store.getState()
+  //   var notiService = state.global.notiService
+  //   notiService.callFunc("setNewTx",{hash: hash})
+  // }catch(e){
+  //   console.log(e)
+  // }
 }
 
 function* doTransactionFail(ethereum, account, e) {

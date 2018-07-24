@@ -233,6 +233,14 @@ export function convertBuyRate(rate){
   }
 }
 
+
+export function addTwoNumber(num1, num2) {
+  var num1 = new BigNumber(num1.toString())
+  var num2 = new BigNumber(num2.toString())
+  var sum = num1.plus(num2)
+  return sum.toString()
+}
+
 export function pairID(source, dest) {
   return source.address + "-" + dest.address
 }
@@ -305,6 +313,7 @@ export function stringToHex(number, decimal) {
   bigNumber = new BigNumber(bigNumber.toFixed(0))
   return "0x" + bigNumber.toString(16)
 }
+
 
 export function roundingNumber(number) {
   var MAX_DIGIS = 7, SIZE = 3;
@@ -426,24 +435,7 @@ export function calculateGasFee(gasPrice, gasUsed){
   return roundingNumber(totalGas.toString())
 }
 
-export function findNetworkName(networkId){
-  switch(networkId){
-    case 0:
-     return "Olympic Network"
-    case 1:
-      return "Mainnet"
-    case 2:
-      return "Morden Network"
-    case 3:
-      return "Ropsten Network"
-    case 4:
-      return "Rinkeby Network"
-    case 42:
-      return "Kovan Network"
-    default:
-      return null
-  }
-}
+
 
 export function sliceErrorMsg(err){
   if(err.length > 70){

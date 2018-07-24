@@ -6,6 +6,8 @@ import constants from "../../services/constants"
 import ReactTooltip from 'react-tooltip'
 import { filterInputNumber } from "../../utils/validators";
 
+import * as converter from "../../utils/converter"
+
 const ExchangeBodyLayout = (props) => {
 
   function handleChangeSource(e) {
@@ -70,12 +72,13 @@ const ExchangeBodyLayout = (props) => {
     classSource += " error"
   }
 
-  var render = (
+  return  (
+    <div id="exchange">
     <div className="grid-x">
-      <div className={errorExchange ||  props.networkError !== ""? "cell medium-6 large-3 balance-wrapper error" : "cell medium-6 large-3 balance-wrapper"} id="balance-account-wrapper">
+      {/* <div className={errorExchange ||  props.networkError !== ""? "cell medium-6 large-3 balance-wrapper error" : "cell medium-6 large-3 balance-wrapper"} id="balance-account-wrapper">
         {props.balanceList}
-      </div>
-      <div className="cell medium-6 large-9 swap-wrapper">
+      </div> */}
+      <div className="cell medium-12 large-12 swap-wrapper">
         {/* <div className="grid-x">
               <div>
 
@@ -85,7 +88,7 @@ const ExchangeBodyLayout = (props) => {
         <div className="grid-x exchange-col">
           <div className="cell large-8 exchange-col-1">
             {props.networkError !== "" && (
-              <div className="network_error"> 
+              <div className="network_error">
                 <span>
                   <img src={require("../../../assets/img/warning.svg")} />
                 </span>
@@ -96,71 +99,92 @@ const ExchangeBodyLayout = (props) => {
                   <img src={require("../../../assets/img/loading.svg")} />
                 </span> */}
               </div>
-  )}
-            <div className="title main-title">{props.translate("transaction.swap") || "Swap"}</div>
-            <div className="grid-x">
-              <div className="cell large-5">
-                <span className="transaction-label">
-                  {props.translate("transaction.exchange_from").toUpperCase() || "FROM"}
-                </span>
-                <div className={errorExchange ? "error select-token-panel" : "select-token-panel"}>
-                  {props.tokenSourceSelect}
-                  <div className={classSource}>
-                    <div>
-                      <input id="inputSource" className="source-input" min="0" step="0.000001"
-                        placeholder="0" autoFocus
-                        type="text" maxLength="50" autoComplete="off"
-                        value={props.input.sourceAmount.value}
-                        onFocus={props.input.sourceAmount.onFocus}
-                        onBlur={props.input.sourceAmount.onBlur}
-                        onChange={handleChangeSource}
-                      />
-                    </div>
-                    <div>
-                      <span>{props.sourceTokenSymbol}</span>
-                    </div>
-                  </div>
-                </div>
-                <div className={errorExchange ? "error" : ""}>
-                  {errorShow}
-                </div>
-              </div>
+            )}
 
-              <div class="cell large-2 exchange-icon">
-                <span data-tip={props.translate('transaction.click_to_swap') || 'Click to swap'} data-for="swap" currentitem="false">
-                  <i className="k k-exchange k-3x cur-pointer" onClick={(e) => props.swapToken(e)}></i>
-                </span>
-                <ReactTooltip place="bottom" id="swap" type="light" />
-              </div>
+         <div className="title main-title">{props.translate("transaction.payment") || "Payment"}</div>
 
-              <div className="cell large-5 exchange-col-1-2">
-                <span className="transaction-label">
-                  {props.translate("transaction.exchange_to").toUpperCase() || "TO"}
-                </span>
-                <div className="select-token-panel">
+            {props.exchange.isHaveDestAmount && (
+              <div>
+                <div>You are about to pay {props.exchange.receiveAddr}: {props.exchange.destAmount} {props.exchange.destTokenSymbol}</div>
+                <div>Choose youy payment method</div>
+                <div>
+                  <div className="cell large-5">
+                    <span className="transaction-label">
+                      {props.translate("transaction.exchange_from").toUpperCase() || "FROM"}
+                    </span>
+                    <div className={errorExchange ? "error select-token-panel" : "select-token-panel"}>
+                      {props.tokenSourceSelect}
 
-                  {props.tokenDestSelect}
-
-                  <div className={props.focus === "dest" ? "amount-input focus" : "amount-input"}>
-                  <div>
-                    <input className="des-input" step="0.000001" placeholder="0" min="0"
-                      type="text" maxLength="50" autoComplete="off"
-                      value={props.input.destAmount.value}
-                      onFocus={props.input.destAmount.onFocus}
-                      onBlur={props.input.destAmount.onBlur}
-                      onChange={handleChangeDest} />
-                      </div>
+                      <div>Estimate value you should pay</div>
                       <div>
-                    <span>{props.destTokenSymbol}</span>
+                        {converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)} {props.exchange.sourceTokenSymbol} 
+                      </div>
+                    </div>
+                    <div className={errorExchange ? "error" : ""}>
+                      {errorShow}
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="large-6">
-              {props.addressBalanceLayout}
+            )}
+
+        {!props.exchange.isHaveDestAmount && (
+           <div>            
+              <div>You are about to pay {props.exchange.receiveAddr}</div>    
+                <div>Choose your payment method</div>
+                <div>
+                  <div className="cell large-5">
+                    <span className="transaction-label">
+                      {props.translate("transaction.exchange_from").toUpperCase() || "FROM"}
+                    </span>
+                    <div className={errorExchange ? "error select-token-panel" : "select-token-panel"}>
+                      {props.tokenSourceSelect}
+
+
+                      <div className={classSource}>
+                        <div>
+                          <input id="inputSource" className="source-input" min="0" step="0.000001"
+                            placeholder="0" autoFocus
+                            type="text" maxLength="50" autoComplete="off"
+                            value={props.input.sourceAmount.value}
+                            onFocus={props.input.sourceAmount.onFocus}
+                            onBlur={props.input.sourceAmount.onBlur}
+                            onChange={handleChangeSource}
+                          />
+                        </div>
+                        <div>
+                          <span>{props.sourceTokenSymbol}</span>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    <div className={errorExchange ? "error" : ""}>
+                      {errorShow}
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  Estimate dest value: {props.exchange.destAmount} {props.exchange.destTokenSymbol}
+                </div>
+              </div>
+        )}
+
+            
+            
+            <div class="checkbox">
+              <input id="term-agree" type="checkbox" onChange={props.acceptedTerm}/>
+              <label for="term-agree">
+                I agree to <a href="https://files.kyber.network/tac.html" target="_blank">Terms &amp; Conditions</a>
+              </label>
             </div>
             
+            <button className={props.classNamePaymentbtn} onClick={(e) => props.importAccount(e)}>{props.translate("transaction.payment") || "Payment"}</button>
+            
+            
+            {/* <div className="large-6">
+              {props.addressBalanceLayout}
+            </div> */}
+
             {/* <div class="address-balance large-6">
               <p class="note">{props.translate("transaction.address_balance") || "Address Balance"}</p>
               <div>
@@ -180,19 +204,21 @@ const ExchangeBodyLayout = (props) => {
         </div>
         <div className="grid-x exchange-col-3">
           <div className="cell large-8">
-            {props.exchangeButton}
+            {/* {props.exchangeButton} */}
+            
           </div>
         </div>
       </div>
     </div>
-  )
-  return (
-
-    <div id="exchange">
-      {render}
-      {props.transactionLoadingScreen}
     </div>
   )
+  // return (
+
+  //   <div id="exchange">
+  //     {render}
+  //     {props.transactionLoadingScreen}
+  //   </div>
+  // )
 }
 
 export default ExchangeBodyLayout
