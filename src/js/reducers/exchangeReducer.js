@@ -603,6 +603,13 @@ const exchange = (state = initState, action) => {
       newState.isNeedApprove = isNeedApprove
       return newState
     }
+    case "EXCHANGE.THROW_ERROR_EXCHANGE":{
+      const {key, val} = action.payload
+      var errors = {...newState.errors}
+      errors[key] = val
+      newState.errors = {...errors}
+      return newState
+    }
     case "GLOBAL.CLEAR_SESSION_FULFILLED":{
       var resetState = {...initState}
       resetState.sourceToken = newState.sourceToken

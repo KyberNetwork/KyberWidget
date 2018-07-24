@@ -47,16 +47,52 @@ function* approveTx(action) {
 
 function* selectToken(action) {
   const { symbol, address, type, ethereum } = action.payload
-  yield put(actions.selectToken(symbol, address, type))
+  yield put.sync(actions.selectToken(symbol, address, type))
   yield put(utilActions.hideSelectToken())
 
   yield put(actions.checkSelectToken())
   yield call(ethereum.fetchRateExchange, true)
 
-  yield call(fetchGas)
+  //const {gasUsed, gasApproved} = yield call(estimateGasUsed)
+  var state = store.getState()
+  var exchange = state.exchange
+  yield call(estimateGasUsed, symbol, exchange.destTokenSymbol)
+
+  //yield call(fetchGas)
   //calculate gas use
   // yield call(updateGasUsed)
 }
+
+export function* estimateGasUsed(source, dest){
+//calculate gas use
+  // var state = store.getState()
+  // var exchange = state.exchange
+  var gasUsed
+  var gasApproved = 0 
+  if ( source === dest){
+    switch(source){
+      case "ETH":
+        gasUsed = 21000
+        break
+      case "DGX":
+        gasUsed = 250000
+        break
+      default:
+        gasUsed = 100000
+        break
+    }    
+  }else{
+    gasUsed = yield call(getMaxGasExchange, source, dest)
+    if (source  !== "ETH"){
+      gasApproved = yield call(getMaxGasApprove, source)
+      //gasUsed += gasApprove
+    }    
+  }
+  yield put(actions.setEstimateGas(gasUsed, gasApproved))
+  //return {gasUsed, gasApproved}
+}
+
+
 
 export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
 
@@ -881,7 +917,8 @@ function* updateRateSnapshot(action) {
 }
 
 function* fetchGas() {
-  yield call(estimateGas)
+  //yield call(estimateGas)
+
 }
 
 function* estimateGas() {
@@ -983,43 +1020,41 @@ function* fetchGasApproveSnapshot() {
 }
 
 
-function* getMaxGasExchange(){
-  var state = store.getState()
-  const exchange = state.exchange
+function* getMaxGasExchange(source, dest){
+  // var state = store.getState()
+  // const exchange = state.exchange
 
-  if (exchange.sourceTokenSymbol === 'DGX'){
-    if (exchange.destTokenSymbol === 'ETH'){
+  if (source === 'DGX'){
+    if (dest === 'ETH'){
       return 750000
     }else{
-      return (750000 + exchange.max_gas)
+      return (750000 + 330000)
     }
   }
-  if (exchange.sourceTokenSymbol === 'ETH'){
-    if (exchange.destTokenSymbol === 'DGX'){
+  if (source === 'ETH'){
+    if (dest === 'DGX'){
       return 750000
     }else{
-      return exchange.max_gas
+      return 330000
     }
   }
 
-  if (exchange.sourceTokenSymbol !== 'ETH'){
-    if (exchange.destTokenSymbol === 'DGX'){
-      return 750000 + exchange.max_gas
+  if (source !== 'ETH'){
+    if (dest === 'DGX'){
+      return 750000 + 330000
     }
-    if (exchange.destTokenSymbol === 'ETH'){
-      return exchange.max_gas
+    if (dest === 'ETH'){
+      return 330000
     }
     else{
-      return exchange.max_gas * 2
+      return 330000 * 2
     }
   }
 }
 
-function* getMaxGasApprove(){
-  var state = store.getState()
-  const exchange = state.exchange
-  if (exchange.sourceTokenSymbol !== 'DGX' && exchange.destTokenSymbol !== 'DGX') {
-    return exchange.max_gas_approve
+function* getMaxGasApprove(source){
+  if (source !== 'DGX') {
+    return 100000
   }else{
     return 120000
   }
@@ -1501,7 +1536,7 @@ export function* initParamsToken(action){
     yield put(actions.updateRateExchange(source, dest, 0, sourceTokenSymbol, true))
   }
 
-  
+  yield call(estimateGasUsed, sourceTokenSymbol, receiveToken)
   //store.dispatch(updateRateExchange(source, dest, sourceAmount, sourceTokenSymbol, isManual))
 
   //estimate gas
@@ -1518,13 +1553,13 @@ export function* watchExchange() {
   yield takeEvery("EXCHANGE.CHECK_TOKEN_BALANCE_COLD_WALLET", checkTokenBalanceOfColdWallet)
   yield takeEvery("EXCHANGE.UPDATE_RATE_PENDING", updateRatePending)
   yield takeEvery("EXCHANGE.UPDATE_RATE_SNAPSHOT", updateRateSnapshot)
-  yield takeEvery("EXCHANGE.ESTIMATE_GAS_USED", fetchGas)
+  yield takeEvery("EXCHANGE.ESTIMATE_GAS_USED", estimateGasUsed)
   yield takeEvery("EXCHANGE.ANALYZE_ERROR", analyzeError)
 
   yield takeEvery("EXCHANGE.SELECT_TOKEN_ASYNC", selectToken)
-  yield takeEvery("EXCHANGE.INPUT_CHANGE", fetchGas)
+  //yield takeEvery("EXCHANGE.INPUT_CHANGE", fetchGas)
   //yield takeEvery("EXCHANGE.FETCH_GAS", fetchGasManual)
-  yield takeEvery("EXCHANGE.FETCH_GAS_SNAPSHOT", fetchGasSnapshot)
+  //yield takeEvery("EXCHANGE.FETCH_GAS_SNAPSHOT", fetchGasSnapshot)
 
   yield takeEvery("EXCHANGE.CHECK_KYBER_ENABLE", checkKyberEnable)
   yield takeEvery("EXCHANGE.VERIFY_EXCHANGE", verifyExchange)

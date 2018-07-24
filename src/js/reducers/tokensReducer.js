@@ -122,21 +122,32 @@ const tokens = (state = initState, action) => {
       return Object.assign({}, state, { tokens: newTokens })
     }
     case 'GLOBAL.SET_BALANCE_TOKEN':{
+      const {balances} = action.payload
+
+
       var tokens = { ...state.tokens }
       
-      var balances = action.payload.balances
-      var mapBalance = {}
-      balances.map(balance=>{
-        mapBalance[balance.symbol] = balance.balance
+      Object.keys(balances).map(key => {
+        var token = tokens[key]
+        token.balance = balances[key]
+        tokens[key] = token
+        //newTokens[key] = token
       })
 
-      var newTokens = {}
-      Object.keys(tokens).map(key => {
-        var token = tokens[key]
-        token.balance = mapBalance[token.symbol]
-        newTokens[key] = token
-      })
-      return Object.assign({}, state, { tokens: newTokens }) 
+      //var balances = action.payload.balances
+
+      // var mapBalance = {}
+      // balances.map(balance=>{
+      //   mapBalance[balance.symbol] = balance.balance
+      // })
+
+      // var newTokens = {}
+      // Object.keys(tokens).map(key => {
+      //   var token = tokens[key]
+      //   token.balance = mapBalance[token.symbol]
+      //   newTokens[key] = token
+      // })
+      return Object.assign({}, state, { tokens: tokens }) 
     }
     case 'GLOBAL.CLEAR_SESSION_FULFILLED': {
       let tokens = {...state.tokens}

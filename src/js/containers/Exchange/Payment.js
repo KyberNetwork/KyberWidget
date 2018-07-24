@@ -305,6 +305,23 @@ export default class Payment extends React.Component {
         }        
     }
 
+    getError = () => {
+      var errors = this.props.exchange.errors
+      var errorItem = Object.keys(errors).map(key => {
+        return <div key={key}>{this.props.translate(errors[key]) || errors[key]}</div>
+      })
+      return <div>{errorItem}</div>
+    }
+
+
+    getValueYoupay = () => {
+      if (this.props.exchange.sourceSymbol === this.props.exchange.destTokenSymbol){
+        return this.props.destAmount
+      }else{
+        return converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)
+      }
+    }
+
   render() {   
 
     var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
@@ -314,6 +331,9 @@ export default class Payment extends React.Component {
     var ethBalance = this.props.tokens["ETH"].balance
     return (
       <div class="frame payment-frame">          
+        <div>
+          {this.getError()}  
+        </div>
         <div className="row">
           Proceed to Payment
           
@@ -337,13 +357,19 @@ export default class Payment extends React.Component {
                   <span>{this.props.exchange.receiveAddr}</span>
               </div>
               <div>
-                  <span>Estimate value you pay: </span>
-                  <span>{ converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6) } {sourceTokenSymbol}</span>
+                  <span>Estimate value you pay: </span>                  
+                  <span>{this.getValueYoupay()} {sourceTokenSymbol}</span>
               </div>
 
               <div>
                   <span>Estimate fee: </span>
-                  <span>20 ETH</span>
+                  {!this.props.exchange.isNeedApprove && (
+                    <span>{converter.calculateGasFee(this.props.exchange.gasPrice, this.props.exchange.gas)} ETH</span>
+                  )}
+
+                  {this.props.exchange.isNeedApprove && (
+                    <span>{converter.calculateGasFee(this.props.exchange.gasPrice, this.props.exchange.gas + this.props.exchange.gas_approve)} ETH</span>
+                  )}
               </div>
           </div>
 

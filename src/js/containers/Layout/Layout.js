@@ -93,9 +93,15 @@ export default class Layout extends React.Component {
     if (validator.verifyAccount(receiveAddr)){
       errors["receiveAddr"] = "Receive address must be a valid ethereum address"
     }
-    if (!this.props.tokens[receiveToken.toUpperCase()]){
-      errors["receiveToken"] = "Receive token is not supported by kyber"
+    if (receiveToken){
+      receiveToken = receiveToken.toUpperCase()
+      if (!this.props.tokens[receiveToken]){
+        errors["receiveToken"] = "Receive token is not supported by kyber"
+      }
+    }else{
+      errors["receiveToken"] = "Receive token must be required"
     }
+    
 
     if (receiveAmount){
       receiveAmount = parseFloat(receiveAmount) // second argument is NOT optional

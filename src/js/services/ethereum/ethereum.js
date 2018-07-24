@@ -147,14 +147,14 @@ export default class EthereumService extends React.Component {
   fetchData() {
     this.checkKyberEnable()
 
-    this.fetchTxsData()
-    this.fetchApproveTxsData()
+    //this.fetchTxsData()
+    //this.fetchApproveTxsData()
 
     this.fetchRateData()
     this.fetchRateUSD()
 
     this.fetchAccountData()
-    this.fetchTokenBalance()
+    //this.fetchTokenBalance()
 
     this.fetchRateExchange()
 
@@ -171,8 +171,8 @@ export default class EthereumService extends React.Component {
     // this.verifyExchange()
     // this.verifyTransfer()
 
-    this.fetchGasExchange()
-    this.fetchGasTransfer()
+    // this.fetchGasExchange()
+    // this.fetchGasTransfer()
 
     //this.fetMarketData()
 

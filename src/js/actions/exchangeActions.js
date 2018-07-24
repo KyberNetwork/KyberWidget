@@ -622,3 +622,11 @@ export function setApprove(isNeedApprove){
     payload: {isNeedApprove}
   }
 }
+
+
+export function throwErrorExchange(key, val){
+  return {
+    type: "EXCHANGE.THROW_ERROR_EXCHANGE",
+    payload: {key, val}
+  }
+}

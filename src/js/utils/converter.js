@@ -233,6 +233,14 @@ export function convertBuyRate(rate){
   }
 }
 
+
+export function addTwoNumber(num1, num2) {
+  var num1 = new BigNumber(num1.toString())
+  var num2 = new BigNumber(num2.toString())
+  var sum = num1.plus(num2)
+  return sum.toString()
+}
+
 export function pairID(source, dest) {
   return source.address + "-" + dest.address
 }
