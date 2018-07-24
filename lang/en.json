@@ -129,7 +129,7 @@
     "select_hd_path": "Select HD derivation path",
     "select_trezor_address": "Select Trezor address",
     "select_ledger_address": "Select Ledger address",
-    "select_address": "Select the address you would like to use",
+    "select_address": "Select the Address you'd' like to use",
     "previous_addresses": "Previous Addresses",
     "more_addresses": "More Addresses",
     "custom_path": "Your Custom Path",

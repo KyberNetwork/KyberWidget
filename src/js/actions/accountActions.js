@@ -45,15 +45,16 @@ export function pKeyChange(value) {
   }
 }
 
-export function openPkeyModal() {
+export function openImportAccount(type) {
   return {
-    type: "ACCOUNT.OPEN_PKEY_MODAL",
+    type: "ACCOUNT.OPEN_IMPORT_ACCOUNT",
+    payload: type
   }
 }
 
-export function closePkeyModal() {
+export function closeImportAccount() {
   return {
-    type: "ACCOUNT.CLOSE_PKEY_MODAL",
+    type: "ACCOUNT.CLOSE_IMPORT_ACCOUNT",
   }
 }
 
@@ -91,7 +92,6 @@ export function throwError(error) {
   }
 }
 
-
 export function closeErrorModal() {
   return {
     type: "ACCOUNT.CLOSE_ERROR_MODAL"
@@ -109,5 +109,12 @@ export function importAccountMetamask(web3Service, networkId, ethereum, tokens, 
   return {
     type: "ACCOUNT.IMPORT_ACCOUNT_METAMASK",
     payload: { web3Service, networkId, ethereum, tokens, translate, screen }
+  }
+}
+
+export function setCurrentAddress(address, index) {
+  return {
+    type: "ACCOUNT.SET_ADDRESS",
+    payload: { address, index }
   }
 }

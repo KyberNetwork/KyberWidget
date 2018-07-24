@@ -1,29 +1,21 @@
 import React from "react"
 import { connect } from "react-redux"
-
-
-
-
-import {  ImportAccountView } from '../../components/ImportAccount'
+import { ImportAccountView } from '../../components/ImportAccount'
 import {
-  ImportKeystore, ImportByDevice, ImportByPrivateKey,
-  ErrorModal, ImportByMetamask,
-  ImportByDeviceWithLedger, ImportByDeviceWithTrezor
+  ImportKeystore,
+  ImportByMetamask
 } from "../ImportAccount"
-
-import { visitExchange } from "../../actions/globalActions"
 import { getTranslate } from 'react-localize-redux'
-
-
-import { importAccountMetamask } from "../../actions/accountActions"
+import { importAccountMetamask, openImportAccount, closeImportAccount } from "../../actions/accountActions"
 import BLOCKCHAIN_INFO from "../../../../env"
 import Web3Service from "../../services/web3"
 
-@connect((store, props) => {  
-  var tokens = store.tokens.tokens
-	var supportTokens = []
-	Object.keys(tokens).forEach((key) => {
-		supportTokens.push(tokens[key])
+@connect((store, props) => {
+  var tokens = store.tokens.tokens;
+  var supportTokens = [];
+
+  Object.keys(tokens).forEach((key) => {
+    supportTokens.push(tokens[key])
   })
   
   return {
@@ -40,21 +32,6 @@ import Web3Service from "../../services/web3"
 })
 
 export default class ImportAccount extends React.Component {
-
-  constructor() {
-    super()
-    this.state = {
-      isOpen: false,
-      // isInLandingPage: true
-    }
-  }
-
-  // goExchange = (e) => {
-  //   this.setState({
-  //     isInLandingPage: false
-  //   })
-  // }
-
   componentDidMount = () => {
     var swapPage = document.getElementById("swap-app")
     swapPage.className = swapPage.className === "" ? "no-min-height" : swapPage.className + " no-min-height"
@@ -64,7 +41,6 @@ export default class ImportAccount extends React.Component {
         var web3Service = new Web3Service(web3)
         var walletType = web3Service.getWalletType()
         if (walletType !== "metamask") {
-          //alert(walletType)
           this.props.dispatch(importAccountMetamask(web3Service, BLOCKCHAIN_INFO.networkId,
           this.props.ethereum, this.props.tokens, this.props.screen, this.props.translate, walletType))
         }
@@ -72,12 +48,12 @@ export default class ImportAccount extends React.Component {
     }
   }
 
-  getSignerAddress = ()  => {    
+  getSignerAddress = ()  => {
     if (this.props.exchange.signer){
       var addressArr = this.props.exchange.signer.split("_")
 
       var uniqueArray = addressArr.filter(function(item, pos) {
-          return addressArr.indexOf(item) == pos
+        return addressArr.indexOf(item) == pos
       })
 
       var listAddr = uniqueArray.map(address => {
@@ -91,65 +67,29 @@ export default class ImportAccount extends React.Component {
     return ""
   }
 
-  // closeModal = (e) => {
-  //   this.setState({isOpen: false})
-  // }
+  openImportAccount(type) {
+    this.props.dispatch(openImportAccount(type));
+  }
 
-  // openModal = (e) => {
-  //   this.setState({isOpen: true})
-  // }
+  closeImportAccount() {
+    this.props.dispatch(closeImportAccount());
+  }
 
   render() {
-    // return (
-    //   <div>
-    //     <LandingPage goExchange={this.openModal} translate={this.props.translate}/>
-    //     <ImportAccountView
-    //       firstKey={<ImportByMetamask />}
-    //       secondKey={<ImportKeystore />}
-    //       thirdKey={<ImportByDeviceWithTrezor />}
-    //       fourthKey={<ImportByDeviceWithLedger />}
-    //       fifthKey={<ImportByPrivateKey />}
-    //       errorModal={<ErrorModal />}
-    //       translate={this.props.translate}
-    //       isOpen = {this.state.isOpen}
-    //       closeModal = {this.closeModal}
-    //     />
-    //   </div>
-    // )    
-    var content = (
-      <ImportAccountView
-        firstKey={<ImportByMetamask screen={this.props.screen}/>}
-        secondKey={<ImportKeystore screen={this.props.screen}/>}
-        thirdKey={<ImportByDeviceWithTrezor screen={this.props.screen}/>}
-        fourthKey={<ImportByDeviceWithLedger screen={this.props.screen}/>}
-        fifthKey={<ImportByPrivateKey screen={this.props.screen}/>}
-        errorModal={<ErrorModal />}
-        translate={this.props.translate}
-      />
-    )
-    // if (!this.props.termOfServiceAccepted) {
-    //   content = <LandingPage translate={this.props.translate} />
-    // } else {
-    //   content = (
-    //     <ImportAccountView
-    //       firstKey={<ImportByMetamask />}
-    //       secondKey={<ImportKeystore />}
-    //       thirdKey={<ImportByDeviceWithTrezor />}
-    //       fourthKey={<ImportByDeviceWithLedger />}
-    //       fifthKey={<ImportByPrivateKey />}
-    //       errorModal={<ErrorModal />}
-    //       translate={this.props.translate}
-    //     />
-    //   )
-    // }
-
     return (
       <div id="landing_page">
         {this.getSignerAddress()}
-        {content}
+        <ImportAccountView
+          isLoading={this.props.loading}
+          firstKey={<ImportByMetamask screen={this.props.screen}/>}
+          secondKey={<ImportKeystore screen={this.props.screen}/>}
+          translate={this.props.translate}
+          screen={this.props.screen}
+          onOpenImportAccount={this.openImportAccount.bind(this)}
+          onCloseImportAccount={this.closeImportAccount.bind(this)}
+          choosenImportAccount={this.props.choosenImportAccount}
+        />
       </div>
     )
-
-
   }
 }

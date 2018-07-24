@@ -2,6 +2,9 @@ import {REHYDRATE} from 'redux-persist/lib/constants'
 import { clearInterval } from 'timers';
 
 const initState = {
+  currentAddress: null,
+  currentAddressIndex: null,
+  choosenImportAccount: null,
   isStoreReady: false,
   account: false,
   loading: false,
@@ -10,12 +13,12 @@ const initState = {
   showError: false,
   pKey: {
     error: '',
-    modalOpen: false
+    isOpen: false
   }
 }
 
 const account = (state=initState, action) => {
-  switch (action.type) {  	
+  switch (action.type) {
     case REHYDRATE: {      
       return {...state, isStoreReady: true}      
     }
@@ -32,9 +35,6 @@ const account = (state=initState, action) => {
       return {...state, account: action.payload, loading: false, isStoreReady: true}
     }
     case "ACCOUNT.CLOSE_LOADING_IMPORT":{
-      return {...state, loading: false}
-    }
-    case "ACCOUNT.CLOSE_LOADING_IMPORT": {
       return {...state, loading: false}
     }
     case "ACCOUNT.THROW_ERROR": {            
@@ -76,19 +76,6 @@ const account = (state=initState, action) => {
       newState.pKey.error = action.payload
       return newState
     }
-    case "ACCOUNT.OPEN_PKEY_MODAL": {
-      let newState = {...state}
-      let pKey = {
-        error: '', modalOpen: true
-      }
-      newState.pKey = pKey
-      return newState
-    }
-    case "ACCOUNT.CLOSE_PKEY_MODAL": {
-      let newState = {...state}
-      newState.pKey.modalOpen = false
-      return newState
-    }
     case "GLOBAL.SET_BALANCE_TOKEN":{
       let newState = {...state}
       newState.isGetAllBalance = true
@@ -98,7 +85,31 @@ const account = (state=initState, action) => {
       let newState = {...initState}
       return newState
     }
+    case "ACCOUNT.OPEN_IMPORT_ACCOUNT": {
+      return {
+        ...state,
+        choosenImportAccount: action.payload
+      };
+    }
+    case "ACCOUNT.CLOSE_IMPORT_ACCOUNT": {
+      return {
+        ...state,
+        choosenImportAccount: null,
+        error: '',
+        showError: false
+      };
+    }
+    case "ACCOUNT.SET_ADDRESS": {
+      const { address, index } = action.payload
+
+      return {
+        ...state,
+        currentAddress: address,
+        currentAddressIndex: index,
+      };
+    }
   }
+
   return state
 }
 
