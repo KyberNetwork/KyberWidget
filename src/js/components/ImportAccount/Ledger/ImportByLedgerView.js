@@ -1,5 +1,5 @@
 import React from "react";
-import Constants from '../../../constants';
+import constants from '../../../services/constants';
 
 const ImportByLedgerView = (props) => {
   return (
@@ -9,7 +9,7 @@ const ImportByLedgerView = (props) => {
           <img src={require('../../../../assets/img/landing/ledger_active.svg')} />
           <div className="importer__name">{props.translate("import.from_ledger") || "LEDGER"}</div>
         </div>
-        <button className="importer__button" onClick={(e) => props.onOpenImportAccount(Constants.IMPORT_LEDGER_TYPE)}>
+        <button className="importer__button" onClick={(e) => props.onOpenImportAccount(constants.IMPORT_ACCOUNT_TYPE.ledger)}>
           {props.translate("import.swap_from_ledger") || "Swap from Ledger"}
         </button>
       </div>

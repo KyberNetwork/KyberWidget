@@ -7,19 +7,19 @@ import {
   ImportByDeviceWithLedger,
   ImportByDeviceWithTrezor
 } from "../../containers/ImportAccount";
-import Constants from '../../constants';
+import constants from '../../services/constants';
 
 const ImportAccountView = (props) => {
   let importComponent = '';
 
   switch (props.choosenImportAccount) {
-    case Constants.IMPORT_PRIVATE_KEY_TYPE:
+    case constants.IMPORT_ACCOUNT_TYPE.privateKey:
       importComponent = <ImportByPrivateKey onCloseImportAccount={props.onCloseImportAccount}/>
       break;
-    case Constants.IMPORT_LEDGER_TYPE:
+    case constants.IMPORT_ACCOUNT_TYPE.ledger:
       importComponent = <ImportByDeviceWithLedger onCloseImportAccount={props.onCloseImportAccount} screen={props.screen}/>;
       break;
-    case Constants.IMPORT_TREZOR_TYPE:
+    case constants.IMPORT_ACCOUNT_TYPE.trezor:
       importComponent = <ImportByDeviceWithTrezor onCloseImportAccount={props.onCloseImportAccount} screen={props.screen}/>;
       break;
   }
