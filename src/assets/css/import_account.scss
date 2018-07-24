@@ -181,6 +181,7 @@ $animationTime: 0.5s;
       opacity: 0;
       visibility: hidden;
       transform: translateX(-50px);
+      overflow: auto;
       transition: all .3s;
 
       &__title {
@@ -232,7 +233,11 @@ $animationTime: 0.5s;
         &-container {
           margin-top: 30px;
           display: flex;
-          justify-content: space-between;
+          justify-content: center;
+        }
+
+        &:nth-child(2) {
+          margin-left: 30%;
         }
 
         &:hover {

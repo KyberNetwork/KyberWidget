@@ -13,7 +13,7 @@ const ImportByPKeyContent = (props) => {
                 className={"import-account-content__info-type-image"}
                 src={require('../../../../assets/img/landing/privatekey_active.svg')}/>
             <div className={"import-account-content__info-type-text"}>
-              {props.translate("import.from_private_key") || "Private Key"}
+              {props.translate("import.from_private_key") || "PRIVATE KEY"}
             </div>
           </div>
           <div className={"import-account-content__info-text"}></div>

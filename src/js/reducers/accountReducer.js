@@ -2,6 +2,8 @@ import {REHYDRATE} from 'redux-persist/lib/constants'
 import { clearInterval } from 'timers';
 
 const initState = {
+  currentAddress: null,
+  currentAddressIndex: null,
   choosenImportAccount: null,
   isStoreReady: false,
   account: false,
@@ -33,9 +35,6 @@ const account = (state=initState, action) => {
       return {...state, account: action.payload, loading: false, isStoreReady: true}
     }
     case "ACCOUNT.CLOSE_LOADING_IMPORT":{
-      return {...state, loading: false}
-    }
-    case "ACCOUNT.CLOSE_LOADING_IMPORT": {
       return {...state, loading: false}
     }
     case "ACCOUNT.THROW_ERROR": {            
@@ -95,7 +94,18 @@ const account = (state=initState, action) => {
     case "ACCOUNT.CLOSE_IMPORT_ACCOUNT": {
       return {
         ...state,
-        choosenImportAccount: null
+        choosenImportAccount: null,
+        error: '',
+        showError: false
+      };
+    }
+    case "ACCOUNT.SET_ADDRESS": {
+      const { address, index } = action.payload
+
+      return {
+        ...state,
+        currentAddress: address,
+        currentAddressIndex: index,
       };
     }
   }

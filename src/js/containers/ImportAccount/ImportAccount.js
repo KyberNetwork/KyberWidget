@@ -2,9 +2,8 @@ import React from "react"
 import { connect } from "react-redux"
 import { ImportAccountView } from '../../components/ImportAccount'
 import {
-  ImportKeystore, ImportByDevice,
-  ErrorModal, ImportByMetamask,
-  ImportByDeviceWithLedger, ImportByDeviceWithTrezor
+  ImportKeystore,
+  ImportByMetamask
 } from "../ImportAccount"
 import { getTranslate } from 'react-localize-redux'
 import { importAccountMetamask, openImportAccount, closeImportAccount } from "../../actions/accountActions"
@@ -60,12 +59,11 @@ export default class ImportAccount extends React.Component {
     return (
       <div id="landing_page">
         <ImportAccountView
+          isLoading={this.props.loading}
           firstKey={<ImportByMetamask screen={this.props.screen}/>}
           secondKey={<ImportKeystore screen={this.props.screen}/>}
-          thirdKey={<ImportByDeviceWithTrezor screen={this.props.screen}/>}
-          fourthKey={<ImportByDeviceWithLedger screen={this.props.screen}/>}
-          errorModal={<ErrorModal />}
           translate={this.props.translate}
+          screen={this.props.screen}
           onOpenImportAccount={this.openImportAccount.bind(this)}
           onCloseImportAccount={this.closeImportAccount.bind(this)}
           choosenImportAccount={this.props.choosenImportAccount}

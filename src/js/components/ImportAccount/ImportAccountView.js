@@ -1,16 +1,26 @@
 import React from "react";
 import ImportByPKeyView from "./PrivateKey/ImportByPKeyView";
-import { ImportByPrivateKey } from "../../containers/ImportAccount";
+import ImportByLedgerView from "./Ledger/ImportByLedgerView";
+import ImportByTrezorView from "./Trezor/ImportByTrezorView";
+import {
+  ImportByPrivateKey,
+  ImportByDeviceWithLedger,
+  ImportByDeviceWithTrezor
+} from "../../containers/ImportAccount";
+import Constants from '../../constants';
 
 const ImportAccountView = (props) => {
-  let choosenImportAccountComponent = '';
+  let importComponent = '';
 
   switch (props.choosenImportAccount) {
-    case 'private-key':
-      choosenImportAccountComponent =
-          <ImportByPrivateKey
-              onCloseImportAccount={props.onCloseImportAccount}
-          />
+    case Constants.IMPORT_PRIVATE_KEY_TYPE:
+      importComponent = <ImportByPrivateKey onCloseImportAccount={props.onCloseImportAccount}/>
+      break;
+    case Constants.IMPORT_LEDGER_TYPE:
+      importComponent = <ImportByDeviceWithLedger onCloseImportAccount={props.onCloseImportAccount} screen={props.screen}/>;
+      break;
+    case Constants.IMPORT_TREZOR_TYPE:
+      importComponent = <ImportByDeviceWithTrezor onCloseImportAccount={props.onCloseImportAccount} screen={props.screen}/>;
       break;
   }
 
@@ -30,10 +40,16 @@ const ImportAccountView = (props) => {
                 {props.secondKey}
               </div>
               <div className="import-account__item">
-                {props.thirdKey}
+                <ImportByTrezorView
+                  translate={props.translate}
+                  onOpenImportAccount={props.onOpenImportAccount}
+                />
               </div>
               <div className="import-account__item">
-                {props.fourthKey}
+                <ImportByLedgerView
+                  translate={props.translate}
+                  onOpenImportAccount={props.onOpenImportAccount}
+                />
               </div>
               <div className="import-account__item">
                 <ImportByPKeyView
@@ -43,12 +59,11 @@ const ImportAccountView = (props) => {
               </div>
             </div>
 
-            <div className={"import-account-content " + (props.choosenImportAccount ? 'import-account-content--active' : '')}>
-              {choosenImportAccountComponent}
+            <div className={"import-account-content " + (props.choosenImportAccount && props.isLoading === false ? 'import-account-content--active' : '')}>
+              {importComponent}
             </div>
           </div>
         </div>
-        {props.errorModal}
       </div>
     </div>
   )

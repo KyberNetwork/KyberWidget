@@ -111,3 +111,10 @@ export function importAccountMetamask(web3Service, networkId, ethereum, tokens, 
     payload: { web3Service, networkId, ethereum, tokens, translate, screen }
   }
 }
+
+export function setCurrentAddress(address, index) {
+  return {
+    type: "ACCOUNT.SET_ADDRESS",
+    payload: { address, index }
+  }
+}
