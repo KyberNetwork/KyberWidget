@@ -75,18 +75,11 @@ const ExchangeBodyLayout = (props) => {
   return  (
     <div id="exchange">
     <div className="grid-x">
-      {/* <div className={errorExchange ||  props.networkError !== ""? "cell medium-6 large-3 balance-wrapper error" : "cell medium-6 large-3 balance-wrapper"} id="balance-account-wrapper">
-        {props.balanceList}
-      </div> */}
       <div className="cell medium-12 large-12 swap-wrapper">
-        {/* <div className="grid-x">
-              <div>
-
-              </div>
-            </div> */}
-        {/* <div> */}
         <div className="grid-x exchange-col">
           <div className="cell exchange-col-1">
+
+          <div className="exchange-pading exchange-pading-top">
             {props.networkError !== "" && (
               <div className="network_error">
                 <span>
@@ -95,9 +88,6 @@ const ExchangeBodyLayout = (props) => {
                 <span>
                   {props.networkError}
                 </span>
-                {/* <span>
-                  <img src={require("../../../assets/img/loading.svg")} />
-                </span> */}
               </div>
             )}
 
@@ -213,12 +203,15 @@ const ExchangeBodyLayout = (props) => {
                 )}
               </div>
         )}
-
+</div>
           <div>
             {props.advanceLayout}
           </div>
+          
+          
             
-            
+
+          <div className="exchange-pading">
             <div class="checkbox">
               <input id="term-agree" type="checkbox" onChange={props.acceptedTerm}/>
               <label for="term-agree">
@@ -226,8 +219,9 @@ const ExchangeBodyLayout = (props) => {
               </label>
             </div>
             
-            <button className={props.classNamePaymentbtn} onClick={(e) => props.importAccount(e)}>{props.translate("transaction.payment") || "Payment"}</button>
             
+              <button className={props.classNamePaymentbtn} onClick={(e) => props.importAccount(e)}>{props.translate("transaction.payment") || "Payment"}</button>
+            </div>
             
             {/* <div className="large-6">
               {props.addressBalanceLayout}

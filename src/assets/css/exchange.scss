@@ -82,7 +82,13 @@
     // margin:  0 10px 10px 10px;
     background: white;
     margin: 0 auto;
-    padding: 1rem;
+    .exchange-pading{
+      padding: 0 1rem;
+    }
+    .exchange-pading-top{
+      padding-top: 1rem;
+    }
+    // padding: 1rem;
   //}
   // @include screen-max-width(large) {
   //   @include screen-min-width(medium){

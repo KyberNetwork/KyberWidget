@@ -19,6 +19,14 @@
     justify-content: space-between;
     // margin-top: 2rem;
     //opacity: 0.5;
+    >div{
+      &:first-child{
+        width: 100%;
+        input{
+          width: 100%;
+        }
+      }
+    }
     .focus-name{
       text-transform: initial;
     }
