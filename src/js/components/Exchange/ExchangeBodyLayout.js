@@ -86,7 +86,7 @@ const ExchangeBodyLayout = (props) => {
             </div> */}
         {/* <div> */}
         <div className="grid-x exchange-col">
-          <div className="cell large-8 exchange-col-1">
+          <div className="cell exchange-col-1">
             {props.networkError !== "" && (
               <div className="network_error">
                 <span>
@@ -101,23 +101,47 @@ const ExchangeBodyLayout = (props) => {
               </div>
             )}
 
-         <div className="title main-title">{props.translate("transaction.payment") || "Payment"}</div>
+         <div className="title main-title">
+            <span className="step">1</span>
+            <span className="text">{props.translate("transaction.choose_your_payment") || "Choose your payment method"}</span>
+        </div>
 
             {props.exchange.isHaveDestAmount && (
               <div>
-                <div>You are about to pay {props.exchange.receiveAddr}: {props.exchange.destAmount} {props.exchange.destTokenSymbol}</div>
-                <div>Choose youy payment method</div>
+                <div className="pay-info">
+                  <div className="info-1">
+                    You are about to pay
+                  </div> 
+                  <div className="info-2">
+                    <div>
+                      <span>To:</span>
+                      <span>kyber.network</span>
+                    </div>
+                    <div>
+                      <span>Address:</span>
+                      <span>
+                        {props.exchange.receiveAddr.slice(0, 8)} ... {props.exchange.receiveAddr.slice(-6)}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="info-3"> 
+                    {props.exchange.destAmount} {props.exchange.destTokenSymbol}
+                  </div>
+                </div>
+                {/* <div>Choose youy payment method</div> */}
                 <div>
-                  <div className="cell large-5">
+                  <div className="choose-payment">
                     <span className="transaction-label">
-                      {props.translate("transaction.exchange_from").toUpperCase() || "FROM"}
+                      {props.translate("transaction.exchange_paywith") || "PAY WITH"}
                     </span>
                     <div className={errorExchange ? "error select-token-panel" : "select-token-panel"}>
                       {props.tokenSourceSelect}
 
-                      <div>Estimate value you should pay</div>
-                      <div>
-                        {converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)} {props.exchange.sourceTokenSymbol} 
+                      <div className="amount-pay">
+                        <div>Estimate value you should pay</div>
+                        <div>
+                          {converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)} {props.exchange.sourceTokenSymbol} 
+                        </div>
                       </div>
                     </div>
                     <div className={errorExchange ? "error" : ""}>
@@ -130,18 +154,37 @@ const ExchangeBodyLayout = (props) => {
 
         {!props.exchange.isHaveDestAmount && (
            <div>            
-              <div>You are about to pay {props.exchange.receiveAddr}</div>    
-                <div>Choose your payment method</div>
+              <div className="pay-info">
+                <div className="info-1">
+                  You are about to pay
+                </div>
+                <div className="info-2">
+                  <div>
+                    <span>To:</span>
+                    <span>kyber.network</span>
+                  </div>
+                  <div>
+                    <span>Address:</span>
+                    <span>
+                      {props.exchange.receiveAddr.slice(0, 8)} ... {props.exchange.receiveAddr.slice(-6)}
+                    </span>
+                  </div>
+                </div>                
+              </div>    
+                {/* <div>Choose your payment method</div> */}
                 <div>
-                  <div className="cell large-5">
+                  <div className="choose-payment">
                     <span className="transaction-label">
-                      {props.translate("transaction.exchange_from").toUpperCase() || "FROM"}
+                      {props.translate("transaction.exchange_paywith") || "PAY WITH"}
                     </span>
                     <div className={errorExchange ? "error select-token-panel" : "select-token-panel"}>
                       {props.tokenSourceSelect}
 
 
-                      <div className={classSource}>
+                      <span className="transaction-label amount-enter-label">
+                        {props.translate("transaction.enter_amount") || "ENTER AMOUNT YOU WILL PAY"}
+                      </span>
+                      <div className={classSource}>                        
                         <div>
                           <input id="inputSource" className="source-input" min="0" step="0.000001"
                             placeholder="0" autoFocus
@@ -163,12 +206,17 @@ const ExchangeBodyLayout = (props) => {
                     </div>
                   </div>
                 </div>
-                <div>
-                  Estimate dest value: {props.exchange.destAmount} {props.exchange.destTokenSymbol}
-                </div>
+                {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
+                  <div className="estimate-dest-value">
+                    Estimate dest value: {converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}
+                  </div>
+                )}
               </div>
         )}
 
+          <div>
+            {props.advanceLayout}
+          </div>
             
             
             <div class="checkbox">
@@ -198,16 +246,13 @@ const ExchangeBodyLayout = (props) => {
               </div>
             </div> */}
           </div>
-          <div className="cell large-4 exchange-col-2">
-            {props.advanceLayout}
-          </div>
+        
         </div>
-        <div className="grid-x exchange-col-3">
+        {/* <div className="grid-x exchange-col-3">
           <div className="cell large-8">
-            {/* {props.exchangeButton} */}
             
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
     </div>

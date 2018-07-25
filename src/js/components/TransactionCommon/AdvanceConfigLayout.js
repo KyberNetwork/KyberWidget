@@ -16,7 +16,8 @@ const AdvanceConfigLayout = (props) => {
   }
   return (
     <div className="advance-config">
-      <div className="title advance-title-desktop">{props.translate("transaction.advanced") || "Advanced"}</div>
+      {/* <div className="title advance-title-desktop">{props.translate("transaction.advanced") || "Advanced"}</div> */}
+
       <div className="advance-title-mobile title" onClick={(e) => toggleShowAdvance()}>
         <div>
           {props.translate("transaction.advanced") || "Advanced"}

@@ -8,9 +8,10 @@ $radio-color: #5D9E7A;
 
 .advance-config{
   // max-width: 300px;  
+  margin-top: 15px;
   .advance-title-mobile{
     &.title {
-      padding: 12px 10px;
+      padding: 8px 10px;
     }
     background-color: #F5F5F5;
     border-radius: 5px;
@@ -30,30 +31,30 @@ $radio-color: #5D9E7A;
         }
       }
     }
-    @media screen and (min-width: $break-point-large){
-      display: none  
-    }
+    // @media screen and (min-width: $break-point-large){
+    //   display: none  
+    // }
   }
-  .advance-title-desktop{
-    @media screen and (max-width: $break-point-large){
-      display: none  
-    }
-  }
+  // .advance-title-desktop{
+  //   @media screen and (max-width: $break-point-large){
+  //     display: none  
+  //   }
+  // }
   #advance-content{
-    @media screen and (max-width: $break-point-large){
+   // @media screen and (max-width: $break-point-large){
       display: none;
       padding: 10px;
       background-color: #f5f5f5;
       // animation: rollOut 0.3s ease-in-out;
       &.show-advance{
-        @media screen and (max-width: $break-point-large){
+        //@media screen and (max-width: $break-point-large){
           display: block;
-        }
+        //}
         // @include breakpoint(small only) {
         //   display: block
         // }
       }
-    }
+   // }
     // @include breakpoint(small only) {
     //   display: none;
     //   padding: 10px;
@@ -84,6 +85,7 @@ $radio-color: #5D9E7A;
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: white;
+    justify-content: space-between;
   }
   .gas_input{
     input {
@@ -120,7 +122,7 @@ $radio-color: #5D9E7A;
           div:first-child {
             margin: 0 10px;
             text-transform: uppercase;
-            font-weight: 600;
+            // font-weight: 600;
             white-space: nowrap;
           }
           div:last-child {
@@ -157,10 +159,8 @@ $radio-color: #5D9E7A;
     }
   }
   .title {      
-    font-size: 20px;
-    padding-bottom: 0.5rem;
-    color: #4B4A60;
-    font-weight: 600;
+    font-size: 16px;
+    color: #31CB9E;
     // position: relative;
     // z-index: 1;
   }
@@ -212,7 +212,7 @@ $radio-color: #5D9E7A;
   .min-rate, .gas-config {
     .sub_title {
       text-transform: uppercase;
-      font-weight: 600;
+      // font-weight: 600;
       font-size: 1rem;
       color: #4B4A60;
     }
@@ -314,7 +314,7 @@ $radio-color: #5D9E7A;
       }
     }
     .transaction-fee{
-      font-weight: 600;      
+      // font-weight: 600;      
       margin-top: 1.2rem;
       border-top: 1px solid #ddd;
       padding-top: 0.5rem;
@@ -327,7 +327,7 @@ $radio-color: #5D9E7A;
 
       .title-fee,
       div:nth-child(2) {
-        font-weight: bold;
+        // font-weight: bold;
         color: #222;
       }
 
