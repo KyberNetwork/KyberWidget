@@ -19,6 +19,7 @@
     "bignumber.js": "^6.0.0",
     "bowser": "^1.9.1",
     "chart.js": "^2.7.2",
+    "clean-webpack-plugin": "^0.1.19",
     "compression-webpack-plugin": "^1.1.3",
     "cors": "^2.8.4",
     "enzyme-adapter-react-16": "^1.1.1",
@@ -101,28 +102,8 @@
     "webpack-shell-plugin": "^0.5.0"
   },
   "scripts": {
-    "build-kovan": "NODE_ENV=production webpack --env.chain=kovan --env.build=true",
-    "build-ropsten": "NODE_ENV=production webpack --env.chain=ropsten --env.build=true",
-    "build-staging": "NODE_ENV=production webpack --env.chain=staging --env.build=true",
-    "build-production": "NODE_ENV=production webpack --env.chain=production --env.build=true",
-    "build-all": "npm run build-staging && npm run build-production && npm run build-kovan  && npm run build-ropsten",
-    "build-all-mainnet": "npm run build-staging && npm run build-production",
-    "staging": "webpack-dev-server --content-base src --inline --hot --history-api-fallback --host 0.0.0.0 --port 3002 --env.chain=staging",
-    "production": "webpack-dev-server --content-base src --inline --hot --history-api-fallback --host 0.0.0.0 --port 3002 --env.chain=production",
-    "kovan": "webpack-dev-server --https --content-base src --inline --hot --history-api-fallback --host 0.0.0.0 --port 3000 --env.chain=kovan",
-    "ropsten": "webpack-dev-server --content-base src --inline --hot --history-api-fallback --host 0.0.0.0 --port 3002 --env.chain=ropsten --env.logger=true",
-    "dev": "webpack-dev-server --content-base src --inline --hot --history-api-fallback --host 0.0.0.0 --port 3000 --env.chain=ropsten --env.logger=true",
-    "mainnet_test": "webpack-dev-server --content-base src --inline --hot --history-api-fallback --host 0.0.0.0 --port 3000 --env.chain=mainnet_test --env.logger=true",
-    "test": "jest --setupTestFrameworkScriptFile=raf/polyfill",
-    "server": "node server/server_http.js",
-    "kovan-https": "webpack-dev-server --https --content-base src --inline --hot --history-api-fallback --host 0.0.0.0 --port 3000 --env.chain=kovan --env.logger=true",
-    "ieo_ropsten": "NODE_ENV=production webpack --watch --config webpack.config.ieo.js --env.chain=ropsten --progress --profile --colors --env.build=true",
-    "build_ieo_ropsten": "NODE_ENV=production webpack --watch --config webpack.config.ieo.js --env.chain=ropsten --progress --profile --colors --env.build=true",
-    "ieo_production": "NODE_ENV=production webpack --watch --config webpack.config.ieo.js --env.chain=production --progress --profile --colors --env.build=true",
-    "build_ieo_production": "NODE_ENV=production webpack --watch --config webpack.config.ieo.js --env.chain=production --progress --profile --colors --env.build=true",
-    "ieo_staging": "NODE_ENV=production webpack --watch --config webpack.config.ieo.js --env.chain=staging --progress --profile --colors --env.build=true",
-    "build_ieo_staging": "NODE_ENV=production webpack --watch --config webpack.config.ieo.js --env.chain=staging --progress --profile --colors --env.build=true",
-    "build_all_ieo": "npm run build_ieo_ropsten & npm run build_ieo_production & npm run build_ieo_staging"
+    "build": "NODE_ENV=production webpack --env.build=true",
+    "dev": "webpack-dev-server --content-base src --inline --hot --history-api-fallback --host 0.0.0.0 --port 3002 --env.logger=true"
   },
   "jest": {
     "globals": {

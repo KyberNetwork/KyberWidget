@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom'
 
 import constansts from "../../services/constants"
 
+import * as common from "../../utils/common"
+
 import BLOCKCHAIN_INFO from "../../../../env"
 //import { Rate } from "../Header"
 
@@ -31,10 +33,27 @@ function getAllPathToken(){
 const LayoutView = (props) => {
   var listToken = getAllPathToken()
   var defaultPathExchange = constansts.BASE_HOST + "widget/payment"
+
+  var params = common.queryParamsString(window.location.href)
   if (props.currentLanguage !== "en"){
     defaultPathExchange += "?lang=" + props.currentLanguage
+    Object.keys(params).map(key => {
+      defaultPathExchange += `&${key}=${params[key]}` 
+    })
+  }else{
+    var index = 0 
+    Object.keys(params).map(key => {
+      if (index === 0){
+        defaultPathExchange += `?${key}=${params[key]}` 
+      }else{
+        defaultPathExchange += `&${key}=${params[key]}` 
+      }
+      index ++
+    })
   }
-  //console.log(listToken)
+  
+  // console.log("default_path")
+  // console.log(defaultPathExchange)
   return (
     <ConnectedRouter history={props.history}>
       <div>
@@ -46,7 +65,7 @@ const LayoutView = (props) => {
             <Route exact path={constansts.BASE_HOST + "/widget/payment"} component={props.Exchange} />
             <Route exact path={constansts.BASE_HOST + "/widget/payment/*"} component={props.Exchange} />
             
-            
+            <Redirect to={defaultPathExchange} />
             
           </Switch>
           {/* <div id="rate-bar" class="mb-8">
