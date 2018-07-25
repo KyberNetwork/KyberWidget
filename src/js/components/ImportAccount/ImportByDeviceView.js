@@ -4,6 +4,7 @@ import BLOCKCHAIN_INFO from "../../../../env"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown'
 import PathSelector from "../../containers/CommonElements/PathSelector";
 import AddressSelector from "../../containers/CommonElements/AddressSelector";
+import constants from '../../services/constants';
 
 const ImportByDeviceView = (props) => {
 
@@ -60,15 +61,15 @@ const ImportByDeviceView = (props) => {
 
   return (
     <div>
-      <div className="import-account-content__title">
-        {props.translate(`modal.select_${props.walletType}_address`) || 'Select address'}
+      <div className="payment-gateway__step-title payment-gateway__step-title--2">
+        {props.translate(`modal.select_${props.walletType}_address`) || 'Select Address'}
       </div>
 
       <div className={"import-account-content__info"}>
         <div className={"import-account-content__info-type"}>
           <img
             className={"import-account-content__info-type-image"}
-            src={require('../../../assets/img/landing/ledger_active.svg')}/>
+            src={require(`../../../assets/img/landing/${props.walletType}_active.svg`)}/>
           <div className={"import-account-content__info-type-text"}>
             {props.translate("import.from_ledger") || "LEDGER"}
           </div>
@@ -85,12 +86,12 @@ const ImportByDeviceView = (props) => {
       }
 
       <div className={"import-account-content__button-container"}>
-        <div className={"import-account-content__button"} onClick={props.onCloseImportAccount}>
+        <div className={"import-account-content__button payment-gateway__button"} onClick={props.onCloseImportAccount}>
           {props.translate("transaction.back") || "Back"}
         </div>
 
         {!props.hasError &&
-        <div className={"import-account-content__button"} onClick={props.getAddress}>
+        <div className={"import-account-content__button payment-gateway__button"} onClick={props.getAddress}>
           {props.translate("transaction.next") || "Next"}
         </div>
         }

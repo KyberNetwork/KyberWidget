@@ -50,12 +50,15 @@ export default class PathSelector extends React.Component {
       let disabledPath = (this.state.walletType == 'ledger' && dPath.notSupport) ? true : false
       if (!disabledPath) {
         return (
-          <div key={dPath + index} className="token-item" onClick={(e) => {
-            if (dPath.path === this.props.currentDPath) {
-              this.setState({
-                open: false
-              })
-            } else if (dPath.path) this.selectItem(e, index)
+          <div
+            key={dPath + index}
+            className={"token-item payment-gateway__checkmark-after " + (this.props.currentDPath === dPath.path ? 'active' : '')}
+            onClick={(e) => {
+              if (dPath.path === this.props.currentDPath) {
+                this.setState({
+                  open: false
+                })
+              } else if (dPath.path) this.selectItem(e, index)
           }}>
             {
               dPath.path ? (
@@ -65,7 +68,7 @@ export default class PathSelector extends React.Component {
                 </div>
               ) : (
                 <div className="input-custom-path">
-                  <div class="">
+                  <div>
                     <input id="form-input-custom-path" type="text" name="customPath" defaultValue={dPath.defaultP}  placeholder="Your Custom Path" />
                     <img src={require('../../../assets/img/angle-right.svg')} onClick={(e) => {
                       if (dPath.path === this.props.currentDPath) {
@@ -83,11 +86,6 @@ export default class PathSelector extends React.Component {
                 </div>
               )
             }
-            {
-              (this.props.currentDPath === dPath.path) ?
-                <img src={require('../../../assets/img/import-account/checked-arrow.svg')}/>
-                : ""
-            }
           </div>
         )
       }
@@ -103,9 +101,7 @@ export default class PathSelector extends React.Component {
               <div>
                 {this.focusItem()}
               </div>
-              <div>
-                <img src={require('../../../assets/img/exchange/arrow-down-swap.svg')} />
-              </div>
+              <div><div className={"payment-gateway__arrow-down"}></div></div>
             </div>
           </DropdownTrigger>
           <DropdownContent>

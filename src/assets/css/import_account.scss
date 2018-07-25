@@ -1,31 +1,63 @@
-$animationTime: 0.5s;
+$animation-time: 0.5s;
 
 #import-account {
   padding-top: 50px;
-  text-align: center;
 
-  #import-acc {
-    display: inline-block;
+  .container {
     overflow: hidden;
     position: relative;
+    box-shadow: 0 2px 8px 0 rgba(184, 184, 184, 0.5);
+    padding-bottom: 65px;
   }
 
-  .title {
-    color: #fff;
-    text-align: left;
-    font-size: 42px;
-    letter-spacing: -0.9px;
-    opacity: 0;
-    padding: 0;
-    margin: 0;
-    font-family: $font-cera;
-    animation: fade-in $animationTime forwards;
-  }
+  .signer-address {
+    &__title {
+      font-family: $font-cera;
+      font-weight: 500;
+      letter-spacing: -0.2px;
+      color: #222222;
+      margin-bottom: 10px;
+    }
 
-  .sub-title {
-    font-size: 0.8rem;
-    color: $white;
-    padding: 0px 50px 30px 50px;
+    &__wallet {
+      margin-bottom: 7px;
+      padding-left: 20px;
+      position: relative;
+
+      &-name {
+        font-size: 14px;
+        color: #222222;
+      }
+
+      &-hash {
+        font-size: 13px;
+        color: #999999;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      &::before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: $theme-color-default;
+        position: absolute;
+        left: 0;
+        top: 8px;
+      }
+
+      &:not(:first-child)::after {
+        content: '';
+        position: absolute;
+        left: 3px;
+        bottom: 39px;
+        width: 1px;
+        height: 27px;
+        background-color: #c5c5c5;
+      }
+    }
   }
 
   .import-account {
@@ -36,17 +68,20 @@ $animationTime: 0.5s;
     padding-bottom: 30px;
 
     &__item {
-      background: white;
       max-height: 170px;
-      box-shadow: 0 1px 10px #b7b5b5;
       position: relative;
-      bottom: -280px;
       text-align: center;
       transition: all .3s;
-      animation: moving-up $animationTime forwards;
       width: calc(50% - 10px);
       margin: 0 10px 20px;
-      padding-top: 30px;
+      padding-top: 20px;
+      border-radius: 3px;
+      background-color: #fcfcfe;
+      box-shadow: 0 2px 6px 0 rgba(184, 184, 184, 0.5);
+      cursor: pointer;
+      transform: translateY(70px);
+      animation: moving-up $animation-time forwards;
+      transition: all .3s;
 
       .column-block {
         margin-bottom: 0;
@@ -60,10 +95,20 @@ $animationTime: 0.5s;
 
         &__name {
           font-size: 16px;
+          font-weight: 600;
+          color: #cccccc;
+        }
+
+        &__balance {
+          font-size: 14px;
+          font-weight: 600;
+          color: $theme-color-default;
+          text-shadow: 0 0 16px #e8e8e8;
         }
 
         &.metamask {
           display: flex;
+          justify-content: center;
         }
       }
 
@@ -77,8 +122,6 @@ $animationTime: 0.5s;
         text-align: left;
 
         .importer {
-          padding-bottom: 60px;
-
           &__symbol {
             display: inline-block;
             text-align: center;
@@ -165,8 +208,12 @@ $animationTime: 0.5s;
         &__button,
         .more-info {
           opacity: 0;
-          animation: fade-in $animationTime forwards;
+          animation: fade-in $animation-time forwards;
         }
+      }
+
+      &:hover {
+        box-shadow: 0 3px 10px 0 rgb(184, 184, 184);
       }
     }
 
@@ -191,12 +238,15 @@ $animationTime: 0.5s;
       }
 
       &__info {
-        border: 1px solid $swap-color;
         padding: 10px 20px;
         margin: 30px 0;
         border-radius: 5px;
+        background-color: #fcfcfe;
+        box-shadow: 0 2px 6px 0 rgba(184, 184, 184, 0.5);
 
         &-type {
+          text-align: center;
+
           &-image {
             min-width: 50px;
             margin-bottom: 4px;
@@ -221,12 +271,11 @@ $animationTime: 0.5s;
       }
 
       &__button {
-        color: $base-color;
+        text-align: center;
         font-weight: 600;
         width: 35%;
         padding: 10px;
         border-radius: 4px;
-        border: 1px solid $swap-color;
         cursor: pointer;
         transition: all .3s;
 
@@ -238,12 +287,6 @@ $animationTime: 0.5s;
 
         &:nth-child(2) {
           margin-left: 30%;
-        }
-
-        &:hover {
-          color: white;
-          border-color: $color-swap-light;
-          background-color: $color-swap-light;
         }
       }
 
@@ -304,27 +347,9 @@ $animationTime: 0.5s;
     }
   }
 
-  @include screen-max-width(medium) {
-    padding-top: 40px;
-
-    @keyframes moving-up {
-      to {
-        bottom: 0;
-        max-height: 1000px;
-      }
-    }
-  }
-
-  @include screen-max-width(mid-small) {
-    .title {
-      font-size: 30px;
-      text-align: left;
-    }
-  }
-
   @keyframes moving-up {
     to {
-      bottom: -20px;
+      transform: translateY(20px);
       max-height: 500px;
     }
   }

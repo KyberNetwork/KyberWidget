@@ -3,7 +3,7 @@ import React from "react";
 const ImportByPKeyContent = (props) => {
   return (
     <div>
-      <div className="import-account-content__title">
+      <div className="payment-gateway__step-title payment-gateway__step-title--2">
         {props.translate("import.from_private_key_input_title") || "Enter your Private Key"}
       </div>
       <div className="import-account-content__wrapper">
@@ -41,10 +41,10 @@ const ImportByPKeyContent = (props) => {
         }
 
         <div className={"import-account-content__button-container"}>
-          <div className={"import-account-content__button"} onClick={props.onCloseImportAccount}>
+          <div className={"import-account-content__button payment-gateway__button"} onClick={props.onCloseImportAccount}>
             {props.translate("transaction.back") || "Back"}
           </div>
-          <div className={"import-account-content__button"} id="submit_pkey" onClick={props.onHandleSubmit}>
+          <div className={"import-account-content__button payment-gateway__button"} id="submit_pkey" onClick={props.onHandleSubmit}>
             {props.translate("modal.import") || "Import"}
           </div>
         </div>
