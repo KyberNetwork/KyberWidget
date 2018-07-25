@@ -99,6 +99,10 @@ $k-divider: #243c47;
 $k-divider-light: rgba(254, 254, 254, 0.12);
 $k-gray: #f4f4f4;
 
+// Theme colors
+$theme-color-default: #31cb9e;
+$theme-color-default-light: #38e0ad;
+
 $body-font-family:'Montserrat', sans-serif;
 $body-antialiased: true;
 $global-margin: 1rem;
@@ -117,7 +121,8 @@ $global-color-pick-contrast-tolerance: 0;
 $print-transparent-backgrounds: true;
 
 $container-max-width: 450px;
-$container-side-padding: 1rem;
+$container-side-padding: 25px;
+$container-vertical-padding: 30px;
 
 $image-path: '../img/';
 $box-shadow-tab: 0 10px 20px 0 rgba(135, 136, 136, 0.26), 0 6px 6px 0 rgba(173, 177, 176, 0.26);

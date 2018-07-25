@@ -1,10 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { ImportAccountView } from '../../components/ImportAccount'
-import {
-  ImportKeystore,
-  ImportByMetamask
-} from "../ImportAccount"
+import { ImportKeystore, ImportByMetamask} from "../ImportAccount"
 import { getTranslate } from 'react-localize-redux'
 import { importAccountMetamask, openImportAccount, closeImportAccount } from "../../actions/accountActions"
 import BLOCKCHAIN_INFO from "../../../../env"
@@ -48,23 +45,16 @@ export default class ImportAccount extends React.Component {
     }
   }
 
-  getSignerAddress = ()  => {
-    if (this.props.exchange.signer){
-      var addressArr = this.props.exchange.signer.split("_")
-
-      var uniqueArray = addressArr.filter(function(item, pos) {
-        return addressArr.indexOf(item) == pos
-      })
-
-      var listAddr = uniqueArray.map(address => {
-        return <li key={address}>{address}</li>
-      })
-      return <div>
-        Your address should be in list below
-        <ul>{listAddr}</ul>
-      </div>
+  getSignerAddresses = ()  => {
+    if (!this.props.exchange.signer) {
+      return [];
     }
-    return ""
+
+    let addresses = this.props.exchange.signer.split("_")
+
+    return addresses.filter(function(item, pos) {
+      return addresses.indexOf(item) == pos
+    })
   }
 
   openImportAccount(type) {
@@ -78,16 +68,16 @@ export default class ImportAccount extends React.Component {
   render() {
     return (
       <div id="landing_page">
-        {this.getSignerAddress()}
         <ImportAccountView
           isLoading={this.props.loading}
           firstKey={<ImportByMetamask screen={this.props.screen}/>}
           secondKey={<ImportKeystore screen={this.props.screen}/>}
-          translate={this.props.translate}
-          screen={this.props.screen}
+          signerAddresses={this.getSignerAddresses()}
           onOpenImportAccount={this.openImportAccount.bind(this)}
           onCloseImportAccount={this.closeImportAccount.bind(this)}
           choosenImportAccount={this.props.choosenImportAccount}
+          translate={this.props.translate}
+          screen={this.props.screen}
         />
       </div>
     )

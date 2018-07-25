@@ -50,11 +50,16 @@
           }
 
           div:nth-child(2) {
+            display: flex;
+            align-items: center;
             width: 40px;
+            min-height: 21px;
             padding: 0 10px 0 15px;
             border-left: 1px solid #eee;
-            img {
-              width: 16px;
+
+            div {
+              position: relative;
+              top: 1px;
             }
           }
         }
@@ -67,6 +72,7 @@
           border: none;
           .list-item {
             .token-item {
+              position: relative;
               font-size: 14px;
 
               >div {
@@ -81,6 +87,14 @@
               >img {
                 width: 16px;
                 margin-left: 20px;
+              }
+
+              &.active::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                margin-top: -5px;
+                right: 15px;
               }
             }
             .input-custom-path {

@@ -26,7 +26,7 @@ export default class AddressSelector extends React.Component {
       return (
         <div
           key={index}
-          className={'address-selector__item ' + (address.addressString === this.props.currentAddress ? 'address-selector__item--active' : '')}
+          className={'address-selector__item payment-gateway__checkmark-after ' + (address.addressString === this.props.currentAddress ? 'address-selector__item--active' : '')}
           onClick={() => this.setAddress(address.addressString, address.index)}>
             <div className={"address-selector__item-address"}>{address.addressString}</div>
             <div className={"address-selector__item-balance"}>
@@ -47,9 +47,7 @@ export default class AddressSelector extends React.Component {
           <DropdownTrigger className="notifications-toggle">
             <div className="focus-item d-flex">
               <div>{this.props.currentAddress}</div>
-              <div>
-                <img src={require('../../../assets/img/exchange/arrow-down-swap.svg')} />
-              </div>
+              <div><div className={"payment-gateway__arrow-down"}></div></div>
             </div>
           </DropdownTrigger>
           <DropdownContent>
@@ -61,9 +59,10 @@ export default class AddressSelector extends React.Component {
               <div className="address-list-navigation">
                   <img
                     src={require('../../../assets/img/import-account/arrows_left_icon.svg')}
-                    className={this.props.isFirstList ? 'disabled' : ''}
+                    className={"payment-gateway__background " + (this.props.isFirstList ? 'disabled' : '')}
                     onClick={this.props.getPreAddress}/>
                   <img
+                    className={"payment-gateway__background"}
                     src={require('../../../assets/img/import-account/arrows_right_icon.svg')}
                     onClick={this.props.getMoreAddress}/>
               </div>
