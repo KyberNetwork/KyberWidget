@@ -29,8 +29,8 @@ const DropFile = (props) => {
   }
 
   return (
-    <div className="import-account__item" onDrop={(e) => props.onDrop(e)}>
-      <Dropzone disablePreview={true} className="column column-block">
+    <div className="import-account__item" onDrop={(e) => props.onDrop(e)} onClick={(e) => props.onDrop(e)}>
+      <Dropzone onDrop={(e) => props.onDrop(e)} disablePreview={true} className="column column-block">
         <div className="importer json">
           <div className="importer__symbol">
             <img src={require('../../../assets/img/landing/keystore_disable.png')} />
