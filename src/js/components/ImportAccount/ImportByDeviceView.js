@@ -46,8 +46,9 @@ const ImportByDeviceView = (props) => {
               <AddressSelector
                 isFirstList={props.isFirstList}
                 addresses={props.currentAddresses}
-                currentAddress={props.currentAddress}
-                setAddress={props.setAddress}
+                wallet={props.wallet}
+                setWallet={props.setWallet}
+                walletType={props.walletType}
                 getPreAddress={props.getPreAddress}
                 getMoreAddress={props.getMoreAddress}
                 translate={props.translate}
@@ -65,7 +66,7 @@ const ImportByDeviceView = (props) => {
         {props.translate(`modal.select_${props.walletType}_address`) || 'Select Address'}
       </div>
 
-      <div className={"import-account-content__info"}>
+      <div className={"import-account-content__info import-account-content__info--center"}>
         <div className={"import-account-content__info-type"}>
           <img
             className={"import-account-content__info-type-image"}
@@ -74,7 +75,13 @@ const ImportByDeviceView = (props) => {
             {props.translate("import.from_ledger") || "LEDGER"}
           </div>
         </div>
-        <div className={"import-account-content__info-text"}></div>
+        <div className={"import-account-content__info-text"}>
+          <div className={"import-account-content__info-text-label"}>Address:</div>
+          <div className={"import-account-content__info-text-address"}>{props.wallet.address}</div>
+          <div className={"import-account-content__info-text-balance payment-gateway__color"}>
+            Balance: {props.wallet.balance} ETH
+          </div>
+        </div>
       </div>
 
       <div className="import-account-content__device">

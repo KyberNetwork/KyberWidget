@@ -112,9 +112,9 @@ export function importAccountMetamask(web3Service, networkId, ethereum, tokens, 
   }
 }
 
-export function setCurrentAddress(address, index) {
+export function setWallet(wallet) {
   return {
-    type: "ACCOUNT.SET_ADDRESS",
-    payload: { address, index }
+    type: "ACCOUNT.SET_WALLET",
+    payload: wallet
   }
 }

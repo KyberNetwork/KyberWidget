@@ -1,0 +1,50 @@
+.error-payment {
+  margin-top: 20px;
+  box-shadow: 0 2px 8px 0 rgba(184, 184, 184, 0.5);
+
+  &__icon {
+    width: 42px;
+    height: 42px;
+    background: url($image-path + 'error-exclamation.svg');
+    margin: 0 auto;
+
+    &-container {
+      padding: 90px 20px 30px;
+      text-align: center;
+    }
+
+    &-text {
+      font-family: $font-cera;
+      font-size: 36px;
+      letter-spacing: -0.5px;
+      color: #ee344e;
+    }
+  }
+
+  &__content {
+    background-color: #f5f5f5;
+    padding: 40px 30px 30px;
+
+    &-text {
+      font-size: 14px;
+      line-height: 1.43;
+      color: #666666;
+      margin-bottom: 20px;
+
+      &--bold {
+        font-weight: 600;
+      }
+    }
+
+    &-button {
+      text-align: center;
+      margin-top: 60px;
+
+      div {
+        padding: 15px 28px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+  }
+}
