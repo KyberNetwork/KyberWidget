@@ -325,28 +325,38 @@ export default class Payment extends React.Component {
   getAccountBgk = () => {
     switch (this.props.account.type) {
       case "metamask":
-        return <div>
-          <div className="metamask-bgk"></div>
+        return <div className="account-bgk">
+          <div className="metamask-bgk">
+            <img alt="metamask" src={require('../../../assets/img/landing/metamask_active.svg')}/>
+          </div>
           <div className="text">METAMASK</div>
         </div>
       case "keystore":
-        return <div>
-          <div className="keystore-bgk"></div>
+        return <div className="account-bgk">
+          <div className="keystore-bgk">
+            <img alt="keystore" src={require('../../../assets/img/landing/keystore_active.svg')}/>
+          </div>
           <div className="text">JSON</div>
         </div>
       case "privateKey":
-        return <div>
-          <div className="privateKey-bgk"></div>
+        return <div className="account-bgk">
+          <div className="privateKey-bgk">
+            <img alt="private key" src={require('../../../assets/img/landing/privatekey_active.svg')}/>
+          </div>
           <div className="text">Private key</div>
         </div>
       case "trezor":
-        return <div>
-          <div className="trezor-bgk"></div>
+        return <div className="account-bgk">
+          <div className="trezor-bgk">
+            <img alt="keystore" src={require('../../../assets/img/landing/trezor_active.svg')}/>
+          </div>
           <div className="text">Trezor</div>
         </div>
       case "ledger":
-        return <div>
-          <div className="ledger-bgk"></div>
+        return <div className="account-bgk">
+          <div className="ledger-bgk">
+            <img alt="ledger" src={require('../../../assets/img/landing/ledger_active.svg')}/>
+          </div>
           <div className="text">Ledger</div>
         </div>
     }
@@ -367,8 +377,10 @@ export default class Payment extends React.Component {
     }
 
     var classError = ""
+    var isHaveError = false
     if (validators.anyErrors(this.props.exchange.errors)){
       classError += " error"
+      isHaveError = true
     }
     return (
       <div id="exchange" className={"frame payment_confirm" + classError}>
@@ -384,17 +396,26 @@ export default class Payment extends React.Component {
         <div className="account-item">
           {this.getAccountBgk()}
           <div className="account-info">
-            <div>Address</div>
-            <div>{this.props.account.address}</div>
+            <div className="info-row address-info">
+                <span>Address:</span> 
+                <span>{this.props.account.address.slice(0, 8)} ... {this.props.account.address.slice(-6)}</span>
+              </div>            
             {sourceTokenSymbol === "ETH" && (
-              <div>
-                <div>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</div>
+              <div className="info-row">
+                <span>Balance:</span>
+                <span>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</span>
               </div>
             )}
             {sourceTokenSymbol !== "ETH" && (
               <div>
-                <div>{converter.roundingNumber(converter.toT(sourceBalance, sourceDecimal))} {sourceTokenSymbol}</div>
-                <div>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</div>
+              <div className="info-row">        
+                <span>Balance:</span>        
+                <span>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</span>
+              </div>
+              <div className="info-row">
+                <span></span> 
+                <span>{converter.roundingNumber(converter.toT(sourceBalance, sourceDecimal))} {sourceTokenSymbol}</span>
+              </div>
               </div>
             )}
           </div>
@@ -461,7 +482,16 @@ export default class Payment extends React.Component {
           </div>
         </div>
 
+
+        
+
         <div className="payment-bottom">
+          {this.props.exchange.isNeedApprove && (
+              <div className="approve-intro">                 
+                  {this.props.translate("modal.approve_exchange", {token: this.props.exchange.sourceTokenSymbol}) 
+                    || `You need to grant permission for Kyber Payment to interact with ${this.props.exchange.sourceTokenSymbol} with this address`}
+              </div>
+            )}
           {this.props.account.type === "keystore" && (
               <div className="password">
                 <input id="passphrase" type="password" placeholder="password"/>
@@ -477,6 +507,9 @@ export default class Payment extends React.Component {
               <a className="confirm-btn" onClick={this.payment}>Payment</a>
             )}
           </div>
+
+          
+
         </div>
       </div>
     )
