@@ -359,37 +359,36 @@ export default class ExchangeBody extends React.Component {
     //   nextValue: toT(this.props.exchange.balanceData.nextDest, this.props.exchange.balanceData.destDecimal),
     // }
     //console.log(this.props.exchange.balanceData)
-    var balanceInfo = {
-      //sourceTokenSymbol: this.props.exchange.sourceTokenSymbol,
-      sourceAmount: toT(this.props.exchange.balanceData.sourceAmount, this.props.exchange.balanceData.sourceDecimal),
-      sourceSymbol: this.props.exchange.balanceData.sourceSymbol,
-      sourceTokenName: this.props.exchange.balanceData.sourceName,
-      //destTokenSymbol: this.props.exchange.destTokenSymbol,
-      destAmount: toT(this.props.exchange.balanceData.destAmount, this.props.exchange.balanceData.destDecimal),
-      destTokenName: this.props.exchange.balanceData.destName,
-      destSymbol: this.props.exchange.balanceData.destSymbol,
-    }
+    // var balanceInfo = {
+    //   sourceAmount: toT(this.props.exchange.balanceData.sourceAmount, this.props.exchange.balanceData.sourceDecimal),
+    //   sourceSymbol: this.props.exchange.balanceData.sourceSymbol,
+    //   sourceTokenName: this.props.exchange.balanceData.sourceName,
+    //   //destTokenSymbol: this.props.exchange.destTokenSymbol,
+    //   destAmount: toT(this.props.exchange.balanceData.destAmount, this.props.exchange.balanceData.destDecimal),
+    //   destTokenName: this.props.exchange.balanceData.destName,
+    //   destSymbol: this.props.exchange.balanceData.destSymbol,
+    // }
 
 
-    var analyze = {
-      action: this.analyze,
-      isAnalize: this.props.exchange.isAnalize,
-      isAnalizeComplete: this.props.exchange.isAnalizeComplete,
-      analizeError: this.props.exchange.analizeError
-    }
-    var transactionLoadingScreen = (
-      <TransactionLoading
-        tx={this.props.exchange.txHash}
-        tempTx={this.props.exchange.tempTx}
-        makeNewTransaction={this.makeNewExchange}
-        type="exchange"
-        balanceInfo={balanceInfo}
-        broadcasting={this.props.exchange.broadcasting}
-        broadcastingError={this.props.exchange.broadcastError}
-        analyze={analyze}
-        isOpen={this.props.exchange.step === 3}
-      />
-    )
+    // var analyze = {
+    //   action: this.analyze,
+    //   isAnalize: this.props.exchange.isAnalize,
+    //   isAnalizeComplete: this.props.exchange.isAnalizeComplete,
+    //   analizeError: this.props.exchange.analizeError
+    // }
+    // var transactionLoadingScreen = (
+    //   <TransactionLoading
+    //     tx={this.props.exchange.txHash}
+    //     tempTx={this.props.exchange.tempTx}
+    //     makeNewTransaction={this.makeNewExchange}
+    //     type="exchange"
+    //     balanceInfo={balanceInfo}
+    //     broadcasting={this.props.exchange.broadcasting}
+    //     broadcastingError={this.props.exchange.broadcastError}
+    //     analyze={analyze}
+    //     isOpen={this.props.exchange.step === 3}
+    //   />
+    // )
 
     //--------For select token
     var tokenDest = {}
@@ -495,7 +494,7 @@ export default class ExchangeBody extends React.Component {
         tokenDestSelect={tokenDestSelect}
         //gasConfig={gasConfig}
         exchangeButton={exchangeButton}
-        transactionLoadingScreen={transactionLoadingScreen}
+        //transactionLoadingScreen={transactionLoadingScreen}
         errors={errors}
         input={input}
 
