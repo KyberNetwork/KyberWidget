@@ -11,11 +11,12 @@ import {
   throwError,
   checkTimeImportLedger,
   resetCheckTimeImportLedger,
-  setCurrentAddress
+  setWallet
 } from "../../actions/accountActions"
 import { toEther } from "../../utils/converter"
 import { getTranslate } from 'react-localize-redux'
-import bowser from 'bowser'
+import bowser from 'bowser';
+import { roundingNumber } from "../../utils/converter";
 
 @connect((store, props) => {
   var tokens = store.tokens.tokens
@@ -100,7 +101,6 @@ export default class ImportByDevice extends React.Component {
     this.generator = new AddressGenerator(data);
     let addresses = [];
     let index = 0;
-    this.setAddress(this.generator.getAddressString(index), index);
 
     for (index; index < 5; index++) {
       let address = {
@@ -108,8 +108,10 @@ export default class ImportByDevice extends React.Component {
         index: index,
         balance: -1,
       };
+      const shouldSetWallet = index === 0 ? true : false;
+
       addresses.push(address);
-      this.addBalance(address.addressString, index);
+      this.addBalance(address.addressString, index, shouldSetWallet);
     }
     this.addressIndex = index;
     this.currentIndex = index;
@@ -200,8 +202,15 @@ export default class ImportByDevice extends React.Component {
     ))
   }
 
-  setAddress(address, index) {
-    this.props.dispatch(setCurrentAddress(address, index));
+  setWallet(index, address, balance, type) {
+    const wallet = {
+      index: index,
+      address: address,
+      balance: roundingNumber(balance),
+      type: type
+    }
+
+    this.props.dispatch(setWallet(wallet));
   }
 
   choosePath(selectedPath, dpath) {
@@ -217,11 +226,16 @@ export default class ImportByDevice extends React.Component {
     })
   }
 
-  addBalance(address, index) {
+  addBalance(address, index, shouldSetWallet = false) {
     this.getBalance(address)
       .then((result) => {
         let addresses = this.state.addresses;
-        addresses[index].balance = result
+        addresses[index].balance = result;
+
+        if (shouldSetWallet) {
+          this.setWallet(index, address, result, this.walletType);
+        }
+
         this.setState({
           currentList: addresses
         })
@@ -259,10 +273,10 @@ export default class ImportByDevice extends React.Component {
         getMoreAddress={() => this.moreAddress()}
         dPath={this.DPATH}
         currentDPath={this.dPath}
-        currentAddress={this.props.account.currentAddress}
+        wallet={this.props.account.wallet}
+        setWallet={this.setWallet.bind(this)}
         currentAddresses={this.state.currentAddresses}
         walletType={this.walletType}
-        setAddress={this.setAddress.bind(this)}
         choosePath={this.choosePath.bind(this)}
         getAddress={this.getAddress.bind(this)}
         translate={this.props.translate}
