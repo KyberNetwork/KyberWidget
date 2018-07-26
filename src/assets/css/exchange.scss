@@ -62,128 +62,18 @@
 }
 
 #exchange {
-  //margin-bottom: 50px;
   max-width:  450px;
+  box-shadow: 0 7px 25px #ddd;
+  background: white;
+  margin: 50px auto 0;
 
-  // @media print, screen and (min-width: 40em) {
-  //   .medium-5 {
-  //     width: 45%;
-  //     padding-right: 0;
-  //     padding-left: 0;
-  //   }
-  //   .medium-2 {
-  //     width: 10%;
-  //     padding-left: 0;
-  //     padding-right: 0;
-  //   }
-  // }  
-  //@include screen-max-width(large) {
-    box-shadow: 0 7px 25px #ddd;
-    // margin:  0 10px 10px 10px;
-    background: white;
-    margin: 0 auto;
-    .exchange-pading{
-      padding: 0 1rem;
-    }
-    .exchange-pading-top{
-      padding-top: 1rem;
-    }
-    // padding: 1rem;
-  //}
-  // @include screen-max-width(large) {
-  //   @include screen-min-width(medium){
-  //     .swap-wrapper{
-  //       border-left: 1px solid #ddd;
-  //     }
-  //   }
-  //   .exchange-col-1, .exchange-col-2, .exchange-col-3{
-  //     padding: 1rem;
-  //   }
-  //   .exchange-col-1-2{
-  //     margin-top: 30px
-  //   }
-  //   .exchange-wrapper-btn{
-  //     .button{
-  //       width: 100%;
-  //     }
-  //   }
-  //   .amount-input{
-  //     margin-top: 1rem;
-  //   }
-  // } 
-  // @include screen-min-width(large) {
-  //   .balance-wrapper,
-  //   .exchange-col-1 {
-  //     box-shadow: $box-shadow-tab;
-  //   }
+  .exchange-pading{
+    padding: 0 1rem;
+  }
+  .exchange-pading-top{
+    padding-top: 1rem;
+  }
 
-  //   .balance-wrapper{
-  //     border: 1px solid #ddd;
-  //     background: white;
-  //     position: relative;
-  //     z-index: 1;
-
-  //     &::after {
-  //       content: '';
-  //       position: absolute;
-  //       width: 10px;
-  //       height: 100%;
-  //       background: $white;
-  //       top: 0;
-  //       right: -11px;
-  //     }
-  //   }
-  //   .exchange-wrapper-btn{
-  //     text-align: center;
-  //   }
-  //   .exchange-col-1{
-  //     padding: 0 3rem;
-  //     border: 1px solid #ddd;
-  //     border-left: none;
-  //     background: white;
-  //   }
-  //   .exchange-col-2{
-  //     padding-left: 20px;
-  //   }
-  //   .exchange-col-3{
-  //     >div{
-  //       position: relative;
-  //       .exchange-wrapper-btn{
-  //         position: absolute;
-  //         margin-top: -215px;
-  //         width: 100%;
-  //       }
-  //     }
-  //   }
-  //   .exchange-col{
-  //     position: relative;
-  //     height: 100%;
-  //   }
-  // }
-
-  // .exchange-icon{
-  //   text-align: center;
-  //   margin-top: 50px;
-  //   @include screen-max-width(large) {
-  //     display: none;
-  //   }    
-  // }
-  // .main-title  {
-  //   line-height: 1.2;
-  //   letter-spacing: -0.1px;
-  //   font-size: 24px;
-  //   color: #141927;
-  //   margin-bottom: 20px;
-  //   font-weight: 600;
-
-  //   @include screen-max-width(medium) {
-  //     display: none;
-  //   }
-  //   @include screen-min-width(large) {
-  //     margin-top: 1.5rem;
-  //     margin-bottom: 1.2rem;
-  //   }
-  // }
   .estimate-dest-value{
     margin-top: 10px;
     font-size: 13px;

@@ -16,9 +16,9 @@ export default class AddressSelector extends React.Component {
     this.setState({ isOpen: false })
   }
 
-  setAddress(address, index) {
+  setWallet(index, address, balance) {
     this.hideSelector();
-    this.props.setAddress(address, index);
+    this.props.setWallet(index, address, balance, this.props.walletType);
   }
 
   getAddressList = () => {
@@ -26,8 +26,8 @@ export default class AddressSelector extends React.Component {
       return (
         <div
           key={index}
-          className={'address-selector__item payment-gateway__checkmark-after ' + (address.addressString === this.props.currentAddress ? 'address-selector__item--active' : '')}
-          onClick={() => this.setAddress(address.addressString, address.index)}>
+          className={'address-selector__item payment-gateway__checkmark-after ' + (address.addressString === this.props.wallet.address ? 'address-selector__item--active' : '')}
+          onClick={() => this.setWallet(address.index, address.addressString, roundingNumber(address.balance))}>
             <div className={"address-selector__item-address"}>{address.addressString}</div>
             <div className={"address-selector__item-balance"}>
               {address.balance == '-1' ?
@@ -46,7 +46,7 @@ export default class AddressSelector extends React.Component {
         <Dropdown onShow={() => this.showSelector()} onHide={() => this.hideSelector()} active={this.state.isOpen}>
           <DropdownTrigger className="notifications-toggle">
             <div className="focus-item d-flex">
-              <div>{this.props.currentAddress}</div>
+              <div>{this.props.wallet.address}</div>
               <div><div className={"payment-gateway__arrow-down"}></div></div>
             </div>
           </DropdownTrigger>

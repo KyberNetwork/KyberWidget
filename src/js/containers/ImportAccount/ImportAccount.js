@@ -6,6 +6,7 @@ import { getTranslate } from 'react-localize-redux'
 import { importAccountMetamask, openImportAccount, closeImportAccount } from "../../actions/accountActions"
 import BLOCKCHAIN_INFO from "../../../../env"
 import Web3Service from "../../services/web3"
+import { goToStep } from "../../actions/exchangeActions"
 
 @connect((store, props) => {
   var tokens = store.tokens.tokens;
@@ -65,6 +66,10 @@ export default class ImportAccount extends React.Component {
     this.props.dispatch(closeImportAccount());
   }
 
+  backToFirstStep() {
+    this.props.dispatch(goToStep(1));
+  }
+
   render() {
     return (
       <div id="landing_page">
@@ -76,6 +81,7 @@ export default class ImportAccount extends React.Component {
           onOpenImportAccount={this.openImportAccount.bind(this)}
           onCloseImportAccount={this.closeImportAccount.bind(this)}
           choosenImportAccount={this.props.choosenImportAccount}
+          backToFirstStep={this.backToFirstStep.bind(this)}
           translate={this.props.translate}
           screen={this.props.screen}
         />

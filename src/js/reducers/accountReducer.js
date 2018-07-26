@@ -2,8 +2,12 @@ import {REHYDRATE} from 'redux-persist/lib/constants'
 import { clearInterval } from 'timers';
 
 const initState = {
-  currentAddress: null,
-  currentAddressIndex: null,
+  wallet: {
+    index: '',
+    address: '',
+    balance: '',
+    type: ''
+  },
   choosenImportAccount: null,
   isStoreReady: false,
   account: false,
@@ -99,13 +103,10 @@ const account = (state=initState, action) => {
         showError: false
       };
     }
-    case "ACCOUNT.SET_ADDRESS": {
-      const { address, index } = action.payload
-
+    case "ACCOUNT.SET_WALLET": {
       return {
         ...state,
-        currentAddress: address,
-        currentAddressIndex: index,
+        wallet: action.payload
       };
     }
   }

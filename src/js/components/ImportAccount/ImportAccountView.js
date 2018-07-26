@@ -44,6 +44,8 @@ const ImportAccountView = (props) => {
           <ImportByLedgerView translate={props.translate} onOpenImportAccount={props.onOpenImportAccount}/>
         </div>
 
+        <div className={"payment-gateway__hollow-button"} onClick={props.backToFirstStep}>Back</div>
+
         <div className={"import-account-content " + (props.choosenImportAccount && props.isLoading === false ? 'import-account-content--active' : '')}>
           {importComponent}
         </div>
