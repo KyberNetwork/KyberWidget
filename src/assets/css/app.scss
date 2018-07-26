@@ -9,7 +9,7 @@ $alert-color: #ff5d00;
 
 @import 'common';
 @import 'elements';
-@import 'broadcast';
+//@import 'broadcast';
 @import 'modals';
 @import 'addresses';
 @import 'tokens';
@@ -18,25 +18,26 @@ $alert-color: #ff5d00;
 @import 'address_balance';
 
 //@import "~slick-carousel/slick/slick.css";
-@import "~react-table/react-table.css";
+//@import "~react-table/react-table.css";
 //@import "history";
-@import "transaction_list";
-@import "language";
+//@import "transaction_list";
+//@import "language";
 @import "token_select";
-@import "term_and_services";
+//@import "term_and_services";
 @import "icon";
-@import "landing_page";
-@import "footer";
+//@import "landing_page";
+//@import "footer";
 @import "advance_config";
 @import "exchange";
-@import "market";
+//@import "market";
 @import "import_account";
-@import "transfer";
+//@import "transfer";
 @import "cold_wallet";
 @import "animation";
 @import "payment_gateway";
+@import "payment_confirm";
 
-@import '~react-linechart/dist/styles.css';
+//@import '~react-linechart/dist/styles.css';
 
 @font-face{
   font-family: 'My-Montserrat';

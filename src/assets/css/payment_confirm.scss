@@ -1,0 +1,71 @@
+
+
+.payment_confirm{
+    padding: 1rem;
+    padding-bottom: 3rem;
+    &.error{
+        .confirm-btn{
+            opacity: 0.6;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+    }
+    .payment-info{
+        margin-top: 30px;
+        font-size: 14px;
+        .title{
+            color: #222;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        .content{
+            color: #666;
+            >div{
+                margin-top: 10px;
+                >span{
+                    &:first-child{
+                        display: inline-block;
+                        width: 140px;
+                    }
+                }
+            }
+        }
+    }
+
+    .payment-bottom{
+        margin-top: 40px;
+        .password{
+            input{
+                width: 100%;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 10px;
+                font-size: 18px;
+                height: 45px;
+                margin-bottom: 25px;
+            }
+        }
+        .control-btn{
+            display: flex;
+            justify-content: space-between;
+            a{
+                display: block;
+                text-align: center;
+                padding: 12px 0;
+                font-size: 18px;
+                width: 140px;
+                border-radius: 5px;
+                &.back-btn{
+                    border: 2px solid #999999;
+                    
+                    color: #666;
+                }
+                &.confirm-btn{
+                    background: #31CB9E;
+                    color: white;
+                }
+            }
+        }
+    }
+    
+}
