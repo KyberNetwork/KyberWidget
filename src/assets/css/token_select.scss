@@ -1,6 +1,6 @@
 .select-token-panel{
   margin-top: 5px;
-  cursor: pointer;
+  // cursor: pointer;
   input{
     height: auto;
   }
@@ -8,12 +8,25 @@
     height: 250px;
     overflow: auto;
   }
+  .amount-enter-label{
+    display: block;
+    margin-top: 20px;
+  }
   .amount-input{
-    border-bottom: 1px solid #454E5F;
+    border-bottom: 2px solid #31CB9E;
     display: flex;
+    margin-top: 10px;
     justify-content: space-between;
-    margin-top: 2rem;
+    // margin-top: 2rem;
     //opacity: 0.5;
+    >div{
+      &:first-child{
+        width: 100%;
+        input{
+          width: 100%;
+        }
+      }
+    }
     .focus-name{
       text-transform: initial;
     }
@@ -26,27 +39,27 @@
         color: $error-color !important;
       }
     }
-    &.focus{
-    //  opacity: 1;
-      color: #ef8102;
-      border-bottom: 1px solid #ef8102;
-      input{
-        color: #ef8102;
+    // &.focus{
+    // //  opacity: 1;
+    //   color: #ef8102;
+    //   border-bottom: 1px solid #ef8102;
+    //   input{
+    //     color: #ef8102;
         
-      }
-      span{
-        color: #ef8102;
-      }
-    }
+    //   }
+    //   span{
+    //     color: #ef8102;
+    //   }
+    // }
     input{
       font-size: 25px;
       margin-bottom: 0px;
       padding: 0;
       padding-right: 15px;
       color: #454E5F;
-      &:focus {
-        color: #ef8102;
-      }
+      // &:focus {
+      //   color: #ef8102;
+      // }
       border:none;
       box-shadow: none;
     }
@@ -175,9 +188,10 @@
     outline: none;
     border: 1px solid #aaa;
     width: 100%;
-    height: 40px;
+    height: 37px;
     padding: 10px;
     border-radius: 29px;
+    margin: 0px;
 
 
     &:-webkit-outer-spin-button,
@@ -195,6 +209,10 @@
     // box-shadow: 0 0 15px #ddd;
     align-items: center;
     font-size: 15px;
+    .rate-token{
+      color: #555;
+      font-size: 13px;
+    }
     &.d-flex{
       justify-content: space-between;
     }
@@ -264,9 +282,18 @@
     .token-item{
       padding: 9px 20px;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      .d-flex{
-        align-content: center;
+      >div{
+        &:first-child{
+          display: flex;
+          align-items: center;
+        }
+
+        &:last-child{
+          color: #aaa;
+          font-size: 13px;
+        }
       }
       .item-balance{
         color: #666666;

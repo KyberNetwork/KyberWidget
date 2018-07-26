@@ -1,122 +1,215 @@
-.exchange-frame {
-  background: #f5f5f5;
-  @include screen-min-width(medium) {
-    padding-top: 40px !important;
+// .exchange-frame {
+//   background: #f5f5f5;
+//   @include screen-min-width(medium) {
+//     padding-top: 40px !important;
+//   }
+// }
+
+.main-title{
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+  .step{
+    width: 40px;
+    height: 40px;
+    color: white;
+    background-color: #31CB9E;
+    border-radius: 30px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .text{
+    color: #31CB9E;
+    font-size: 14px;
+  }
+}
+.pay-info{
+  >div{
+    margin-top: 10px;
+  }
+  .info-1{
+    font-size: 14px;
+    color: #222;
+    text-transform: uppercase;
+    margin-top: 20px;
+  }
+  .info-2{
+    font-size: 14px;
+    color: #999;
+    >div{
+      >span{
+        &:first-child{
+          display: inline-block;
+          width: 100px;
+        }
+      }
+    }
+  }
+  .info-3{
+    font-size: 20px;
+    color: #666;
+  }
+}
+
+.choose-payment{
+  margin-top: 10px;
+  .transaction-label{
+    font-size: 14px;
+    color: #222;
   }
 }
 
 #exchange {
-  margin-bottom: 50px;
+  //margin-bottom: 50px;
+  max-width:  450px;
 
-  @media print, screen and (min-width: 40em) {
-    .medium-5 {
-      width: 45%;
-      padding-right: 0;
-      padding-left: 0;
-    }
-    .medium-2 {
-      width: 10%;
-      padding-left: 0;
-      padding-right: 0;
-    }
-  }  
-  @include screen-max-width(large) {
+  // @media print, screen and (min-width: 40em) {
+  //   .medium-5 {
+  //     width: 45%;
+  //     padding-right: 0;
+  //     padding-left: 0;
+  //   }
+  //   .medium-2 {
+  //     width: 10%;
+  //     padding-left: 0;
+  //     padding-right: 0;
+  //   }
+  // }  
+  //@include screen-max-width(large) {
     box-shadow: 0 7px 25px #ddd;
-    margin:  0 10px 10px 10px;
+    // margin:  0 10px 10px 10px;
     background: white;
+    margin: 0 auto;
+    .exchange-pading{
+      padding: 0 1rem;
+    }
+    .exchange-pading-top{
+      padding-top: 1rem;
+    }
+    // padding: 1rem;
+  //}
+  // @include screen-max-width(large) {
+  //   @include screen-min-width(medium){
+  //     .swap-wrapper{
+  //       border-left: 1px solid #ddd;
+  //     }
+  //   }
+  //   .exchange-col-1, .exchange-col-2, .exchange-col-3{
+  //     padding: 1rem;
+  //   }
+  //   .exchange-col-1-2{
+  //     margin-top: 30px
+  //   }
+  //   .exchange-wrapper-btn{
+  //     .button{
+  //       width: 100%;
+  //     }
+  //   }
+  //   .amount-input{
+  //     margin-top: 1rem;
+  //   }
+  // } 
+  // @include screen-min-width(large) {
+  //   .balance-wrapper,
+  //   .exchange-col-1 {
+  //     box-shadow: $box-shadow-tab;
+  //   }
+
+  //   .balance-wrapper{
+  //     border: 1px solid #ddd;
+  //     background: white;
+  //     position: relative;
+  //     z-index: 1;
+
+  //     &::after {
+  //       content: '';
+  //       position: absolute;
+  //       width: 10px;
+  //       height: 100%;
+  //       background: $white;
+  //       top: 0;
+  //       right: -11px;
+  //     }
+  //   }
+  //   .exchange-wrapper-btn{
+  //     text-align: center;
+  //   }
+  //   .exchange-col-1{
+  //     padding: 0 3rem;
+  //     border: 1px solid #ddd;
+  //     border-left: none;
+  //     background: white;
+  //   }
+  //   .exchange-col-2{
+  //     padding-left: 20px;
+  //   }
+  //   .exchange-col-3{
+  //     >div{
+  //       position: relative;
+  //       .exchange-wrapper-btn{
+  //         position: absolute;
+  //         margin-top: -215px;
+  //         width: 100%;
+  //       }
+  //     }
+  //   }
+  //   .exchange-col{
+  //     position: relative;
+  //     height: 100%;
+  //   }
+  // }
+
+  // .exchange-icon{
+  //   text-align: center;
+  //   margin-top: 50px;
+  //   @include screen-max-width(large) {
+  //     display: none;
+  //   }    
+  // }
+  // .main-title  {
+  //   line-height: 1.2;
+  //   letter-spacing: -0.1px;
+  //   font-size: 24px;
+  //   color: #141927;
+  //   margin-bottom: 20px;
+  //   font-weight: 600;
+
+  //   @include screen-max-width(medium) {
+  //     display: none;
+  //   }
+  //   @include screen-min-width(large) {
+  //     margin-top: 1.5rem;
+  //     margin-bottom: 1.2rem;
+  //   }
+  // }
+  .estimate-dest-value{
+    margin-top: 10px;
+    font-size: 13px;
+    color: #777;
   }
-  @include screen-max-width(large) {
-    @include screen-min-width(medium){
-      .swap-wrapper{
-        border-left: 1px solid #ddd;
+  .amount-pay{
+    margin-top: 20px;
+    color: #666;
+    >div{
+      &:first-child{
+        font-size: 13px;
       }
-    }
-    .exchange-col-1, .exchange-col-2, .exchange-col-3{
-      padding: 1rem;
-    }
-    .exchange-col-1-2{
-      margin-top: 30px
-    }
-    .exchange-wrapper-btn{
-      .button{
-        width: 100%;
+      &:last-child{
+        font-size: 20px;
+        margin-top: 5px;
       }
-    }
-    .amount-input{
-      margin-top: 1rem;
-    }
-  } 
-  @include screen-min-width(large) {
-    .balance-wrapper,
-    .exchange-col-1 {
-      box-shadow: $box-shadow-tab;
-    }
-
-    .balance-wrapper{
-      border: 1px solid #ddd;
-      background: white;
-      position: relative;
-      z-index: 1;
-
-      &::after {
-        content: '';
-        position: absolute;
-        width: 10px;
-        height: 100%;
-        background: $white;
-        top: 0;
-        right: -11px;
-      }
-    }
-    .exchange-wrapper-btn{
-      text-align: center;
-    }
-    .exchange-col-1{
-      padding: 0 3rem;
-      border: 1px solid #ddd;
-      border-left: none;
-      background: white;
-    }
-    .exchange-col-2{
-      padding-left: 20px;
-    }
-    .exchange-col-3{
-      >div{
-        position: relative;
-        .exchange-wrapper-btn{
-          position: absolute;
-          margin-top: -215px;
-          width: 100%;
-        }
-      }
-    }
-    .exchange-col{
-      position: relative;
-      height: 100%;
     }
   }
-
-  .exchange-icon{
-    text-align: center;
-    margin-top: 50px;
-    @include screen-max-width(large) {
-      display: none;
-    }    
-  }
-  .main-title  {
-    line-height: 1.2;
-    letter-spacing: -0.1px;
-    font-size: 24px;
-    color: #141927;
-    margin-bottom: 20px;
-    font-weight: 600;
-
-    @include screen-max-width(medium) {
-      display: none;
-    }
-    @include screen-min-width(large) {
-      margin-top: 1.5rem;
-      margin-bottom: 1.2rem;
+  .checkbox{
+    margin-top: 15px;
+    label{
+      color: #999;
+      a{
+        color: inherit;
+        text-decoration: underline;
+      }
     }
   }
   .token-input {
@@ -133,19 +226,20 @@
   }
 
   .accent {
-    margin-top: 35px;
     line-height: 55px;
     padding: 0 50px;
-    background: #ef8102;
+    background: #31CB9E;
     font-size: 20px;
     font-weight: 600;
     text-transform: unset;
     border-radius: 4px;
-    //box-shadow: 0 10px 15px #ccc;
+    margin-top: 20px;
+    float: right;
 
-    @include screen-max-width(large) {
-      margin-top: 0;
-    }
+
+    // @include screen-max-width(large) {
+    //   margin-top: 0;
+    // }
   }
 
   .token-compare {
@@ -158,21 +252,22 @@
     font-weight: 600;
 
     .seperator{
-      @include screen-max-width(large) {
-        display: none;
-      }
+      display: none;
+      // @include screen-max-width(large) {
+      //   display: none;
+      // }
     }
 
 
-    @include screen-min-width(large) {
-      width: 450px;
-      margin: 0 auto;
-      margin-top: 1rem;
-    }
-
-    @include screen-max-width(large) {
-      text-align: left;      
-    }
+    // @include screen-min-width(large) {
+    //   width: 450px;
+    //   margin: 0 auto;
+    //   margin-top: 1rem;
+    // }
+    text-align: left;      
+    // @include screen-max-width(large) {
+    //   text-align: left;      
+    // }
     // div:first-child {
     //   text-align: right;
     // }
@@ -230,10 +325,9 @@
     }
     .focus-item {
       border-radius: 5px;
-      box-shadow: 0 1px 5px 0 rgba(142, 142, 142, 0.15);
       background-color: #ffffff;
-      border: solid 0.8px rgba(204, 204, 204, 0.72);
-      padding: 8px 12px;
+      border: 1px solid #dedede;
+      padding: 10px 12px;
       align-items: center;
       font-size: 15px;
       &.d-flex{
