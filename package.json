@@ -103,7 +103,7 @@
   },
   "scripts": {
     "build": "NODE_ENV=production webpack --env.build=true",
-    "dev": "webpack-dev-server --content-base src --inline --hot --history-api-fallback --host 0.0.0.0 --port 3002 --env.logger=true"
+    "dev": "webpack-dev-server --https --content-base src --inline --hot --history-api-fallback --host 0.0.0.0 --port 3002 --env.logger=true"
   },
   "jest": {
     "globals": {

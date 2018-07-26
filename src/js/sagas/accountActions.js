@@ -98,6 +98,7 @@ function* checkMaxCap(address){
   var tokens = state.tokens.tokens
   var ethereum = state.connection.ethereum
   const translate = getTranslate(state.locale)
+  var sourceTokenSymbol = exchange.sourceTokenSymbol
 
   if (exchange.sourceTokenSymbol === exchange.destTokenSymbol){
     return
@@ -164,11 +165,12 @@ function* checkBalance(address){
   var srcAmount
   if (exchange.isHaveDestAmount){
     var destAmount = exchange.destAmount
-    srcAmount = converter.caculateSourceAmount(exchange.destAmount, exchange.minConversionRate, 6)
+    var minRate = converter.toTWei(exchange.minConversionRate, 18)
+    srcAmount = converter.caculateSourceAmount(exchange.destAmount, minRate, 6)
     srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)    
   }else{
     srcAmount = exchange.sourceAmount
-    var sourceTokenSymbol = exchange.sourceTokenSymbol
+    //var sourceTokenSymbol = exchange.sourceTokenSymbol
     srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)    
   }
   if (sourceTokenSymbol !=="ETH"){
@@ -189,15 +191,20 @@ function* checkBalance(address){
 
   var balanceETH =  mapBalance["ETH"]
 
-  console.log("balance_eth")
-  console.log(balanceETH)
+  // console.log("balance_eth")
+  // console.log(balanceETH)
+  // console.log(txFee)
+  // console.log(sourceTokenSymbol)
 
   if (sourceTokenSymbol !=="ETH"){
+   // console.log(converter.compareTwoNumber(balanceETH, txFee))
     if (converter.compareTwoNumber(balanceETH, txFee) === -1){
       yield put(exchangeActions.throwErrorExchange("exceed_balance_fee", translate("error.eth_balance_not_enough_for_fee") || "Your balance is not enough for this transaction"))
     }
   }else{
+    
     txFee = converter.addTwoNumber(txFee, srcAmount)
+   // console.log(converter.compareTwoNumber(balanceETH, txFee))
     if (converter.compareTwoNumber(balanceETH, txFee) === -1){
       yield put(exchangeActions.throwErrorExchange("exceed_balance_fee", translate("error.eth_balance_not_enough_for_fee") || "Your balance is not enough for this transaction"))
     }
