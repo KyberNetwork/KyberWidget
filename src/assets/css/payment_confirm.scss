@@ -1,7 +1,8 @@
 
 
 .payment_confirm{
-    padding: 1rem;
+    //padding: 1rem;
+    padding: 30px 25px;
     padding-bottom: 3rem;
 
     .account-item{
@@ -47,6 +48,11 @@
             opacity: 0.6;
             pointer-events: none;
             cursor: not-allowed;
+        }
+        .error-message{
+            color: #f1637d;
+            font-size: 14px;
+            margin-top: 15px;
         }
         // .approve-intro{
         //     display: none;

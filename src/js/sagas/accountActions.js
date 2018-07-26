@@ -116,7 +116,8 @@ function* checkMaxCap(address){
   var srcAmount
   if (exchange.isHaveDestAmount){
     var destAmount = exchange.destAmount
-    srcAmount = converter.caculateSourceAmount(exchange.destAmount, exchange.minConversionRate, 6)
+    var minConversionRate =  converter.toTWei(exchange.minConversionRate, 18)
+    srcAmount = converter.caculateSourceAmount(exchange.destAmount, minConversionRate, 6)
     srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)    
     if (converter.compareTwoNumber(srcAmount, maxCapOneExchange) < 1){
       var maxCap = converter.toEther(maxCapOneExchange)
@@ -126,7 +127,7 @@ function* checkMaxCap(address){
     srcAmount = exchange.sourceAmount
     var sourceTokenSymbol = exchange.sourceTokenSymbol
     srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)    
-    if (converter.compareTwoNumber(srcAmount, maxCapOneExchange) < 1){
+    if (converter.compareTwoNumber(srcAmount, maxCapOneExchange) === 1){
       var maxCap = converter.toEther(maxCapOneExchange)
       yield put(exchangeActions.throwErrorExchange("exceed_cap", translate("error.source_amount_too_high_cap", { cap: maxCap })))
     }

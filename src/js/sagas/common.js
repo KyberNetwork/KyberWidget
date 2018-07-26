@@ -42,16 +42,27 @@ export function* submitCallback(hash){
     var state = store.getState()
     var exchange = state.exchange
     if (exchange.callback){
-      var submitUrl = exchange.callback + "?tx=" + hash
+      var submitUrl = exchange.callback 
+      var params = {
+        tx: hash
+      }
       if (exchange.paramForwarding === true || exchange.paramForwarding === 'true'){
-        var global = state.global
         Object.keys(global.params).map(key=>{
-          var value = global.params[key]
-          submitUrl += `&${key}=${value}`
+          if (key !== tx){
+            params[key] = global.params[key]
+          }
         })
       }
+              
       try{
-        const response = yield call(fetch, submitUrl)   
+        const response = yield call(fetch, submitUrl, {
+            method: 'POST',
+            // headers: {
+            //   'Accept': 'application/json',
+            //   'Content-Type': 'application/json'
+            // },
+            body: JSON.stringify(params)
+        })   
         const responseBody = response.json()
         console.log("status_submit")
         console.log(responseBody)  

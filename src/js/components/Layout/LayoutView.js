@@ -32,7 +32,7 @@ function getAllPathToken(){
 
 const LayoutView = (props) => {
   var listToken = getAllPathToken()
-  var defaultPathExchange = constansts.BASE_HOST + "widget/payment"
+  var defaultPathExchange = constansts.BASE_HOST + "/widget/payment"
 
   var params = common.queryParamsString(window.location.href)
   if (props.currentLanguage !== "en"){

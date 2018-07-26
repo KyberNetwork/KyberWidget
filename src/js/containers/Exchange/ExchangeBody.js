@@ -85,8 +85,9 @@ export default class ExchangeBody extends React.Component {
 
   acceptedTerm = () => {
     var checked = document.getElementById('term-agree').checked
-    console.log("term_value")
-    console.log(checked)
+    // console.log("term_value")
+    // console.log(checked)console.log("term_value")
+    // console.log(checked)
     if (checked){
       this.setState({acceptedTerm: true})
     }else{

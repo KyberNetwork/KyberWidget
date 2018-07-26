@@ -308,9 +308,12 @@ export default class Payment extends React.Component {
   getError = () => {
     var errors = this.props.exchange.errors
     var errorItem = Object.keys(errors).map(key => {
-      return <div key={key}>{this.props.translate(errors[key]) || errors[key]}</div>
+      if (errors[key] && errors[key] !== ""){
+        return <li key={key}>{this.props.translate(errors[key]) || errors[key]}</li>
+      }
+      return ""
     })
-    return <div>{errorItem}</div>
+    return <ul>{errorItem}</ul>
   }
 
 
@@ -383,10 +386,7 @@ export default class Payment extends React.Component {
       isHaveError = true
     }
     return (
-      <div id="exchange" className={"frame payment_confirm" + classError}>
-        <div>
-          {this.getError()}
-        </div>
+      <div id="exchange" className={"frame payment_confirm" + classError}>        
 
         <div className="title main-title">
           <span className="step">3</span>
@@ -421,6 +421,10 @@ export default class Payment extends React.Component {
           </div>
         </div>
 
+        <div className="error-message">
+          {this.getError()}
+        </div>
+
         <div className="payment-info">
           <div className="title">
             {this.props.translate("transaction.you_about_pay") || "YOU ARE ABOUT TO PAY"}
@@ -453,7 +457,7 @@ export default class Payment extends React.Component {
           </div>
           <div className="content">
             <div>
-              <span>Tokens:</span>
+              <span>Amount:</span>
               {this.props.exchange.isHaveDestAmount && (
                 <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
               )}

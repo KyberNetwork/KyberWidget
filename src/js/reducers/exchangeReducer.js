@@ -118,7 +118,15 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.GO_TO_STEP": {
-      newState.step = action.payload
+      var step = action.payload
+      if (newState.step === 1){
+        var errors = {}
+        Object.keys(newState.errors).map(key => {
+          errors[key] = ""
+        })
+      }
+      newState.errors = {...errors}
+      newState.step = step
       return newState
     }
     case "EXCHANGE.SPECIFY_GAS_PRICE": {
