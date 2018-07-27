@@ -1,10 +1,6 @@
 import React from "react";
-import { roundingNumber } from "../../utils/converter"
-import BLOCKCHAIN_INFO from "../../../../env"
-import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown'
 import PathSelector from "../../containers/CommonElements/PathSelector";
 import AddressSelector from "../../containers/CommonElements/AddressSelector";
-import constants from '../../services/constants';
 
 const ImportByDeviceView = (props) => {
 
@@ -66,7 +62,7 @@ const ImportByDeviceView = (props) => {
         {props.translate(`modal.select_${props.walletType}_address`) || 'Select Address'}
       </div>
 
-      <div className={"import-account-content__info import-account-content__info--center"}>
+      <div className={"import-account-content__info " + (!props.hasError ? 'import-account-content__info--center' : '')}>
         <div className={"import-account-content__info-type"}>
           <img
             className={"import-account-content__info-type-image"}
@@ -75,6 +71,7 @@ const ImportByDeviceView = (props) => {
             {props.translate("import.from_ledger") || "LEDGER"}
           </div>
         </div>
+        {!props.hasError &&
         <div className={"import-account-content__info-text"}>
           <div className={"import-account-content__info-text-label"}>Address:</div>
           <div className={"import-account-content__info-text-address"}>{props.wallet.address}</div>
@@ -82,6 +79,7 @@ const ImportByDeviceView = (props) => {
             Balance: {props.wallet.balance} ETH
           </div>
         </div>
+        }
       </div>
 
       <div className="import-account-content__device">
