@@ -109,6 +109,15 @@ const account = (state=initState, action) => {
         wallet: action.payload
       };
     }
+    
+    case "EXCHANGE.GO_TO_STEP": {
+      let newState = {...state}
+      var step = action.payload
+      if (step !== 3){
+        newState.account = false
+      }
+      return newState
+    }
   }
 
   return state

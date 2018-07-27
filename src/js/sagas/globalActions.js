@@ -181,7 +181,7 @@ export function* setGasPrice(action) {
       selectedGas = 'f'
     }
 
-    yield put(actionsTransfer.setGasPriceTransferComplete(safeLowGas, standardGas, fastGas, defaultGas, selectedGas))
+  //  yield put(actionsTransfer.setGasPriceTransferComplete(safeLowGas, standardGas, fastGas, defaultGas, selectedGas))
 
     var gasExchange = getGasExchange(safeLowGas, standardGas, fastGas, defaultGas, maxGasPrice)
     yield put(actionsExchange.setGasPriceSwapComplete(gasExchange.safeLowGas, gasExchange.standardGas, gasExchange.fastGas, gasExchange.defaultGas, selectedGas))

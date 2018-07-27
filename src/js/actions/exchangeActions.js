@@ -630,3 +630,9 @@ export function throwErrorExchange(key, val){
     payload: {key, val}
   }
 }
+
+export function validateAccountComplete(){
+  return {
+    type: "EXCHANGE.VALIDATE_ACCOUNT_COMPLETE"
+  }
+}

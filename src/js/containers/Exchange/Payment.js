@@ -71,7 +71,12 @@ function getKeyService(type) {
 
 
 export default class Payment extends React.Component {
-
+  constructor(){
+    super()
+    this.state = {
+      showPassword: false
+    }
+  }
 
   reImportAccount = () => {
     this.props.dispatch(exchangeActions.goToStep(2))
@@ -308,9 +313,12 @@ export default class Payment extends React.Component {
   getError = () => {
     var errors = this.props.exchange.errors
     var errorItem = Object.keys(errors).map(key => {
-      return <div key={key}>{this.props.translate(errors[key]) || errors[key]}</div>
+      if (errors[key] && errors[key] !== ""){
+        return <li key={key}>{this.props.translate(errors[key]) || errors[key]}</li>
+      }
+      return ""
     })
-    return <div>{errorItem}</div>
+    return <ul>{errorItem}</ul>
   }
 
 
@@ -325,31 +333,46 @@ export default class Payment extends React.Component {
   getAccountBgk = () => {
     switch (this.props.account.type) {
       case "metamask":
-        return <div>
-          <div className="metamask-bgk"></div>
+        return <div className="account-bgk">
+          <div className="metamask-bgk">
+            <img alt="metamask" src={require('../../../assets/img/landing/metamask_active.svg')}/>
+          </div>
           <div className="text">METAMASK</div>
         </div>
       case "keystore":
-        return <div>
-          <div className="keystore-bgk"></div>
+        return <div className="account-bgk">
+          <div className="keystore-bgk">
+            <img alt="keystore" src={require('../../../assets/img/landing/keystore_active.svg')}/>
+          </div>
           <div className="text">JSON</div>
         </div>
       case "privateKey":
-        return <div>
-          <div className="privateKey-bgk"></div>
+        return <div className="account-bgk">
+          <div className="privateKey-bgk">
+            <img alt="private key" src={require('../../../assets/img/landing/privatekey_active.svg')}/>
+          </div>
           <div className="text">Private key</div>
         </div>
       case "trezor":
-        return <div>
-          <div className="trezor-bgk"></div>
+        return <div className="account-bgk">
+          <div className="trezor-bgk">
+            <img alt="keystore" src={require('../../../assets/img/landing/trezor_active.svg')}/>
+          </div>
           <div className="text">Trezor</div>
         </div>
       case "ledger":
-        return <div>
-          <div className="ledger-bgk"></div>
+        return <div className="account-bgk">
+          <div className="ledger-bgk">
+            <img alt="ledger" src={require('../../../assets/img/landing/ledger_active.svg')}/>
+          </div>
           <div className="text">Ledger</div>
         </div>
     }
+  }
+
+
+  toogleShowPassword = () => {
+    this.setState({showPassword : !this.state.showPassword})
   }
 
   render() {
@@ -367,14 +390,18 @@ export default class Payment extends React.Component {
     }
 
     var classError = ""
+    var isHaveError = false
     if (validators.anyErrors(this.props.exchange.errors)){
       classError += " error"
+      isHaveError = true
+    }
+    
+    var classDisable = ""
+    if (!this.props.exchange.validateAccountComplete){
+      classDisable += " disable"
     }
     return (
-      <div id="exchange" className={"frame payment_confirm" + classError}>
-        <div>
-          {this.getError()}
-        </div>
+      <div id="exchange" className={"frame payment_confirm" + classError}>        
 
         <div className="title main-title">
           <span className="step">3</span>
@@ -384,20 +411,33 @@ export default class Payment extends React.Component {
         <div className="account-item">
           {this.getAccountBgk()}
           <div className="account-info">
-            <div>Address</div>
-            <div>{this.props.account.address}</div>
+            <div className="info-row address-info">
+                <span>Address:</span> 
+                <span>{this.props.account.address.slice(0, 8)} ... {this.props.account.address.slice(-6)}</span>
+              </div>            
             {sourceTokenSymbol === "ETH" && (
-              <div>
-                <div>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</div>
+              <div className="info-row">
+                <span>Balance:</span>
+                <span>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</span>
               </div>
             )}
             {sourceTokenSymbol !== "ETH" && (
               <div>
-                <div>{converter.roundingNumber(converter.toT(sourceBalance, sourceDecimal))} {sourceTokenSymbol}</div>
-                <div>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</div>
+              <div className="info-row">        
+                <span>Balance:</span>        
+                <span>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</span>
+              </div>
+              <div className="info-row">
+                <span></span> 
+                <span>{converter.roundingNumber(converter.toT(sourceBalance, sourceDecimal))} {sourceTokenSymbol}</span>
+              </div>
               </div>
             )}
           </div>
+        </div>
+
+        <div className="error-message">
+          {this.getError()}
         </div>
 
         <div className="payment-info">
@@ -432,7 +472,7 @@ export default class Payment extends React.Component {
           </div>
           <div className="content">
             <div>
-              <span>Tokens:</span>
+              <span>Amount:</span>
               {this.props.exchange.isHaveDestAmount && (
                 <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
               )}
@@ -461,22 +501,50 @@ export default class Payment extends React.Component {
           </div>
         </div>
 
+
+        
+
         <div className="payment-bottom">
-          {this.props.account.type === "keystore" && (
-              <div className="password">
-                <input id="passphrase" type="password" placeholder="password"/>
+          {this.props.exchange.isNeedApprove && (
+              <div className="approve-intro">                 
+                  {this.props.translate("modal.approve_exchange", {token: this.props.exchange.sourceTokenSymbol}) 
+                    || `You need to grant permission for Kyber Payment to interact with ${this.props.exchange.sourceTokenSymbol} with this address`}
               </div>
+            )}
+          {this.props.account.type === "keystore" && (
+            <div id="import-account">
+              {/* <div className="password">
+                <input id="passphrase" type="password" placeholder="password"/>                  
+              </div> */}
+               <div className="import-account-content__private-key">
+               <input
+                   className={this.state.showPassword ?"import-account-content__private-key-input": "import-account-content__private-key-input security"} 
+                   id="passphrase"
+                   type="text"                                  
+                   autoFocus
+                   autoComplete="off"
+                   spellCheck="false"
+                    />
+                   <div className="import-account-content__private-key-toggle" onClick={this.toogleShowPassword}></div>
+                  <div className="import-account-content__private-key-icon"></div>
+               </div>
+               
+               </div>
+
             )}
           <div className="control-btn">
             <a className="back-btn" onClick={this.reImportAccount}>Back</a>
             {this.props.exchange.isNeedApprove && (
-              <a className="confirm-btn" onClick={this.approveToken}>Approve</a>
+              <a className={"confirm-btn" + classDisable} onClick={this.approveToken}>Approve</a>
             )}
 
             {!this.props.exchange.isNeedApprove && (
-              <a className="confirm-btn" onClick={this.payment}>Payment</a>
+              <a className={"confirm-btn" + classDisable} onClick={this.payment}>Payment</a>
             )}
           </div>
+
+          
+
         </div>
       </div>
     )

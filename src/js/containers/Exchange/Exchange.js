@@ -4,7 +4,7 @@ import { ExchangeBody, MinRate, Payment, ErrorPayment } from "../Exchange"
 //import {GasConfig} from "../TransactionCommon"
 import { AdvanceConfigLayout, GasConfig } from "../../components/TransactionCommon"
 
-
+import {TransactionLoading} from "../CommonElements"
 
 //import {TransactionLayout} from "../../components/TransactionCommon"
 import { getTranslate } from 'react-localize-redux'
@@ -166,6 +166,20 @@ export default class Exchange extends React.Component {
 
     if (this.props.exchange.step === 3) {
       return <Payment />
+    }
+
+    if (this.props.exchange.step === 4) {
+          return  <TransactionLoading
+        tx={this.props.exchange.txHash}
+        //tempTx={this.props.exchange.tempTx}
+        //makeNewTransaction={this.makeNewExchange}
+    //    type="exchange"
+        //balanceInfo={balanceInfo}
+        broadcasting={this.props.exchange.broadcasting}
+        broadcastingError={this.props.exchange.broadcastError}
+        //analyze={analyze}
+        //isOpen={this.props.exchange.step === 3}
+      />
     }
   }
 }

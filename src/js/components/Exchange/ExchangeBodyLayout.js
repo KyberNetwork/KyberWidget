@@ -22,18 +22,18 @@ const ExchangeBodyLayout = (props) => {
 
 
 
-  var errorSelectSameToken = props.errors.selectSameToken !== '' ? props.translate(props.errors.selectSameToken) : ''
-  var errorSelectTokenToken = props.errors.selectTokenToken !== '' ? props.translate(props.errors.selectTokenToken) : ''
+  var errorSelectSameToken = props.errors.selectSameToken && props.errors.selectSameToken !== '' ? props.translate(props.errors.selectSameToken) : ''
+  var errorSelectTokenToken = props.errors.selectTokenToken && props.errors.selectTokenToken !== '' ? props.translate(props.errors.selectTokenToken) : ''
   var errorToken = errorSelectSameToken + errorSelectTokenToken
 
   var maxCap = props.maxCap
   var errorSource = []
   var errorExchange = false
-  if (props.errorNotPossessKgt !== "") {
+  if (props.errorNotPossessKgt && props.errorNotPossessKgt !== "") {
     errorSource.push(props.errorNotPossessKgt)
     errorExchange = true
   } else {
-    if (props.errors.exchange_enable !== "") {
+    if (props.errors.exchange_enable && props.errors.exchange_enable !== "") {
       errorSource.push(props.translate(props.errors.exchange_enable))
       errorExchange = true
     } else {
@@ -41,7 +41,7 @@ const ExchangeBodyLayout = (props) => {
         errorSource.push(errorToken)
         errorExchange = true
       }
-      if (props.errors.sourceAmount !== "") {
+      if (props.errors.sourceAmount && props.errors.sourceAmount !== "") {
         if (props.errors.sourceAmount === "error.source_amount_too_high_cap") {
           if (props.sourceTokenSymbol === "ETH") {
             errorSource.push(props.translate("error.source_amount_too_high_cap", { cap: maxCap }))
@@ -53,7 +53,7 @@ const ExchangeBodyLayout = (props) => {
         }
         errorExchange = true
       }
-      if (props.errors.rateSystem !== "") {
+      if (props.errors.rateSystem && props.errors.rateSystem !== "") {
         errorSource.push(props.translate(props.errors.rateSystem))
         errorExchange = true
       }
@@ -100,7 +100,7 @@ const ExchangeBodyLayout = (props) => {
               <div>
                 <div className="pay-info">
                   <div className="info-1">
-                    You are about to pay
+                    {props.translate("transaction.you_about_pay") || "You are about to pay"}
                   </div> 
                   <div className="info-2">
                     <div>
