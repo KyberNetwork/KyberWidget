@@ -58,7 +58,9 @@ export default class ImportByDevice extends React.Component {
   componentDidMount() {
     this.showLoading(this.props.type);
   }
-
+  componentWillUnmount () {
+    clearInterval(this.interval)
+  }
   setDeviceState() {
     this.addressIndex = 0;
     this.currentIndex = 0;

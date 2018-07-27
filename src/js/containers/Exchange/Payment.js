@@ -284,8 +284,8 @@ export default class Payment extends React.Component {
       var formId = "exchange"
       var data = ""
 
-      console.log("params: ")
-      console.log(params)
+      // console.log("params: ")
+      // console.log(params)
 
 
       this.props.dispatch(exchangeActions.processExchange(formId, ethereum, account.address, params.sourceToken,
@@ -453,10 +453,10 @@ export default class Payment extends React.Component {
             {this.props.translate("transaction.you_about_pay") || "YOU ARE ABOUT TO PAY"}
           </div>
           <div className="content">
-            <div>
+            {/* <div>
               <span>To:</span>
               <span>kyber.network</span>
-            </div>
+            </div> */}
             <div>
               <span>Address:</span>
               <span>

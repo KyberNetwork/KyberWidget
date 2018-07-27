@@ -167,8 +167,6 @@ export default class Exchange extends React.Component {
     if (this.props.exchange.step === 3) {
       return <Payment />
     }
-    console.log("step_exchange")
-    console.log(this.props.exchange.step)
     if (this.props.exchange.step === 4) {
           return  <TransactionLoading
         tx={this.props.exchange.txHash}

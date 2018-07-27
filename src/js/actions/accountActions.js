@@ -118,3 +118,10 @@ export function setWallet(wallet) {
     payload: wallet
   }
 }
+
+
+export function resetImportAccount(){
+  return {
+    type: "ACCOUNT.RESET_IMPORT_ACCOUNT"
+  }
+}

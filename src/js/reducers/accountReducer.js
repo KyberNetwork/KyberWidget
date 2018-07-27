@@ -1,4 +1,4 @@
-import {REHYDRATE} from 'redux-persist/lib/constants'
+import { REHYDRATE } from 'redux-persist/lib/constants'
 import { clearInterval } from 'timers';
 
 const initState = {
@@ -21,72 +21,74 @@ const initState = {
   }
 }
 
-const account = (state=initState, action) => {
+const account = (state = initState, action) => {
   switch (action.type) {
-    case REHYDRATE: {      
-      return {...state, isStoreReady: true}      
+    case REHYDRATE: {
+      return { ...state, isStoreReady: true }
     }
     case "ACCOUNT.LOADING": {
-      return {...state, loading: true}
+      return { ...state, loading: true }
     }
     case "ACCOUNT.CHECK_TIME_IMPORT_LEDGER": {
-      return {...state, checkTimeImportLedger: true}
+      return { ...state, checkTimeImportLedger: true }
     }
     case "ACCOUNT.RESET_CHECK_TIME_IMPORT_LEDGER": {
-      return {...state, checkTimeImportLedger: false}
+      return { ...state, checkTimeImportLedger: false }
     }
     case "ACCOUNT.IMPORT_NEW_ACCOUNT_FULFILLED": {
-      return {...state, account: action.payload, loading: false, isStoreReady: true}
+      return { ...state, account: action.payload, loading: false, isStoreReady: true }
     }
-    case "ACCOUNT.CLOSE_LOADING_IMPORT":{
-      return {...state, loading: false}
+    case "ACCOUNT.CLOSE_LOADING_IMPORT": {
+      return { ...state, loading: false }
     }
-    case "ACCOUNT.THROW_ERROR": {            
-      return {...state, error: action.payload, showError: true}
+    case "ACCOUNT.THROW_ERROR": {
+      return { ...state, error: action.payload, showError: true }
     }
     case "ACCOUNT.END_SESSION": {
-      return {...initState}
+      return { ...initState }
     }
-    case "ACCOUNT.UPDATE_ACCOUNT_FULFILLED":{
-      var oldState = {...state}
+    case "ACCOUNT.UPDATE_ACCOUNT_FULFILLED": {
+      var oldState = { ...state }
       var newAccount = action.payload
-      if ((oldState.account) && (oldState.account.address === newAccount.address)){        
-        if (newAccount.manualNonce < oldState.account.manualNonce){
+      if ((oldState.account) && (oldState.account.address === newAccount.address)) {
+        if (newAccount.manualNonce < oldState.account.manualNonce) {
           newAccount.manualNonce = oldState.account.manualNonce
         }
-        return {...state, account: newAccount}
+        return { ...state, account: newAccount }
       }
-      
-    } 
-    case "ACCOUNT.CLOSE_ERROR_MODAL":{
-      return {...state, showError: false}
+
     }
-    case "ACCOUNT.INC_MANUAL_NONCE_ACCOUNT":{
-      var oldState = {...state}
+    case "ACCOUNT.CLOSE_ERROR_MODAL": {
+      return { ...state, showError: false }
+    }
+    case "ACCOUNT.INC_MANUAL_NONCE_ACCOUNT": {
+      var oldState = { ...state }
       var address = action.payload
-      if ((oldState.account) && (oldState.account.address === address)){
+      if ((oldState.account) && (oldState.account.address === address)) {
         var account = oldState.account.incManualNonce()
-        return {...state,
-          account: account}
+        return {
+          ...state,
+          account: account
+        }
       }
     }
     case "ACCOUNT.PKEY_CHANGE": {
-      let newState = {...state}
+      let newState = { ...state }
       newState.pKey.error = ''
       return newState
     }
     case "ACCOUNT.PKEY_ERROR": {
-      let newState = {...state}
+      let newState = { ...state }
       newState.pKey.error = action.payload
       return newState
     }
-    case "GLOBAL.SET_BALANCE_TOKEN":{
-      let newState = {...state}
+    case "GLOBAL.SET_BALANCE_TOKEN": {
+      let newState = { ...state }
       newState.isGetAllBalance = true
       return newState
-    }  
-    case "GLOBAL.CLEAR_SESSION_FULFILLED":{
-      let newState = {...initState}
+    }
+    case "GLOBAL.CLEAR_SESSION_FULFILLED": {
+      let newState = { ...initState }
       return newState
     }
     case "ACCOUNT.OPEN_IMPORT_ACCOUNT": {
@@ -109,11 +111,22 @@ const account = (state=initState, action) => {
         wallet: action.payload
       };
     }
-    
+
+    // case "ACCOUNT.RESET_IMPORT_ACCOUNT": {
+    //   let newState = { ...state }
+    //   newState.choosenImportAccount = false
+    //   newState.wallet = {
+    //     index: '',
+    //     address: '',
+    //     balance: '',
+    //     type: ''
+    //   }
+    //   return newState
+    // }
     case "EXCHANGE.GO_TO_STEP": {
-      let newState = {...state}
-      var {step, oldStep} = action.payload
-      if (step === 2 && oldStep === 3){
+      let newState = { ...state }
+      var { step, oldStep } = action.payload
+      if (step === 2 && oldStep === 3) {
         newState.account = false
         newState.choosenImportAccount = false
         newState.wallet = {

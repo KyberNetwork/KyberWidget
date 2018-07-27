@@ -103,10 +103,10 @@ const ExchangeBodyLayout = (props) => {
                     {props.translate("transaction.you_about_pay") || "You are about to pay"}
                   </div> 
                   <div className="info-2">
-                    <div>
+                    {/* <div>
                       <span>To:</span>
                       <span>kyber.network</span>
-                    </div>
+                    </div> */}
                     <div>
                       <span>Address:</span>
                       <span>
@@ -149,10 +149,10 @@ const ExchangeBodyLayout = (props) => {
                   You are about to pay
                 </div>
                 <div className="info-2">
-                  <div>
+                  {/* <div>
                     <span>To:</span>
                     <span>kyber.network</span>
-                  </div>
+                  </div> */}
                   <div>
                     <span>Address:</span>
                     <span>

@@ -124,11 +124,11 @@ const exchange = (state = initState, action) => {
         Object.keys(newState.errors).map(key => {
           errors[key] = ""
         })
+        newState.errors = {...errors}
       }
       if ((step === 2) && (oldStep === 3)){
         newState.validateAccountComplete = false
       }
-      newState.errors = {...errors}
       newState.step = step
       return newState
     }
@@ -315,27 +315,27 @@ const exchange = (state = initState, action) => {
       //newState.showConfirmApprove = false
       newState.isApproving = false
       newState.isConfirming = false
-      newState.sourceAmount = ""
+     // newState.sourceAmount = ""
       //newState.txRaw = ""
       newState.bcError = ""
-      newState.step = 3
+      //newState.step = 3
       newState.broadcasting = true
-      newState.balanceData = {
-        sourceName: action.payload.balanceData.sourceName,
-        sourceDecimal: action.payload.balanceData.sourceDecimal,
-        sourceSymbol: action.payload.balanceData.sourceSymbol,
-      //  prevSource: action.payload.balanceData.source,
-        //nextSource: 0,
+      // newState.balanceData = {
+      //   sourceName: action.payload.balanceData.sourceName,
+      //   sourceDecimal: action.payload.balanceData.sourceDecimal,
+      //   sourceSymbol: action.payload.balanceData.sourceSymbol,
+      // //  prevSource: action.payload.balanceData.source,
+      //   //nextSource: 0,
 
-        destName: action.payload.balanceData.destName,
-        destDecimal: action.payload.balanceData.destDecimal,
-        destSymbol: action.payload.balanceData.destSymbol,
+      //   destName: action.payload.balanceData.destName,
+      //   destDecimal: action.payload.balanceData.destDecimal,
+      //   destSymbol: action.payload.balanceData.destSymbol,
 
-        sourceAmount: action.payload.balanceData.sourceAmount,
-        destAmount: action.payload.balanceData.destAmount,
-       // prevDest: action.payload.balanceData.dest,
-       // nextDest: 0
-      }
+      //   sourceAmount: action.payload.balanceData.sourceAmount,
+      //   destAmount: action.payload.balanceData.destAmount,
+      //  // prevDest: action.payload.balanceData.dest,
+      //  // nextDest: 0
+      // }
       return newState
     }
     case "EXCHANGE.PROCESS_APPROVE": {

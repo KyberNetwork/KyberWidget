@@ -1,7 +1,7 @@
 import { take, put, call, fork, select, takeEvery, all, cancel } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 import * as actions from '../actions/accountActions'
-import { clearSession, setGasPrice, setBalanceToken } from "../actions/globalActions"
+import { clearSession, setGasPrice, setBalanceToken, goToRoute, updateAllRate, updateAllRateComplete } from "../actions/globalActions"
 //import { fetchExchangeEnable, setApprove } from "../actions/exchangeActions"
 
 
@@ -15,7 +15,7 @@ import * as utilActions from '../actions/utilActions'
 import * as common from "./common"
 import * as analytics from "../utils/analytics"
 
-import { goToRoute, updateAllRate, updateAllRateComplete } from "../actions/globalActions"
+//import {  } from "../actions/globalActions"
 
 //import { randomForExchange } from "../utils/random"
 
@@ -295,6 +295,7 @@ export function* importNewAccount(action) {
 
 
     yield put(exchangeActions.validateAccountComplete())
+    //yield put.sync(actions.resetImportAccount())
 
     //    yield put(goToRoute(constants.BASE_HOST + '/swap'))
 
