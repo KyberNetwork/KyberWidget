@@ -74,12 +74,13 @@ export default class Payment extends React.Component {
   constructor(){
     super()
     this.state = {
-      showPassword: false
+      showPassword: false,
+    //  passwordError: ""
     }
   }
 
   reImportAccount = () => {
-    this.props.dispatch(exchangeActions.goToStep(2))
+    this.props.dispatch(exchangeActions.goToStep(2, 3))
   }
 
   approveToken = () => {
@@ -140,7 +141,8 @@ export default class Payment extends React.Component {
         gasPrice, account.keystring, account.type, password, account, data, this.props.keyService, balanceData))
     } catch (e) {
       console.log(e)
-      this.props.dispatch(transferActions.throwPassphraseError(this.props.translate("error.passphrase_error")))
+      //this.props.dispatch(transferActions.throwPassphraseError(this.props.translate("error.passphrase_error")))
+     // this.setState({passwordError : this.props.translate("error.passphrase_error") || "Key derivation failed - possibly wrong password" })
     }
   }
 
@@ -295,7 +297,9 @@ export default class Payment extends React.Component {
 
     } catch (e) {
       console.log(e)
-      this.props.dispatch(exchangeActions.throwPassphraseError(this.props.translate("error.passphrase_error")))
+   //   this.setState({passwordError : this.props.translate("error.passphrase_error") || "Key derivation failed - possibly wrong password" })
+
+    //  this.props.dispatch(exchangeActions.throwPassphraseError(this.props.translate("error.passphrase_error")))
     }
   }
 
@@ -375,6 +379,10 @@ export default class Payment extends React.Component {
     this.setState({showPassword : !this.state.showPassword})
   }
 
+  resetPasswordError = () => {
+    this.props.dispatch(exchangeActions.throwPassphraseError(""))
+  }
+  
   render() {
 
     var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
@@ -524,11 +532,14 @@ export default class Payment extends React.Component {
                    autoFocus
                    autoComplete="off"
                    spellCheck="false"
+                   onKeyPress={this.resetPasswordError}
                     />
                    <div className="import-account-content__private-key-toggle" onClick={this.toogleShowPassword}></div>
                   <div className="import-account-content__private-key-icon"></div>
                </div>
-               
+               {this.props.exchange.passwordError !== "" && (
+                 <div className="error-password">{this.props.exchange.passwordError}</div>
+               )}
                </div>
 
             )}

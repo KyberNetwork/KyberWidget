@@ -193,7 +193,7 @@ function* doTxFail(ethereum, account, e) {
     error = translate("error.broadcast_tx", {link: link}) || "Potentially Failed! We likely couldn't broadcast the transaction to the blockchain. Please check on Etherscan to verify."
   }
   yield put(actions.setBroadcastError(error))
-  yield put(updateAccount(ethereum, account))
+  //yield put(updateAccount(ethereum, account))
 }
 
 

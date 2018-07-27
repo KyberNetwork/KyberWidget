@@ -82,10 +82,10 @@ export function thowErrorRate(message) {
   }
 }
 
-export function goToStep(step) {
+export function goToStep(step, oldStep) {
   return {
     type: "EXCHANGE.GO_TO_STEP",
-    payload: step
+    payload: {step, oldStep}
   }
 }
 

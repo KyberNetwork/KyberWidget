@@ -112,9 +112,16 @@ const account = (state=initState, action) => {
     
     case "EXCHANGE.GO_TO_STEP": {
       let newState = {...state}
-      var step = action.payload
-      if (step !== 3){
+      var {step, oldStep} = action.payload
+      if (step === 2 && oldStep === 3){
         newState.account = false
+        newState.choosenImportAccount = false
+        newState.wallet = {
+          index: '',
+          address: '',
+          balance: '',
+          type: ''
+        }
       }
       return newState
     }
