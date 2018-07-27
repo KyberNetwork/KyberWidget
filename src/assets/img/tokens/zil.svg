@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>zil</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="IOS?-(for-Mike-Le)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-2-Copy" transform="translate(-216.000000, -73.000000)">
+            <g id="zil" transform="translate(216.000000, 73.000000)">
+                <circle id="Oval-3" stroke="#298E97" fill="#FFFFFF" cx="14" cy="14" r="13.5"></circle>
+                <g transform="translate(7.000000, 5.000000)" fill-rule="nonzero" id="g3766">
+                    <g>
+                        <polygon id="polygon3768" fill="#49C1BF" points="10.1276574 6.35466966 0.0455395589 1.23598055 0.0455395589 4.04080958 6.98135422 7.56220875 0.0455395589 11.1376596 0.0455395589 13.9425529 10.1276574 19.0612421 10.1276574 16.2563487 3.31970616 12.7998758 10.1276574 9.15962738"></polygon>
+                        <polygon id="polygon3770" fill="#298E97" points="10.1276574 6.36650954 12.7464556 5.13323158 12.7464556 7.90916872 10.1276574 9.14238234"></polygon>
+                        <polygon id="polygon3772" fill="#298E97" points="10.1276574 19.060856 12.7464556 17.8329188 12.7464556 9.2596229 10.1276574 10.48756"></polygon>
+                        <polygon id="polygon3774" fill="#077A8F" points="2.68190913 0.0234223719 0.0455395589 1.23598055 0.0845734665 1.25579948 10.1276574 6.36650954 12.7464556 5.13323158"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,139 @@
+
+
+.payment_confirm{
+    //padding: 1rem;
+    padding: 30px 25px;
+    padding-bottom: 3rem;
+
+    .account-item{
+        display: flex;
+        align-items: center;
+        // justify-content: space-between;
+        color: #666;
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #FCFCFE;
+        box-shadow: 0 2px 6px 0 hsla(0,0%,72%,.5);
+        .account-bgk{
+            text-align: center;
+            .text{
+                margin-top: 10px;
+            }
+        }
+        .account-info{
+            padding-left: 20px;
+            font-size: 15px;
+            .info-row{                
+                &.address-info{
+                    margin-bottom: 5px;
+                }
+                >span{
+                    &:first-child{
+                        display: inline-block;
+                        width: 70px;
+                    }
+                }
+            }
+            // .two-balance{
+            //     >span{
+            //         &:first-child{
+            //      margin-right: 5px;
+            //         }
+            //     }
+            // }
+        }
+    }
+    &.error{
+        .confirm-btn{
+            opacity: 0.6;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+        .error-message{
+            color: #f1637d;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        // .approve-intro{
+        //     display: none;
+        // }
+    }
+    .approve-intro{
+        color: #999;
+        font-size: 13px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+    .payment-info{
+        margin-top: 30px;
+        font-size: 14px;
+        .title{
+            color: #222;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        .content{
+            color: #666;
+            >div{
+                margin-top: 7px;
+                >span{
+                    &:first-child{
+                        display: inline-block;
+                        width: 140px;
+                    }
+                }
+            }
+        }
+    }
+
+    .payment-bottom{
+        margin-top: 40px;
+        #import-account{
+            padding-top: 0;
+            margin-bottom: 25px;
+        }
+        .error-password{
+            color: #f1637d;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        .password{
+            input{
+                width: 100%;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 10px;
+                font-size: 18px;
+                height: 45px;
+                margin-bottom: 25px;
+            }
+        }
+        .control-btn{
+            display: flex;
+            justify-content: space-between;
+            a{
+                display: block;
+                text-align: center;
+                padding: 12px 0;
+                font-size: 18px;
+                width: 140px;
+                border-radius: 5px;
+                &.back-btn{
+                    border: 2px solid #999999;
+                    
+                    color: #666;
+                }
+                &.confirm-btn{
+                    background: #31CB9E;
+                    color: white;
+                    &.disable{
+                        cursor: initial;
+                        pointer-events: none;
+                        opacity: 0.8;
+                    }
+                }
+            }
+        }
+    }
+    
+}

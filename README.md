@@ -10,7 +10,7 @@ All you have to do is to place a button with proper url to your website.
 Eg.
 ```
 <a href="javascript:void(0);"
- NAME="KyberPay - Powered by KyberNetwork"  title="Pay by tokens"
+ NAME="KyberPay - Powered by KyberNetwork" title="Pay by tokens"
  onClick=window.open("https://developer.kyber.network/widget/payment?receiveAddr=0xFDF28Bf25779ED4cA74e958d54653260af604C20&receiveAmount=1.2&receiveToken=DAI&callback=https://yourwebsite.com/kybercallback&network=ropsten","Ratting","width=550,height=170,0,status=0");>Pay by tokens</a>
 ```
 
