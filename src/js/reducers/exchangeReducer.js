@@ -118,14 +118,14 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.GO_TO_STEP": {
-      var step = action.payload
+      var {step, oldStep} = action.payload
       if (step === 1){
         var errors = {}
         Object.keys(newState.errors).map(key => {
           errors[key] = ""
         })
       }
-      if ((step === 2) && (newState.step === 3)){
+      if ((step === 2) && (oldStep === 3)){
         newState.validateAccountComplete = false
       }
       newState.errors = {...errors}
@@ -170,7 +170,7 @@ const exchange = (state = initState, action) => {
       newState.confirmApprove = false
       newState.isApproving = false
       newState.isConfirming = false
-      newState.step = 3
+      //newState.step = 3
       return newState
     }
     case "EXCHANGE.RESET_BROADCAST_ERROR": {
@@ -299,7 +299,8 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.THROW_ERROR_PASSPHRASE": {
-      newState.errors.passwordError = action.payload
+      //newState.errors.passwordError = action.payload
+      newState.passwordError = action.payload
       newState.isConfirming = false
       return newState
     }

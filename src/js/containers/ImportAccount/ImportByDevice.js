@@ -193,9 +193,9 @@ export default class ImportByDevice extends React.Component {
 
   getAddress() {
     this.props.dispatch(importNewAccount(
-      this.props.account.currentAddress,
+      this.props.account.wallet.address,
       this.walletType,
-      this.dPath + '/' + this.props.account.currentAddressIndex,
+      this.dPath + '/' + this.props.account.wallet.index,
       this.props.ethereumNode,
       this.props.tokens,
       this.props.screen

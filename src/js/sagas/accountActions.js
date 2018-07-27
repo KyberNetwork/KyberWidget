@@ -9,7 +9,9 @@ import { clearSession, setGasPrice, setBalanceToken } from "../actions/globalAct
 
 import * as exchangeActions from "../actions/exchangeActions"
 
-import { openInfoModal } from '../actions/utilActions'
+import * as utilActions from '../actions/utilActions'
+
+
 import * as common from "./common"
 import * as analytics from "../utils/analytics"
 
