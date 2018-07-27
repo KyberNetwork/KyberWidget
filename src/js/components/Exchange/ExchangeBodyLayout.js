@@ -91,10 +91,9 @@ const ExchangeBodyLayout = (props) => {
               </div>
             )}
 
-         <div className="title main-title">
-            <span className="step">1</span>
-            <span className="text">{props.translate("transaction.choose_your_payment") || "Choose your payment method"}</span>
-        </div>
+            <div className="payment-gateway__step-title payment-gateway__step-title--1">
+              {props.translate("transaction.choose_your_payment") || "Choose your payment method"}
+            </div>
 
             {props.exchange.isHaveDestAmount && (
               <div>

@@ -8,7 +8,7 @@
     .account-item{
         display: flex;
         align-items: center;
-        // justify-content: space-between;
+        justify-content: center;
         color: #666;
         margin-top: 20px;
         padding: 15px;
@@ -16,16 +16,26 @@
         box-shadow: 0 2px 6px 0 hsla(0,0%,72%,.5);
         .account-bgk{
             text-align: center;
+            position: relative;
+            top: 4px;
+
             .text{
-                margin-top: 10px;
+                font-size: 20px;
+                margin: 5px 0 0;
+                font-weight: 600;
+                font-family: $font-cera;
             }
         }
         .account-info{
-            padding-left: 20px;
+            padding-left: 30px;
             font-size: 15px;
-            .info-row{                
+            .info-row{
+                &:last-child {
+                    font-weight: 600;
+                }
+
                 &.address-info{
-                    margin-bottom: 5px;
+                    margin-bottom: 3px;
                 }
                 >span{
                     &:first-child{
@@ -34,13 +44,6 @@
                     }
                 }
             }
-            // .two-balance{
-            //     >span{
-            //         &:first-child{
-            //      margin-right: 5px;
-            //         }
-            //     }
-            // }
         }
     }
     &.error{

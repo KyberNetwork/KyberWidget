@@ -73,9 +73,10 @@ const ImportByDeviceView = (props) => {
         </div>
         {!props.hasError &&
         <div className={"import-account-content__info-text"}>
-          <div className={"import-account-content__info-text-label"}>Address:</div>
-          <div className={"import-account-content__info-text-address"}>{props.wallet.address}</div>
-          <div className={"import-account-content__info-text-balance payment-gateway__color"}>
+          <div className={"import-account-content__info-text-address"}>
+            Address: {props.wallet.address.slice(0, 8)}...{props.wallet.address.slice(-6)}
+          </div>
+          <div className={"import-account-content__info-text-balance"}>
             Balance: {props.wallet.balance} ETH
           </div>
         </div>

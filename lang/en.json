@@ -235,7 +235,7 @@
     "from_private_key_input_title_placehoder": "Enter your private key",
     "connect": "Connect",
     "address": "Address",
-    "metamask_address": "Metamask Address",
+    "metamask_address": "Address",
     "balance": "Balance",
     "import": "Import",
     "swap_from_ledger": "Swap from Ledger",
