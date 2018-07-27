@@ -176,7 +176,6 @@ ul.broadcast-steps {
         }
       }
       .reason{
-        margin-top: 20px;
         a{
           text-decoration: underline;
         }
@@ -258,8 +257,6 @@ ul.broadcast-steps {
     margin-top: 0.9rem !important;
   }
   .broadcast-steps{
-    margin-top: 20px;
-    margin-bottom: 20px;
     text-align: center;
     h4{
       text-align: center;
@@ -268,8 +265,7 @@ ul.broadcast-steps {
     }
     .reason{
       font-weight: normal;
-      color: #EF8102;
-      font-size: 20px;
+      color: $error-color;
       text-align: center;
     }
   }

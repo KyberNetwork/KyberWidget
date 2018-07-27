@@ -182,10 +182,8 @@ function* getInfo(hash) {
 // }
 
 function* doTxFail(ethereum, account, e) {
-  yield put (actions.goToStep(4))
-  
-  console.log("tx failed")
-  console.log({account, e})
+  yield put (actions.goToStep(4));
+
   var error = e
   if (!error){
     var translate = getTranslate(store.getState().locale)

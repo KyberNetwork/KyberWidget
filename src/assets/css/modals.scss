@@ -677,6 +677,10 @@ $divider-color: darken($title-background-color, 5);
         background-image: url($image-path + 'checked-circle-orange.svg');
       }
     }
+
+    .title {
+      margin: 0;
+    }
   }
 
   .content.with-overlap {
@@ -691,7 +695,6 @@ $divider-color: darken($title-background-color, 5);
   }
 
   .tx-loading {
-    padding: 20px 0 60px 0;
     ul.broadcast-steps {
       li.pending {
         h4 {
