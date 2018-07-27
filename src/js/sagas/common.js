@@ -41,6 +41,7 @@ export function* submitCallback(hash){
     console.log("submit_hash: " + hash)
     var state = store.getState()
     var exchange = state.exchange
+    var global = state.global
     if (exchange.callback){
       var submitUrl = exchange.callback 
       var params = {
@@ -48,7 +49,7 @@ export function* submitCallback(hash){
       }
       if (exchange.paramForwarding === true || exchange.paramForwarding === 'true'){
         Object.keys(global.params).map(key=>{
-          if (key !== tx){
+          if (key !== "tx"){
             params[key] = global.params[key]
           }
         })
