@@ -1,53 +1,88 @@
-# KyberSwap: Instantly Convert Your Tokens
-KyberSwap allows users to directly interact with Kyber's decentralized liquidity network and instantly swap/ trade their tokens.
-You can see a walkthrough on Youtube [here](https://www.youtube.com/watch?v=v2bdcChFEuQ).
+# KyberWidget
+Payment button (widget) to allow users to pay for goods from tokens supported by Kyber, yet the merchants/ vendors can accept in whichever token they prefer.
 
-## Live deployment
-We deployed the [Testnet version](https://github.com/KyberNetwork/KyberWallet/releases/tag/v0.1.0) of the wallet at [https://ropsten.kyber.network/](https://ropsten.kyber.network/). Any other websites that claims to be Kyber Swap is fake and might contain malicious scripts to scam or steal your assets.
+## What does it do
+The widget provides a friendly and convenient user interface for users to use ERC20 tokens to pay to an ETH address. Users can use different wallets of choice (for example, keystore, trezor, ledger, private key and metamask) to sign the transaction and make the payment, the widget will broadcast the transaction to the Ethereum network automatically and notify the app (vendors) about the transaction.
 
-## Install dependencies
-The wallet is developed on `Nodejs`, we assume users have it installed in their environment. *We suggest to use Node v7.3.0*
-```
-npm install
-npm install web3@1.0.0-beta.18 
-```
-We have the second install command due to web3 is unstable now
+## How to use the widget
+All you have to do is to place a button with proper url to your website.
 
-## Run in development mode (kovan chain)
+Eg.
 ```
-npm run dev
-```
-Or
-```
-npm run kovan
-```
-Once it is running, user can access to the wallet by going to `http://localhost:3000`
-
-## For server side to cache rate and history of KyberSwap
- ```
-npm run server --chain=[option_chain] --port=[option_port]  --init=[option_delete_db]
+<a href="javascript:void(0);"
+ NAME="KyberPay - Powered by KyberNetwork" title="Pay by tokens"
+ onClick=window.open("https://developer.kyber.network/widget/payment?receiveAddr=0xFDF28Bf25779ED4cA74e958d54653260af604C20&receiveAmount=1.2&receiveToken=DAI&callback=https://yourwebsite.com/kybercallback&network=ropsten","Ratting","width=550,height=170,0,status=0");>Pay by tokens</a>
 ```
 
-Option_chain default is kovan, option_port default is 3001, option_delete_db default is false .
+With that button, when a user click on it, a new window will pop up allowing him/her to do the payment. In this example, we *passed several params to the widget via its url*:
 
-After running server, please edit history_enpoint in /env/config-env/kovan.json. For example: `http:localhost:3001`
-
-You can also run cached server with docker
 ```
-docker build . -t kyber/server
-docker run -p 3001:3001 kyber/server
+https://developer.kyber.network/widget/payment?receiveAddr=0xFDF28Bf25779ED4cA74e958d54653260af604C20&receiveAmount=1.2&receiveToken=DAI&callback=https://yourwebsite.com/kybercallback
 ```
 
+that helps users to pay `1.2 DAI` equivalent amount of supported tokens (list of supported token will be given at the end of this Readme) to `0xFDF28Bf25779ED4cA74e958d54653260af604C20` (vendor's wallet), after the tx is broadcasted to the network, informations will be submitted to the callback url `https://yourwebsite.com/kybercallback`.
 
-## Build production app
-```
-npm run build-mainnet
-```
+## Params to pass to the Widget
+In this version, we only support the widget via a new browser windows thus we can pass params via its url as url query params.
+The widget supports following params:
+- ***receiveAddr*** (ethereum address with 0x prefix) - **required** - vendor's Ethereum wallet, user's payment will be sent there. *Must double check this param very carefully*.
+- ***receiveToken*** (string) - **required** - token that you (vendor) want to receive, it can be one of supported tokens (such as ETH, DAI, KNC...).
+- ***receiveAmount*** (float) - the amount of `receiveToken` you (vendor) want your user to pay. If you leave it blank or missing, the users can specify it in the widget interface. It could be useful for undetermined payment or pay-as-you-go payment like a charity, ICO or anything else.
+- ***callback*** (string) - missing or blank value will prevent the widget to call the callback, the information will not be informed anywhere.
+- ***network*** (string) - default: `ropsten`, ethereum network that the widget will run. Possible value: `test, ropsten, production, mainnet`.
+- ***paramForwarding*** (bool) - default: `true`, if it is true, all params that were passed to the widget will be submitted via the `callback`. It is useful that you can give your user a secret token (ideally one time token) to pass to the callback just so you know the callback is not coming from a malicious actor.
+- ***signer*** (string) - concatenation of a list of ethereum address by underscore `_`, eg. 0xFDF28Bf25779ED4cA74e958d54653260af604C20_0xFDF28Bf25779ED4cA74e958d54653260af604C20 - If you pass this param, the user will be forced to pay from one of those addresses.
+- ***commissionID*** - Ethereum address - your Ethereum wallet to get commission of the fees for the transaction. Your wallet must be whitelisted by KyberNetwork (the permissionless registration will be available soon) in order to get the commission, otherwise it will be ignored.
 
-## Code structure
-This repository is using `Reactjs` and `Redux` and following their naming conventions. Source code of the wallet is in `src`. Most of the logic is in `src/js`.
-
-## Migrate media data
-```
-bundle exec rake master_data:media_post
-```
+## Supported tokens
+- OMG
+- KNC
+- SNT
+- ELF
+- POWR
+- MANA
+- BAT
+- REQ
+- GTO
+- RDN
+- APPC
+- ENG
+- SALT
+- BQX
+- ADX
+- AST
+- RCN
+- ZIL
+- DAI
+- LINK
+- IOST
+- STORM
+- MOT
+- DGX
+- ABT
+- ENJ
+- AION
+- AE
+- BLZ
+- PAL
+- ELEC
+- BBO
+- POLY
+- LBA
+- EDU
+- CVC
+- WAX
+- SUB
+- POE
+- PAY
+- CHAT
+- DTA
+- BNT
+- TUSD
+- TOMO
+- MDS
+- LEND
+- WINGS
+- MTL
+- WABI
+- ETH
