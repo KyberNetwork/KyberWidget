@@ -18,19 +18,19 @@ import { store } from '../store'
 import BLOCKCHAIN_INFO from "../../../env"
 import bowser from 'bowser'
 
-function* broadCastTx(action) {
-  const { ethereum, tx, account, data } = action.payload
-  try {
-    yield put(actions.prePareBroadcast())
-    const hash = yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", tx)
-    yield call(runAfterBroadcastTx, ethereum, tx, hash, account, data)
+// function* broadCastTx(action) {
+//   const { ethereum, tx, account, data } = action.payload
+//   try {
+//     yield put(actions.prePareBroadcast())
+//     const hash = yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", tx)
+//     yield call(runAfterBroadcastTx, ethereum, tx, hash, account, data)
     
-  }
-  catch (e) {
-    console.log(e)
-    yield call(doTransactionFail, ethereum, account, e.message)
-  }
-}
+//   }
+//   catch (e) {
+//     console.log(e)
+//     yield call(doTransactionFail, ethereum, account, e.message)
+//   }
+// }
 
 function* approveTx(action) {
   try {
@@ -95,6 +95,8 @@ export function* estimateGasUsed(source, dest){
 
 
 export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
+  
+  yield put (actions.goToStep(4))
 
   try {
     yield call(getInfo, hash)
@@ -123,7 +125,7 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   yield put(actions.finishExchange())
   yield put(actions.resetSignError())
 
-
+  
   // try{
   //   var state = store.getState()
   //   var notiService = state.global.notiService
@@ -169,17 +171,19 @@ function* getInfo(hash) {
 }
 
 
-function* doTransactionFail(ethereum, account, e) {
-  yield put(actions.doTransactionFail(e))
-  yield put(updateAccount(ethereum, account))
-}
+// function* doTransactionFail(ethereum, account, e) {
+//   yield put(actions.doTransactionFail(e))
+//   yield put(updateAccount(ethereum, account))
+// }
 
-function* doApproveTransactionFail(ethereum, account, e) {
-  yield put(actions.doApprovalTransactionFail(e))
-  yield put(updateAccount(ethereum, account))
-}
+// function* doApproveTransactionFail(ethereum, account, e) {
+//   yield put(actions.doApprovalTransactionFail(e))
+//   yield put(updateAccount(ethereum, account))
+// }
 
 function* doTxFail(ethereum, account, e) {
+  yield put (actions.goToStep(4))
+  
   console.log("tx failed")
   console.log({account, e})
   var error = e
@@ -1545,7 +1549,7 @@ export function* initParamsToken(action){
 
 
 export function* watchExchange() {
-  yield takeEvery("EXCHANGE.TX_BROADCAST_PENDING", broadCastTx)
+  //yield takeEvery("EXCHANGE.TX_BROADCAST_PENDING", broadCastTx)
   yield takeEvery("EXCHANGE.APPROVAL_TX_BROADCAST_PENDING", approveTx)
 
   yield takeEvery("EXCHANGE.PROCESS_EXCHANGE", processExchange)

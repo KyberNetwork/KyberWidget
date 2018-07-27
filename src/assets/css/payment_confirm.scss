@@ -88,6 +88,10 @@
 
     .payment-bottom{
         margin-top: 40px;
+        #import-account{
+            padding-top: 0;
+            margin-bottom: 25px;
+        }
         .password{
             input{
                 width: 100%;
@@ -117,6 +121,11 @@
                 &.confirm-btn{
                     background: #31CB9E;
                     color: white;
+                    &.disable{
+                        cursor: initial;
+                        pointer-events: none;
+                        opacity: 0.8;
+                    }
                 }
             }
         }

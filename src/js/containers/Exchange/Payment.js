@@ -71,7 +71,12 @@ function getKeyService(type) {
 
 
 export default class Payment extends React.Component {
-
+  constructor(){
+    super()
+    this.state = {
+      showPassword: false
+    }
+  }
 
   reImportAccount = () => {
     this.props.dispatch(exchangeActions.goToStep(2))
@@ -365,6 +370,11 @@ export default class Payment extends React.Component {
     }
   }
 
+
+  toogleShowPassword = () => {
+    this.setState({showPassword : !this.state.showPassword})
+  }
+
   render() {
 
     var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
@@ -384,6 +394,11 @@ export default class Payment extends React.Component {
     if (validators.anyErrors(this.props.exchange.errors)){
       classError += " error"
       isHaveError = true
+    }
+    
+    var classDisable = ""
+    if (!this.props.exchange.validateAccountComplete){
+      classDisable += " disable"
     }
     return (
       <div id="exchange" className={"frame payment_confirm" + classError}>        
@@ -497,18 +512,34 @@ export default class Payment extends React.Component {
               </div>
             )}
           {this.props.account.type === "keystore" && (
-              <div className="password">
-                <input id="passphrase" type="password" placeholder="password"/>
-              </div>
+            <div id="import-account">
+              {/* <div className="password">
+                <input id="passphrase" type="password" placeholder="password"/>                  
+              </div> */}
+               <div className="import-account-content__private-key">
+               <input
+                   className={this.state.showPassword ?"import-account-content__private-key-input": "import-account-content__private-key-input security"} 
+                   id="passphrase"
+                   type="text"                                  
+                   autoFocus
+                   autoComplete="off"
+                   spellCheck="false"
+                    />
+                   <div className="import-account-content__private-key-toggle" onClick={this.toogleShowPassword}></div>
+                  <div className="import-account-content__private-key-icon"></div>
+               </div>
+               
+               </div>
+
             )}
           <div className="control-btn">
             <a className="back-btn" onClick={this.reImportAccount}>Back</a>
             {this.props.exchange.isNeedApprove && (
-              <a className="confirm-btn" onClick={this.approveToken}>Approve</a>
+              <a className={"confirm-btn" + classDisable} onClick={this.approveToken}>Approve</a>
             )}
 
             {!this.props.exchange.isNeedApprove && (
-              <a className="confirm-btn" onClick={this.payment}>Payment</a>
+              <a className={"confirm-btn" + classDisable} onClick={this.payment}>Payment</a>
             )}
           </div>
 

@@ -212,6 +212,22 @@ function* checkBalance(address){
   }
 }
 
+function* checkSigner(address){
+  var state = store.getState()
+  var exchange = state.exchange
+  const translate = getTranslate(state.locale)
+  
+  if (exchange.signer){
+    var listAddr = exchange.signer.split("_")
+    for (var i = 0; i< listAddr.length; i++){
+      if (address.toLowerCase() === listAddr[i].toLowerCase()){
+        return
+      }
+    }
+    yield put(exchangeActions.throwErrorExchange("signer_invalid", translate("error.signer_invalid") || "You access an invalid address"))    
+  }
+}
+
 function* createNewAccount(address, type, keystring, ethereum) {
   try {
     const account = yield call(service.newAccountInstance, address, type, keystring, ethereum)
@@ -253,7 +269,7 @@ export function* importNewAccount(action) {
     // const account = yield call(service.newAccountInstance, address, type, keystring, ethereum)
     yield put(actions.closeImportLoading())
     yield put(actions.importNewAccountComplete(account))
-
+    yield put(exchangeActions.goToStep(3))
 
     //track login wallet
     analytics.loginWallet(type)
@@ -269,11 +285,14 @@ export function* importNewAccount(action) {
     //check whether user need approve
     yield call(checkApproveAccount, address, type)
 
-    yield put(exchangeActions.goToStep(3))
-
     yield call(checkMaxCap, address)
 
     yield call(checkBalance, address)
+
+    yield call(checkSigner, address)
+
+
+    yield put(exchangeActions.validateAccountComplete())
 
     //    yield put(goToRoute(constants.BASE_HOST + '/swap'))
 

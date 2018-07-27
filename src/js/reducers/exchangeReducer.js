@@ -119,11 +119,14 @@ const exchange = (state = initState, action) => {
     }
     case "EXCHANGE.GO_TO_STEP": {
       var step = action.payload
-      if (newState.step === 1){
+      if (step === 1){
         var errors = {}
         Object.keys(newState.errors).map(key => {
           errors[key] = ""
         })
+      }
+      if ((step === 2) && (newState.step === 3)){
+        newState.validateAccountComplete = false
       }
       newState.errors = {...errors}
       newState.step = step
@@ -616,6 +619,10 @@ const exchange = (state = initState, action) => {
       var errors = {...newState.errors}
       errors[key] = val
       newState.errors = {...errors}
+      return newState
+    }
+    case "EXCHANGE.VALIDATE_ACCOUNT_COMPLETE":{
+      newState.validateAccountComplete = true
       return newState
     }
     case "GLOBAL.CLEAR_SESSION_FULFILLED":{

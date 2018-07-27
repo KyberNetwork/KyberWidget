@@ -1,5 +1,8 @@
 import { take, put, call, fork, select, takeEvery, all } from 'redux-saga/effects'
 import * as actions from '../actions/transferActions'
+
+import * as exchangeActions from '../actions/exchangeActions'
+
 import * as utilActions from '../actions/utilActions'
 import constants from "../services/constants"
 import * as converter from "../utils/converter"
@@ -31,6 +34,7 @@ function* broadCastTx(action) {
 
 export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
 
+  yield put (exchangeActions.goToStep(4))
   //track complete trade
   analytics.trackCoinTransfer(data.tokenSymbol)
   analytics.completeTrade(hash, "kyber", "transfer")
@@ -44,9 +48,9 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   yield put(incManualNonceAccount(account.address))
   yield put(updateAccount(ethereum, account))
   yield put(addTx(tx))
-  yield put(actions.doTransactionComplete(hash))
-  yield put(actions.finishTransfer())
-  
+  yield put(exchangeActions.doTransactionComplete(hash))
+  yield put(exchangeActions.finishExchange())
+  yield put(exchangeActions.resetSignError())
   // try{
   //   var state = store.getState()
   //   var notiService = state.global.notiService
@@ -63,7 +67,8 @@ function* doTransactionFail(ethereum, account, e) {
 }
 
 function* doTxFail(ethereum, account, e) {
-  yield put(actions.setBroadcastError(e))
+  yield put (exchangeActions.goToStep(4))
+  yield put(exchangeActions.setBroadcastError(e))
   yield put(updateAccount(ethereum, account))
 }
 
