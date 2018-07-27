@@ -34,6 +34,10 @@
     <link rel="shortcut icon" href="favicon.png" type="image/png">    
     <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.otherFile %>">
 
+    <link rel="stylesheet" href="foundation-float.min.css">
+    <link rel="stylesheet" href="foundation-prototype.min.css">
+    
+
   
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
