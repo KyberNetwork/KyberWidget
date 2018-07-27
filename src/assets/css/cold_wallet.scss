@@ -77,8 +77,10 @@
               padding-right: 35px;
 
               >div {
+                display: block;
                 color: #232323;
               }
+
               div:nth-child(2) {
                 color: #bbb;
               }
