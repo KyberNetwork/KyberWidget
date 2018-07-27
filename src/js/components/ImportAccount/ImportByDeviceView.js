@@ -68,7 +68,7 @@ const ImportByDeviceView = (props) => {
             className={"import-account-content__info-type-image"}
             src={require(`../../../assets/img/landing/${props.walletType}_active.svg`)}/>
           <div className={"import-account-content__info-type-text"}>
-            {props.translate("import.from_ledger") || "LEDGER"}
+            {props.translate(`import.from_${props.walletType}`) || "DEVICE"}
           </div>
         </div>
         {!props.hasError &&
