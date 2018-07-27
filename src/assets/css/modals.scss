@@ -645,6 +645,11 @@ $divider-color: darken($title-background-color, 5);
   }
 }
 .transaction-loading {
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px 0 rgba(184, 184, 184, 0.5);
+  display: inline-block;
+  margin: 50px auto 0;
+
   .title {
     font-weight: 600;
     line-height: 0.8;
@@ -656,7 +661,7 @@ $divider-color: darken($title-background-color, 5);
     .icon {
       width: 100px;
       height: 100px;
-      margin: 0 auto 25px;
+      margin: 0 auto 15px;
       background-size: contain;
       background-repeat: no-repeat;
 
@@ -672,25 +677,24 @@ $divider-color: darken($title-background-color, 5);
         background-image: url($image-path + 'checked-circle-orange.svg');
       }
     }
+
     .title {
-      margin-top: 12px;
-      margin-bottom: -15px;
+      margin: 0;
     }
   }
+
   .content.with-overlap {
-    @include screen-min-width(medium) {
-      padding-left: 4rem;
-      padding-right: 4rem;
-    }
+    margin-bottom: 20px;
   }
+
   .final-status {
     text-align: center;
     font-size: 23px;
     margin-top: 40px;
     margin-bottom: 15px;
   }
+
   .tx-loading {
-    padding: 20px 0 60px 0;
     ul.broadcast-steps {
       li.pending {
         h4 {
@@ -706,6 +710,16 @@ $divider-color: darken($title-background-color, 5);
     .tx-title-text, .tx-hash {
       margin-right: 0;
     }
+  }
+
+  &-container {
+    text-align: center;
+  }
+
+  &__button-container {
+    padding: 40px;
+    text-align: center;
+    background-color: #f5f5f5;
   }
 }
 

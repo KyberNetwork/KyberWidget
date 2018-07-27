@@ -16,6 +16,8 @@ import Tx from "../services/tx"
 import { updateAccount, incManualNonceAccount } from '../actions/accountActions'
 import { addTx } from '../actions/txActions'
 import { store } from "../store"
+import {getTranslate} from "react-localize-redux/lib/index";
+import BLOCKCHAIN_INFO from "../../../env";
 
 function* broadCastTx(action) {
   const { ethereum, tx, account, data } = action.payload
@@ -68,7 +70,15 @@ function* doTransactionFail(ethereum, account, e) {
 
 function* doTxFail(ethereum, account, e) {
   yield put (exchangeActions.goToStep(4))
-  yield put(exchangeActions.setBroadcastError(e))
+
+  let error = e;
+  if (!error){
+    var translate = getTranslate(store.getState().locale);
+    var link = BLOCKCHAIN_INFO.ethScanUrl + "address/" + account.address;
+    error = translate("error.broadcast_tx", {link: link}) || "Potentially Failed! We likely couldn't broadcast the transaction to the blockchain. Please check on Etherscan to verify."
+  }
+
+  yield put(exchangeActions.setBroadcastError(error))
   yield put(updateAccount(ethereum, account))
 }
 
