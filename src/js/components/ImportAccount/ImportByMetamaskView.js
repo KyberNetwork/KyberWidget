@@ -18,8 +18,9 @@ const ImportByMetamaskView = (props) => {
             {props.metamask.error === "" && (
               <div className="info">
                 <div className="address">
-                  <div>{props.translate("import.metamask_address") || "Metamask Address"}:</div>
-                  <div>{props.metamask.address.slice(0, 8)}...{props.metamask.address.slice(-6)}</div>
+                  <div>
+                    {props.translate("import.metamask_address") || "Address"}: {props.metamask.address.slice(0, 8)}...{props.metamask.address.slice(-6)}
+                  </div>
                 </div>
                 <div className="importer__balance payment-gateway__color">
                   {props.translate("import.balance") || "Balance"}: {props.metamask.balance} ETH

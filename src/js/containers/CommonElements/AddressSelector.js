@@ -28,7 +28,9 @@ export default class AddressSelector extends React.Component {
           key={index}
           className={'address-selector__item payment-gateway__checkmark-after ' + (address.addressString === this.props.wallet.address ? 'address-selector__item--active' : '')}
           onClick={() => this.setWallet(address.index, address.addressString, roundingNumber(address.balance))}>
-            <div className={"address-selector__item-address"}>{address.addressString}</div>
+            <div className={"address-selector__item-address"}>
+              {address.addressString.slice(0, 20)}...{address.addressString.slice(-6)}
+            </div>
             <div className={"address-selector__item-balance"}>
               {address.balance == '-1' ?
                 <img src={require('../../../assets/img/waiting-white.svg')} />

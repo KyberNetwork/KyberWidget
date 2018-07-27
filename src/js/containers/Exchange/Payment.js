@@ -411,9 +411,8 @@ export default class Payment extends React.Component {
     return (
       <div id="exchange" className={"frame payment_confirm" + classError}>        
 
-        <div className="title main-title">
-          <span className="step">3</span>
-          <span className="text">{this.props.translate("transaction.confirm_transaction") || "Confirm Transaction"}</span>
+        <div className="payment-gateway__step-title payment-gateway__step-title--3">
+          {this.props.translate("transaction.confirm_transaction") || "Confirm Transaction"}
         </div>
 
         <div className="account-item">
