@@ -84,7 +84,7 @@
         document.querySelectorAll(".btn-copy").forEach(function (btn){
             btn.addEventListener('click', function(){
                 if (!copyClipboard(this.getAttribute("data-copy-target"))) {
-                    alert("Copy failed. Please use browser's coy feature instead.");
+                    alert("Copy failed. Please use browser's copy feature instead.");
                 }
             })
         });
@@ -104,12 +104,12 @@
         var url = widgetBaseUrl + "?" + formData.data;
         var tagHtml = "<a href='javascript:void(0);' class='_kyberpay-widget'\n";
         tagHtml += "name='KyberPay - Powered by KyberNetwork' title='Pay by tokens'\n";
-        tagHtml += "onclick='window.open(\"" + url + "\",\"kyberpay\",\"width=600,height=800,menubar=0,status=0\");'>Pay by tokens</a>";
+        tagHtml += "onclick='window.open(\"" + url + "\");'>Pay by tokens</a>";
 
         document.getElementById("widget").innerHTML = tagHtml;
         document.getElementById("sourceHtml").value = tagHtml;
         document.getElementById("sourceCss").value = document.getElementById("widget_style").innerHTML.trim();
-    }, 50, true);
+    }, 50, false);
 
 
     generateTag();
