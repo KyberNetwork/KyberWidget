@@ -26,45 +26,35 @@
   }
 }
 .pay-info{
-  >div{
-    margin-top: 10px;
-  }
   .info-1 {
-    margin-top: 20px;
-    font-family: $font-cera;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 20px 0 5px;
     letter-spacing: -0.2px;
     color: #222222;
+    text-transform: uppercase;
   }
 
   .info-2 {
-    font-size: 13px;
-    color: #999;
-    >div{
-      >span{
-        &:first-child{
-          display: inline-block;
-          margin-right: 10px;
-          font-weight: 600;
-        }
+    font-size: 14px;
+
+    &__content {
+      display: flex;
+
+      div:first-child {
+        width: 75px;
       }
     }
-  }
-
-  .info-3 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #666666;
   }
 }
 
 .choose-payment {
-  margin-top: 10px;
+  margin-top: 18px;
 
   .transaction-label {
     font-size: 14px;
     font-weight: 600;
-    color: #787878;
+    color: #222;
   }
 }
 
@@ -96,7 +86,6 @@
       }
 
       &:last-child {
-        margin-top: 5px;
         font-size: 20px;
         font-weight: 600;
       }
@@ -114,7 +103,7 @@
   }
 
   .rate-token {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     color: #666666;
   }
@@ -140,49 +129,28 @@
 
   .accent {
     line-height: 55px;
-    padding: 0 50px;
+    padding: 0 25px;
     background: #31CB9E;
-    font-size: 20px;
-    font-weight: 600;
     text-transform: unset;
     border-radius: 4px;
-    margin-top: 20px;
+    margin: 10px 0 25px;
     float: right;
+    font-size: 18px;
+    font-weight: 600;
   }
 
   .token-compare {
     color: #666666;
     font-size: 14px;
     letter-spacing: .5px;
-    text-align: center;
+    text-align: left;
     margin-bottom: 10px;
     margin-top: 1rem;
     font-weight: 600;
 
     .seperator{
       display: none;
-      // @include screen-max-width(large) {
-      //   display: none;
-      // }
     }
-
-
-    // @include screen-min-width(large) {
-    //   width: 450px;
-    //   margin: 0 auto;
-    //   margin-top: 1rem;
-    // }
-    text-align: left;      
-    // @include screen-max-width(large) {
-    //   text-align: left;      
-    // }
-    // div:first-child {
-    //   text-align: right;
-    // }
-
-    // div:nth-child(3) {
-    //   text-align: left;
-    // }
   }
 
   .show-on-choose-token-pair {
