@@ -58,13 +58,14 @@ function getKeyService(type) {
   const translate = getTranslate(store.locale)
   const tokens = store.tokens.tokens
   const exchange = store.exchange
+  const transfer = store.transfer
   const snapshot = store.exchange.snapshot
   const ethereum = store.connection.ethereum
 
   const keyService = getKeyService(account.type)
 
   return {
-    translate, exchange, tokens, account, ethereum, keyService, snapshot
+    translate, exchange, transfer, tokens, account, ethereum, keyService, snapshot
 
   }
 })
@@ -381,6 +382,7 @@ export default class Payment extends React.Component {
 
   resetPasswordError = () => {
     this.props.dispatch(exchangeActions.throwPassphraseError(""))
+    this.props.dispatch(transferActions.throwPassphraseError(""))
   }
   
   render() {
@@ -508,9 +510,6 @@ export default class Payment extends React.Component {
           </div>
         </div>
 
-
-        
-
         <div className="payment-bottom">
           {this.props.exchange.isNeedApprove && (
               <div className="approve-intro">                 
@@ -523,7 +522,7 @@ export default class Payment extends React.Component {
               {/* <div className="password">
                 <input id="passphrase" type="password" placeholder="password"/>                  
               </div> */}
-               <div className="import-account-content__private-key">
+               <div className={"import-account-content__private-key" + (this.state.showPassword ? ' unlock' : '')}>
                <input
                    className={this.state.showPassword ?"import-account-content__private-key-input": "import-account-content__private-key-input security"} 
                    id="passphrase"
@@ -536,8 +535,10 @@ export default class Payment extends React.Component {
                    <div className="import-account-content__private-key-toggle" onClick={this.toogleShowPassword}></div>
                   <div className="import-account-content__private-key-icon"></div>
                </div>
-               {this.props.exchange.passwordError !== "" && (
-                 <div className="error-password">{this.props.exchange.passwordError}</div>
+               {(this.props.exchange.errors.passwordError || this.props.transfer.errors.passwordError) && (
+                 <div className="error-password">
+                   {this.props.exchange.errors.passwordError ? this.props.exchange.errors.passwordError : this.props.transfer.errors.passwordError}
+                 </div>
                )}
                </div>
 
