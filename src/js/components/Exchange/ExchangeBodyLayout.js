@@ -99,7 +99,7 @@ const ExchangeBodyLayout = (props) => {
               <div>
                 <div className="pay-info">
                   <div className="info-1">
-                    {props.translate("transaction.you_about_pay") || "You are about to pay"}
+                    {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
                   </div> 
                   <div className="info-2">
                     {/* <div>
@@ -127,7 +127,7 @@ const ExchangeBodyLayout = (props) => {
                       {props.tokenSourceSelect}
 
                       <div className="amount-pay">
-                        <div>Estimate value you should pay</div>
+                        <div>{props.translate("transaction.estimate_value_should_pay") || "Estimate value you should pay"}</div>
                         <div>
                           {converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)} {props.exchange.sourceTokenSymbol} 
                         </div>
@@ -145,7 +145,7 @@ const ExchangeBodyLayout = (props) => {
            <div>            
               <div className="pay-info">
                 <div className="info-1">
-                  You are about to pay
+                {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
                 </div>
                 <div className="info-2">
                   {/* <div>
@@ -153,7 +153,7 @@ const ExchangeBodyLayout = (props) => {
                     <span>kyber.network</span>
                   </div> */}
                   <div>
-                    <span>Address:</span>
+                    <span>{props.translate("transaction.address") || "Address"}:</span>
                     <span>
                       {props.exchange.receiveAddr.slice(0, 8)} ... {props.exchange.receiveAddr.slice(-6)}
                     </span>
@@ -197,7 +197,7 @@ const ExchangeBodyLayout = (props) => {
                 </div>
                 {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
                   <div className="estimate-dest-value">
-                    Estimate dest value: {converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}
+                    {props.translate("transaction.estimate_dest_value") || "Estimate dest value"}: {converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}
                   </div>
                 )}
               </div>
@@ -214,7 +214,7 @@ const ExchangeBodyLayout = (props) => {
             <div class="checkbox">
               <input id="term-agree" type="checkbox" onChange={props.acceptedTerm}/>
               <label for="term-agree">
-                I agree to <a href="https://files.kyber.network/tac.html" target="_blank">Terms &amp; Conditions</a>
+              {props.translate("transaction.i_agree_to") || "I agree to"} <a href="https://files.kyber.network/tac.html" target="_blank">{props.translate("transaction.term_and_condition") || "Terms &amp; Conditions"}</a>
               </label>
             </div>
             

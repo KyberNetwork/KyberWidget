@@ -24,17 +24,33 @@
     "symbol": "SYMBOL",
     "price": "PRICE",
     "your_wallet_address": "Your Wallet Address",
-    "search": "Search"
+    "search": "Search",
+    "balance": "Balance"
   },
 
   "transaction": {
+
+    "choose_your_payment": "Choose your payment method",
+    "exchange_paywith": "PAY WITH",
+    "estimate_value_should_pay": "Estimate value you should pay",
+    "you_about_to_pay": "You are about to pay",
+    "address": "Address",
+    "estimate_dest_value": "Estimate dest value",
+    "i_agree_to": "I agree to",
+    "term_and_condition": "Terms &amp; Conditions",
+    "payment": "Payment",
+    "error": "Error",
+    "back_to_website": "Back to Website",
+    "approve": "Approve",
+    "confirm_transaction": "Confirm Transaction",
+
     "exchange": "Exchange",
     "exchange_from": "From",
     "exchange_to": "To",
 
     "transfer": "Transfer",
     "transfer_to_address": "Transfer to address",
-    "amount": "amount",
+    "amount": "Amount",
     "select_token": "Select token",
 
     "advanced": "Advanced",
@@ -221,7 +237,15 @@
     "exchange_enable":"You have exceeded your daily limit! You might trade again tomorrow at 00:00 UTC+0",
     "min_rate_greater_expected_rate": "Your configured minimal exchange rate is higher than what is recommended by KyberNetwork. Your exchange has high chance to fail",
     "exceed_daily_volumn": "You may want to <a target='_blank' href='${link}'>register with us</a> to have higher trade limits",
-    "broadcast_tx": "Potentially Failed! We likely couldn't broadcast the transaction to the blockchain. Please check on <a target='_blank' href='${link}'>Etherscan</a> to verify."
+    "broadcast_tx": "Potentially Failed! We likely couldn't broadcast the transaction to the blockchain. Please check on <a target='_blank' href='${link}'>Etherscan</a> to verify.",
+    
+    "receive_address_must_be_ethereum_addr": "Receive address must be a valid ethereum address",
+    "receive_token_is_not_support": "Receive token is not supported by kyber",
+    "receive_token_must_be_required": "Receive token must be required",
+    "receive_amount_is_invalid_number": "Receive amount is invalid number",
+    "receive_amount_must_be_positive": "Receive amount must be positive number",
+    "commission_address_must_be_valid": "Commission address must be a valid ethereum address",
+    "signer_include_invalid_address": "Signer include invalid addresses" 
   },
 
   "import": {

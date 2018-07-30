@@ -91,15 +91,18 @@ export default class Layout extends React.Component {
 
     var errors = {}
     if (validator.verifyAccount(receiveAddr)){
-      errors["receiveAddr"] = "Receive address must be a valid ethereum address"
+      errors["receiveAddr"] = this.props.translate('error.receive_address_must_be_ethereum_addr') 
+        || "Receive address must be a valid ethereum address"
     }
     if (receiveToken){
       receiveToken = receiveToken.toUpperCase()
       if (!this.props.tokens[receiveToken]){
-        errors["receiveToken"] = "Receive token is not supported by kyber"
+        errors["receiveToken"] = this.props.translate('error.receive_token_is_not_support') 
+          || "Receive token is not supported by kyber"
       }
     }else{
-      errors["receiveToken"] = "Receive token must be required"
+      errors["receiveToken"] = this.props.translate('error.receive_token_must_be_required') 
+        || "Receive token must be required"
     }
     
 
@@ -108,17 +111,20 @@ export default class Layout extends React.Component {
       // console.log("receive_amount")
       // console.log(receiveAmount)
       if (isNaN(receiveAmount)) {
-        errors["receiveAmount"] = "Receive amount is invalid number"
+        errors["receiveAmount"] = this.props.translate('error.receive_amount_is_invalid_number') 
+          || "Receive amount is invalid number"
       }
       if (receiveAmount <= 0){
-        errors["receiveAmount"] = "Receive amount must be positive number"
+        errors["receiveAmount"] = this.props.translate('error.receive_amount_must_be_positive') 
+          || "Receive amount must be positive number"
       }
     }
 
     
     if (commissionID){
       if (validator.verifyAccount(commissionID)){
-        errors["commissionID"] = "Commission address must be a valid ethereum address"
+        errors["commissionID"] = this.props.translate('error.commission_address_must_be_valid') 
+          || "Commission address must be a valid ethereum address"
       }
     }
 
@@ -132,7 +138,7 @@ export default class Layout extends React.Component {
         }
       })      
       if (invalidAddresses.length > 0){
-        errors["signer"] = "Signer include invalid addresses"
+        errors["signer"] = this.props.translate('error.signer_include_invalid_address') || "Signer include invalid addresses"
       }      
     }
     

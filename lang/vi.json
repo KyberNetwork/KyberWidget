@@ -24,10 +24,26 @@
     "symbol": "MÃ",
     "price": "GIÁ",
     "your_wallet_address": "Địa chỉ ví của bạn",
-    "search": "Tìm kiếm"
+    "search": "Tìm kiếm",
+    "balance": "Số dư"
   },
 
   "transaction": {
+    
+    "choose_your_payment": "Chọn phương thức thanh toán",
+    "exchange_paywith": "THANH TOÁN VỚI",
+    "estimate_value_should_pay": "Ước tính giá trị cần thanh toán",
+    "you_about_to_pay": "Bạn đang thanh toán",
+    "address": "Địa chỉ",
+    "estimate_dest_value": "Ước tính giá trị người nhận nhận được",
+    "i_agree_to": "Tôi đồng ý với",
+    "term_and_condition": "Điều khoản sử dụng",
+    "payment": "Thanh toán",
+    "error": "Lỗi",
+    "back_to_website": "Trở lại trang web",
+    "approve": "Đồng ý",
+    "confirm_transaction": "Xác nhận giao dịch",
+
     "exchange": "TRAO ĐỔI",
     "exchange_from": "Đổi từ",
     "exchange_to": "Đổi sang",
@@ -220,7 +236,15 @@
     "exchange_enable":"Bạn đã giao dịch quá lượng 1 ngày! Bạn có thể giao dịch vào ngày mai tại thời điểm 00:00 UTC+0",
     "min_rate_greater_expected_rate": "Bạn đã chỉnh tỉ giá lớn hơn tỉ giá đề nghị bởi KyberNetwork. Giao dịch của bạn nhiều khả năng thất bại",
     "exceed_daily_volumn": "Bạn có thể phải <a target='_blank' href='${link}'>đăng kí</a> với chúng tôi để có hạn mức giao dịch cao hơn",
-    "broadcast_tx": "Giao dịch có khả năng bị thất bại! Chúng tôi không thể đưa giao dịch của bạn lên blockchain. Vui lòng kiểm tra tại <a target='_blank' href='${link}'>Etherscan</a>"
+    "broadcast_tx": "Giao dịch có khả năng bị thất bại! Chúng tôi không thể đưa giao dịch của bạn lên blockchain. Vui lòng kiểm tra tại <a target='_blank' href='${link}'>Etherscan</a>",
+        
+    "receive_address_must_be_ethereum_addr": "Địa chỉ nhận phải là một địa chỉ Ethereum hợp lệ",
+    "receive_token_is_not_support": "Token nhận được không được hỗ trợ bởi Kyber",
+    "receive_token_must_be_required": "Token nhận được là bắt buộc",
+    "receive_amount_is_invalid_number": "Số lượng token nhận được là một số không hợp lệ",
+    "receive_amount_must_be_positive": "Số lượng token nhận được phải là một số dương",
+    "commission_address_must_be_valid": "Commission address phải là một địa chỉ Ethereum hợp lệ",
+    "signer_include_invalid_address": "Địa chỉ ví gửi chứa địa chỉ không hợp lệ" 
   },
 
   "import": {

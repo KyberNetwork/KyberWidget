@@ -24,11 +24,27 @@
     "symbol": "符号",
     "price": "价格",
     "your_wallet_address": "您的钱包地址",
-    "search": "搜索"
+    "search": "搜索",
+    "balance": "余额"
   },
 
   
   "transaction": {
+
+    "choose_your_payment": "选择您的支付方式",
+    "exchange_paywith": "支付的代币",
+    "estimate_value_should_pay": "估计您应该支付的价值",
+    "you_about_to_pay": "您即将支付",
+    "address": "地址",
+    "estimate_dest_value": "估计接收者收到的价值",
+    "i_agree_to": "我同意",
+    "term_and_condition": "条款和条件",
+    "payment": "支付",
+    "error": "错误",
+    "back_to_website": "回到网站",
+    "approve": "批准",
+    "confirm_transaction": "确认交易",
+
     "exchange": "交易",
     "exchange_from": "从",
     "exchange_to": "到",
@@ -222,7 +238,15 @@
     "exchange_enable":"您已经超过了您的每日限额！ 您可以在明天00:00 UTC+0再次进行交易",
     "min_rate_greater_expected_rate": "您设置的最低汇率高于KyberNetwork推荐的汇率。 您的交易很有可能失败。",
     "exceed_daily_volumn": "您可能需要<a target='_blank' href='${link}'>在我们这里注册</a>才能有更高的交易限额",
-    "broadcast_tx": "可能会失败！我们无法将交易上传到区块链。请在<a target='_blank' href='${link}'>Etherscan</a>上检查。"
+    "broadcast_tx": "可能会失败！我们无法将交易上传到区块链。请在<a target='_blank' href='${link}'>Etherscan</a>上检查。",
+        
+    "receive_address_must_be_ethereum_addr": "接收地址必须是有效的以太坊地址",
+    "receive_token_is_not_support": "Kyber不支持此接收代币",
+    "receive_token_must_be_required": "必须要求接收代币",
+    "receive_amount_is_invalid_number": "接收金额无效",
+    "receive_amount_must_be_positive": "接收金额必须为正数",
+    "commission_address_must_be_valid": "佣金地址必须是有效的以太坊地址",
+    "signer_include_invalid_address": "发送地址包含无效地址" 
   },
 
   "import": {
