@@ -45,7 +45,7 @@ const GasConfig = (props) => {
             <GasOption gasOptions={gas_option} focus={props.selectedGas} onChange={specifyGasPrice}/>
           </div>
         </div>
-        {props.gasPriceError && <div class="error-text mb-1">{props.translate(props.gasPriceError, { maxGas: props.maxGasPrice })}</div>}
+        {/* {props.gasPriceError && <div class="error-text mb-1">{props.translate(props.gasPriceError, { maxGas: props.maxGasPrice })}</div>} */}
         {props.page === "exchange" ?
           <div className="des-down">{props.translate("transaction.transaction_gasprice") 
             || "Higher gas price, faster transaction."}

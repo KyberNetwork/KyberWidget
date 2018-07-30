@@ -1389,86 +1389,46 @@ function* verifyExchange() {
 
   //const ethereum = state.connection.ethereum
   const exchange = state.exchange
-  const offeredRate = state.exchange.offeredRate
+  const tokens = state.tokens.tokens
+  const translate = getTranslate(state.locale)
 
+  var srcAmount
   var sourceTokenSymbol = exchange.sourceTokenSymbol
-  var tokens = state.tokens.tokens
-  var sourceBalance = 0
-  var sourceDecimal = 18
-  var sourceName = "Ether"
-  var rateSourceToEth = 0
-  if (tokens[sourceTokenSymbol]) {
-    sourceBalance = tokens[sourceTokenSymbol].balance
-    sourceDecimal = tokens[sourceTokenSymbol].decimal
-    sourceName = tokens[sourceTokenSymbol].name
-    rateSourceToEth = tokens[sourceTokenSymbol].rate
-  }
 
-  var destTokenSymbol = exchange.destTokenSymbol
-  var destBalance = 0
-  var destDecimal = 18
-  var destName = "Kybernetwork"
-  if (tokens[destTokenSymbol]) {
-    destBalance = tokens[destTokenSymbol].balance
-    destDecimal = tokens[destTokenSymbol].decimal
-    destName = tokens[destTokenSymbol].name
-  }
+  console.log("src_amount")
+  console.log(sourceTokenSymbol)
 
-  var sourceAmount = exchange.sourceAmount
-
-  var validateAmount = validators.verifyAmount(sourceAmount,
-    sourceBalance,
-    sourceTokenSymbol,
-    sourceDecimal,
-    rateSourceToEth,
-    destDecimal,
-    exchange.maxCap)
-
-  var sourceAmountErrorKey
-  var isNotNumber = false
-  switch (validateAmount) {
-    case "not a number":
-      sourceAmountErrorKey = "error.source_amount_is_not_number"
-      isNotNumber = true
-      break
-    case "too high":
-      sourceAmountErrorKey = "error.source_amount_too_high"
-      break
-    case "too high cap":
-      sourceAmountErrorKey = "error.source_amount_too_high_cap"
-      break
-    case "too small":
-      sourceAmountErrorKey = "error.source_amount_too_small"
-      break
-    case "too high for reserve":
-      sourceAmountErrorKey = "error.source_amount_too_high_for_reserve"
-      break
-  }
-  if (!isNotNumber) {
-    if (sourceAmountErrorKey) {
-      yield put(actions.thowErrorSourceAmount(sourceAmountErrorKey))
-    } else {
-      yield put(actions.thowErrorSourceAmount(""))
+  if (sourceTokenSymbol !== "ETH"){
+    if (tokens[sourceTokenSymbol].rate == 0) {
+      yield put(actions.throwErrorExchange("src_small", ""))
+      return
     }
   }
-  // if (sourceAmountErrorKey) {
-  //   yield put(actions.thowErrorSourceAmount(sourceAmountErrorKey))
-  // }else{
-  //   yield put(actions.thowErrorSourceAmount(""))
-  // }
+  
 
-  if (isNaN(sourceAmount) || sourceAmount === "") {
-    sourceAmount = 0
-  }
-  var validateWithFee = validators.verifyBalanceForTransaction(tokens['ETH'].balance, sourceTokenSymbol,
-    sourceAmount, exchange.gas + exchange.gas_approve, exchange.gasPrice)
-
-  if (validateWithFee) {
-    yield put(actions.thowErrorEthBalance("error.eth_balance_not_enough_for_fee"))
-  } else {
-    yield put(actions.thowErrorEthBalance(""))
+  if (exchange.isHaveDestAmount){
+    var destAmount = exchange.destAmount
+    var offeredRate =  exchange.offeredRate
+    srcAmount = converter.caculateSourceAmount(exchange.destAmount, offeredRate, 6)
+    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)            
+  }else{
+    srcAmount = exchange.sourceAmount
+    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)    
   }
 
+  if (sourceTokenSymbol !== "ETH"){
+    var rate = tokens[sourceTokenSymbol].rate
+    var decimal = tokens[sourceTokenSymbol].decimal
+    srcAmount = converter.toT(srcAmount, decimal)
+    srcAmount = converter.caculateDestAmount(srcAmount, rate, 6)
+    srcAmount = converter.toTWei(srcAmount, 18)
+  }
+  
+  if (converter.compareTwoNumber(srcAmount, constants.EPSILON) === -1){
+    yield put(actions.throwErrorExchange("src_small", translate("error.source_amount_too_small")))
+  }else{
+    yield put(actions.throwErrorExchange("src_small", ""))
+  }
 }
 
 
@@ -1513,13 +1473,22 @@ export function* initParamsToken(action){
   var exchange = state.exchange
 
   const {receiveAddr, receiveToken, tokenAddr, receiveAmount} = action.payload
+
+  var sourceTokenSymbol = exchange.sourceTokenSymbol
+
+  yield call(estimateGasUsed, sourceTokenSymbol, receiveToken)
+
+
+  if (sourceTokenSymbol === receiveToken){
+    return
+  }
   //var tokenAddr = tokens[receiveToken].address
 
   //save data exchange
   //yield put(actions.saveInitParams(receiveAddr, receiveToken, receiveAmount, tokenAddr))
 
   //fetch rate
-  var sourceTokenSymbol = exchange.sourceTokenSymbol
+  
   var source = exchange.sourceToken
   var dest = tokenAddr
 
@@ -1528,7 +1497,9 @@ export function* initParamsToken(action){
       var ethereum = state.connection.ethereum
       var rate = yield call([ethereum, ethereum.call], "getRate", source, dest, "0x0")
         
-      var sourceAmount = converter.caculateSourceAmount(receiveAmount, rate.expectedPrice, 6)
+      var sourceAmount = converter.caculateSourceAmount(receiveAmount, rate.expectedRate, 6)
+      console.log("src_amount")
+      console.log(sourceAmount)
       yield put(actions.updateRateExchange(source, dest, sourceAmount, sourceTokenSymbol, true))  
     }catch(e){
       console.log(e)
@@ -1538,7 +1509,7 @@ export function* initParamsToken(action){
     yield put(actions.updateRateExchange(source, dest, 0, sourceTokenSymbol, true))
   }
 
-  yield call(estimateGasUsed, sourceTokenSymbol, receiveToken)
+  
   //store.dispatch(updateRateExchange(source, dest, sourceAmount, sourceTokenSymbol, isManual))
 
   //estimate gas

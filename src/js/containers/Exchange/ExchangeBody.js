@@ -120,11 +120,12 @@ export default class ExchangeBody extends React.Component {
 
     var gasPrice = parseFloat(this.props.exchange.gasPrice)
     if (isNaN(gasPrice)) {
-      this.props.dispatch(exchangeActions.thowErrorGasPrice("error.gas_price_not_number"))
+      this.props.dispatch(exchangeActions.throwErrorExchange("gasPriceError", this.props.translate("error.gas_price_not_number") || "Gas price is not number"))
       isValidate = false
     }else {
       if (gasPrice > this.props.exchange.maxGasPrice) {
-        this.props.dispatch(exchangeActions.thowErrorGasPrice("error.gas_price_limit"))
+        this.props.dispatch(exchangeActions.throwErrorExchange("gasPriceError", this.props.translate("error.gas_price_limit", {maxGas: this.props.exchange.maxGasPrice }) || "Gas price exceeds limit"))
+        //this.props.dispatch(exchangeActions.thowErrorGasPrice("error.gas_price_limit"))
         isValidate = false
       }
     }

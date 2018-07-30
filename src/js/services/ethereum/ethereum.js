@@ -18,7 +18,7 @@ import * as marketActions from "../../actions/marketActions"
 import BLOCKCHAIN_INFO from "../../../../env"
 import { store } from "../../store"
 import { setConnection } from "../../actions/connectionActions"
-import { stringToHex } from "../../utils/converter"
+import * as converter from "../../utils/converter"
 
 import * as providers from "./nodeProviders"
 
@@ -64,9 +64,14 @@ export default class EthereumService extends React.Component {
     callBackAsync()
     this.intervalAsyncID = setInterval(callBackAsync, 10000)
 
-    var callBackSync = this.fetchDataSync.bind(this)
-    callBackSync()
-    this.intervalSyncID = setInterval(callBackSync, 3000)
+    // var callBackSync = this.fetchDataSync.bind(this)
+    // callBackSync()
+    // this.intervalSyncID = setInterval(callBackSync, 3000)
+
+
+    // var verifyExchange = this.verifyExchange
+    // verifyExchange()
+    // this.verifyExchangeId = setInterval(verifyExchange, 3000)
 
     // var callBack5Min = this.fetchData5Min.bind(this)
     // callBack5Min()
@@ -168,7 +173,7 @@ export default class EthereumService extends React.Component {
     
 
     this.fetchExchangeEnable()
-    // this.verifyExchange()
+    //this.verifyExchange()
     // this.verifyTransfer()
 
     // this.fetchGasExchange()
@@ -189,13 +194,7 @@ export default class EthereumService extends React.Component {
 
   fetchDataSync() {
     var state = store.getState()
-    var account = state.account
-    // console.log("verify account")
-    // console.log(account)
-    if (account.isGetAllBalance){
-      this.verifyExchange()
-     // this.verifyTransfer()
-    }
+    this.verifyExchange()    
   }
 
   testAnalize() {
@@ -294,17 +293,30 @@ export default class EthereumService extends React.Component {
 
   fetchRateExchange = (isManual = false) => {
     var state = store.getState()
+    var exchange = state.exchange
     //var ethereum = state.connection.ethereum
-    var source = state.exchange.sourceToken
-    var dest = state.exchange.destToken
-    var sourceAmount = state.exchange.sourceAmount
+    
 
-    var tokens = state.tokens.tokens
-    var sourceDecimal = 18
-    var sourceTokenSymbol = state.exchange.sourceTokenSymbol
-    if (tokens[sourceTokenSymbol]) {
-      sourceDecimal = tokens[sourceTokenSymbol].decimal
+    if (exchange.sourceTokenSymbol === exchange.destTokenSymbol){
+      return
     }
+
+    var source = exchange.sourceToken
+    var dest = exchange.destToken
+    var sourceAmount
+
+    if (exchange.isHaveDestAmount){
+      sourceAmount = converter.caculateSourceAmount(exchange.destAmount, exchange.offeredRate, 6)
+    }else{
+      sourceAmount = exchange.sourceAmount
+    }
+
+    // var tokens = state.tokens.tokens
+    // var sourceDecimal = 18
+    var sourceTokenSymbol = exchange.sourceTokenSymbol
+    // if (tokens[sourceTokenSymbol]) {
+    //   sourceDecimal = tokens[sourceTokenSymbol].decimal
+    // }
 
 //    var sourceAmountHex = stringToHex(sourceAmount, sourceDecimal)
 
@@ -377,17 +389,24 @@ export default class EthereumService extends React.Component {
 
   verifyExchange = () => {
     var state = store.getState()
-    var account = state.account.account
-    if (!account.address) {
+    // var account = state.account.account
+    // if (!account.address) {
+    //   return
+    // }
+    
+    var exchange = state.exchange
+    if (exchange.step !== 1){
       return
     }
-
-    var pathname = state.router.location.pathname
-    if (!pathname.includes(constants.BASE_HOST + "/swap")) {
-      return
-    }
+    // if (exchange.offeredRate == 0){
+    //   return
+    // }
+    // var pathname = state.router.location.pathname
+    // if (!pathname.includes(constants.BASE_HOST + "/swap")) {
+    //   return
+    // }
     store.dispatch(verifyExchange())
-    store.dispatch(caculateAmount())
+    //store.dispatch(caculateAmount())
   }
 
   verifyTransfer = () => {

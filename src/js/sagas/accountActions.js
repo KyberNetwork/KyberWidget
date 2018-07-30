@@ -116,25 +116,36 @@ function* checkMaxCap(address){
   }
 
   var srcAmount
+  var sourceTokenSymbol = exchange.sourceTokenSymbol
   if (exchange.isHaveDestAmount){
     var destAmount = exchange.destAmount
     var minConversionRate =  converter.toTWei(exchange.minConversionRate, 18)
     srcAmount = converter.caculateSourceAmount(exchange.destAmount, minConversionRate, 6)
-    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)    
-    if (converter.compareTwoNumber(srcAmount, maxCapOneExchange) < 1){
-      var maxCap = converter.toEther(maxCapOneExchange)
-      yield put(exchangeActions.throwErrorExchange("exceed_cap", translate("error.dest_amount_too_high_cap", { cap: maxCap * constants.MAX_CAP_PERCENT })))
-    }
+    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)        
+    
   }else{
     srcAmount = exchange.sourceAmount
-    var sourceTokenSymbol = exchange.sourceTokenSymbol
     srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)    
-    if (converter.compareTwoNumber(srcAmount, maxCapOneExchange) === 1){
-      var maxCap = converter.toEther(maxCapOneExchange)
-      yield put(exchangeActions.throwErrorExchange("exceed_cap", translate("error.source_amount_too_high_cap", { cap: maxCap })))
-    }
+    // if (converter.compareTwoNumber(srcAmount, maxCapOneExchange) === 1){
+    //   var maxCap = converter.toEther(maxCapOneExchange)
+    //   yield put(exchangeActions.throwErrorExchange("exceed_cap", translate("error.source_amount_too_high_cap", { cap: maxCap })))
+    // }
   }
 
+  if (sourceTokenSymbol !== "ETH"){
+    var rate = tokens[sourceTokenSymbol].rate
+    var decimal = tokens[sourceTokenSymbol].decimal
+    srcAmount = converter.toT(srcAmount, decimal)
+    srcAmount = converter.caculateDestAmount(srcAmount, rate, 6)
+    srcAmount = converter.toTWei(srcAmount, 18)
+  }
+  // console.log("source_amount")
+  // console.log(srcAmount)
+  // console.log(maxCapOneExchange)
+  if (converter.compareTwoNumber(srcAmount, maxCapOneExchange) === 1){
+    var maxCap = converter.toEther(maxCapOneExchange)
+    yield put(exchangeActions.throwErrorExchange("exceed_cap", translate("error.source_amount_too_high_cap", { cap: maxCap * constants.MAX_CAP_PERCENT })))
+  }
   
 }
 

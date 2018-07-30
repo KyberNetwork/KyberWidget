@@ -22,43 +22,53 @@ const ExchangeBodyLayout = (props) => {
 
 
 
-  var errorSelectSameToken = props.errors.selectSameToken && props.errors.selectSameToken !== '' ? props.translate(props.errors.selectSameToken) : ''
-  var errorSelectTokenToken = props.errors.selectTokenToken && props.errors.selectTokenToken !== '' ? props.translate(props.errors.selectTokenToken) : ''
-  var errorToken = errorSelectSameToken + errorSelectTokenToken
+  // var errorSelectSameToken = props.errors.selectSameToken && props.errors.selectSameToken !== '' ? props.translate(props.errors.selectSameToken) : ''
+  // var errorSelectTokenToken = props.errors.selectTokenToken && props.errors.selectTokenToken !== '' ? props.translate(props.errors.selectTokenToken) : ''
+  // var errorToken = errorSelectSameToken + errorSelectTokenToken
 
   var maxCap = props.maxCap
   var errorSource = []
   var errorExchange = false
-  if (props.errorNotPossessKgt && props.errorNotPossessKgt !== "") {
-    errorSource.push(props.errorNotPossessKgt)
-    errorExchange = true
-  } else {
-    if (props.errors.exchange_enable && props.errors.exchange_enable !== "") {
-      errorSource.push(props.translate(props.errors.exchange_enable))
+  Object.keys(props.exchange.errors).map(key => {
+    if (props.exchange.errors[key] && props.exchange.errors[key] !== ""){
+      errorSource.push(props.translate(props.exchange.errors[key]) || props.exchange.errors[key])
       errorExchange = true
-    } else {
-      if (errorToken !== "") {
-        errorSource.push(errorToken)
-        errorExchange = true
-      }
-      if (props.errors.sourceAmount && props.errors.sourceAmount !== "") {
-        if (props.errors.sourceAmount === "error.source_amount_too_high_cap") {
-          if (props.sourceTokenSymbol === "ETH") {
-            errorSource.push(props.translate("error.source_amount_too_high_cap", { cap: maxCap }))
-          } else {
-            errorSource.push(props.translate("error.dest_amount_too_high_cap", { cap: maxCap * constants.MAX_CAP_PERCENT }))
-          }
-        } else {
-          errorSource.push(props.translate(props.errors.sourceAmount))
-        }
-        errorExchange = true
-      }
-      if (props.errors.rateSystem && props.errors.rateSystem !== "") {
-        errorSource.push(props.translate(props.errors.rateSystem))
-        errorExchange = true
-      }
     }
-  }
+  })
+  console.log("error_exchange")
+  console.log(errorSource)
+  console.log(props.errors)
+  //if (errorSource)
+  // if (props.errorNotPossessKgt && props.errorNotPossessKgt !== "") {
+  //   errorSource.push(props.errorNotPossessKgt)
+  //   errorExchange = true
+  // } else {
+  //   if (props.errors.exchange_enable && props.errors.exchange_enable !== "") {
+  //     errorSource.push(props.translate(props.errors.exchange_enable))
+  //     errorExchange = true
+  //   } else {
+  //     if (errorToken !== "") {
+  //       errorSource.push(errorToken)
+  //       errorExchange = true
+  //     }
+  //     if (props.errors.sourceAmount && props.errors.sourceAmount !== "") {
+  //       if (props.errors.sourceAmount === "error.source_amount_too_high_cap") {
+  //         if (props.sourceTokenSymbol === "ETH") {
+  //           errorSource.push(props.translate("error.source_amount_too_high_cap", { cap: maxCap }))
+  //         } else {
+  //           errorSource.push(props.translate("error.dest_amount_too_high_cap", { cap: maxCap * constants.MAX_CAP_PERCENT }))
+  //         }
+  //       } else {
+  //         errorSource.push(props.translate(props.errors.sourceAmount))
+  //       }
+  //       errorExchange = true
+  //     }
+  //     if (props.errors.rateSystem && props.errors.rateSystem !== "") {
+  //       errorSource.push(props.translate(props.errors.rateSystem))
+  //       errorExchange = true
+  //     }
+  //   }
+  // }
 
   var errorShow = errorSource.map((value, index) => {
     return <span class="error-text" key={index}>{value}</span>
@@ -128,9 +138,13 @@ const ExchangeBodyLayout = (props) => {
 
                       <div className="amount-pay">
                         <div>{props.translate("transaction.estimate_value_should_pay") || "Estimate value you should pay"}</div>
-                        <div>
-                          {converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)} {props.exchange.sourceTokenSymbol} 
-                        </div>
+
+                          {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
+                            <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)} {props.exchange.sourceTokenSymbol} </div>
+                          )}
+                          {props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol && (
+                            <div>{props.exchange.destAmount} {props.exchange.sourceTokenSymbol} </div>
+                          )}
                       </div>
                     </div>
                     <div className={errorExchange ? "error" : ""}>
@@ -197,7 +211,7 @@ const ExchangeBodyLayout = (props) => {
                 </div>
                 {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
                   <div className="estimate-dest-value">
-                    {props.translate("transaction.estimate_dest_value") || "Estimate dest value"}: {converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}
+                    {props.translate("transaction.estimate_dest_value") || "Estimate dest value"}: {props.exchange.offeredRate == "0"? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}
                   </div>
                 )}
               </div>
