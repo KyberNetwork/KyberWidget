@@ -90,7 +90,8 @@
         if (formData.invalid) {
             document.getElementById("widget").innerHTML = "<p class='error'>Invalid input for: " +
                 formData.invalid + "</p>";
-            document.getElementById("source").value = "";
+            document.getElementById("sourceHtml").value = "";
+            document.getElementById("sourceCss").value = "";
             return;
         }
 
@@ -98,7 +99,7 @@
         var url = widgetBaseUrl + "?" + formData.data;
         var tagHtml = "<a href='javascript:void(0);' class='_kyberpay-widget'\n";
         tagHtml += "name='KyberPay - Powered by KyberNetwork' title='Pay by tokens'\n";
-        tagHtml += "onclick='window.open(\"" + url + "\",\"_blank\",\"width=600,height=800,menubar=0,status=0\");'>Pay by tokens</a>";
+        tagHtml += "onclick='window.open(\"" + url + "\",\"kyberpay\",\"width=600,height=800,menubar=0,status=0\");'>Pay by tokens</a>";
 
         document.getElementById("widget").innerHTML = tagHtml;
         document.getElementById("sourceHtml").value = tagHtml;
