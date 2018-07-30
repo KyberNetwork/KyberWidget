@@ -45,7 +45,9 @@ const TransactionLoadingView = (props) => {
           </div>
 
           <div className="container transaction-loading__button-container">
-            <div className={"payment-gateway__hollow-button"} onClick={() => window.close()}>Back to Website</div>
+            <div className={"payment-gateway__hollow-button"} onClick={() => window.close()}>
+              {props.translate("transaction.back_to_website") || "Back to Website"}
+            </div>
           </div>
         </div>
       </div>
@@ -90,7 +92,9 @@ const TransactionLoadingView = (props) => {
         </div>
 
         <div className="container transaction-loading__button-container">
-          <div className={"payment-gateway__hollow-button"} onClick={() => window.close()}>Back to Website</div>
+          <div className={"payment-gateway__hollow-button"} onClick={() => window.close()}>
+          {props.translate("transaction.back_to_website") || "Back to Website"}
+        </div>
         </div>
       </div>
     </div>

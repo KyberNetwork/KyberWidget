@@ -419,19 +419,19 @@ export default class Payment extends React.Component {
           {this.getAccountBgk()}
           <div className="account-info">
             <div className="info-row address-info">
-                <span>Address:</span> 
+                <span>{this.props.translate("transaction.address") || "Address"}:</span> 
                 <span>{this.props.account.address.slice(0, 8)} ... {this.props.account.address.slice(-6)}</span>
               </div>            
             {sourceTokenSymbol === "ETH" && (
               <div className="info-row">
-                <span>Balance:</span>
+                <span>{this.props.translate("transaction.balance") || "Balance"}:</span>
                 <span>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</span>
               </div>
             )}
             {sourceTokenSymbol !== "ETH" && (
               <div>
               <div className="info-row">        
-                <span>Balance:</span>        
+                <span>{this.props.translate("transaction.balance") || "Balance"}:</span>        
                 <span>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</span>
               </div>
               <div className="info-row">
@@ -449,7 +449,7 @@ export default class Payment extends React.Component {
 
         <div className="payment-info">
           <div className="title">
-            {this.props.translate("transaction.you_about_pay") || "YOU ARE ABOUT TO PAY"}
+            {this.props.translate("transaction.you_about_to_pay") || "YOU ARE ABOUT TO PAY"}
           </div>
           <div className="content">
             {/* <div>
@@ -457,14 +457,14 @@ export default class Payment extends React.Component {
               <span>kyber.network</span>
             </div> */}
             <div>
-              <span>Address:</span>
+              <span>{this.props.translate("transaction.address") || "Address"}:</span>
               <span>
                 {this.props.exchange.receiveAddr.slice(0, 8)} ... {this.props.exchange.receiveAddr.slice(-6)}
               </span>
             </div>
             {this.props.exchange.isHaveDestAmount && (
               <div>
-                <span>Amount:</span>
+                <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
                 <span>
                   {this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}
                 </span>
@@ -479,7 +479,7 @@ export default class Payment extends React.Component {
           </div>
           <div className="content">
             <div>
-              <span>Amount:</span>
+              <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
               {this.props.exchange.isHaveDestAmount && (
                 <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
               )}
@@ -488,19 +488,19 @@ export default class Payment extends React.Component {
               )}
             </div>
             <div>
-              <span>Gas price:</span>
+              <span>{this.props.translate("transaction.gas_price") || "Gas price"}:</span>
               <span>
                 {this.props.exchange.gasPrice} Gwei
               </span>
             </div>
             <div>
-              <span>Gas limit:</span>
+              <span>{this.props.translate("transaction.gas_limit") || "Gas limit"}:</span>
               <span>
                 {gasUsed}
               </span>
             </div>
             <div>
-              <span>Trasaction fee:</span>
+              <span>{this.props.translate("transaction.transaction_fee") || "Trasaction fee"}:</span>
               <span>
                 {converter.calculateGasFee(this.props.exchange.gasPrice, gasUsed)}
               </span>
@@ -543,13 +543,17 @@ export default class Payment extends React.Component {
 
             )}
           <div className="control-btn">
-            <a className="back-btn" onClick={this.reImportAccount}>Back</a>
+            <a className="back-btn" onClick={this.reImportAccount}>{this.props.translate("transaction.back") || "Back"}</a>
             {this.props.exchange.isNeedApprove && (
-              <a className={"confirm-btn" + classDisable} onClick={this.approveToken}>Approve</a>
+              <a className={"confirm-btn" + classDisable} onClick={this.approveToken}>
+                {this.props.translate("transaction.approve") || "Approve"}
+              </a>
             )}
 
             {!this.props.exchange.isNeedApprove && (
-              <a className={"confirm-btn" + classDisable} onClick={this.payment}>Payment</a>
+              <a className={"confirm-btn" + classDisable} onClick={this.payment}>
+                {this.props.translate("transaction.payment") || "Payment"}
+              </a>
             )}
           </div>
 

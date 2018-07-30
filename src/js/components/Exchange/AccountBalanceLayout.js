@@ -13,7 +13,7 @@ const AccountBalanceLayout = (props) => {
     <strong>${balance}</strong>
     <br/>${props.translate("address.estimated_value") || "Estimated value"}: 
     <strong>${converts.roundingNumber(balance * rateUSD)}</strong> USD`
-    : `${props.translate("address.my_balance") || "Balance"}: <strong>${balance}</strong>`
+    : `${props.translate("address.balance") || "Balance"}: <strong>${balance}</strong>`
   }
 
   function reorderToken(tokens){
