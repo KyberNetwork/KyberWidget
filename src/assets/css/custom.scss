@@ -109,9 +109,6 @@ a.disabled{
 
 @include breakpoint(medium){
     @media screen and (max-height: 790px){
-        .frame{
-            padding: 20px 0;
-        }
         .token-input{
             margin-top: 5px!important;
             min-height: auto;

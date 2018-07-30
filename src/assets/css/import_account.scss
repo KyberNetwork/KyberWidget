@@ -176,6 +176,8 @@ $animation-time: 0.5s;
           &__symbol {
             display: inline-block;
             text-align: center;
+            position: relative;
+            top: 4px;
           }
 
           &__button {
