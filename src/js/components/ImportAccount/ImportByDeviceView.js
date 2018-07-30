@@ -68,16 +68,17 @@ const ImportByDeviceView = (props) => {
             className={"import-account-content__info-type-image"}
             src={require(`../../../assets/img/landing/${props.walletType}_active.svg`)}/>
           <div className={"import-account-content__info-type-text"}>
-            {props.translate(`import.from_${props.walletType}`) || "DEVICE"}
+            {/* {props.translate(`import.from_${props.walletType}`) || "DEVICE"} */}
+            {props.walletType}
           </div>
         </div>
         {!props.hasError &&
         <div className={"import-account-content__info-text"}>
           <div className={"import-account-content__info-text-address"}>
-            Address: {props.wallet.address.slice(0, 8)}...{props.wallet.address.slice(-6)}
+          {props.translate("transaction.address") || "Address"}: {props.wallet.address.slice(0, 8)}...{props.wallet.address.slice(-6)}
           </div>
           <div className={"import-account-content__info-text-balance"}>
-            Balance: {props.wallet.balance} ETH
+          {props.translate("transaction.balance") || "Balance"}: {props.wallet.balance} ETH
           </div>
         </div>
         }

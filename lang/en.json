@@ -42,6 +42,7 @@
     "back_to_website": "Back to Website",
     "approve": "Approve",
     "confirm_transaction": "Confirm Transaction",
+    "enter_amount": "ENTER AMOUNT YOU WILL PAY",
 
     "exchange": "Exchange",
     "exchange_from": "From",
@@ -130,7 +131,7 @@
     "error_tx_contract":"Warning! Error encountered during contract execution",
     "no_pedding_tx": "No pending transaction",
     "rate_info": "Rates might be changed during settlement. <br/>You can indicate your minimum rate by clicking \"Advanced\"",
-    "address": "Receiving Address",
+    "receive_address": "Receiving Address",
     "slippage_tip": "Rate may change. You can change maximum slippage rate by adjusting min rate in advanced option",
     "max_slippage": "With maximum ${percent}% slippage",
     "included": "Included"

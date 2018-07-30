@@ -103,12 +103,12 @@ const ExchangeBodyLayout = (props) => {
                   </div> 
                   <div className="info-2">
                     <div className="info-2__content">
-                      <div>Address:</div>
+                      <div>{props.translate("transaction.address") || "Address"}:</div>
                       <div>{props.exchange.receiveAddr.slice(0, 8)} ... {props.exchange.receiveAddr.slice(-6)}</div>
                     </div>
 
                     <div className="info-2__content">
-                      <div>Amount:</div>
+                      <div>{props.translate("transaction.amount") || "Amount"}:</div>
                       <div>{props.exchange.destAmount} {props.exchange.destTokenSymbol}</div>
                     </div>
                   </div>
