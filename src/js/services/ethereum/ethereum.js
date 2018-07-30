@@ -10,7 +10,7 @@ import {
 } from "../../actions/globalActions"
 import { updateAccount, updateTokenBalance } from "../../actions/accountActions"
 import { updateTx, updateApproveTxsData } from "../../actions/txActions"
-import { updateRateExchange, estimateGas, analyzeError, checkKyberEnable, verifyExchange, caculateAmount, fetchExchangeEnable } from "../../actions/exchangeActions"
+import { updateRateExchange, estimateGas, analyzeError, checkKyberEnable, verifyExchange, caculateAmount, fetchExchangeEnable, throwErrorHandleAmount } from "../../actions/exchangeActions"
 import { estimateGasTransfer, verifyTransfer } from "../../actions/transferActions"
 
 import * as marketActions from "../../actions/marketActions"
@@ -59,7 +59,8 @@ export default class EthereumService extends React.Component {
     }
   }
 
-  subcribe(callBack) {
+  subcribe() {
+    console.log("subcribe")
     var callBackAsync = this.fetchData.bind(this)
     callBackAsync()
     this.intervalAsyncID = setInterval(callBackAsync, 10000)
@@ -294,7 +295,8 @@ export default class EthereumService extends React.Component {
   fetchRateExchange = (isManual = false) => {
     var state = store.getState()
     var exchange = state.exchange
-    //var ethereum = state.connection.ethereum
+    //var ethereum = state.connection.ethereum    
+    //var tokens = state.tokens.tokens
     
 
     if (exchange.sourceTokenSymbol === exchange.destTokenSymbol){
@@ -309,6 +311,11 @@ export default class EthereumService extends React.Component {
       sourceAmount = converter.caculateSourceAmount(exchange.destAmount, exchange.offeredRate, 6)
     }else{
       sourceAmount = exchange.sourceAmount
+    }
+
+    if (parseFloat(sourceAmount) > 1000){
+      store.dispatch(throwErrorHandleAmount())
+      return 
     }
 
     // var tokens = state.tokens.tokens

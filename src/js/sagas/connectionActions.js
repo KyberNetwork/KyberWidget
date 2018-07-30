@@ -20,7 +20,7 @@ export function* createNewConnection(action) {
   var translate = getTranslate(store.getState().locale)
   var connectionInstance = new EthereumService()
   yield put(setConnection(connectionInstance))
-  connectionInstance.subcribe()
+  //connectionInstance.subcribe()
 
   // var state = store.getState()
   // var ethereum = action.payload.ethereum

@@ -1471,6 +1471,7 @@ export function* initParamsToken(action){
   var state = store.getState()
   var tokens = state.tokens.tokens
   var exchange = state.exchange
+  var ethereum = state.connection.ethereum
 
   const {receiveAddr, receiveToken, tokenAddr, receiveAmount} = action.payload
 
@@ -1482,6 +1483,9 @@ export function* initParamsToken(action){
   if (sourceTokenSymbol === receiveToken){
     return
   }
+
+  
+
   //var tokenAddr = tokens[receiveToken].address
 
   //save data exchange
@@ -1492,15 +1496,32 @@ export function* initParamsToken(action){
   var source = exchange.sourceToken
   var dest = tokenAddr
 
-  if (receiveAmount){
+
+  if (receiveAmount){    
     try{
-      var ethereum = state.connection.ethereum
-      var rate = yield call([ethereum, ethereum.call], "getRate", source, dest, "0x0")
-        
+      
+
+      if (sourceTokenSymbol === "ETH"){
+        if(parseFloat(receiveAmount) > 1000){
+          yield put(actions.throwErrorHandleAmount())
+          return 
+        }
+      }else{
+        var rateETH = yield call([ethereum, ethereum.call], "getRate", source, tokens["ETH"].address, "0x0")
+        var destValue = converter.caculateSourceAmount(receiveAmount, rateETH.offeredRate , 6)
+        if(parseFloat(destValue) > 1000){
+          yield put(actions.throwErrorHandleAmount())
+          return 
+        }
+      }
+
+      var rate = yield call([ethereum, ethereum.call], "getRate", source, dest, "0x0")      
+
       var sourceAmount = converter.caculateSourceAmount(receiveAmount, rate.expectedRate, 6)
       console.log("src_amount")
       console.log(sourceAmount)
       yield put(actions.updateRateExchange(source, dest, sourceAmount, sourceTokenSymbol, true))  
+      
     }catch(e){
       console.log(e)
       yield put(actions.updateRateExchange(source, dest, 0, sourceTokenSymbol, true))
@@ -1509,7 +1530,7 @@ export function* initParamsToken(action){
     yield put(actions.updateRateExchange(source, dest, 0, sourceTokenSymbol, true))
   }
 
-  
+  ethereum.subcribe()
   //store.dispatch(updateRateExchange(source, dest, sourceAmount, sourceTokenSymbol, isManual))
 
   //estimate gas
