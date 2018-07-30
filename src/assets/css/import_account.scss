@@ -355,7 +355,7 @@ $animation-time: 0.5s;
           cursor: pointer;
         }
 
-        &.unlock .toggle {
+        &.unlock .import-account-content__private-key-toggle {
           background-image: url(../img/lock-pass.svg);
         }
       }
