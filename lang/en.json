@@ -29,7 +29,6 @@
   },
 
   "transaction": {
-
     "choose_your_payment": "Choose your payment method",
     "exchange_paywith": "PAY WITH",
     "estimate_value_should_pay": "Estimate value you should pay",
@@ -38,11 +37,12 @@
     "estimate_dest_value": "Estimate dest value",
     "i_agree_to": "I agree to",
     "term_and_condition": "Terms &amp; Conditions",
-    "payment": "Payment",
+    "payment": "Purchase",
     "error": "Error",
     "back_to_website": "Back to Website",
     "approve": "Approve",
     "confirm_transaction": "Confirm Transaction",
+    "enter_amount": "ENTER AMOUNT YOU WILL PAY",
 
     "exchange": "Exchange",
     "exchange_from": "From",
@@ -131,7 +131,7 @@
     "error_tx_contract":"Warning! Error encountered during contract execution",
     "no_pedding_tx": "No pending transaction",
     "rate_info": "Rates might be changed during settlement. <br/>You can indicate your minimum rate by clicking \"Advanced\"",
-    "address": "Receiving Address",
+    "receive_address": "Receiving Address",
     "slippage_tip": "Rate may change. You can change maximum slippage rate by adjusting min rate in advanced option",
     "max_slippage": "With maximum ${percent}% slippage",
     "included": "Included"

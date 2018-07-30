@@ -44,6 +44,7 @@
     "back_to_website": "回到网站",
     "approve": "批准",
     "confirm_transaction": "确认交易",
+    "enter_amount": "输入您要支付的金额 ",
 
     "exchange": "交易",
     "exchange_from": "从",
@@ -132,7 +133,7 @@
     "error_tx_contract":"警告！合约执行过程中发生了错误",
     "no_pedding_tx": "没有待处理的交易",
     "rate_info": "价格也许会在结算过程中发生变化。<br> 您可以点击\"高级选项\"来显示您的最低价格。",
-    "address": "接收的地址",
+    "receive_address": "接收的地址",
     "slippage_tip": "费率可能会改变。 您可以在高级选项中调整最小价格来更改最大滑点率",
     "max_slippage": "滑点率至多为${percent}%",
     "included": "包括"

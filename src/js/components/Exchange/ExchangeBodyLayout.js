@@ -112,19 +112,18 @@ const ExchangeBodyLayout = (props) => {
                     {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
                   </div> 
                   <div className="info-2">
-                    {/* <div>
-                      <span>To:</span>
-                      <span>kyber.network</span>
-                    </div> */}
-                    <div>
-                      <span>Address:</span>
-                      <span>
-                        {props.exchange.receiveAddr.slice(0, 8)} ... {props.exchange.receiveAddr.slice(-6)}
-                      </span>
+                    <div className="info-2__content">
+                      <div>{props.translate("transaction.address") || "Address"}:</div>
+                      <div>{props.exchange.receiveAddr.slice(0, 8)} ... {props.exchange.receiveAddr.slice(-6)}</div>
+                    </div>
+
+                    <div className="info-2__content">
+                      <div>{props.translate("transaction.amount") || "Amount"}:</div>
+                      <div>{props.exchange.destAmount} {props.exchange.destTokenSymbol}</div>
                     </div>
                   </div>
                   <div className="info-3"> 
-                    {props.exchange.destAmount} {props.exchange.destTokenSymbol}
+
                   </div>
                 </div>
                 {/* <div>Choose youy payment method</div> */}
