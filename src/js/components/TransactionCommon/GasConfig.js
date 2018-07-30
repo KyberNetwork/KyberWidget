@@ -38,11 +38,11 @@ const GasConfig = (props) => {
           <div className="gas_input">
             <input type="text" min="0" max="99" className="gas-price-input" step="0.1" value={props.gasPrice} onChange={handleChangeGasPrice} maxLength="20" autoComplete="off" />
           </div>
-          <div className="gas_input-lable">
-            Gwei
-          </div>
-          <div className="gas_input-option">
-            <GasOption gasOptions={gas_option} focus={props.selectedGas} onChange={specifyGasPrice}/>
+          <div className="gas_input-label-container">
+            <div className="gas_input-lable">Gwei</div>
+            <div className="gas_input-option">
+              <GasOption gasOptions={gas_option} focus={props.selectedGas} onChange={specifyGasPrice}/>
+            </div>
           </div>
         </div>
         {/* {props.gasPriceError && <div class="error-text mb-1">{props.translate(props.gasPriceError, { maxGas: props.maxGasPrice })}</div>} */}
@@ -56,11 +56,6 @@ const GasConfig = (props) => {
             || "Higher gas price, faster transaction."}                        
           </div>
         }
-      </div>
-      
-      <div className="transaction-fee">
-        <div className="title-fee">{props.translate("transaction.transaction_fee") || "Transaction fee"}</div>
-        <div>{props.totalGas} ETH</div>
       </div>
     </div>
   )

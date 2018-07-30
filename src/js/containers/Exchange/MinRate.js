@@ -77,11 +77,6 @@ export default class MinRate extends React.Component {
     if (isNaN(percent)) percent = 0
     return (
       <div className="min-rate">
-        <div className="des-up">
-          {this.props.translate("transaction.higher_min_acceptable_rate") 
-            || "Higher Min acceptable rate typically results in lower success rate when the market is volatile."}
-            {displaySlippageRate}
-        </div>
         <div className = {!this.props.exchange.errors.rateError? "":"error"}>
           <span  className="sub_title">{this.props.translate("transaction.min_acceptable_rate") || "MIN ACCEPTABLE RATE"}</span>
           <Slider value={percent} 
@@ -107,6 +102,11 @@ export default class MinRate extends React.Component {
           <div className="column small-1"><label className="des-down">{percent}%</label></div>
           </div>
           {this.props.exchange.errors.rateError && <div className="error-text">{this.props.exchange.errors.rateError}</div>}
+        </div>
+        <div className="des-up">
+          {this.props.translate("transaction.higher_min_acceptable_rate")
+          || "Higher Min acceptable rate typically results in lower success rate when the market is volatile."}
+          {displaySlippageRate}
         </div>
       </div>
     )
