@@ -29,35 +29,42 @@
   >div{
     margin-top: 10px;
   }
-  .info-1{
-    font-size: 14px;
-    color: #222;
-    text-transform: uppercase;
+  .info-1 {
     margin-top: 20px;
+    font-family: $font-cera;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+    color: #222222;
   }
-  .info-2{
-    font-size: 14px;
+
+  .info-2 {
+    font-size: 13px;
     color: #999;
     >div{
       >span{
         &:first-child{
           display: inline-block;
-          width: 100px;
+          margin-right: 10px;
+          font-weight: 600;
         }
       }
     }
   }
-  .info-3{
+
+  .info-3 {
     font-size: 20px;
-    color: #666;
+    font-weight: 600;
+    color: #666666;
   }
 }
 
-.choose-payment{
+.choose-payment {
   margin-top: 10px;
-  .transaction-label{
+
+  .transaction-label {
     font-size: 14px;
-    color: #222;
+    font-weight: 600;
+    color: #787878;
   }
 }
 
@@ -80,16 +87,18 @@
     font-size: 13px;
     color: #777;
   }
-  .amount-pay{
+  .amount-pay {
     margin-top: 20px;
-    color: #666;
-    >div{
-      &:first-child{
+
+    >div {
+      &:first-child {
         font-size: 13px;
       }
-      &:last-child{
-        font-size: 20px;
+
+      &:last-child {
         margin-top: 5px;
+        font-size: 20px;
+        font-weight: 600;
       }
     }
   }
@@ -103,6 +112,13 @@
       }
     }
   }
+
+  .rate-token {
+    font-size: 13px;
+    font-weight: 600;
+    color: #666666;
+  }
+
   .token-input {
     .info {
       height: auto;
@@ -112,8 +128,14 @@
       transition: width .4s ease-in-out;
     }
   }
+
   label{
     margin-bottom: 8px;
+  }
+
+  .advance-title-mobile {
+    font-size: 14px;
+    font-weight: 600;
   }
 
   .accent {
@@ -126,11 +148,6 @@
     border-radius: 4px;
     margin-top: 20px;
     float: right;
-
-
-    // @include screen-max-width(large) {
-    //   margin-top: 0;
-    // }
   }
 
   .token-compare {
