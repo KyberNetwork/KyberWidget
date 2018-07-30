@@ -36,47 +36,37 @@ $radio-color: #5D9E7A;
     //   display: none  
     // }
   }
-  // .advance-title-desktop{
-  //   @media screen and (max-width: $break-point-large){
-  //     display: none  
-  //   }
-  // }
-  #advance-content{
-   // @media screen and (max-width: $break-point-large){
-      display: none;
-      padding: 10px;
-      background-color: #f5f5f5;
-      // animation: rollOut 0.3s ease-in-out;
-      &.show-advance{
-        //@media screen and (max-width: $break-point-large){
-          display: block;
-        //}
-        // @include breakpoint(small only) {
-        //   display: block
-        // }
+
+  #advance-content {
+    display: none;
+    padding: 10px;
+    background-color: #f5f5f5;
+
+    &.show-advance {
+      display: block;
+    }
+
+    .transaction-fee {
+      div:first-child {
+        font-size: 12px;
+        color: #6e6e6e;
       }
-   // }
-    // @include breakpoint(small only) {
-    //   display: none;
-    //   padding: 10px;
-    //   background-color: #f5f5f5;
-    // }
-    // &.show-advance{
-    //   @include breakpoint(small only) {
-    //     display: block
-    //   }
-    // }
+
+      div:last-child {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+    }
   }
-  
 
   .min-convention-rate{
     text-align: center;
-    font-size: 0.95rem;    
-    line-height: 1.54;
-    letter-spacing: 0px;
-    color: #F08400;
-    margin-top: 6px;
+    margin-top: 10px;
     padding-left: 35px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ef8102;
   }
   .gas-change{
     padding-top: 0px;
@@ -88,7 +78,9 @@ $radio-color: #5D9E7A;
     background-color: white;
     justify-content: space-between;
   }
-  .gas_input{
+  .gas_input {
+    width: 50%;
+
     input {
       padding-left: 10px;
       padding-top: 0;
@@ -96,6 +88,15 @@ $radio-color: #5D9E7A;
       color: #aaa;
     }
   }
+
+  .gas_input-label-container {
+    width: 40%;
+    min-width: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .gas_input-lable{
     padding-left: 10px;
     padding-right: 10px;
@@ -107,8 +108,11 @@ $radio-color: #5D9E7A;
     color: #999999;
     border-right: 1px solid #E8E8E8;
   }
+
   .gas_input-option{
     padding-left: 0;
+    width: 100%;
+
     .gas-option{
       .token-selector {
         .focus-item{
@@ -120,15 +124,21 @@ $radio-color: #5D9E7A;
           box-shadow: none !important;
           align-items: center;
           justify-content: center;
+
           div:first-child {
             margin: 0 10px;
             text-transform: uppercase;
-            // font-weight: 600;
             white-space: nowrap;
+            font-size: 14px;
+            font-weight: bold;
           }
+
           div:last-child {
             display: flex;
             align-items: center;
+            position: relative;
+            top: 1px;
+
             img {
               min-width: 11px;
               content: url(../img/exchange/arrow-down-swap.svg)
@@ -179,20 +189,23 @@ $radio-color: #5D9E7A;
     }
   }
 
-  .des-up{
-    font-size: 0.86rem;
+  .des-up {
+    margin-top: 5px;
     padding-bottom: 1rem;
-    line-height: 1.36;
-    letter-spacing: 0.3px;
-    color: #666666;
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.38;
+    color: #6b6b6b;
   }
 
   .des-down{
-    font-size: 0.86rem;
     padding-bottom: 1rem;
-    line-height: 1.36;
-    letter-spacing: 0.3px;
-    color: #666666;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.1;
+    color: #999999;
   }
 
   .error{
@@ -213,14 +226,21 @@ $radio-color: #5D9E7A;
   .min-rate, .gas-config {
     .sub_title {
       text-transform: uppercase;
-      // font-weight: 600;
-      font-size: 1rem;
-      color: #4B4A60;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      color: #474d5f;
     }
   }
 
   .min-rate{
     margin-bottom: 0.75rem;
+
+    .sub_title {
+      display: inline-block;
+      margin: 5px 0 10px;
+    }
+
     .rc-slider {
       .rc-slider-rail {
         height: 1px !important;
@@ -244,9 +264,11 @@ $radio-color: #5D9E7A;
       margin-top: 0;
     }
     .des-down {
-      opacity: 0.5;
+      margin-top: 10px;
+      line-height: 1.5;
+      font-size: 13px;
       font-style: italic;
-      margin-top: 5px;
+      color: #666666;
     }
     input{
       height: auto;
@@ -312,28 +334,6 @@ $radio-color: #5D9E7A;
             }
           }
         }
-      }
-    }
-    .transaction-fee{
-      // font-weight: 600;      
-      margin-top: 1.2rem;
-      border-top: 1px solid #ddd;
-      padding-top: 0.5rem;
-      color: #6A6B7D;
-      .title-fee{
-        text-transform: uppercase;
-        font-size: 14px;
-        margin-bottom: 0.4rem;
-      }
-
-      .title-fee,
-      div:nth-child(2) {
-        // font-weight: bold;
-        color: #222;
-      }
-
-      div:nth-child(2) {
-        font-size: 18px;
       }
     }
     .custom-radio{

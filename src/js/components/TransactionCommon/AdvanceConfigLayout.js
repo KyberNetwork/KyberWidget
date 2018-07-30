@@ -27,10 +27,16 @@ const AdvanceConfigLayout = (props) => {
       <div id="advance-content">
         <div className="advance-content">
           <div>
-              {props.minRate}
-          </div>
-          <div>
               {props.gasConfig}
+          </div>
+
+          <div>
+            {props.minRate}
+          </div>
+
+          <div className="transaction-fee">
+            <div className="title-fee">{props.translate("transaction.transaction_fee") || "Transaction fee"}</div>
+            <div>{props.totalGas} ETH</div>
           </div>
         </div>
       </div>
