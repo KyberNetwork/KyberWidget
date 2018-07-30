@@ -84,7 +84,7 @@
         document.querySelectorAll(".btn-copy").forEach(function (btn){
             btn.addEventListener('click', function(){
                 if (!copyClipboard(this.getAttribute("data-copy-target"))) {
-                    alert("Copy failed. Please use browser's coy feature instead.");
+                    alert("Copy failed. Please use browser's copy feature instead.");
                 }
             })
         });
