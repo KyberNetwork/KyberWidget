@@ -80,7 +80,7 @@
                 <div class="item">
                     <label class="item-name">Receiving Amount:</label>
                     <div class="item-value">
-                        <input name="receiveAmount" type="number" min="0.001" step="0.0000000000000001">
+                        <input name="receiveAmount" type="number" min="0.001" step="0.000000000000000001">
                     </div>
                 </div>
                 <div class="item">
@@ -112,6 +112,12 @@
                     <label class="item-name">Commision-receiving Address:</label>
                     <div class="item-value">
                         <input name="commissionID" class="full-length" spellcheck="false" type="text" pattern="^0x[a-fA-F0-9]{40}$" placeholder="0x...">
+                    </div>
+                </div>
+                <div class="item">
+                    <label class="item-name">Extra Params:</label>
+                    <div class="item-value">
+                        <input name="extraParams" class="full-length" spellcheck="false" type="text" placeholder="name1=value1&name2=value2">
                     </div>
                 </div>
             </section>

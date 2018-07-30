@@ -27,7 +27,7 @@
 
     function grabForm() {
         var form = document.querySelector(".params");
-        var data = [], invalid = false, name, value
+        var data = [], invalid = false, name, value;
         form.querySelectorAll("input, select").forEach(function (node) {
             if (invalid) return;
 
@@ -44,8 +44,13 @@
             } else {
                 value = node.value;
             }
+
             if (name && value) {
-                data.push(name + "=" + encodeURIComponent(value))
+                if (name != "extraParams") {
+                    data.push(name + "=" + encodeURIComponent(value));
+                } else {
+                    data.push(value);
+                }
             }
         });
 
