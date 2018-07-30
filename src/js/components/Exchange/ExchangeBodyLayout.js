@@ -107,7 +107,7 @@ const ExchangeBodyLayout = (props) => {
                       <span>kyber.network</span>
                     </div> */}
                     <div>
-                      <span>Address:</span>
+                      <span>{props.translate("transaction.address") || "Address"}:</span>
                       <span>
                         {props.exchange.receiveAddr.slice(0, 8)} ... {props.exchange.receiveAddr.slice(-6)}
                       </span>
