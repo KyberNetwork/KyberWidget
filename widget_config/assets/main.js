@@ -109,7 +109,7 @@
         document.getElementById("widget").innerHTML = tagHtml;
         document.getElementById("sourceHtml").value = tagHtml;
         document.getElementById("sourceCss").value = document.getElementById("widget_style").innerHTML.trim();
-    }, 50, true);
+    }, 50, false);
 
 
     generateTag();
