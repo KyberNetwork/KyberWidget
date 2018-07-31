@@ -27,15 +27,18 @@
 
     function grabForm() {
         var form = document.querySelector(".params");
-        var data = [], invalid = false, name, value;
+        var data = [], error = [], msg, name, value;
         form.querySelectorAll("input, select").forEach(function (node) {
-            if (invalid) return;
 
             // do simple validation
             name = node.getAttribute("name");
             if (!node.checkValidity()) {
-                invalid = name;
+                msg = node.getAttribute("message") || ("Invalid input for: " + name);
+                node.setAttribute("title", msg);
+                error.push(msg);
                 return;
+            } else {
+                node.removeAttribute("title");
             }
 
             // set name - value
@@ -55,7 +58,7 @@
         });
 
         return {
-            invalid: invalid,
+            error: error,
             data: data.join("&")
         }
     }
@@ -92,9 +95,9 @@
 
     var generateTag = debounce(function () {
         var formData = grabForm();
-        if (formData.invalid) {
-            document.getElementById("widget").innerHTML = "<p class='error'>Invalid input for: " +
-                formData.invalid + "</p>";
+        if (formData.error && formData.error.length) {
+            document.getElementById("widget").innerHTML = "<p class='error'>" +
+                formData.error.join("<br>") + "</p>";
             document.getElementById("sourceHtml").value = "";
             document.getElementById("sourceCss").value = "";
             return;
