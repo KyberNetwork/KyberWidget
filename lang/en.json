@@ -134,7 +134,8 @@
     "receive_address": "Receiving Address",
     "slippage_tip": "Rate may change. You can change maximum slippage rate by adjusting min rate in advanced option",
     "max_slippage": "With maximum ${percent}% slippage",
-    "included": "Included"
+    "included": "Included",
+    "contact_merchant": "Please contact your merchant for wrong params"
   },
 
   "modal": {
