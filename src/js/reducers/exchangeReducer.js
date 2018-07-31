@@ -119,7 +119,7 @@ const exchange = (state = initState, action) => {
     }
     case "EXCHANGE.GO_TO_STEP": {
       var {step, oldStep} = action.payload
-      if (step === 1){
+      if (step === 1 || step === 2){
         var errors = {}
         Object.keys(newState.errors).map(key => {
           errors[key] = ""

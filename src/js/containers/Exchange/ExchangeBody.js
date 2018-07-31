@@ -130,6 +130,11 @@ export default class ExchangeBody extends React.Component {
     }
 
     if (sourceAmountIsNumber){
+      if (this.props.exchange.sourceTokenSymbol !== "ETH"){
+        srcAmount = converter.calculateDest(srcAmount, this.props.exchange.rateSourceToEth, 6)
+      }
+      console.log("converter_sourceamount")
+      console.log(srcAmount)
       if (parseFloat(srcAmount) < parseFloat(converter.toEther(constansts.EPSILON))){
         this.props.dispatch(exchangeActions.thowErrorSourceAmount("error.source_amount_too_small"))
         isValidate = false

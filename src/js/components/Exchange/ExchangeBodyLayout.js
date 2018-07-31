@@ -35,9 +35,9 @@ const ExchangeBodyLayout = (props) => {
       errorExchange = true
     }
   })
-  console.log("error_exchange")
-  console.log(errorSource)
-  console.log(props.errors)
+  // console.log("error_exchange")
+  // console.log(errorSource)
+  // console.log(props.errors)
   //if (errorSource)
   // if (props.errorNotPossessKgt && props.errorNotPossessKgt !== "") {
   //   errorSource.push(props.errorNotPossessKgt)
