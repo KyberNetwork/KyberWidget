@@ -123,7 +123,15 @@ export default class Payment extends React.Component {
       var tokenAddress = this.props.tokens[token].address
       var tokenDecimal = this.props.tokens[token].decimal
       var tokenName = this.props.tokens[token].tokenName
-      var amount = converter.stringToHex(this.props.exchange.destAmount, tokenDecimal)
+
+      var amount
+      if (this.props.exchange.isHaveDestAmount){
+        amount = converter.stringToHex(this.props.exchange.destAmount, tokenDecimal)
+      }else{
+        amount = converter.stringToHex(this.props.exchange.sourceAmount, tokenDecimal)
+      }
+      
+
       var destAddress = this.props.exchange.receiveAddr
       var gas = converter.numberToHex(100000)
       var gasPrice = converter.numberToHex(converter.gweiToWei(this.props.exchange.gasPrice))
@@ -407,7 +415,7 @@ export default class Payment extends React.Component {
     }
     
     var classDisable = ""
-    if (!this.props.exchange.validateAccountComplete){
+    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming || this.props.transfer.isConfirming){
       classDisable += " disable"
     }
     return (
@@ -546,8 +554,13 @@ export default class Payment extends React.Component {
                </div>
 
             )}
+            {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
+              <div className="confirm-message">{this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet"}</div>
+            )}
           <div className="control-btn">
-            <a className="back-btn" onClick={this.reImportAccount}>{this.props.translate("transaction.back") || "Back"}</a>
+            
+            <a className={"back-btn" + (this.props.exchange.isConfirming || this.props.transfer.isConfirming?" disable":"")} onClick={this.reImportAccount}>{this.props.translate("transaction.back") || "Back"}</a>
+
             {this.props.exchange.isNeedApprove && (
               <a className={"confirm-btn" + classDisable} onClick={this.approveToken}>
                 {this.props.translate("transaction.approve") || "Approve"}

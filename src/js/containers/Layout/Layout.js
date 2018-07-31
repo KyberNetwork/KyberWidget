@@ -82,6 +82,8 @@ export default class Layout extends React.Component {
     var receiveAddr = common.getParameterByName("receiveAddr")
     var receiveToken = common.getParameterByName("receiveToken")
     var receiveAmount = common.getParameterByName("receiveAmount")
+    // console.log("receiveAmount")
+    // console.log(receiveAmount)
     var callback = common.getParameterByName("callback")
     var network = common.getParameterByName("network")
     var paramForwarding = common.getParameterByName("paramForwarding")
@@ -107,7 +109,7 @@ export default class Layout extends React.Component {
     }
     
 
-    if (receiveAmount){
+    if (receiveAmount && receiveAmount !== ""){
       receiveAmount = parseFloat(receiveAmount) // second argument is NOT optional
       // console.log("receive_amount")
       // console.log(receiveAmount)
@@ -119,6 +121,8 @@ export default class Layout extends React.Component {
         errors["receiveAmount"] = this.props.translate('error.receive_amount_must_be_positive') 
           || "Receive amount must be positive number"
       }
+    }else{
+      receiveAmount = null
     }
 
     
@@ -126,6 +130,13 @@ export default class Layout extends React.Component {
       if (validator.verifyAccount(commissionID)){
         errors["commissionID"] = this.props.translate('error.commission_address_must_be_valid') 
           || "Commission address must be a valid ethereum address"
+      }
+    }
+
+    if (callback){
+      if (!callback.startsWith("https://")){
+        errors["callback"] = this.props.translate('error.callback_https') 
+        || "Callback must be a https location"        
       }
     }
 

@@ -47,7 +47,7 @@ export function* submitCallback(hash){
       var params = {
         tx: hash
       }
-      if (exchange.paramForwarding === true || exchange.paramForwarding === 'true'){
+      if (exchange.paramForwarding !== false && exchange.paramForwarding !== 'false'){
         Object.keys(global.params).map(key=>{
           if (key !== "tx"){
             params[key] = global.params[key]

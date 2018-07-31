@@ -46,6 +46,11 @@
             }
         }
     }
+    .confirm-message{
+        margin-bottom: 20px;
+        font-size: 13px;
+        font-style: italic;
+    }
     &.error{
         .confirm-btn{
             opacity: 0.6;
@@ -121,6 +126,11 @@
                 font-size: 18px;
                 width: 140px;
                 border-radius: 5px;
+                &.disable{
+                    cursor: initial;
+                    pointer-events: none;
+                    opacity: 0.8;
+                }
                 &.back-btn{
                     border: 2px solid #999999;
                     
@@ -128,12 +138,7 @@
                 }
                 &.confirm-btn{
                     background: #31CB9E;
-                    color: white;
-                    &.disable{
-                        cursor: initial;
-                        pointer-events: none;
-                        opacity: 0.8;
-                    }
+                    color: white;                    
                 }
             }
         }

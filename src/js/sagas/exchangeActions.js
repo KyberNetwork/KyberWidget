@@ -74,7 +74,9 @@ function* selectToken(action) {
       }
     } else {
       var tokens = state.tokens.tokens
-      var destValue = converter.caculateSourceAmount(exchange.destAmount, tokens[exchange.destTokenSymbol].rate, 6)
+      var destValue = converter.calculateDest(exchange.destAmount, tokens[exchange.destTokenSymbol].rate, 6)
+      // console.log("destination_amount")
+      // console.log(destValue)
       if (parseFloat(destValue) > constants.MAX_AMOUNT_RATE_HANDLE) {
         yield put(actions.throwErrorHandleAmount())
         return

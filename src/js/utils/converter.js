@@ -15,7 +15,7 @@ export function calculateMinAmount(source, rate) {
   return minAmount
 }
 
-export function calculateDest(source, rate) {
+export function calculateDest(source, rate, precision) {
   //console.log({source, rate})
   if (isNaN(source) || source === ""){
     source = 0
@@ -27,7 +27,11 @@ export function calculateDest(source, rate) {
     return "0"
   }
   var dest = bigSource.times(bigRate).div(1000000000000000000)
-  return dest
+  if (precision) {
+    return dest.toFixed(precision)
+  } else {
+    return dest.toString()
+  }
 }
 
 export function caculateSourceAmount(destAmount, offeredRate, precision) {

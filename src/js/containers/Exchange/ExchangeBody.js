@@ -133,8 +133,8 @@ export default class ExchangeBody extends React.Component {
       if (this.props.exchange.sourceTokenSymbol !== "ETH"){
         srcAmount = converter.calculateDest(srcAmount, this.props.exchange.rateSourceToEth, 6)
       }
-      console.log("converter_sourceamount")
-      console.log(srcAmount)
+      // console.log("converter_sourceamount")
+      // console.log(srcAmount)
       if (parseFloat(srcAmount) < parseFloat(converter.toEther(constansts.EPSILON))){
         this.props.dispatch(exchangeActions.thowErrorSourceAmount("error.source_amount_too_small"))
         isValidate = false
@@ -174,18 +174,18 @@ export default class ExchangeBody extends React.Component {
     var sourceDecimal = 18
     var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
     
-    // if (sourceTokenSymbol === "ETH"){
-    //   if(parseFloat(sourceValue) > 1000){
-    //     this.props.dispatch(exchangeActions.throwErrorHandleAmount())
-    //     return 
-    //   }
-    // }else{
-    //   var destValue = caculateDestAmount(sourceValue, this.props.exchange.rateSourceToEth, 6)
-    //   if(parseFloat(destValue) > 1000){
-    //     this.props.dispatch(exchangeActions.throwErrorHandleAmount())
-    //     return 
-    //   }
-    // }
+    if (sourceTokenSymbol === "ETH"){
+      if(parseFloat(sourceValue) > constansts.MAX_AMOUNT_RATE_HANDLE){
+        this.props.dispatch(exchangeActions.throwErrorHandleAmount())
+        return 
+      }
+    }else{
+      var destValue = converter.caculateDestAmount(sourceValue, this.props.exchange.rateSourceToEth, 6)
+      if(parseFloat(destValue) > constansts.MAX_AMOUNT_RATE_HANDLE){
+        this.props.dispatch(exchangeActions.throwErrorHandleAmount())
+        return 
+      }
+    }
     //var minRate = 0
     var tokens = this.props.tokens
     if (tokens[sourceTokenSymbol]) {
