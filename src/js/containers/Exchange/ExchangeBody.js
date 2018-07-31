@@ -2,7 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import { push } from 'react-router-redux';
 
-import { gweiToWei, stringToHex, getDifferentAmount, toT, roundingNumber, caculateSourceAmount, caculateDestAmount, gweiToEth, toPrimitiveNumber, stringToBigNumber, toEther } from "../../utils/converter"
+//import  from "../../utils/converter"
 
 import { PostExchangeWithKey, MinRate, AccountBalance } from "../Exchange"
 import { TransactionConfig } from "../../components/Transaction"
@@ -16,6 +16,8 @@ import { TokenSelector } from "../TransactionCommon"
 
 import * as validators from "../../utils/validators"
 import * as common from "../../utils/common"
+import * as converter from "../../utils/converter"
+
 import { openTokenModal, hideSelectToken } from "../../actions/utilActions"
 
 import * as globalActions from "../../actions/globalActions"
@@ -109,13 +111,30 @@ export default class ExchangeBody extends React.Component {
       isValidate = false
     }
 
+    var srcAmount
+    var sourceAmountIsNumber = true
     if (!this.props.exchange.isHaveDestAmount){
-      var srcAmount = parseFloat(this.props.exchange.sourceAmount)
+      srcAmount = parseFloat(this.props.exchange.sourceAmount)
       if (isNaN(srcAmount)) {
         this.props.dispatch(exchangeActions.thowErrorSourceAmount("error.source_amount_is_not_number"))
         isValidate = false
-      }    
+        sourceAmountIsNumber = false
+      }          
+    }else{
+      if (this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol){
+        srcAmount = this.props.exchange.destAmount
+      }else{
+        srcAmount = converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)        
+      }
     }
+
+    if (sourceAmountIsNumber){
+      if (parseFloat(srcAmount) < parseFloat(converter.toEther(constansts.EPSILON))){
+        this.props.dispatch(exchangeActions.thowErrorSourceAmount("error.source_amount_too_small"))
+        isValidate = false
+      }
+    }
+
     
 
     var gasPrice = parseFloat(this.props.exchange.gasPrice)
@@ -149,18 +168,18 @@ export default class ExchangeBody extends React.Component {
     var sourceDecimal = 18
     var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
     
-    if (sourceTokenSymbol === "ETH"){
-      if(parseFloat(sourceValue) > 1000){
-        this.props.dispatch(exchangeActions.throwErrorHandleAmount())
-        return 
-      }
-    }else{
-      var destValue = caculateDestAmount(sourceValue, this.props.exchange.rateSourceToEth, 6)
-      if(parseFloat(destValue) > 1000){
-        this.props.dispatch(exchangeActions.throwErrorHandleAmount())
-        return 
-      }
-    }
+    // if (sourceTokenSymbol === "ETH"){
+    //   if(parseFloat(sourceValue) > 1000){
+    //     this.props.dispatch(exchangeActions.throwErrorHandleAmount())
+    //     return 
+    //   }
+    // }else{
+    //   var destValue = caculateDestAmount(sourceValue, this.props.exchange.rateSourceToEth, 6)
+    //   if(parseFloat(destValue) > 1000){
+    //     this.props.dispatch(exchangeActions.throwErrorHandleAmount())
+    //     return 
+    //   }
+    // }
     //var minRate = 0
     var tokens = this.props.tokens
     if (tokens[sourceTokenSymbol]) {
@@ -267,7 +286,7 @@ export default class ExchangeBody extends React.Component {
     if (value < 0) return
     this.props.dispatch(exchangeActions.inputChange('dest', value))
 
-    var valueSource = caculateSourceAmount(value, this.props.exchange.offeredRate, 6)
+    var valueSource = converter.caculateSourceAmount(value, this.props.exchange.offeredRate, 6)
     this.validateRateAndSource(valueSource)
   }
 
@@ -459,8 +478,8 @@ export default class ExchangeBody extends React.Component {
     var token = this.props.tokens[this.props.exchange.sourceTokenSymbol]
     if (token) {
       addressBalance = {
-        value: toT(token.balance, token.decimal),
-        roundingValue: roundingNumber(toT(token.balance, token.decimal))
+        value: converter.toT(token.balance, token.decimal),
+        roundingValue: converter.roundingNumber(converter.toT(token.balance, token.decimal))
       }
     }
 
@@ -506,7 +525,7 @@ export default class ExchangeBody extends React.Component {
         
         translate={this.props.translate}
         swapToken={this.swapToken}
-        maxCap={toEther(this.props.exchange.maxCap)}
+        maxCap={converter.toEther(this.props.exchange.maxCap)}
         errorNotPossessKgt={this.props.exchange.errorNotPossessKgt}      
 
         advanceLayout = {this.props.advanceLayout}

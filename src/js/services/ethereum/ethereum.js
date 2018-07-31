@@ -309,14 +309,18 @@ export default class EthereumService extends React.Component {
 
     if (exchange.isHaveDestAmount){
       sourceAmount = converter.caculateSourceAmount(exchange.destAmount, exchange.offeredRate, 6)
+
+      //validate source amount too large
     }else{
       sourceAmount = exchange.sourceAmount
     }
 
-    if (parseFloat(sourceAmount) > 1000){
-      store.dispatch(throwErrorHandleAmount())
-      return 
-    }
+    
+
+    // if (parseFloat(sourceAmount) > 1000){
+    //   store.dispatch(throwErrorHandleAmount())
+    //   return 
+    // }
 
     // var tokens = state.tokens.tokens
     // var sourceDecimal = 18
