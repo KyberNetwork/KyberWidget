@@ -28,7 +28,7 @@ export default class ErrorPayment extends React.Component {
           </div>
           <div className={"error-payment__content"}>
             <div className={"container"}>
-              <ul className={"error-payment__content-text error-payment__content-text--bold"}>{this.getErrorPayment()}<li>Test</li></ul>
+              <ul className={"error-payment__content-text error-payment__content-text--bold"}>{this.getErrorPayment()}</ul>
               <div className={"error-payment__content-text"}>
                 {this.props.translate("transaction.contact_merchant")
                   || "Please contact your merchant for wrong params"}
