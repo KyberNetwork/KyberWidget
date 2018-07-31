@@ -135,7 +135,8 @@
     "receive_address": "Địa chỉ nhận",
     "slippage_tip": "Tỉ giá có thể thay đổi, bạn có thể chỉnh tỉ giá trong lựa chọn nâng cao",
     "max_slippage": "với tối đa ${percent}% trượt giá",
-    "included": "Bao gồm"
+    "included": "Bao gồm",
+    "contact_merchant": "Sai tham số, vui lòng liên hệ với cửa hàng"
   },
 
   "modal": {
@@ -258,6 +259,7 @@
     "from_private_key": "Điền<br />Private key",
     "from_private_key_input_title": "ĐIỀN PRIVATEKEY",
     "from_private_key_input_title_placehoder": "Điền private key",
+    "from_json_title": "Chọn file JSON của bạn",
     "connect": "Kết nối",
     "address": "Địa chỉ",
     "balance": "Số dư",
