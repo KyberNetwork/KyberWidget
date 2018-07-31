@@ -626,6 +626,10 @@ const exchange = (state = initState, action) => {
       newState.validateAccountComplete = true
       return newState
     }
+    case "EXCHANGE.SELECT_TOKEN_COMPLETE":{
+      newState.isSelectToken = false
+      return newState
+    }
     case "GLOBAL.CLEAR_SESSION_FULFILLED":{
       var resetState = {...initState}
       resetState.sourceToken = newState.sourceToken

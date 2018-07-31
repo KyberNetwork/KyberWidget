@@ -636,3 +636,9 @@ export function validateAccountComplete(){
     type: "EXCHANGE.VALIDATE_ACCOUNT_COMPLETE"
   }
 }
+
+export function selectTokenComplete(){
+  return {
+    type: "EXCHANGE.SELECT_TOKEN_COMPLETE"
+  }
+}

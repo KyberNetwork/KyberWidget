@@ -60,9 +60,10 @@ function* selectToken(action) {
   yield call(estimateGasUsed, symbol, exchange.destTokenSymbol)
 
 
-  // if (exchange.sourceTokenSymbol === exchange.destTokenSymbol) {
-  //   return
-  // }
+  if (exchange.sourceTokenSymbol === exchange.destTokenSymbol) {
+    yield put(actions.selectTokenComplete())
+    return
+  }
 
 
   if (exchange.isHaveDestAmount) {
@@ -72,7 +73,7 @@ function* selectToken(action) {
         return
       }
     } else {
-      var tokens = store.tokens.tokens
+      var tokens = state.tokens.tokens
       var destValue = converter.caculateSourceAmount(exchange.destAmount, tokens[exchange.destTokenSymbol].rate, 6)
       if (parseFloat(destValue) > constants.MAX_AMOUNT_RATE_HANDLE) {
         yield put(actions.throwErrorHandleAmount())

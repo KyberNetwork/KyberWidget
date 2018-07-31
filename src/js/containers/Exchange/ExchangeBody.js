@@ -99,6 +99,7 @@ export default class ExchangeBody extends React.Component {
   }
 
   importAccount = () =>{    
+    
     if (!this.state.acceptedTerm){
       return
     }
@@ -500,6 +501,8 @@ export default class ExchangeBody extends React.Component {
     // console.log("exchange_data")
     // console.log(this.props.exchange.destAmount)
 
+    console.log("is_select_token")
+    console.log(this.props.exchange.isSelectToken)
     var classNamePaymentbtn
     if (!validators.anyErrors(this.props.exchange.errors) && this.state.acceptedTerm && !this.props.exchange.isSelectToken) {
       //className += " animated infinite pulse next"

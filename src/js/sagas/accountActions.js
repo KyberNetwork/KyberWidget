@@ -175,13 +175,23 @@ function* checkBalance(address){
   })
   yield put(setBalanceToken(mapBalance))
 
+
+  // if (exchange.sourceTokenSymbol === exchange.destTokenSymbol){
+
+  // }
+
   //check whether balance is sufficient  
   var srcAmount
   if (exchange.isHaveDestAmount){
     var destAmount = exchange.destAmount
-    var minRate = converter.toTWei(exchange.minConversionRate, 18)
-    srcAmount = converter.caculateSourceAmount(exchange.destAmount, minRate, 6)
-    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)    
+    
+    if(exchange.sourceTokenSymbol === exchange.destTokenSymbol){
+      srcAmount = converter.toTWei(destAmount, tokens[sourceTokenSymbol].decimal)    
+    }else{
+      var minRate = converter.toTWei(exchange.minConversionRate, 18)
+      srcAmount = converter.caculateSourceAmount(exchange.destAmount, minRate, 6)
+      srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)    
+    }
   }else{
     srcAmount = exchange.sourceAmount
     //var sourceTokenSymbol = exchange.sourceTokenSymbol
