@@ -59,17 +59,16 @@ const ImportByDeviceView = (props) => {
   return (
     <div>
       <div className="payment-gateway__step-title payment-gateway__step-title--2">
-        {props.translate(`modal.select_${props.walletType}_address`) || 'Select Address'}
+        {props.translate(`modal.select_${props.chosenImportAccount}_address`) || 'Select Address'}
       </div>
 
       <div className={"import-account-content__info " + (!props.hasError ? 'import-account-content__info--center' : '')}>
         <div className={"import-account-content__info-type"}>
           <img
             className={"import-account-content__info-type-image"}
-            src={require(`../../../assets/img/landing/${props.walletType}_active.svg`)}/>
+            src={require(`../../../assets/img/landing/${props.chosenImportAccount}_active.svg`)}/>
           <div className={"import-account-content__info-type-text"}>
-            {/* {props.translate(`import.from_${props.walletType}`) || "DEVICE"} */}
-            {props.walletType}
+            {props.chosenImportAccount}
           </div>
         </div>
         {!props.hasError &&

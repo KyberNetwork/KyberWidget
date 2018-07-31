@@ -16,7 +16,6 @@ const ImportByPKeyContent = (props) => {
               {props.translate("import.from_private_key") || "PRIVATE KEY"}
             </div>
           </div>
-          <div className={"import-account-content__info-text"}></div>
         </div>
 
         <div className="import-account-content__private-key">

@@ -258,6 +258,7 @@
     "from_private_key": "Private Key",
     "from_private_key_input_title": "개인키 입력하기",
     "from_private_key_input_title_placehoder": "개인키 입력하기",
+    "from_json_title": "Choose your JSON file",
     "connect": "연결하기",
     "address": "주소",
     "balance": "잔액",

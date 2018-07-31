@@ -257,6 +257,7 @@
     "from_private_key": "PRIVATE KEY",
     "from_private_key_input_title": "Enter your private key",
     "from_private_key_input_title_placehoder": "Enter your private key",
+    "from_json_title": "Choose your JSON file",
     "connect": "Connect",
     "address": "Address",
     "metamask_address": "Address",

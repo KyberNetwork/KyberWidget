@@ -259,6 +259,7 @@
     "from_private_key": "请输入您的<br />密钥",
     "from_private_key_input_title": "请输入您的密钥",
     "from_private_key_input_title_placehoder": "请输入您的密钥",
+    "from_json_title": "Choose your JSON file",
     "connect": "连接",
     "address": "地址",
     "balance": "余额",

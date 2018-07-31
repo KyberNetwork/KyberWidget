@@ -257,6 +257,7 @@
     "from_private_key": "Điền<br />Private key",
     "from_private_key_input_title": "ĐIỀN PRIVATEKEY",
     "from_private_key_input_title_placehoder": "Điền private key",
+    "from_json_title": "Choose your JSON file",
     "connect": "Kết nối",
     "address": "Địa chỉ",
     "balance": "Số dư",
