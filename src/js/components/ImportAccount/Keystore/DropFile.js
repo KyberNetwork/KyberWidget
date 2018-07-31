@@ -1,7 +1,5 @@
 import React from "react"
-
 import Dropzone from 'react-dropzone'
-//import ReactTooltip from 'react-tooltip'
 
 const DropFile = (props) => {
   var keystring
@@ -33,7 +31,7 @@ const DropFile = (props) => {
       <Dropzone onDrop={(e) => props.onDrop(e)} disablePreview={true} className="column column-block">
         <div className="importer json">
           <div className="importer__symbol">
-            <img src={require('../../../assets/img/landing/keystore_disable.png')} />
+            <img src={require('../../../../assets/img/landing/keystore_disable.png')} />
             <div className="importer__name">{props.translate("import.from_keystore") || "KEYSTORE"}</div>
           </div>
         </div>

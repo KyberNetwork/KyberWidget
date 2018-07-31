@@ -243,6 +243,7 @@ const IMPORT_ACCOUNT_TYPE = {
   trezor: 'trezor',
   ledger: 'ledger',
   privateKey: 'private-key',
+  keystore: 'keystore'
 }
 
 module.exports = {
