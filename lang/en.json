@@ -43,6 +43,7 @@
     "approve": "Approve",
     "confirm_transaction": "Confirm Transaction",
     "enter_amount": "ENTER AMOUNT YOU WILL PAY",
+    "confirm": "Confirm",
 
     "exchange": "Exchange",
     "exchange_from": "From",
@@ -134,7 +135,8 @@
     "receive_address": "Receiving Address",
     "slippage_tip": "Rate may change. You can change maximum slippage rate by adjusting min rate in advanced option",
     "max_slippage": "With maximum ${percent}% slippage",
-    "included": "Included"
+    "included": "Included",
+    "contact_merchant": "Please contact your merchant for wrong params"
   },
 
   "modal": {
@@ -257,6 +259,7 @@
     "from_private_key": "PRIVATE KEY",
     "from_private_key_input_title": "Enter your private key",
     "from_private_key_input_title_placehoder": "Enter your private key",
+    "from_json_title": "Choose your JSON file",
     "connect": "Connect",
     "address": "Address",
     "metamask_address": "Address",
