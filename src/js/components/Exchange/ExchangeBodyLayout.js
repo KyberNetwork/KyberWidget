@@ -232,7 +232,7 @@ const ExchangeBodyLayout = (props) => {
             </div>
             
             
-              <button className={props.classNamePaymentbtn} onClick={(e) => props.importAccount(e)}>{props.translate("transaction.payment") || "Payment"}</button>
+              <button className={props.classNamePaymentbtn} onClick={(e) => props.importAccount(e)}>{props.translate("transaction.next") || "Next"}</button>
             </div>
             
             {/* <div className="large-6">

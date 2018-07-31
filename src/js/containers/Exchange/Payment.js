@@ -556,7 +556,7 @@ export default class Payment extends React.Component {
 
             {!this.props.exchange.isNeedApprove && (
               <a className={"confirm-btn" + classDisable} onClick={this.payment}>
-                {this.props.translate("transaction.payment") || "Payment"}
+                {this.props.translate("transaction.confirm") || "Confirm"}
               </a>
             )}
           </div>
