@@ -11,8 +11,8 @@ Above diagram shows how components like the widget, kyber network smart contract
 
 **As a vendor, what you care are:**
 
-1. How can you use (setup, install) the widget to specify which token you will receive to which wallet, the payment amount,..etc. [Read more]()
-2. How can you determine if a specific payment is pending, successful or failed (as the payment is failed to send, the payment is not sufficient or the payment is not in desired token). [Read more]()
+1. How can you use (setup, install) the widget to specify which token you will receive to which wallet, the payment amount,..etc. [Read more](#how-to-use-the-widget)
+2. How can you determine if a specific payment is pending, successful or failed (as the payment is failed to send, the payment is not sufficient or the payment is not in desired token). [Read more](#how-to-get-payment-status)
 
 ## How to use the widget
 All you have to do is to place a button with proper url to your website.
@@ -32,7 +32,7 @@ https://developer.kyber.network/widget/payment?receiveAddr=0xFDF28Bf25779ED4cA74
 
 that helps users to pay `1.2 DAI` equivalent amount of supported tokens (list of supported token will be given at the end of this Readme) to `0xFDF28Bf25779ED4cA74e958d54653260af604C20` (vendor's wallet), after the tx is broadcasted to the network, informations will be submitted to the callback url `https://yourwebsite.com/kybercallback`.
 
-## Params to pass to the Widget
+### Params to pass to the Widget
 In this version, we only support the widget via a new browser windows thus we can pass params via its url as url query params.
 The widget supports following params:
 - ***receiveAddr*** (ethereum address with 0x prefix) - **required** - vendor's Ethereum wallet, user's payment will be sent there. *Must double check this param very carefully*.
@@ -44,5 +44,6 @@ The widget supports following params:
 - ***signer*** (string) - concatenation of a list of ethereum address by underscore `_`, eg. 0xFDF28Bf25779ED4cA74e958d54653260af604C20_0xFDF28Bf25779ED4cA74e958d54653260af604C20 - If you pass this param, the user will be forced to pay from one of those addresses.
 - ***commissionID*** - Ethereum address - your Ethereum wallet to get commission of the fees for the transaction. Your wallet must be whitelisted by KyberNetwork (the permissionless registration will be available soon) in order to get the commission, otherwise it will be ignored.
 
+## How to get payment status
 ## Supported tokens
 See all supported tokens [here](https://tracker.kyber.network/#/tokens)
