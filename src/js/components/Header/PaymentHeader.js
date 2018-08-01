@@ -3,7 +3,7 @@ import React from "react";
 const PaymentHeader = (props) => {
   return (
     <div>
-      <div className="kyber-payment-logo-container container">
+      <div className="kyber-payment-logo-container">
         <div className="kyber-payment-logo"></div>
       </div>
       <div className="step-breadcrumb container">

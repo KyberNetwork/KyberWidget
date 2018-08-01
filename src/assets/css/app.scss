@@ -491,7 +491,11 @@ html body{
   background-image: url($image-path + 'kyber-payment.svg');
 
   &-container {
-    padding-left: 0;
+    padding: 20px;
+
+    @include screen-max-width(mid-small) {
+      padding-left: 0;
+    }
   }
 }
 
