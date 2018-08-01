@@ -16,6 +16,8 @@ import * as exchangeActions from "../../actions/exchangeActions"
 
 import * as transferActions from "../../actions/transferActions"
 
+import * as accountActions from "../../actions/accountActions"
+
 
 import { default as _ } from 'underscore'
 import { clearSession } from "../../actions/globalActions"
@@ -82,6 +84,8 @@ export default class Payment extends React.Component {
 
   reImportAccount = () => {
     this.props.dispatch(exchangeActions.goToStep(2, 3))
+
+    this.props.dispatch(accountActions.clearWatchMetamask())
   }
 
   approveToken = () => {

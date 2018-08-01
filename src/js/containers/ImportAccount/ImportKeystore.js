@@ -48,9 +48,7 @@ export default class ImportKeystore extends React.Component {
           var address = addressFromKey(keystring)
           this.props.dispatch(importNewAccount(address,
             "keystore",
-            keystring,
-            this.props.ethereum,
-            this.props.tokens, this.props.screen))
+            keystring))
         }
       }
       fileReader.readAsText(file)

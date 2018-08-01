@@ -56,9 +56,7 @@ export default class ImportByPrivateKey extends React.Component {
       let address = addressFromPrivateKey(privateKey)
       this.props.dispatch(importNewAccount(address,
           "privateKey",
-          privateKey,
-          this.props.ethereum,
-          this.props.tokens))
+          privateKey))
     }
     catch (e) {
       console.log(e)
