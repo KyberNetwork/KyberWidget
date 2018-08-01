@@ -365,6 +365,12 @@
     "mid_price": "Giá trung bình"
   },
 
+  "payment_header": {
+    "step_method": "Phương thức thanh toán",
+    "step_import": "Nhập địa chỉ ví",
+    "step_confirm": "Xác nhận"
+  },
+
   "home": "Trang chủ",
   "product_feedback": "Phản hồi sản phẩm",
   "tracker": "Thông tin",

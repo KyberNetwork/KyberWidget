@@ -367,6 +367,12 @@
     "mid_price": "中间价"
   },
 
+  "payment_header": {
+    "step_method": "支付方式",
+    "step_import": "导入地址",
+    "step_confirm": "确认"
+  },
+
   "home": "主页",
   "tracker": "跟踪网站",
   "product_feedback": "产品反馈",

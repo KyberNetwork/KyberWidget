@@ -366,6 +366,12 @@
     "mid_price": "Mid Price"
   },
 
+  "payment_header": {
+    "step_method": "Payment method",
+    "step_import": "Address import",
+    "step_confirm": "Confirmation"
+  },
+
   "home": "Home",
   "tracker": "Tracker",
   "product_feedback": "Product Feedback",
