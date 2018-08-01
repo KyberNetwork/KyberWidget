@@ -38,8 +38,8 @@ export function caculateSourceAmount(destAmount, offeredRate, precision) {
   if (!destAmount || !offeredRate || acceptableTyping(destAmount) || acceptableTyping(offeredRate)) {
     return "0"
   }
-  var bigDest = new BigNumber(destAmount.toString())
-  var bigOfferedRate = new BigNumber(offeredRate.toString())
+  var bigDest = new BigNumber(destAmount)
+  var bigOfferedRate = new BigNumber(offeredRate)
 
   bigOfferedRate = bigOfferedRate.div(1000000000000000000)
   var result = bigDest.div(bigOfferedRate)
@@ -313,7 +313,7 @@ export function stringToBigNumber(number) {
 export function stringToHex(number, decimal) {
   if (number === "" || isNaN(number)) return "0x0"
   var param = new BigNumber(10).pow(decimal ? decimal : 18)
-  var bigNumber = new BigNumber(number.toString()).times(param)
+  var bigNumber = new BigNumber(number).times(param)
   bigNumber = new BigNumber(bigNumber.toFixed(0))
   return "0x" + bigNumber.toString(16)
 }

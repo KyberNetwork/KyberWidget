@@ -81,7 +81,7 @@ export default class Layout extends React.Component {
 
     var receiveAddr = common.getParameterByName("receiveAddr")
     var receiveToken = common.getParameterByName("receiveToken")
-    var receiveAmount = common.getParameterByName("receiveAmount")
+    var receiveAmount = common.getParameterByName("receiveAmount").toString();
     // console.log("receiveAmount")
     // console.log(receiveAmount)
     var callback = common.getParameterByName("callback")
@@ -110,9 +110,6 @@ export default class Layout extends React.Component {
     
 
     if (receiveAmount && receiveAmount !== ""){
-      receiveAmount = parseFloat(receiveAmount) // second argument is NOT optional
-      // console.log("receive_amount")
-      // console.log(receiveAmount)
       if (isNaN(receiveAmount)) {
         errors["receiveAmount"] = this.props.translate('error.receive_amount_is_invalid_number') 
           || "Receive amount is invalid number"
