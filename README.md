@@ -20,7 +20,45 @@ Vendor's backend server usually needs to monitor status of a payment in order to
 With KyberNetwork, the payment is made on blockchain thus vendors don't have to trust or rely on any data that comes from KyberNetwork but from the Ethereum network. However, vendors have to implement and run their own monitoring logic to get payment status from the Ethereum network or use and run the [libs](TODO) that KyberNetwork and the community have made.
 
 ### How to monitor the status
+Before broadcasting the transaction, the widget will send all infos about the payment (depends on how vendors configure via its params, [read more](#how-to-use-the-widget)) including *transaction hash* to the `callback` ([read more](#how-to-use-the-widget)) passed to the widget. At this point, vendors' server is responsible to store that *transaction hash* and necessary payment infos (eg. user id, order id...) and use it to monitor that transaction's status on Ethereum network. Payment status will be determined based on that *transaction status* and the payment infos.
 
+Basically, if the *transaction* is pending, payment is pending. If it is a reverted/failed tx, the payment is failed. If it is successful, the vendor needs to get the payment amount (in ETH or in ERC20 token) that the user sent and check if it is exactly the same to expected amount (price of a specific order).
+
+There are 3 different transaction types the widget can broadcast.
+1. Pay in ETH, vendors get ETH. It is just a basic ETH transfer transaction.
+2. Pay in token A, vendors get token A. It is just a basic ERC20 transfer transaction.
+3. Pay in token A, vendors get token B (B != A). It is a `trade()` transaction
+
+In order to get the amount of token the user has sent, the vendor needs to see if the transaction is which type. Each type will have different way to get token amount sent by the user as following:
+1. Transaction is the first type. Payment amount is transaction value.
+2. Transaction is the second type. Payment amount is logged in `event Transfer(address indexed _from, address indexed _to, uint _value)`, in `_value` param.
+3. Transaction is the third type. Payment amount is logged in `TradeExecute (index_topic_1 address origin, address src, uint256 srcAmount, address destToken, uint256 destAmount, address destAddress)`, in `destAmount` param.
+
+**Pseudo code:**
+```javascript
+function paymentStatus(txhash, expectedPayment) -> return status {
+  startTime = time.Now()
+  txStatus = not_found
+  loop {
+    txStatus = getTxStatusFromEthereum(txhash) // possible returned value: not_found, pending, failed, success
+    switch txStatus {
+    case pending:
+      // wait more, do nothing
+      continue
+    case failed:
+      return "failed"
+    case success:
+      // TODO 
+    case not_found:
+      if time.Now() - startTime > 15 mins {
+        // if the txhash is not found for more than 15 mins
+        return "failed"
+      }
+    }
+    
+  } 
+}
+```
 ## How to use the widget
 All you have to do is to place a button with proper url to your website.
 
