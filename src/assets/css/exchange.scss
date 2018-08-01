@@ -62,7 +62,7 @@
   max-width:  450px;
   box-shadow: 0 7px 25px #ddd;
   background: white;
-  margin: 50px auto 0;
+  margin: 0 auto;
 
   .exchange-pading{
     //padding: 0 1rem;
@@ -91,11 +91,13 @@
       }
     }
   }
-  .checkbox{
+  .checkbox {
     margin-top: 15px;
-    label{
+    label {
       color: #999;
-      a{
+      font-size: 13px;
+
+      a {
         color: inherit;
         text-decoration: underline;
       }

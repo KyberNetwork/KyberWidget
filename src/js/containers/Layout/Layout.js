@@ -189,13 +189,11 @@ export default class Layout extends React.Component {
       <LayoutView
         history={history}
         Header={Header}
-        // ImportAccount={ImportAccount}
         Exchange={Exchange}
-        //market={market}
         supportedLanguages={Language.supportLanguage}
         setActiveLanguage={this.setActiveLanguage}      
         currentLanguage = {currentLanguage}  
-       // footer = {footer}
+        translate={this.props.translate}
       />
     )
   }
