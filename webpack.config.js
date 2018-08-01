@@ -32,7 +32,7 @@ module.exports = env => {
         }),
         new webpack.HashedModuleIdsPlugin(),
         new CopyWebpackPlugin([
-          { from: './assets/img/kyber-payment.svg', to: '' }
+          { from: './assets/img/kyber-payment.png', to: '' }
         ])
     ];
     if (env && env.build !== 'true') {
