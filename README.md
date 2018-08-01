@@ -4,6 +4,8 @@ Payment button (widget) to allow users to pay for goods from tokens supported by
 ## What does it do
 The widget provides a friendly and convenient user interface for users to use ERC20 tokens to pay to an ETH address. Users can use different wallets of choice (for example, keystore, trezor, ledger, private key and metamask) to sign the transaction and make the payment, the widget will broadcast the transaction to the Ethereum network automatically and notify the app (vendors) about the transaction.
 
+## How does it work
+![How the widget works](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=Untitled%20Diagram.xml#R5VlLc9s2EP41nCYHe%2FgQZfkoKXKdiZu49UyTHCESJFGBBAuCeuTXZ0GAFElQsmIraqf1wUMsFsDi2xd2ZXnzdPsrR3nyGwsxtVw73FreO8t1b0cT%2BC8JO0XwPUcRYk5CRWoRnsg3rIm2ppYkxEWHUTBGBcm7xIBlGQ5Eh4Y4Z5suW8Ro99QcxdggPAWImtTPJBSJok58e0%2B%2FxyRO6pMdW88sUbCKOSszfZ7lelH1p6ZTVO%2Bl%2BYsEhWzTInkLy5tzxoT6SrdzTCW0NWxq3d2B2UZujjNxygI5J1esES313f9cfHz36Q8tntjVkFSXwnKZbXmzTUIEfspRIGc3YANAS0RKYeTAZ0QonTPKOIwzlgHTbI25IIDwlJI4A7Jgcg3SI4ojkHcWoiKpzpCbaMlgHd4evJ7TgAa2iFmKBd8Bi17gjXy1ZFePNe6bvVZHtS6StkYnmoi0JcXN3ns04UMDegBc2wDXcscolRfPlkVe3dGePXyaf5jfT99%2F%2FG9i7l8UcgPxBbiia5cF5oWBL3hfLj%2FLlE4DIZFrIHtAS0wfWUEEYRKsJROCpcBA5cSscfMa8b2jH4K9pSpWCkoyPG%2Bil30e6J06fmroR46JvTcA%2FfgMyI8M5GeUBasgQSQDq6fS1JYcvmL59YZkUcmR5cK%2B9mq3xFx9wrEoRcVKjbBIQG0Byq6vr98a2oPzIR%2Fg5z3jDMj6k5vrrlnfmtA6Y3%2FArJ1zmLVvoPt7iSsB8VpewbUpi02YBZPwZpBhYK9oYD7BFQy7VG1CCpMnx1lIslhppCiDABdFVErpwPAhtyJCIXwYy0x1hZBi9ZBxkbCYZYgu9tRZN9y1FIi3RHyR5OvxZKLHXzUbCM53atKvh1%2F1ur%2BwEDv9ukAlgAGu15z8wKRbNvs%2FYk5AL5h33FEKfdxk4I6s5IHm0u8egXiMRcsxTMPimCJB1t3dX2MjEzOTg%2BYqHUHwW0sPe016%2BSlONBSgnKHkcI4IdXsQoL7tbhCloL7nbbpOIAHi4UUgHNndCO8NhKHJUHK1zwCgY5rYYyd02FAGgEnzoXggQ1Gftq7w%2F0WuPBnys4QRvxVEnCNBxP6BIPKygOGMzIhxe6GIMZCzFyqb9LUwmFx%2BhmqclmJauvjSDvb7ucur5lLB3DFVUysg74A%2B%2FruUteIsBSHhoeVNYdbOt%2FBfVReKflU9QeXcqDUHYUhc6WpAzgWAhkwT9Z57RWvV1wT9YLMzLDaMr6yqEBccBY3pwP2W%2FeVAy%2Fu0pEpPdf1fH%2BwcluFFt1eVTnP9Q3sXOcqMO%2FOBawwxDt3ugsL2q8p%2FA6myMY5C%2FObtD4HXCysnVbEMuCJatVJkIQyUCExSxwbH1eM7lBIqU%2Bc9pmssdz17hvbG3QzdZN5OoTCQom%2FPkaFvjLAxRxVHowe7qgnAX%2BUth9L0CmdFzXY0ZVessgyI5IYJIxA4%2F39JwjeThHOpLOF6xx5kWcR4iqr%2BhVl%2FCxl3ElQkqq5jPKwiOuxcjWW%2FpBoOV97neIPd9B9hJ1drR5R9PiVOjno5VKKur5tNJ6tV7%2FbISKWguirqBYymR1lvoaTSq%2FbGMeUc7VpsuWQoDp%2Fj9PpydWPu7pBcnv0q%2FtGoww8fSuLe6lp8FkUFFlbf%2BhvoT4t%2FZp%2Fkg3qr9B3gMwljfdw%2FWRJPnm0qDVZz5%2BgpOWMDq%2Ffy%2FVe94mxUtU0LmWPBL7YDNTIBCWVDKM%2FBS4cqPlXSyUzxptPWM1IOx9%2BY7v9R6bpcBZ3nU0kWTuWPPTAKKCoKEpxS79nWcMPnWCPpZWHFHUgN%2FrA5tBTuDyi8pr0y1Fx1rW3cbwoo4Y1IY%2BzT7%2FD7p0Ws5x0ahvvfvhT7%2FvdFb%2FEd)
 ## How to use the widget
 All you have to do is to place a button with proper url to your website.
 
@@ -35,54 +37,4 @@ The widget supports following params:
 - ***commissionID*** - Ethereum address - your Ethereum wallet to get commission of the fees for the transaction. Your wallet must be whitelisted by KyberNetwork (the permissionless registration will be available soon) in order to get the commission, otherwise it will be ignored.
 
 ## Supported tokens
-- OMG
-- KNC
-- SNT
-- ELF
-- POWR
-- MANA
-- BAT
-- REQ
-- GTO
-- RDN
-- APPC
-- ENG
-- SALT
-- BQX
-- ADX
-- AST
-- RCN
-- ZIL
-- DAI
-- LINK
-- IOST
-- STORM
-- MOT
-- DGX
-- ABT
-- ENJ
-- AION
-- AE
-- BLZ
-- PAL
-- ELEC
-- BBO
-- POLY
-- LBA
-- EDU
-- CVC
-- WAX
-- SUB
-- POE
-- PAY
-- CHAT
-- DTA
-- BNT
-- TUSD
-- TOMO
-- MDS
-- LEND
-- WINGS
-- MTL
-- WABI
-- ETH
+See all supported tokens [here](https://tracker.kyber.network/#/tokens)
