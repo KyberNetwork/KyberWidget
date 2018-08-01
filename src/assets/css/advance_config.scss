@@ -206,6 +206,10 @@ $radio-color: #5D9E7A;
     color: #666666;
   }
 
+  label.des-down {
+    font-style: normal;
+  }
+
   .error{
     .gas-change{
       border: 1px solid $error-color;
