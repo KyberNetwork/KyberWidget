@@ -133,7 +133,7 @@ export default class Payment extends React.Component {
       
 
       var destAddress = this.props.exchange.receiveAddr
-      var gas = converter.numberToHex(100000)
+      var gas = converter.numberToHex(this.props.exchange.gas)
       var gasPrice = converter.numberToHex(converter.gweiToWei(this.props.exchange.gasPrice))
 
       var balanceData = {
@@ -401,11 +401,17 @@ export default class Payment extends React.Component {
     var sourceDecimal = this.props.tokens[sourceTokenSymbol].decimal
 
     var ethBalance = this.props.tokens["ETH"].balance
-
-    var gasUsed = this.props.exchange.gas
-    if (this.props.exchange.isNeedApprove) {
-      gasUsed += this.props.exchange.gas_approve
+    
+    var gasUsed
+    if (this.props.exchange.isFetchingGas){
+      gasUsed = <img src={require('../../../assets/img/waiting.svg')} />
+    }else{
+      gasUsed = this.props.exchange.gas
+      if (this.props.exchange.isNeedApprove) {
+        gasUsed += this.props.exchange.gas_approve
+      }
     }
+    
 
     var classError = ""
     var isHaveError = false
@@ -415,7 +421,7 @@ export default class Payment extends React.Component {
     }
     
     var classDisable = ""
-    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming){
+    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming || this.props.exchange.isFetchingGas){
       classDisable += " disable"
     }
 
@@ -521,9 +527,12 @@ export default class Payment extends React.Component {
             </div>
             <div>
               <span>{this.props.translate("transaction.transaction_fee") || "Trasaction fee"}:</span>
-              <span>
-                {converter.calculateGasFee(this.props.exchange.gasPrice, gasUsed)}
-              </span>
+              {!this.props.exchange.isFetchingGas && (
+                <span>
+                  { converter.calculateGasFee(this.props.exchange.gasPrice, gasUsed)}
+                </span>
+              )}
+              
             </div>
           </div>
         </div>

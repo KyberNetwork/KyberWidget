@@ -251,6 +251,63 @@ function* checkSigner(address){
   }
 }
 
+
+// function* fetchingGasTransfer(){}
+function* fetchingGas(address){
+  var state = store.getState()
+  var exchange = state.exchange
+  var ethereum = state.connection.ethereum
+  // console.log("ethereum_conector")
+  // console.log(ethereum)
+  //temporaly hardcode for exchange gas limit
+  if (exchange.sourceTokenSymbol !== exchange.destTokenSymbol){
+    return
+  }
+  yield put(exchangeActions.fetchGas())
+  //if transfer estimate
+  var tokens = state.tokens.tokens
+  var decimal = tokens[exchange.sourceTokenSymbol].decimal
+  var amount
+  if (exchange.isHaveDestAmount){
+    amount = converter.stringToHex(exchange.destAmount, decimal)
+  }else{
+    amount = converter.stringToHex(exchange.sourceAmount, decimal)
+  }
+
+  var destAddr = exchange.receiveAddr
+
+  var txObj
+  if (exchange.sourceTokenSymbol === "ETH"){
+    txObj = {
+      from : address,
+      value: amount,
+      to:destAddr
+    }
+  }else{
+    var tokenAddr = tokens[exchange.sourceTokenSymbol].address
+    var data = yield call([ethereum, ethereum.call],"sendTokenData", tokenAddr, amount, destAddr)
+    txObj = {
+      from : address,
+      value:"0",
+      to:tokenAddr,
+      data: data
+    }
+  }
+  var gas
+  try{
+    var gas = yield call([ethereum, ethereum.call],"estimateGas", txObj)
+    if (exchange.sourceTokenSymbol !== "ETH"){
+      gas = Math.round(gas * 120 / 100)
+    }
+  }catch(e){
+    console.log(e)
+    gas = 250000
+    //yield put(exchangeActions.throwErrorExchange("gas_estimate", translate("error.gas_estimate") || "Exceed gas"))    
+  }
+  yield put(exchangeActions.setEstimateGas(gas, 0))
+  yield put(exchangeActions.fetchGasSuccess())
+}
+
 function* createNewAccount(address, type, keystring, ethereum) {
   try {
     const account = yield call(service.newAccountInstance, address, type, keystring, ethereum)
@@ -292,6 +349,8 @@ export function* importNewAccount(action) {
     // const account = yield call(service.newAccountInstance, address, type, keystring, ethereum)
     yield put(actions.closeImportLoading())
     yield put(actions.importNewAccountComplete(account))
+
+    
     yield put(exchangeActions.goToStep(3))
 
     //track login wallet
@@ -305,6 +364,8 @@ export function* importNewAccount(action) {
     // }
 
 
+    yield call(fetchingGas, address)
+    
     //check whether user need approve
     yield call(checkApproveAccount, address, type)
 
@@ -313,7 +374,6 @@ export function* importNewAccount(action) {
     yield call(checkBalance, address)
 
     yield call(checkSigner, address)
-
 
     yield put(exchangeActions.validateAccountComplete())
     //yield put.sync(actions.resetImportAccount())
