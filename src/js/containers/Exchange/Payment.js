@@ -415,9 +415,16 @@ export default class Payment extends React.Component {
     }
     
     var classDisable = ""
-    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming || this.props.transfer.isConfirming){
+    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming){
       classDisable += " disable"
     }
+
+    var signExchangeError = this.props.exchange.signError ? this.props.exchange.signError : ""
+   // var signTransferError = this.props.transfer.signError ? this.props.transfer.signError : ""
+     var broadcastExchangeError = this.props.exchange.broadcastError ? this.props.exchange.broadcastError: ""
+    // var broadcastTransferError = this.props.transfer.broadcastError ? this.props.transfer.broadcastError : ""
+    var txError = signExchangeError + broadcastExchangeError
+
     return (
       <div id="exchange" className={"frame payment_confirm" + classError}>        
 
@@ -522,6 +529,11 @@ export default class Payment extends React.Component {
         </div>
 
         <div className="payment-bottom">
+          {txError !== "" && (
+              <div className="error-message">                 
+                {txError}
+            </div>
+          )}
           {this.props.exchange.isNeedApprove && (
               <div className="approve-intro">                 
                   {this.props.translate("modal.approve_exchange", {token: this.props.exchange.sourceTokenSymbol}) 
@@ -546,9 +558,9 @@ export default class Payment extends React.Component {
                    <div className="import-account-content__private-key-toggle" onClick={this.toogleShowPassword}></div>
                   <div className="import-account-content__private-key-icon"></div>
                </div>
-               {(this.props.exchange.errors.passwordError || this.props.transfer.errors.passwordError) && (
+               {(this.props.exchange.passwordError) && (
                  <div className="error-password">
-                   {this.props.exchange.errors.passwordError ? this.props.exchange.errors.passwordError : this.props.transfer.errors.passwordError}
+                   {this.props.exchange.passwordError}
                  </div>
                )}
                </div>

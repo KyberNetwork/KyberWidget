@@ -100,6 +100,14 @@
             padding-top: 0;
             margin-bottom: 25px;
         }
+        .error-message{
+            color: #f1637d;
+            font-size: 14px;
+            max-height: 100px;
+            overflow: auto;
+            margin-bottom: 20px;
+            word-wrap: break-word;
+        }
         .error-password{
             color: #f1637d;
             font-size: 14px;

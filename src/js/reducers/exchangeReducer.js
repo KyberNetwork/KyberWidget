@@ -128,6 +128,9 @@ const exchange = (state = initState, action) => {
       }
       if ((step === 2) && (oldStep === 3)){
         newState.validateAccountComplete = false
+        newState.broadcastError = ""
+        newState.signError = ""
+        newState.passwordError = ""
       }
       newState.step = step
       return newState
@@ -342,6 +345,7 @@ const exchange = (state = initState, action) => {
       newState.isApproving = true
       return newState
     }
+    case "TRANSFER.PROCESS_TRANSFER":
     case "EXCHANGE.PROCESS_EXCHANGE": {
       newState.isConfirming = true
       return newState

@@ -19,20 +19,20 @@ import { store } from "../store"
 import {getTranslate} from "react-localize-redux/lib/index";
 import BLOCKCHAIN_INFO from "../../../env";
 
-function* broadCastTx(action) {
-  const { ethereum, tx, account, data } = action.payload
-  try {
-    yield put(actions.prePareBroadcast())
-    const hash = yield call([ethereum, ethereum.callMultiNode],"sendRawTransaction", tx)
-    yield call(runAfterBroadcastTx, ethereum, tx, hash, account, data)
+// function* broadCastTx(action) {
+//   const { ethereum, tx, account, data } = action.payload
+//   try {
+//     yield put(actions.prePareBroadcast())
+//     const hash = yield call([ethereum, ethereum.callMultiNode],"sendRawTransaction", tx)
+//     yield call(runAfterBroadcastTx, ethereum, tx, hash, account, data)
 
     
-  }
-  catch (e) {
-    console.log(e)
-    yield call(doTransactionFail, ethereum, account, e.message)
-  }
-}
+//   }
+//   catch (e) {
+//     console.log(e)
+//     yield call(doTransactionFail, ethereum, account, e.message)
+//   }
+// }
 
 export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
 
@@ -62,11 +62,11 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   // }
 }
 
-function* doTransactionFail(ethereum, account, e) {
-  yield put(actions.doTransactionFail(e))
-  //yield put(incManualNonceAccount(account.address))
-  yield put(updateAccount(ethereum, account))
-}
+// function* doTransactionFail(ethereum, account, e) {
+//   yield put(exchangeActions.doTransactionFail(e))
+//   //yield put(incManualNonceAccount(account.address))
+//   yield put(updateAccount(ethereum, account))
+// }
 
 function* doTxFail(ethereum, account, e) {
   yield put (exchangeActions.goToStep(4))
@@ -114,7 +114,7 @@ function* transferKeystore(action, callService) {
       destAddress, nonce, gas,
       gasPrice, keystring, type, password)
   } catch (e) {
-    yield put(actions.throwPassphraseError(e.message))
+    yield put(exchangeActions.throwPassphraseError(e.message))
     return
   }
   try {
@@ -144,11 +144,11 @@ function* transferColdWallet(action, callService) {
       if(e.native && type == 'ledger'){
         msg = keyService.getLedgerError(e.native)
       }
-      yield put(actions.setSignError(msg))
+      yield put(exchangeActions.setSignError(msg))
       return
     }
     
-    yield put(actions.prePareBroadcast(balanceData))
+    yield put(exchangeActions.prePareBroadcast(balanceData))
     const hash = yield call([ethereum, ethereum.callMultiNode],"sendRawTransaction", rawTx)
     yield call(runAfterBroadcastTx, ethereum, rawTx, hash, account, data)
   } catch (e) {
@@ -177,11 +177,11 @@ function* transferMetamask(action, callService) {
         gasPrice, keystring, type, password)
     } catch (e) {
       console.log(e)
-      yield put(actions.setSignError(e))
+      yield put(exchangeActions.setSignError(e))
       return
     }
     
-    yield put(actions.prePareBroadcast(balanceData))
+    yield put(exchangeActions.prePareBroadcast(balanceData))
     const rawTx = {gas, gasPrice, nonce}
     yield call(runAfterBroadcastTx, ethereum, rawTx, hash, account, data)
   } catch (e) {
@@ -433,7 +433,7 @@ export function* verifyTransfer(){
 }
 
 export function* watchTransfer() {
-  yield takeEvery("TRANSFER.TX_BROADCAST_PENDING", broadCastTx)
+  //yield takeEvery("TRANSFER.TX_BROADCAST_PENDING", broadCastTx)
   yield takeEvery("TRANSFER.PROCESS_TRANSFER", processTransfer)
 
   yield takeEvery("TRANSFER.ESTIMATE_GAS_USED", estimateGasUsed)
