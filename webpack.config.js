@@ -5,7 +5,7 @@ const CleanPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = env => {
 
@@ -26,11 +26,14 @@ module.exports = env => {
         new HtmlWebpackPlugin({
             title: 'Wallet - kyber.network',
             filename: 'index.html',
-            template: './app.html.template',
+            template: './app.html',
             favicon: './assets/img/favicon.png',
             inject: 'body'
         }),
-        new webpack.HashedModuleIdsPlugin()
+        new webpack.HashedModuleIdsPlugin(),
+        new CopyWebpackPlugin([
+          { from: './assets/img/kyber-payment.svg', to: '' }
+        ])
     ];
     if (env && env.build !== 'true') {
         entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
