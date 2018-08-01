@@ -102,9 +102,9 @@
 
         var widgetBaseUrl = getWidgetUrl();
         var url = widgetBaseUrl + "?" + formData.data;
-        var tagHtml = "<a href='javascript:void(0);' class='_kyberpay-widget'\n";
+        var tagHtml = "<a href='" + url + "' class='_kyberpay-widget'\n";
         tagHtml += "name='KyberPay - Powered by KyberNetwork' title='Pay by tokens'\n";
-        tagHtml += "onclick='window.open(\"" + url + "\");'>Pay by tokens</a>";
+        tagHtml += "target='_blank'>Pay by tokens</a>";
 
         document.getElementById("widget").innerHTML = tagHtml;
         document.getElementById("sourceHtml").value = tagHtml;
