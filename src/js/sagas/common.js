@@ -45,7 +45,8 @@ export function* submitCallback(hash){
     if (exchange.callback){
       var submitUrl = exchange.callback 
       var params = {
-        tx: hash
+        tx: hash,
+       // network: global.params.network
       }
       if (exchange.paramForwarding !== false && exchange.paramForwarding !== 'false'){
         Object.keys(global.params).map(key=>{
@@ -56,6 +57,9 @@ export function* submitCallback(hash){
       }
               
       try{
+        if (params.network){
+          params.network = global.params.network
+        }
         const response = yield call(fetch, submitUrl, {
             method: 'POST',
             // headers: {

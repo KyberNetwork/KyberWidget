@@ -16,13 +16,13 @@ import connection from './connection'
 import utils from './utilsReducer'
 import txs from './txsReducer'
 import locale from './languageReducer'
-import market from './marketReducer'
+//import market from './marketReducer'
 
 import { localeReducer } from 'react-localize-redux';
 // import { localeReducer } from 'react-localize-redux';
 
 const appReducer = combineReducers({
-  account, exchange, transfer, txs, connection, router: routerReducer,utils, market,global,
+  account, exchange, transfer, txs, connection, router: routerReducer,global,
   // market: persistReducer({
   //   key: 'market',
   //   storage: localForage
@@ -33,10 +33,10 @@ const appReducer = combineReducers({
   //   key: 'locale',
   //   storage: localForage
   // }, locale),  
-  txs: persistReducer({
-    key: 'txs',
+  utils: persistReducer({
+    key: 'utils',
     storage: session
-  }, txs),  
+  }, utils),  
   // global: persistReducer({
   //   key: 'global',
   //   storage: localForage,

@@ -333,7 +333,7 @@ export default class BaseProvider {
                 data: dataAbi
             })
                 .then((data) => {
-                   // console.log(data)
+                   console.log(data)
                     try {
                         var dataMapped = this.rpc.eth.abi.decodeParameters([
                             {
