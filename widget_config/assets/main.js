@@ -43,7 +43,7 @@
 
             // set name - value
             if (node.type && node.type === 'checkbox') {
-                value = node.checked;
+                value = node.checked.toString();
             } else {
                 value = node.value;
             }
