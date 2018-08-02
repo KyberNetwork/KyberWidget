@@ -642,3 +642,9 @@ export function selectTokenComplete(){
     type: "EXCHANGE.SELECT_TOKEN_COMPLETE"
   }
 }
+
+export function unsetConfirming() {
+  return {
+    type: "EXCHANGE.UNSET_CONFIRMING"
+  }
+}

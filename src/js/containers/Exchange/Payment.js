@@ -430,9 +430,7 @@ export default class Payment extends React.Component {
     }
 
     var signExchangeError = this.props.exchange.signError ? this.props.exchange.signError : ""
-   // var signTransferError = this.props.transfer.signError ? this.props.transfer.signError : ""
-     var broadcastExchangeError = this.props.exchange.broadcastError ? this.props.exchange.broadcastError: ""
-    // var broadcastTransferError = this.props.transfer.broadcastError ? this.props.transfer.broadcastError : ""
+    var broadcastExchangeError = this.props.exchange.broadcastError ? this.props.exchange.broadcastError: ""
     var txError = signExchangeError + broadcastExchangeError
 
     return (

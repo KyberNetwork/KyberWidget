@@ -46,14 +46,6 @@
         "decimal": 18,
         "usd_id":"eos"
       },
-      "SNT": {
-        "name":"Status",
-        "address": "0xbf5d8683b9be6c43fca607eb2a6f2626a18837a6",
-        "symbol": "SNT",
-        "icon": "snt.svg",
-        "decimal": 18,
-        "usd_id":"status"
-      },
       "ELF": {
         "name":"Aelf",
         "address": "0x9fcc27c7320703c43368cf1a4bf076402cd0d6b4",
