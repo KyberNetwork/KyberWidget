@@ -248,7 +248,8 @@
     "receive_amount_is_invalid_number": "받는 금액이 유효하지 않습니다",
     "receive_amount_must_be_positive": "받는 금액은 양수여야 합니다",
     "commission_address_must_be_valid": "보너스 받는 주소는 유효한 이더리움 주소여야 합니다",
-    "signer_include_invalid_address": "보내는 주소에 잘못된 주소가 포함되어 있습니다" 
+    "signer_include_invalid_address": "보내는 주소에 잘못된 주소가 포함되어 있습니다",
+    "invalid_network": "현재 네트워크는 지원되지 않습니다."
   },
 
   "import": {

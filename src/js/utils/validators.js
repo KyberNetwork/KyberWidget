@@ -151,3 +151,11 @@ export function filterInputNumber(event, value, preVal) {
   if (preVal === str) return false
   return true
 }
+
+export function verifyNetwork(network) {
+  if (!network) {
+    return true;
+  }
+
+  return constants.SUPPORTED_NETWORK.indexOf(network) > -1;
+}

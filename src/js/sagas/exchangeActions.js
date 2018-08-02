@@ -275,6 +275,9 @@ export function* checkTokenBalanceOfColdWallet(action) {
 function* processApprove(action) {
   const { ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
     keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload
+
+  yield put(actions.resetSignError());
+
   switch (accountType) {
     case "trezor":
     case "ledger":
@@ -308,46 +311,30 @@ export function* processApproveByColdWallet(action) {
   var hashApprove
   try {
     hashApprove = yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", rawApprove)
-    console.log(hashApprove)
-    yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol))
 
-    //increase nonce 
-    yield put(incManualNonceAccount(account.address))
-    yield put(actions.setApprove(false))
-    // yield put(actions.hideApprove())
-    // yield put(actions.showConfirm())
-    yield put(actions.fetchGasSuccess())
+    yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol));
+    yield put(incManualNonceAccount(account.address));
+    yield put(actions.setApprove(false));
+    yield put(actions.fetchGasSuccess());
+    yield put(actions.unsetConfirming());
   } catch (e) {
-    console.log(e)
     yield call(doTxFail, ethereum, account, e.message)
   }
-
-  //save approve to store
-
-
-  // } catch (e) {
-  //console.log(e)
-
-  // }
 }
 
 export function* processApproveByMetamask(action) {
   const { ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-    keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload
+    keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload;
+
   try {
     const hashApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-      keystring, password, accountType, account.address)
+      keystring, password, accountType, account.address);
 
-    yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol))
-    //const hashApprove = yield call(ethereum.call("sendRawTransaction"), rawApprove, ethereum)
-    console.log(hashApprove)
-    //return
-    //increase nonce 
-    yield put(incManualNonceAccount(account.address))
-    yield put(actions.setApprove(false))
-    // yield put(actions.hideApprove())
-    // yield put(actions.showConfirm())
-    yield put(actions.fetchGasSuccess())
+    yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol));
+    yield put(incManualNonceAccount(account.address));
+    yield put(actions.setApprove(false));
+    yield put(actions.fetchGasSuccess());
+    yield put(actions.unsetConfirming());
   } catch (e) {
     yield put(actions.setSignError(e))
   }
@@ -358,7 +345,9 @@ export function* processExchange(action) {
     sourceAmount, destToken, destAddress,
     maxDestAmount, minConversionRate,
     throwOnFailure, nonce, gas,
-    gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
+    gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload;
+
+  yield put(actions.resetSignError());
 
   if (sourceToken === constants.ETHER_ADDRESS) {
     switch (type) {

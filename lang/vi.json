@@ -247,7 +247,8 @@
     "receive_amount_is_invalid_number": "Số lượng token nhận được là một số không hợp lệ",
     "receive_amount_must_be_positive": "Số lượng token nhận được phải là một số dương",
     "commission_address_must_be_valid": "Commission address phải là một địa chỉ Ethereum hợp lệ",
-    "signer_include_invalid_address": "Địa chỉ ví gửi chứa địa chỉ không hợp lệ" 
+    "signer_include_invalid_address": "Địa chỉ ví gửi chứa địa chỉ không hợp lệ",
+    "invalid_network": "Mạng lưới hiện tại không được hỗ trợ"
   },
 
   "import": {

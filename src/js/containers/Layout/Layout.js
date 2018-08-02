@@ -152,6 +152,10 @@ export default class Layout extends React.Component {
         errors["signer"] = this.props.translate('error.signer_include_invalid_address') || "Signer include invalid addresses"
       }      
     }
+
+    if (!validator.verifyNetwork(network)) {
+      errors["network"] = this.props.translate('error.invalid_network') || "Current network is not supported"
+    }
     
     if (validator.anyErrors(errors)){
       this.props.dispatch(haltPayment(errors))

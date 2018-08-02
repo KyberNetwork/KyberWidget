@@ -247,7 +247,8 @@
     "receive_amount_is_invalid_number": "Receive amount is invalid number",
     "receive_amount_must_be_positive": "Receive amount must be positive number",
     "commission_address_must_be_valid": "Commission address must be a valid ethereum address",
-    "signer_include_invalid_address": "Signer include invalid addresses" 
+    "signer_include_invalid_address": "Signer include invalid addresses",
+    "invalid_network": "Current network is not supported"
   },
 
   "import": {
