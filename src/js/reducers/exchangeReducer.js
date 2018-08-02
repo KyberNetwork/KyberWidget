@@ -617,10 +617,7 @@ const exchange = (state = initState, action) => {
     // }
     case "EXCHANGE.SET_APPROVE":{
       const {isNeedApprove} = action.payload;
-
       newState.isNeedApprove = isNeedApprove;
-      newState.isConfirming = false;
-
       return newState;
     }
     case "EXCHANGE.THROW_ERROR_EXCHANGE":{
@@ -652,7 +649,10 @@ const exchange = (state = initState, action) => {
 
       return resetState
     }
-    
+    case "EXCHANGE.UNSET_CONFIRMING": {
+      newState.isConfirming = false;
+      return newState
+    }
   }
   return state
 }

@@ -275,6 +275,9 @@ export function* checkTokenBalanceOfColdWallet(action) {
 function* processApprove(action) {
   const { ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
     keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload
+
+  yield put(actions.resetSignError());
+
   switch (accountType) {
     case "trezor":
     case "ledger":
@@ -308,35 +311,22 @@ export function* processApproveByColdWallet(action) {
   var hashApprove
   try {
     hashApprove = yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", rawApprove)
-    console.log(hashApprove)
-    yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol))
 
-    //increase nonce
-    yield put(incManualNonceAccount(account.address))
-    yield put(actions.setApprove(false))
-    // yield put(actions.hideApprove())
-    // yield put(actions.showConfirm())
-    yield put(actions.fetchGasSuccess())
+    yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol));
+    yield put(incManualNonceAccount(account.address));
+    yield put(actions.setApprove(false));
+    yield put(actions.fetchGasSuccess());
+    yield put(actions.unsetConfirming());
   } catch (e) {
-    console.log(e)
     yield call(doTxFail, ethereum, account, e.message)
   }
-
-  //save approve to store
-
-
-  // } catch (e) {
-  //console.log(e)
-
-  // }
 }
 
 export function* processApproveByMetamask(action) {
   const { ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-    keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload
-  try {
-    yield put(actions.resetSignError());
+    keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload;
 
+  try {
     const hashApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
       keystring, password, accountType, account.address);
 
@@ -344,6 +334,7 @@ export function* processApproveByMetamask(action) {
     yield put(incManualNonceAccount(account.address));
     yield put(actions.setApprove(false));
     yield put(actions.fetchGasSuccess());
+    yield put(actions.unsetConfirming());
   } catch (e) {
     yield put(actions.setSignError(e))
   }
