@@ -342,7 +342,8 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.PROCESS_APPROVE": {
-      newState.isApproving = true
+      newState.isApproving = true;
+      newState.isConfirming = true;
       return newState
     }
     case "TRANSFER.PROCESS_TRANSFER":
@@ -615,9 +616,12 @@ const exchange = (state = initState, action) => {
     //   return newState
     // }
     case "EXCHANGE.SET_APPROVE":{
-      const {isNeedApprove} = action.payload
-      newState.isNeedApprove = isNeedApprove
-      return newState
+      const {isNeedApprove} = action.payload;
+
+      newState.isNeedApprove = isNeedApprove;
+      newState.isConfirming = false;
+
+      return newState;
     }
     case "EXCHANGE.THROW_ERROR_EXCHANGE":{
       const {key, val} = action.payload
