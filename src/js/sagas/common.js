@@ -1,6 +1,7 @@
 import { fork, call, put, join, race, cancel } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 import { store } from '../store'
+import BLOCKCHAIN_INFO from "../../../env";
 
 
 export function* handleRequest(sendRequest, ...args) {
@@ -57,8 +58,8 @@ export function* submitCallback(hash){
       }
               
       try{
-        if (params.network){
-          params.network = global.params.network
+        if (!params.network){
+          params.network = BLOCKCHAIN_INFO.networkName;
         }
         const response = yield call(fetch, submitUrl, {
             method: 'POST',
