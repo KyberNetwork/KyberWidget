@@ -636,18 +636,20 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "GLOBAL.CLEAR_SESSION_FULFILLED":{
-      var resetState = {...initState}
-      resetState.sourceToken = newState.sourceToken
-      resetState.sourceTokenSymbol = newState.sourceTokenSymbol
-      
-      resetState.gasPrice = newState.gasPrice
-      resetState.selectedGas = newState.selectedGas
-      resetState.isEditGasPrice = newState.isEditGasPrice
-      
-      resetState.destToken = newState.destToken
-      resetState.destTokenSymbol = newState.destTokenSymbol
+      var resetState = {...initState};
 
-      return resetState
+      resetState.sourceToken = newState.sourceToken;
+      resetState.sourceTokenSymbol = newState.sourceTokenSymbol;
+      resetState.destTokenSymbol = newState.destTokenSymbol;
+      resetState.destAmount = newState.destAmount;
+      resetState.receiveAddr = newState.receiveAddr;
+      resetState.gas = newState.gas;
+      resetState.gasPrice = newState.gasPrice;
+      resetState.selectedGas = newState.selectedGas;
+      resetState.isEditGasPrice = newState.isEditGasPrice;
+      resetState.destToken = newState.destToken;
+
+      return resetState;
     }
     case "EXCHANGE.UNSET_CONFIRMING": {
       newState.isConfirming = false;

@@ -35,7 +35,7 @@ const AdvanceConfigLayout = (props) => {
           </div>
 
           <div className="transaction-fee">
-            <div className="title-fee">{props.translate("transaction.transaction_fee") || "Transaction fee"}</div>
+            <div className="title-fee">{props.translate("transaction.transaction_fee") || "Transaction Fee"}</div>
             <div>{props.totalGas} ETH</div>
           </div>
         </div>
