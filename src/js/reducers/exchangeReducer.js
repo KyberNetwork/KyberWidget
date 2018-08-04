@@ -641,7 +641,9 @@ const exchange = (state = initState, action) => {
       resetState.sourceToken = newState.sourceToken;
       resetState.sourceTokenSymbol = newState.sourceTokenSymbol;
       resetState.destTokenSymbol = newState.destTokenSymbol;
+      resetState.sourceAmount = newState.sourceAmount;
       resetState.destAmount = newState.destAmount;
+      resetState.isHaveDestAmount = newState.isHaveDestAmount;
       resetState.receiveAddr = newState.receiveAddr;
       resetState.gas = newState.gas;
       resetState.gasPrice = newState.gasPrice;

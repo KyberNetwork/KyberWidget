@@ -169,8 +169,10 @@ $animation-time: 0.5s;
         text-align: left;
 
         .importer {
+          justify-content: space-between;
+
           &__symbol {
-            width: 150px;
+            width: 120px;
             display: inline-block;
             text-align: center;
             position: relative;
@@ -188,6 +190,7 @@ $animation-time: 0.5s;
 
           .more-info {
             display: inline-block;
+            width: calc(100% - 120px);
           }
         }
       }
