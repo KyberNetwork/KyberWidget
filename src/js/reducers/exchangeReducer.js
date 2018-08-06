@@ -635,6 +635,28 @@ const exchange = (state = initState, action) => {
       newState.isSelectToken = false
       return newState
     }
+
+    case "EXCHANGE.UPDATE_MONSTER_INFO":{
+      const {etheremonPrice, etheremonAddr, monsterId, monsterName} = action.payload
+      newState.etheremonPrice = {...etheremonPrice}
+      newState.etheremonAddr = etheremonAddr
+      newState.monsterId = monsterId
+      newState.monsterName = monsterName
+      return newState
+    }
+
+    case "EXCHANGE.GET_RATE_COMPLETED":{
+      newState.isSelectToken = false
+      return newState
+    }
+
+    case "EXCHANGE.UPDATE_MONSTER_PRICE":{
+      const {etheremonPrice} = action.payload
+      newState.etheremonPrice = {...etheremonPrice}
+      //newState.isSelectToken = false
+      return newState
+    }
+
     case "GLOBAL.CLEAR_SESSION_FULFILLED":{
       var resetState = {...initState}
       resetState.sourceToken = newState.sourceToken
@@ -649,6 +671,7 @@ const exchange = (state = initState, action) => {
 
       return resetState
     }
+    
     case "EXCHANGE.UNSET_CONFIRMING": {
       newState.isConfirming = false;
       return newState

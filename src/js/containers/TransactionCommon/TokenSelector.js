@@ -11,7 +11,8 @@ import { getTranslate } from 'react-localize-redux';
     type: props.type,
     chooseToken: props.chooseToken,
     translate: getTranslate(store.locale),
-    exchange: store.exchange
+    exchange: store.exchange,
+    tokens: store.tokens.tokens
   }
 })
 
@@ -59,6 +60,7 @@ export default class TokenSelector extends React.Component {
         hideTokens = {this.hideTokens}
         account = {this.props.account}
         exchange = {this.props.exchange}
+        tokens = {this.props.tokens}
       />
     )
   }

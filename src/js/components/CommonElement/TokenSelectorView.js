@@ -33,12 +33,20 @@ const TokenSelectorView = (props) => {
                         {converter.roundingNumber(balance)}
                       </span>
                     )}
-                    <span class="item-symbol">
+                    <div class="item-symbol">
                       {item.symbol}
-                    </span>
+
+                      {item.symbol !== "ETH" && (
+                          <div>
+                            1 {item.symbol} = {converter.roundingNumber(converter.toT(item.rate,18))} ETH
+                          </div>
+                        )}
+                    </div>
                   </div>                
                 </div>
               </div>
+              
+              
               <div>
                   {item.name}
               </div>
@@ -49,8 +57,9 @@ const TokenSelectorView = (props) => {
   }
 
 
-  var rateFocusItem = props.exchange.isSelectToken ? <img src={require('../../../assets/img/waiting.svg')} /> : converter.roundingNumber(converter.toT(props.exchange.offeredRate,18))
-
+  //var rateFocusItem = converter.roundingNumber(converter.toT(props.tokens.offeredRate,18))
+  var rateFocusItem = focusItem.symbol === "ETH" ? "": converter.roundingNumber(converter.toT(props.tokens[focusItem.symbol].rate, 18))
+  
 
   return (
     <div className="token-selector">
@@ -71,9 +80,9 @@ const TokenSelectorView = (props) => {
                 </div>
               </div>
             </div>
-            {focusItem.symbol !== props.exchange.destTokenSymbol && (              
+            {focusItem.symbol !== "ETH" && (              
               <div className="rate-token">
-                1 {focusItem.symbol} = {rateFocusItem} {props.exchange.destTokenSymbol}
+                1 {focusItem.symbol} = {rateFocusItem} ETH
               </div>
             )}
             

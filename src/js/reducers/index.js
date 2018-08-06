@@ -22,21 +22,22 @@ import { localeReducer } from 'react-localize-redux';
 // import { localeReducer } from 'react-localize-redux';
 
 const appReducer = combineReducers({
-  account, exchange, transfer, txs, connection, router: routerReducer,global,
+  account, exchange, transfer, connection, router: routerReducer,global,
   // market: persistReducer({
   //   key: 'market',
   //   storage: localForage
   // }, market),  
   locale : localeReducer,
   tokens,
+  utils,
   // locale: persistReducer({
   //   key: 'locale',
   //   storage: localForage
   // }, locale),  
-  utils: persistReducer({
-    key: 'utils',
+  txs: persistReducer({
+    key: 'txs',
     storage: session
-  }, utils),  
+  }, txs)
   // global: persistReducer({
   //   key: 'global',
   //   storage: localForage,

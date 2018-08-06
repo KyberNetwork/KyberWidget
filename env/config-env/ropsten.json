@@ -228,5 +228,6 @@
     "api_key": "D8YAEQ3V4THAPDA9YSB1YGA1QY9KAMHY6M"
   },
   "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
-  "tracker":"https://tracker.kyber.network"
+  "tracker":"https://tracker.kyber.network",
+  "ethermon_wrapper":"0xa6DedC584B81f52b7DFaC97F35b457C8A04B9C9b"
 }

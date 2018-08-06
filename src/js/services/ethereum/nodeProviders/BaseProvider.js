@@ -1,6 +1,7 @@
 import Web3 from "web3"
 import constants from "../../constants"
 import * as ethUtil from 'ethereumjs-util'
+
 import BLOCKCHAIN_INFO from "../../../../../env"
 import abiDecoder from "abi-decoder"
 
@@ -10,18 +11,35 @@ export default class BaseProvider {
         this.rpc = new Web3(new Web3.providers.HttpProvider(this.rpcUrl, 3000))
 
         this.erc20Contract = new this.rpc.eth.Contract(constants.ERC20)
+
+        this.wapperEtheremon = new this.rpc.eth.Contract(constants.ETHEREMON_WRAPPER, BLOCKCHAIN_INFO.ethermon_wrapper)
         this.networkAddress = BLOCKCHAIN_INFO.network
         this.wrapperAddress = BLOCKCHAIN_INFO.wrapper
-        console.log(BLOCKCHAIN_INFO)
-        console.log(this.wrapperAddress)
-        this.networkContract = new this.rpc.eth.Contract(constants.KYBER_NETWORK, this.networkAddress)
-        this.wrapperContract = new this.rpc.eth.Contract(constants.KYBER_WRAPPER, this.wrapperAddress)
+        // console.log(BLOCKCHAIN_INFO)
+        // console.log(this.wrapperAddress)
+         this.networkContract = new this.rpc.eth.Contract(constants.KYBER_NETWORK, this.networkAddress)
+         this.wrapperContract = new this.rpc.eth.Contract(constants.KYBER_WRAPPER, this.wrapperAddress)
     }
 
     version() {
         return this.rpc.version.api
     }
 
+
+
+
+    getMonsterPrice (network, etheremonAddr, sourceAddr, monsterId){
+        return new Promise((resolve, reject) => {
+            var data = this.wapperEtheremon.methods.getMonsterPriceInTokens(network, etheremonAddr, sourceAddr, monsterId).call()
+                        .then(result => {
+                            const {expectedRate, slippageRate, tokenPrice, ethValue, catchable} = result
+                            resolve({expectedRate, slippageRate, tokenPrice, ethValue, catchable})
+                        }).catch(e => {
+                            console.log(e)
+                            reject(e)
+                        })
+        })
+    }
 
     isConnectNode() {
         return new Promise((resolve, reject) => {

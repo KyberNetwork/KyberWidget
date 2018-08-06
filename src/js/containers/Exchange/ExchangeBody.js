@@ -279,44 +279,44 @@ export default class ExchangeBody extends React.Component {
     //   this.lazyUpdateValidateSourceAmount(sourceValue)
     // }
   }
-  changeSourceAmount = (e) => {
-    var value = e.target.value
-    if (value < 0) return
-    this.props.dispatch(exchangeActions.inputChange('source', value));
+  // changeSourceAmount = (e) => {
+  //   var value = e.target.value
+  //   if (value < 0) return
+  //   this.props.dispatch(exchangeActions.inputChange('source', value));
 
-    this.validateRateAndSource(value)
-  }
+  //   this.validateRateAndSource(value)
+  // }
 
-  changeDestAmount = (e) => {
-    var value = e.target.value
-    if (value < 0) return
-    this.props.dispatch(exchangeActions.inputChange('dest', value))
+  // changeDestAmount = (e) => {
+  //   var value = e.target.value
+  //   if (value < 0) return
+  //   this.props.dispatch(exchangeActions.inputChange('dest', value))
 
-    var valueSource = converter.caculateSourceAmount(value, this.props.exchange.offeredRate, 6)
-    this.validateRateAndSource(valueSource)
-  }
+  //   var valueSource = converter.caculateSourceAmount(value, this.props.exchange.offeredRate, 6)
+  //   this.validateRateAndSource(valueSource)
+  // }
 
-  focusSource = () => {
-    this.props.dispatch(exchangeActions.focusInput('source'));
-    this.setState({focus:"source"})
-  }
+  // focusSource = () => {
+  //   this.props.dispatch(exchangeActions.focusInput('source'));
+  //   this.setState({focus:"source"})
+  // }
 
-  blurSource = () => {
-    this.setState({focus:""})
-  }
+  // blurSource = () => {
+  //   this.setState({focus:""})
+  // }
 
-  focusDest = () => {
-    this.props.dispatch(exchangeActions.focusInput('dest'));
-    this.setState({focus:"dest"})
-  }
+  // focusDest = () => {
+  //   this.props.dispatch(exchangeActions.focusInput('dest'));
+  //   this.setState({focus:"dest"})
+  // }
 
-  blurDest = () => {
-    this.setState({focus:""})
-  }
+  // blurDest = () => {
+  //   this.setState({focus:""})
+  // }
 
-  makeNewExchange = () => {
-    this.props.dispatch(exchangeActions.makeNewExchange());
-  }  
+  // makeNewExchange = () => {
+  //   this.props.dispatch(exchangeActions.makeNewExchange());
+  // }  
 
   // setAmount = () => {
   //   var tokenSymbol = this.props.exchange.sourceTokenSymbol
@@ -417,18 +417,18 @@ export default class ExchangeBody extends React.Component {
     // )
 
     //--------For select token
-    var tokenDest = {}
-    var isNotSupport = false
-    Object.keys(this.props.tokens).map((key, i) => {
-      isNotSupport = false
-      if (this.props.exchange.sourceTokenSymbol === key) {
-        isNotSupport = true
-      }
-      if (this.props.exchange.sourceTokenSymbol !== "ETH" && key !== "ETH") {
-        isNotSupport = true
-      }
-      tokenDest[key] = { ...this.props.tokens[key], isNotSupport: isNotSupport }
-    })
+    // var tokenDest = {}
+    // var isNotSupport = false
+    // Object.keys(this.props.tokens).map((key, i) => {
+    //   isNotSupport = false
+    //   if (this.props.exchange.sourceTokenSymbol === key) {
+    //     isNotSupport = true
+    //   }
+    //   if (this.props.exchange.sourceTokenSymbol !== "ETH" && key !== "ETH") {
+    //     isNotSupport = true
+    //   }
+    //   tokenDest[key] = { ...this.props.tokens[key], isNotSupport: isNotSupport }
+    // })
 
     var tokenSourceSelect = (
       <TokenSelector type="source"
@@ -437,64 +437,64 @@ export default class ExchangeBody extends React.Component {
         chooseToken={this.chooseToken}
       />
     )
-    var tokenDestSelect = (
-      <TokenSelector type="des"
-        focusItem={this.props.exchange.destTokenSymbol}
-        listItem={tokenDest}
-        chooseToken={this.chooseToken}
-      />
-    )
+    // var tokenDestSelect = (
+    //   <TokenSelector type="des"
+    //     focusItem={this.props.exchange.destTokenSymbol}
+    //     listItem={tokenDest}
+    //     chooseToken={this.chooseToken}
+    //   />
+    // )
     //--------End
 
 
-    var errors = {
-      selectSameToken: this.props.exchange.errors.selectSameToken || '',
-      selectTokenToken: this.props.exchange.errors.selectTokenToken || '',
-      sourceAmount: this.props.exchange.errors.sourceAmountError || this.props.exchange.errors.ethBalanceError || '',
-      tokenSource: '',
-      rateSystem: this.props.exchange.errors.rateSystem,
-      rateAmount : this.props.exchange.errors.rateAmount,
-      notPossessKgt: this.props.exchange.errors.notPossessKgt,
-      exchange_enable: this.props.exchange.errors.exchange_enable
-    }
+    // var errors = {
+    //   selectSameToken: this.props.exchange.errors.selectSameToken || '',
+    //   selectTokenToken: this.props.exchange.errors.selectTokenToken || '',
+    //   sourceAmount: this.props.exchange.errors.sourceAmountError || this.props.exchange.errors.ethBalanceError || '',
+    //   tokenSource: '',
+    //   rateSystem: this.props.exchange.errors.rateSystem,
+    //   rateAmount : this.props.exchange.errors.rateAmount,
+    //   notPossessKgt: this.props.exchange.errors.notPossessKgt,
+    //   exchange_enable: this.props.exchange.errors.exchange_enable
+    // }
 
-    var input = {
-      sourceAmount: {
-        type: 'number',
-        value: this.props.exchange.sourceAmount,
-        onChange: this.changeSourceAmount,
-        onFocus: this.focusSource,
-        onBlur: this.blurSource
-      },
-      destAmount: {
-        type: 'number',
-        value: this.props.exchange.destAmount,
-        onChange: this.changeDestAmount,
-        onFocus: this.focusDest,
-        onBlur: this.blurDest
-      }
-    }
-    // console.log(input)
-    var exchangeButton = (
-      <PostExchangeWithKey />
-    )
+    // var input = {
+    //   sourceAmount: {
+    //     type: 'number',
+    //     value: this.props.exchange.sourceAmount,
+    //     onChange: this.changeSourceAmount,
+    //     onFocus: this.focusSource,
+    //     onBlur: this.blurSource
+    //   },
+    //   destAmount: {
+    //     type: 'number',
+    //     value: this.props.exchange.destAmount,
+    //     onChange: this.changeDestAmount,
+    //     onFocus: this.focusDest,
+    //     onBlur: this.blurDest
+    //   }
+    // }
+    // // console.log(input)
+    // var exchangeButton = (
+    //   <PostExchangeWithKey />
+    // )
 
 
-    var addressBalance = ""
-    var token = this.props.tokens[this.props.exchange.sourceTokenSymbol]
-    if (token) {
-      addressBalance = {
-        value: converter.toT(token.balance, token.decimal),
-        roundingValue: converter.roundingNumber(converter.toT(token.balance, token.decimal))
-      }
-    }
+    // var addressBalance = ""
+    // var token = this.props.tokens[this.props.exchange.sourceTokenSymbol]
+    // if (token) {
+    //   addressBalance = {
+    //     value: converter.toT(token.balance, token.decimal),
+    //     roundingValue: converter.roundingNumber(converter.toT(token.balance, token.decimal))
+    //   }
+    // }
 
-    var accountBalance = ""
-    if (this.props.account.account !== false){      
-      accountBalance = <AccountBalance 
-      chooseToken = {this.chooseToken}
-    />
-    }
+    // var accountBalance = ""
+    // if (this.props.account.account !== false){      
+    //   accountBalance = <AccountBalance 
+    //   chooseToken = {this.chooseToken}
+    // />
+    // }
 
     // var addressBalanceLayout = ""
     // if (this.props.account.account !== false){      
@@ -519,26 +519,28 @@ export default class ExchangeBody extends React.Component {
     return (
       <ExchangeBodyLayout step={this.props.exchange.step}
         tokenSourceSelect={tokenSourceSelect}
-        tokenDestSelect={tokenDestSelect}
+
+        tokens = {this.props.tokens}
+       // tokenDestSelect={tokenDestSelect}
         //gasConfig={gasConfig}
-        exchangeButton={exchangeButton}
+       // exchangeButton={exchangeButton}
         //transactionLoadingScreen={transactionLoadingScreen}
-        errors={errors}
-        input={input}
+      //  errors={errors}
+      //  input={input}
 
 //        addressBalanceLayout = {addressBalanceLayout}
 
-        sourceTokenSymbol={this.props.exchange.sourceTokenSymbol}
-        destTokenSymbol = {this.props.exchange.destTokenSymbol}
+      //  sourceTokenSymbol={this.props.exchange.sourceTokenSymbol}
+      //  destTokenSymbol = {this.props.exchange.destTokenSymbol}
         
         translate={this.props.translate}
-        swapToken={this.swapToken}
-        maxCap={converter.toEther(this.props.exchange.maxCap)}
-        errorNotPossessKgt={this.props.exchange.errorNotPossessKgt}      
+     //   swapToken={this.swapToken}
+     //   maxCap={converter.toEther(this.props.exchange.maxCap)}
+      //  errorNotPossessKgt={this.props.exchange.errorNotPossessKgt}      
 
         advanceLayout = {this.props.advanceLayout}
-        balanceList = {accountBalance}
-        focus = {this.state.focus}
+   //     balanceList = {accountBalance}
+   //     focus = {this.state.focus}
         networkError ={this.props.global.network_error}
 
         exchange = {this.props.exchange}

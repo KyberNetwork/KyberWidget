@@ -60,32 +60,35 @@ function* selectToken(action) {
   yield call(estimateGasUsed, symbol, exchange.destTokenSymbol)
 
 
-  if (exchange.sourceTokenSymbol === exchange.destTokenSymbol) {
-    yield put(actions.selectTokenComplete())
-    return
-  }
+  yield call(getMonsterPrice, symbol)
+  
+  yield put(actions.updateRateCompleted())
+  // if (exchange.sourceTokenSymbol === exchange.destTokenSymbol) {
+  //   yield put(actions.selectTokenComplete())
+  //   return
+  // }
 
 
-  if (exchange.isHaveDestAmount) {
-    if (exchange.destTokenSymbol === "ETH") {
-      if (parseFloat(exchange.destAmount) > constants.MAX_AMOUNT_RATE_HANDLE) {
-        yield put(actions.throwErrorHandleAmount())
-        return
-      }
-    } else {
-      var tokens = state.tokens.tokens
-      var destValue = converter.calculateDest(exchange.destAmount, tokens[exchange.destTokenSymbol].rate, 6)
-      // console.log("destination_amount")
-      // console.log(destValue)
-      if (parseFloat(destValue) > constants.MAX_AMOUNT_RATE_HANDLE) {
-        yield put(actions.throwErrorHandleAmount())
-        return
-      }
-    }
-    yield call(ethereum.fetchRateExchange, true)
-  } else {
-    yield call(ethereum.fetchRateExchange, true)
-  }
+  // if (exchange.isHaveDestAmount) {
+  //   if (exchange.destTokenSymbol === "ETH") {
+  //     if (parseFloat(exchange.destAmount) > constants.MAX_AMOUNT_RATE_HANDLE) {
+  //       yield put(actions.throwErrorHandleAmount())
+  //       return
+  //     }
+  //   } else {
+  //     var tokens = state.tokens.tokens
+  //     var destValue = converter.calculateDest(exchange.destAmount, tokens[exchange.destTokenSymbol].rate, 6)
+  //     // console.log("destination_amount")
+  //     // console.log(destValue)
+  //     if (parseFloat(destValue) > constants.MAX_AMOUNT_RATE_HANDLE) {
+  //       yield put(actions.throwErrorHandleAmount())
+  //       return
+  //     }
+  //   }
+  //   yield call(ethereum.fetchRateExchange, true)
+  // } else {
+  //   yield call(ethereum.fetchRateExchange, true)
+  // }
 
   //yield call(ethereum.fetchRateExchange, true)
 
@@ -1524,66 +1527,25 @@ export function* initParamsToken(action) {
   var exchange = state.exchange
   var ethereum = state.connection.ethereum
 
-  const { receiveAddr, receiveToken, tokenAddr, receiveAmount } = action.payload
+  const {etheremonAddr, monsterId, monsterName} = action.payload
+
 
   var sourceTokenSymbol = exchange.sourceTokenSymbol
+  var sourceAddr = tokens[sourceTokenSymbol].address
 
-  yield call(estimateGasUsed, sourceTokenSymbol, receiveToken)
 
-
+  //get ethremon price 
+  try{
+    var etheremonPrice = yield call([ethereum, ethereum.call], "getMonsterPrice", BLOCKCHAIN_INFO.network, etheremonAddr, sourceAddr, monsterId)
+    yield put(actions.updateMonsterInfo(etheremonPrice, etheremonAddr, monsterId, monsterName))
+  }catch(e){
+    console.log(e)
+  }
   
 
+  //yield call(estimateGasUsed, sourceTokenSymbol)
 
 
-  //var tokenAddr = tokens[receiveToken].address
-
-  //save data exchange
-  //yield put(actions.saveInitParams(receiveAddr, receiveToken, receiveAmount, tokenAddr))
-
-  //fetch rate
-
-  var source = exchange.sourceToken
-  var dest = tokenAddr
-
-
-  if (receiveAmount) {
-    try {
-
-
-      if (receiveToken === "ETH") {
-        if (parseFloat(receiveAmount) > constants.MAX_AMOUNT_RATE_HANDLE) {
-          yield put(actions.throwErrorHandleAmount())
-          return
-        }
-      } else {
-        var rateETH = yield call([ethereum, ethereum.call], "getRate", tokens["ETH"].address, tokenAddr, "0x0")
-        var destValue = converter.caculateSourceAmount(receiveAmount, rateETH.expectedRate, 6)
-        if (parseFloat(destValue) > constants.MAX_AMOUNT_RATE_HANDLE) {
-          yield put(actions.throwErrorHandleAmount())
-          return
-        }
-      }
-
-      
-      
-
-      if (sourceTokenSymbol !== receiveToken){
-        var rate = yield call([ethereum, ethereum.call], "getRate", source, dest, "0x0")
-
-        var sourceAmount = converter.caculateSourceAmount(receiveAmount, rate.expectedRate, 6)
-        // console.log("src_amount")
-        // console.log(sourceAmount)
-        yield put(actions.updateRateExchange(source, dest, sourceAmount, sourceTokenSymbol, true))
-      }
-      
-
-    } catch (e) {
-      console.log(e)
-      yield put(actions.updateRateExchange(source, dest, 0, sourceTokenSymbol, true))
-    }
-  } else {
-    yield put(actions.updateRateExchange(source, dest, 0, sourceTokenSymbol, true))
-  }
 
   ethereum.subcribe()
   //store.dispatch(updateRateExchange(source, dest, sourceAmount, sourceTokenSymbol, isManual))
@@ -1592,6 +1554,23 @@ export function* initParamsToken(action) {
 
 }
 
+
+export function* getMonsterPrice(sourceToken){
+  var state = store.getState()
+  var exchange = state.exchange
+  var tokens = state.tokens.tokens
+  var ethereum = state.connection.ethereum
+  //var {sourceToken} = action.payload
+  try{
+    var etheremonPrice = yield call([ethereum, ethereum.call], "getMonsterPrice", BLOCKCHAIN_INFO.network, exchange.etheremonAddr, tokens[sourceToken].address, exchange.monsterId)
+    yield put(actions.updateMonsterPrice(etheremonPrice))
+    if (!etheremonPrice.catchable){
+      //yield put(actions.)
+    }
+  }catch(e){
+    console.log(e)
+  }
+}
 
 export function* watchExchange() {
   //yield takeEvery("EXCHANGE.TX_BROADCAST_PENDING", broadCastTx)
@@ -1616,4 +1595,6 @@ export function* watchExchange() {
   yield takeEvery("EXCHANGE.FETCH_EXCHANGE_ENABLE", fetchExchangeEnable)
 
   yield takeEvery("EXCHANGE.INIT_PARAMS_EXCHANGE", initParamsToken)
+
+  yield takeEvery("EXCHANGE.GET_MOSNTER_PRICE", getMonsterPrice)
 }
