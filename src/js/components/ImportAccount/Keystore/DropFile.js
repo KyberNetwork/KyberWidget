@@ -32,7 +32,7 @@ const DropFile = (props) => {
         <div className="importer json">
           <div className="importer__symbol">
             <img src={require('../../../../assets/img/landing/keystore_disable.png')} />
-            <div className="importer__name">{props.translate("import.from_keystore") || "KEYSTORE"}</div>
+            <div className="importer__name">{props.translate("import.json") || "JSON"}</div>
           </div>
         </div>
       </Dropzone>
