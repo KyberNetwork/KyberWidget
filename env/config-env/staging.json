@@ -27,7 +27,8 @@
       "icon": "eth.svg",
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimal": 18,
-      "usd_id": "ethereum"      
+      "usd_id": "ethereum",
+      "priority": true
     },
     "KNC": {
       "name": "KyberNetwork",
@@ -35,7 +36,8 @@
       "icon": "knc.svg",
       "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
       "decimal": 18,
-      "usd_id": "kyber-network"
+      "usd_id": "kyber-network",
+      "priority": true
     },
     "DAI": {
       "name" : "DAI",
@@ -43,7 +45,8 @@
       "icon": "dai.svg",
       "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
       "decimal": 18,
-      "usd_id":"dai"
+      "usd_id":"dai",
+      "priority": true
     },
     "OMG": {
       "name": "OmiseGO",
@@ -339,7 +342,7 @@
       "name": "Chatcoin",
       "decimal": 18,
       "address": "0x442bc47357919446eabc18c7211e57a13d983469",
-      "symbol":"CHAT", 
+      "symbol":"CHAT",
       "icon": "chat.svg"
     },
     "DTA": {
@@ -381,5 +384,6 @@
   "networkId": 1,
   "chainName": "Mainnet",
   "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
-  "tracker":"https://staging-tracker.knstats.com"
+  "tracker":"https://staging-tracker.knstats.com",
+  "networkName": "production"
 }

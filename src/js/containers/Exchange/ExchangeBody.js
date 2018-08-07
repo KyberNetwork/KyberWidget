@@ -214,82 +214,11 @@ export default class ExchangeBody extends React.Component {
     this.props.dispatch(exchangeActions.updateRateExchange(source, dest, sourceValue, sourceTokenSymbol, true))
   }
 
-
-
-
-  // validateSourceAmount = (value) => {
-  //   // var check = true
-  //   var sourceAmount = value
-  //   var validateAmount = validators.verifyAmount(sourceAmount,
-  //     this.props.exchange.sourceBalance,
-  //     this.props.exchange.sourceTokenSymbol,
-  //     this.props.exchange.sourceDecimal,
-  //     //this.props.exchange.offeredRate,
-  //     this.props.exchange.rateSourceToEth,
-  //     this.props.exchange.destDecimal,
-  //     this.props.exchange.maxCap)
-  //   var sourceAmountErrorKey = false
-  //   switch (validateAmount) {
-  //     case "not a number":
-  //       sourceAmountErrorKey = "error.source_amount_is_not_number"
-  //       break
-  //     case "too high":
-  //       sourceAmountErrorKey = "error.source_amount_too_high"
-  //       break
-  //     case "too high cap":
-  //       sourceAmountErrorKey = "error.source_amount_too_high_cap"
-  //       break
-  //     case "too small":
-  //       sourceAmountErrorKey = "error.source_amount_too_small"
-  //       break
-  //     case "too high for reserve":
-  //       sourceAmountErrorKey = "error.source_amount_too_high_for_reserve"
-  //       break
-  //   }
-
-  //   if(sourceAmountErrorKey === "error.source_amount_is_not_number"){
-  //     return
-  //   }
-
-  //   if (sourceAmountErrorKey !== false && sourceAmountErrorKey !== "error.source_amount_is_not_number") {
-  //     this.props.dispatch(exchangeActions.thowErrorSourceAmount(sourceAmountErrorKey))
-  //     return
-  //     //check = false
-  //   }
-
-    
-
-  //   var validateWithFee = validators.verifyBalanceForTransaction(this.props.tokens['ETH'].balance, this.props.exchange.sourceTokenSymbol,
-  //     sourceAmount, this.props.exchange.gas + this.props.exchange.gas_approve, this.props.exchange.gasPrice)
-
-  //   if (validateWithFee) {
-  //     this.props.dispatch(exchangeActions.thowErrorEthBalance("error.eth_balance_not_enough_for_fee"))
-  //     return
-  //     // check = false
-  //   }
-  // }
-
-  // validateTxFee = (gasPrice) => {
-  //   var validateWithFee = validators.verifyBalanceForTransaction(this.props.tokens['ETH'].balance, this.props.exchange.sourceTokenSymbol,
-  //   this.props.exchange.sourceAmount, this.props.exchange.gas + this.props.exchange.gas_approve, gasPrice)
-
-  //   if (validateWithFee) {
-  //     this.props.dispatch(exchangeActions.thowErrorEthBalance("error.eth_balance_not_enough_for_fee"))
-  //     return
-  //     // check = false
-  //   }
-  // }
-
   lazyUpdateRateExchange = _.debounce(this.dispatchUpdateRateExchange, 500)
-  //lazyUpdateValidateSourceAmount = _.debounce(this.validateSourceAmount, 500)
- // lazyValidateTransactionFee = _.debounce(this.validateTxFee, 500)
 
  
   validateRateAndSource = (sourceValue) => {
     this.lazyUpdateRateExchange(sourceValue)
-    // if (this.props.account.account !== false){
-    //   this.lazyUpdateValidateSourceAmount(sourceValue)
-    // }
   }
   // changeSourceAmount = (e) => {
   //   var value = e.target.value
@@ -374,60 +303,6 @@ export default class ExchangeBody extends React.Component {
   }
 
   render() {
-    // if (this.props.account.isStoreReady) {
-    //   if (!!!this.props.account.account.address) {
-    //     setTimeout(() => this.props.dispatch(push("/")), 1000)
-    //     return (
-    //       <div>exchange is not ready</div>
-    //     )
-    //   }
-    // } else {
-    //   return (
-    //     <div>exchange is not ready111</div>
-    //   )
-    // }
-
-    //for transaction loading screen
-    // var balance = {
-    //   prevValue: toT(this.props.exchange.balanceData.prevSource, this.props.exchange.balanceData.sourceDecimal),
-    //   nextValue: toT(this.props.exchange.balanceData.nextSource, this.props.exchange.balanceData.sourceDecimal)
-    // }
-    // var balanceDest = {
-    //   prevValue: toT(this.props.exchange.balanceData.prevDest, this.props.exchange.balanceData.destDecimal),
-    //   nextValue: toT(this.props.exchange.balanceData.nextDest, this.props.exchange.balanceData.destDecimal),
-    // }
-    //console.log(this.props.exchange.balanceData)
-    // var balanceInfo = {
-    //   sourceAmount: toT(this.props.exchange.balanceData.sourceAmount, this.props.exchange.balanceData.sourceDecimal),
-    //   sourceSymbol: this.props.exchange.balanceData.sourceSymbol,
-    //   sourceTokenName: this.props.exchange.balanceData.sourceName,
-    //   //destTokenSymbol: this.props.exchange.destTokenSymbol,
-    //   destAmount: toT(this.props.exchange.balanceData.destAmount, this.props.exchange.balanceData.destDecimal),
-    //   destTokenName: this.props.exchange.balanceData.destName,
-    //   destSymbol: this.props.exchange.balanceData.destSymbol,
-    // }
-
-
-    // var analyze = {
-    //   action: this.analyze,
-    //   isAnalize: this.props.exchange.isAnalize,
-    //   isAnalizeComplete: this.props.exchange.isAnalizeComplete,
-    //   analizeError: this.props.exchange.analizeError
-    // }
-    // var transactionLoadingScreen = (
-    //   <TransactionLoading
-    //     tx={this.props.exchange.txHash}
-    //     tempTx={this.props.exchange.tempTx}
-    //     makeNewTransaction={this.makeNewExchange}
-    //     type="exchange"
-    //     balanceInfo={balanceInfo}
-    //     broadcasting={this.props.exchange.broadcasting}
-    //     broadcastingError={this.props.exchange.broadcastError}
-    //     analyze={analyze}
-    //     isOpen={this.props.exchange.step === 3}
-    //   />
-    // )
-
     //--------For select token
     // var tokenDest = {}
     // var isNotSupport = false
@@ -508,16 +383,6 @@ export default class ExchangeBody extends React.Component {
     // />
     // }
 
-    // var addressBalanceLayout = ""
-    // if (this.props.account.account !== false){      
-    //   addressBalanceLayout = (<AddressBalance setAmount={this.setAmount}
-    //                                         balance={addressBalance}
-    //                                         translate={this.props.translate}/>)
-  
-    // }
-    // console.log("exchange_data")
-    // console.log(this.props.exchange.destAmount)
-
     console.log("is_select_token")
     console.log(this.props.exchange.isSelectToken)
     var classNamePaymentbtn
@@ -554,9 +419,7 @@ export default class ExchangeBody extends React.Component {
    //     balanceList = {accountBalance}
    //     focus = {this.state.focus}
         networkError ={this.props.global.network_error}
-
         exchange = {this.props.exchange}
-
         importAccount = {this.importAccount}
         acceptedTerm = {this.acceptedTerm}
         classNamePaymentbtn = {classNamePaymentbtn}

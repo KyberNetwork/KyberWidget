@@ -354,44 +354,59 @@ export default class Payment extends React.Component {
   }
 
   getAccountBgk = () => {
+    const sourceTokenSymbol = this.props.exchange.sourceTokenSymbol;
+    const sourceBalance = this.props.tokens[sourceTokenSymbol].balance;
+    const sourceDecimal = this.props.tokens[sourceTokenSymbol].decimal;
+    const ethBalance = this.props.tokens["ETH"].balance;
+    let icon, method;
+
     switch (this.props.account.type) {
       case "metamask":
-        return <div className="account-bgk">
-          <div className="metamask-bgk">
-            <img alt="metamask" src={require('../../../assets/img/landing/metamask_active.svg')}/>
-          </div>
-          <div className="text">METAMASK</div>
-        </div>
+        icon = 'metamask_active.svg';
+        method = "Metamask";
+        break;
       case "keystore":
-        return <div className="account-bgk">
-          <div className="keystore-bgk">
-            <img alt="keystore" src={require('../../../assets/img/landing/keystore_active.svg')}/>
-          </div>
-          <div className="text">JSON</div>
-        </div>
+        icon = 'keystore_active.svg';
+        method = "Json";
+        break;
       case "privateKey":
-        return <div className="account-bgk">
-          <div className="privateKey-bgk">
-            <img alt="private key" src={require('../../../assets/img/landing/privatekey_active.svg')}/>
-          </div>
-          <div className="text">Private key</div>
-        </div>
+        icon = 'privatekey_active.svg';
+        method = "Private key";
+        break;
       case "trezor":
-        return <div className="account-bgk">
-          <div className="trezor-bgk">
-            <img alt="keystore" src={require('../../../assets/img/landing/trezor_active.svg')}/>
-          </div>
-          <div className="text">Trezor</div>
-        </div>
+        icon = 'trezor_active.svg';
+        method = "Trezor";
+        break;
       case "ledger":
-        return <div className="account-bgk">
-          <div className="ledger-bgk">
-            <img alt="ledger" src={require('../../../assets/img/landing/ledger_active.svg')}/>
-          </div>
-          <div className="text">Ledger</div>
-        </div>
+        icon = 'ledger_active.svg';
+        method = "Ledger";
+        break;
+      default:
+        return false;
     }
-  }
+
+    return <div className="import-account-content__info import-account-content__info--center">
+      <div className="import-account-content__info-type">
+        <img className="import-account-content__info-type-image" src={require(`../../../assets/img/landing/${icon}`)}/>
+        <div className="import-account-content__info-type-text">{method}</div>
+      </div>
+      <div className="import-account-content__info-text">
+        <div className="import-account-content__info-text-address">
+          {this.props.translate("transaction.address") || "Address"}: {this.props.account.address.slice(0, 8)}...{this.props.account.address.slice(-6)}
+        </div>
+        <div className="import-account-content__info-text-balance">
+          <div>{this.props.translate("transaction.balance") || "Balance"}:</div>
+          <div>
+            <div>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</div>
+
+            {sourceTokenSymbol !== "ETH" && (
+              <div>{converter.roundingNumber(converter.toT(sourceBalance, sourceDecimal))} {sourceTokenSymbol}</div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  };
 
 
   toogleShowPassword = () => {
@@ -404,15 +419,8 @@ export default class Payment extends React.Component {
   }
   
   render() {
+    var gasUsed;
 
-    var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
-    //var destTokenSymbol = this.props.exchange.destTokenSymbol
-    var sourceBalance = this.props.tokens[sourceTokenSymbol].balance
-    var sourceDecimal = this.props.tokens[sourceTokenSymbol].decimal
-
-    var ethBalance = this.props.tokens["ETH"].balance
-    
-    var gasUsed
     if (this.props.exchange.isFetchingGas){
       gasUsed = <img src={require('../../../assets/img/waiting.svg')} />
     }else{
@@ -446,33 +454,7 @@ export default class Payment extends React.Component {
           {this.props.translate("transaction.confirm_transaction") || "Confirm Transaction"}
         </div>
 
-        <div className="account-item">
-          {this.getAccountBgk()}
-          <div className="account-info">
-            <div className="info-row address-info">
-                <span>{this.props.translate("transaction.address") || "Address"}:</span> 
-                <span>{this.props.account.address.slice(0, 8)} ... {this.props.account.address.slice(-6)}</span>
-              </div>            
-            {sourceTokenSymbol === "ETH" && (
-              <div className="info-row">
-                <span>{this.props.translate("transaction.balance") || "Balance"}:</span>
-                <span>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</span>
-              </div>
-            )}
-            {sourceTokenSymbol !== "ETH" && (
-              <div>
-              <div className="info-row">        
-                <span>{this.props.translate("transaction.balance") || "Balance"}:</span>        
-                <span>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</span>
-              </div>
-              <div className="info-row">
-                <span></span> 
-                <span>{converter.roundingNumber(converter.toT(sourceBalance, sourceDecimal))} {sourceTokenSymbol}</span>
-              </div>
-              </div>
-            )}
-          </div>
-        </div>
+        {this.getAccountBgk()}
 
         <div className="error-message">
           {this.getError()}
@@ -483,10 +465,6 @@ export default class Payment extends React.Component {
             {this.props.translate("transaction.you_about_to_catch") || "YOU ARE ABOUT TO CATCH"}
           </div>
           <div className="content">
-            {/* <div>
-              <span>To:</span>
-              <span>kyber.network</span>
-            </div> */}
             <div>
               <span>{this.props.translate("transaction.monster_id") || "Monster Id"}:</span>
               <span>
@@ -601,9 +579,6 @@ export default class Payment extends React.Component {
               </a>
             )}
           </div>
-
-          
-
         </div>
       </div>
     )

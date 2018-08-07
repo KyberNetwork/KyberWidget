@@ -198,13 +198,6 @@ const ExchangeBodyLayout = (props) => {
       </div>
     </div>
   )
-  // return (
-
-  //   <div id="exchange">
-  //     {render}
-  //     {props.transactionLoadingScreen}
-  //   </div>
-  // )
 }
 
 export default ExchangeBodyLayout

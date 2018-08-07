@@ -216,7 +216,8 @@ export default class BaseProvider {
             this.wrapperEtheremonAddr,
             monsterId,
             monsterName,
-            sourceToken, sourceAmount, 
+            sourceToken, 
+            sourceAmount, 
             maxDestAmount,
             minConversionRate,
             walletId).encodeABI()

@@ -39,10 +39,8 @@ export default class TokenSelector extends React.Component {
   }
 
   selectItem = (event, symbol, address) => {
-    this.props.chooseToken(symbol, address, this.props.type)
-    //this.toggleOpen()
-    //console.log("toggle 2: " + this.state.open)
-   // this.setState({ open: false })
+    this.props.chooseToken(symbol, address, this.props.type);
+    this.hideTokens(event);
   }
 
   render() {

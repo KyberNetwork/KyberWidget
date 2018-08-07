@@ -20,7 +20,8 @@
         "icon": "eth.svg",
         "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "decimal": 18,
-        "usd_id":"ethereum"
+        "usd_id":"ethereum",
+        "priority": true
       },
       "KNC": {
         "name": "KyberNetwork",
@@ -28,7 +29,8 @@
         "icon": "knc.svg",
         "address": "0x4e470dc7321e84ca96fcaedd0c8abcebbaeb68c6",
         "decimal": 18,
-        "usd_id":"kyber-network"
+        "usd_id":"kyber-network",
+        "priority": true
       },
       "OMG": {
         "name": "OmiseGO",
@@ -172,7 +174,8 @@
         "icon": "dai.svg",
         "address": "0xad6d458402f60fd3bd25163575031acdce07538d",
         "decimal": 18,
-        "usd_id":"dai"
+        "usd_id":"dai",
+        "priority": true
       },
       "LINK": {
         "name": "Chain Link",
@@ -229,5 +232,6 @@
   },
   "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
   "tracker":"https://tracker.kyber.network",
-  "ethermon_wrapper":"0x731ab668bf9740cb9bbfb2ed243220ce41770319"
+  "ethermon_wrapper":"0x731ab668bf9740cb9bbfb2ed243220ce41770319",
+  "networkName": "ropsten"
 }
