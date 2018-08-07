@@ -52,7 +52,7 @@ const TokenSelectorView = (props) => {
                 }
 
                 {rate == 0 &&
-                  <div>Maintainance</div>
+                  <div>{props.translate('error.maintenance') || 'Maintenance'}</div>
                 }
               </div>
             </div>
