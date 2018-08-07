@@ -16,6 +16,9 @@ const TokenSelectorView = (props) => {
 
   var getListToken = () => {
     return Object.keys(listShow).map((key, i) => {
+      if (key === "ETH"){
+        return
+      }
       if (key !== props.focusItem) {
         var item = listShow[key]
         var balance = converter.toT(item.balance, item.decimal)

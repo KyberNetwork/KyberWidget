@@ -637,8 +637,9 @@ const exchange = (state = initState, action) => {
     }
 
     case "EXCHANGE.UPDATE_MONSTER_INFO":{
-      const {etheremonPrice, etheremonAddr, monsterId, monsterName} = action.payload
-      newState.etheremonPrice = {...etheremonPrice}
+      const {monsterInETH, catchable, etheremonAddr, monsterId, monsterName} = action.payload
+      newState.monsterInETH = monsterInETH
+      newState.catchable = catchable
       newState.etheremonAddr = etheremonAddr
       newState.monsterId = monsterId
       newState.monsterName = monsterName
@@ -653,7 +654,16 @@ const exchange = (state = initState, action) => {
     case "EXCHANGE.UPDATE_MONSTER_PRICE":{
       const {etheremonPrice} = action.payload
       newState.etheremonPrice = {...etheremonPrice}
-      //newState.isSelectToken = false
+      return newState
+    }
+
+    case "EXCHANGE.UPDATE_RATE_TOKEN":{
+      const {expectedRate, slippageRate} = action.payload
+      newState.expectedRate = expectedRate
+      newState.slippageRate = slippageRate
+      if (!newState.isEditRate){
+        newState.minConversionRate = slippageRate
+      }
       return newState
     }
 

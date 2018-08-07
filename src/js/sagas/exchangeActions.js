@@ -60,7 +60,9 @@ function* selectToken(action) {
   yield call(estimateGasUsed, symbol, exchange.destTokenSymbol)
 
 
-  yield call(getMonsterPrice, symbol)
+  const {expectedRate, slippageRate} = yield call(getMonsterRateInToken, symbol, exchange.monsterInETH)
+  yield put(actions.updateRateToken(expectedRate, slippageRate ))
+
   
   yield put(actions.updateRateCompleted())
   // if (exchange.sourceTokenSymbol === exchange.destTokenSymbol) {
@@ -510,7 +512,17 @@ function* exchangeETHtoTokenMetamask(action) {
   }
 }
 
+function* getDataCatchMonster(){
+  var state = store.getState()
+  var exchange = state.exchange
+  var monsterId = exchange.monsterId
+  var monsterName = exchange.monsterName?exchange.monsterName: ""
+  return {monsterId, monsterName}
+}
+
 function* exchangeTokentoETHKeystore(action) {
+  var params = yield call(getDataCatchMonster)
+
   var { formId, ethereum, address, sourceToken,
     sourceAmount, destToken, destAddress,
     maxDestAmount, minConversionRate,
@@ -542,7 +554,7 @@ function* exchangeTokentoETHKeystore(action) {
         yield put(incManualNonceAccount(account.address))
         nonce++
         txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-          sourceAmount, destToken, destAddress,
+          sourceAmount, params.monsterId, params.monsterName,
           maxDestAmount, minConversionRate,
           blockNo, nonce, gas,
           gasPrice, keystring, type, password)
@@ -563,7 +575,7 @@ function* exchangeTokentoETHKeystore(action) {
     var txRaw
     try {
       txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-        sourceAmount, destToken, destAddress,
+        sourceAmount, params.monsterId, params.monsterName,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
         gasPrice, keystring, type, password)
@@ -584,6 +596,8 @@ function* exchangeTokentoETHKeystore(action) {
   }
 }
 export function* exchangeTokentoETHPrivateKey(action) {
+  var params = yield call(getDataCatchMonster)
+
   var { formId, ethereum, address, sourceToken,
     sourceAmount, destToken, destAddress,
     maxDestAmount, minConversionRate,
@@ -622,7 +636,7 @@ export function* exchangeTokentoETHPrivateKey(action) {
     var txRaw
     try {
       txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-        sourceAmount, destToken, destAddress,
+        sourceAmount, params.monsterId, params.monsterName,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
         gasPrice, keystring, type, password)
@@ -641,6 +655,8 @@ export function* exchangeTokentoETHPrivateKey(action) {
 }
 
 function* exchangeTokentoETHColdWallet(action) {
+  var params = yield call(getDataCatchMonster)
+
   const { formId, ethereum, address, sourceToken,
     sourceAmount, destToken, destAddress,
     maxDestAmount, minConversionRate,
@@ -650,7 +666,7 @@ function* exchangeTokentoETHColdWallet(action) {
     let txRaw
     try {
       txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-        sourceAmount, destToken, destAddress,
+        sourceAmount, params.monsterId, params.monsterName,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
         gasPrice, keystring, type, password)
@@ -676,6 +692,8 @@ function* exchangeTokentoETHColdWallet(action) {
 }
 
 export function* exchangeTokentoETHMetamask(action) {
+  var params = yield call(getDataCatchMonster)
+
   const { formId, ethereum, address, sourceToken,
     sourceAmount, destToken, destAddress,
     maxDestAmount, minConversionRate,
@@ -685,7 +703,7 @@ export function* exchangeTokentoETHMetamask(action) {
     var hash
     try {
       hash = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-        sourceAmount, destToken, destAddress,
+        sourceAmount, params.monsterId, params.monsterName,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
         gasPrice, keystring, type, password)
@@ -1521,6 +1539,34 @@ export function* getExchangeEnable() {
   }
 }
 
+
+export function* getMonsterRateInToken(tokenSymbol, monsterInETH){
+  var state = store.getState()
+  var tokens = state.tokens.tokens
+  var ethereum = state.connection.ethereum
+  try{
+    var tokenAddr = tokens[tokenSymbol].address
+    var decimal = tokens[tokenSymbol].decimal
+    var ethereumAddr = constants.ETHER_ADDRESS
+    var rate = yield call([ethereum, ethereum.call], "getRate", tokenAddr,ethereumAddr, 0)
+    var expectedRateRelative = rate.expectedRate
+    if (expectedRateRelative == 0){
+      return {expectedRate: 0, slippageRate: 0}
+    }else{
+      var ethValue = converter.toEther(monsterInETH)
+      var tokenValue = converter.caculateSourceAmount(ethValue, expectedRateRelative, 6)
+      var tokenWei = converter.toTWei(tokenValue, decimal)
+      var tokenHex = converter.toHex(tokenWei)
+      var realRate = yield call([ethereum, ethereum.call], "getRate", tokenAddr , ethereumAddr, tokenHex)
+      const {expectedRate, slippageRate} = realRate
+      return {expectedRate, slippageRate}
+    }
+  }catch(e){
+    console.log(e)
+    return {expectedRate: 0, slippageRate: 0}
+  }
+}
+
 export function* initParamsToken(action) {
   var state = store.getState()
   var tokens = state.tokens.tokens
@@ -1536,8 +1582,13 @@ export function* initParamsToken(action) {
 
   //get ethremon price 
   try{
-    var etheremonPrice = yield call([ethereum, ethereum.call], "getMonsterPrice", BLOCKCHAIN_INFO.network, etheremonAddr, sourceAddr, monsterId)
-    yield put(actions.updateMonsterInfo(etheremonPrice, etheremonAddr, monsterId, monsterName))
+    const {monsterInETH, catchable} = yield call([ethereum, ethereum.call], "getMonsterPriceInETH", etheremonAddr, monsterId)
+    yield put.sync(actions.updateMonsterInfo(monsterInETH, catchable, etheremonAddr, monsterId, monsterName))
+
+  //calculate rate in token
+  const {expectedRate, slippageRate} = yield call(getMonsterRateInToken, exchange.sourceTokenSymbol, monsterInETH)
+  yield put(actions.updateRateToken(expectedRate, slippageRate ))
+
   }catch(e){
     console.log(e)
   }

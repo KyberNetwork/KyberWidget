@@ -650,10 +650,10 @@ export function unsetConfirming() {
 }
 
 
-export function updateMonsterInfo(etheremonPrice, etheremonAddr, monsterId, monsterName){
+export function updateMonsterInfo(monsterInETH, catchable, etheremonAddr, monsterId, monsterName){
   return {
     type: "EXCHANGE.UPDATE_MONSTER_INFO",
-    payload: {etheremonPrice, etheremonAddr, monsterId, monsterName}
+    payload: {monsterInETH, catchable, etheremonAddr, monsterId, monsterName}
   }
 }
 
@@ -667,5 +667,12 @@ export function updateMonsterPrice(etheremonPrice){
 export function updateRateCompleted(){
   return {
     type: "EXCHANGE.GET_RATE_COMPLETED"
+  }
+}
+
+export function updateRateToken(expectedRate, slippageRate){
+  return {
+    type: "EXCHANGE.UPDATE_RATE_TOKEN",
+    payload: {expectedRate, slippageRate}
   }
 }

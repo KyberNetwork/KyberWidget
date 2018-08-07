@@ -28,12 +28,8 @@ export default class MinRate extends React.Component {
   //   };
   // }
   onSliderChange = (value) => {
-    const {offeredRate}  = this.props.exchange
-    var minRate = converter.caculatorRateToPercentage(value,offeredRate)
+    var minRate = converter.caculatorRateToPercentage(value,this.props.exchange.expectedRate)
     this.props.dispatch(actions.setMinRate(minRate.toString()))
-    // this.setState({
-    //   value,
-    // });
   }
   // onAfterChange = (value) => {
   //   // const {offeredRate}  = this.props.exchange
@@ -45,12 +41,12 @@ export default class MinRate extends React.Component {
   }
 
   render = () => {
-    const {minConversionRate,slippageRate,offeredRate}  = this.props.exchange
-    var desToken = this.props.exchange.destTokenSymbol
+    const {minConversionRate,slippageRate,expectedRate}  = this.props.exchange
+    var desToken = "ETH"
     // const {disable,value} = this.state
     
 
-    var displayMinRate = this.props.exchange.isSelectToken ? <img src={require('../../../assets/img/waiting.svg')} /> : converter.roundingNumber(minConversionRate)
+    var displayMinRate = this.props.exchange.isSelectToken ? <img src={require('../../../assets/img/waiting.svg')} /> : converter.roundingNumber(converter.toT(minConversionRate))
    // var displaySlippageRate = this.props.exchange.isSelectToken ? (<img src={require('../../../assets/img/waiting-white.svg')} /> + " " + desToken): converter.roundingNumber(slippageRate) + " " + desToken
   
    var src = require('../../../assets/img/waiting.svg')
@@ -60,19 +56,19 @@ export default class MinRate extends React.Component {
       displaySlippageRate = this.props.translate("transaction.our_suggest_loading", { src: src, desToken: desToken}) 
             || (<span><strong> <img src={require('../../../assets/img/waiting.svg')} /> {desToken}</strong> is our suggested Min acceptable rate by default.</span>)
     }else{
-      displaySlippageRate = this.props.translate("transaction.our_suggest", { suggestRate: converter.roundingNumber(slippageRate) + " " + desToken}) 
-        || (<span><strong> {converter.roundingNumber(slippageRate) + " " + desToken}</strong> is our suggested Min acceptable rate by default.</span>)
+      displaySlippageRate = this.props.translate("transaction.our_suggest", { suggestRate: converter.roundingNumber(converter.toT(slippageRate)) + " " + desToken}) 
+        || (<span><strong> {converter.roundingNumber(converter.toT(slippageRate)) + " " + desToken}</strong> is our suggested Min acceptable rate by default.</span>)
     }
 
     //console.log(displaySlippageRate)
 
     var disable = false
-    if((converter.caculatorPercentageToRate(slippageRate,offeredRate)===0) || (this.props.exchange.isSelectToken)){
+    if((converter.caculatorPercentageToRate(slippageRate,expectedRate)===0) || (this.props.exchange.isSelectToken)){
       disable = true
     }
 
 
-    var percent = converter.caculatorPercentageToRate(minConversionRate,offeredRate)
+    var percent = converter.caculatorPercentageToRate(minConversionRate,expectedRate)
     percent = Math.round(parseFloat(percent))
     if (isNaN(percent)) percent = 0
     return (

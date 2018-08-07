@@ -69,6 +69,18 @@ const ExchangeBodyLayout = (props) => {
   //     }
   //   }
   // }
+  var tokenPrice = 0
+
+  if (props.exchange.isSelectToken){
+    tokenPrice = <img src={require('../../../assets/img/waiting.svg')} />
+  }else{
+    if (props.exchange.expectedRate != 0 && props.exchange.monsterInETH){
+      var ethValue = converter.toEther(props.exchange.monsterInETH)
+      tokenPrice = converter.roundingNumber(converter.caculateSourceAmount(ethValue, props.exchange.expectedRate, 6))
+    }
+  }
+    
+  
 
   var errorShow = errorSource.map((value, index) => {
     return <span class="error-text" key={index}>{value}</span>
@@ -120,10 +132,13 @@ const ExchangeBodyLayout = (props) => {
                         <span>{props.exchange.monsterName}</span>
                       </div>
                     )}
-                    <div className="info-2">
-                      <span>Price (ETH): </span>
-                      <span>{props.exchange.etheremonPrice.ethValue ? converter.toEther(props.exchange.etheremonPrice.ethValue): 0} ETH</span>
-                    </div>
+                    {props.exchange.catchable && (
+                      <div className="info-2">
+                        <span>Price: </span>
+                        <span>{props.exchange.monsterInETH ? converter.toEther(props.exchange.monsterInETH): 0} ETH</span>
+                      </div>
+                    )}
+                    
                   </div>
 
                   <div>
@@ -134,11 +149,25 @@ const ExchangeBodyLayout = (props) => {
                       <div className={errorExchange ? "error select-token-panel" : "select-token-panel"}>
                         {props.tokenSourceSelect}                        
 
+
+                        {!props.exchange.catchable && (
+                          <div className="payment-error">
+                            This monster is not catchable
+                          </div>
+                        )}
+                        {props.exchange.expectedRate == 0 && props.exchange.catchable && (
+                          <div className="payment-error">
+                            Cannot catch monster with {props.exchange.sourceTokenSymbol} at the momment
+                          </div>
+                        )}
+                        {props.exchange.expectedRate != 0 && props.exchange.catchable && (
                         <div className="amount-pay">
                           <div>{props.translate("transaction.estimate_value_should_pay_in_token") || "Estimate value you should pay"} in {props.exchange.sourceTokenSymbol}</div>
-                          {props.exchange.etheremonPrice.tokenPrice ? converter.toT(props.exchange.etheremonPrice.tokenPrice, props.tokens[props.exchange.sourceTokenSymbol].decimal) : 0} 
-                          {props.exchange.sourceTokenSymbol}
-                        </div>
+                           {tokenPrice}
+                           {props.exchange.sourceTokenSymbol}
+                          </div>
+                        )}                        
+                       
 
                       </div>
                       <div className={errorExchange ? "error" : ""}>

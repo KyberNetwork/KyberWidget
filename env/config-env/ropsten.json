@@ -229,5 +229,5 @@
   },
   "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
   "tracker":"https://tracker.kyber.network",
-  "ethermon_wrapper":"0xa6DedC584B81f52b7DFaC97F35b457C8A04B9C9b"
+  "ethermon_wrapper":"0x731ab668bf9740cb9bbfb2ed243220ce41770319"
 }

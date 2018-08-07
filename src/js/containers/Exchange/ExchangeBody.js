@@ -104,42 +104,54 @@ export default class ExchangeBody extends React.Component {
       return
     }
 
+    if (!this.props.exchange.catchable){
+      return
+    }
+
+    
+
+
     var isValidate = true
     //validate errors
 
     if (!this.props.exchange.kyber_enabled){
-      this.props.dispatch(exchangeActions.thowErrorSourceAmount("Kyber swap is not enabled"))
+      this.props.dispatch(exchangeActions.throwErrorExchange("error.kyber_enable", "Kyber swap is not enabled"))
       isValidate = false
     }
 
-    var srcAmount
-    var sourceAmountIsNumber = true
-    if (!this.props.exchange.isHaveDestAmount){
-      srcAmount = parseFloat(this.props.exchange.sourceAmount)
-      if (isNaN(srcAmount)) {
-        this.props.dispatch(exchangeActions.thowErrorSourceAmount("error.source_amount_is_not_number"))
-        isValidate = false
-        sourceAmountIsNumber = false
-      }          
-    }else{
-      if (this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol){
-        srcAmount = this.props.exchange.destAmount
-      }else{
-        srcAmount = converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)        
-      }
+    if (validators.anyErrors(this.props.exchange.errors)){
+      isValidate = false
     }
 
-    if (sourceAmountIsNumber){
-      if (this.props.exchange.sourceTokenSymbol !== "ETH"){
-        srcAmount = converter.calculateDest(srcAmount, this.props.exchange.rateSourceToEth, 6)
-      }
-      // console.log("converter_sourceamount")
-      // console.log(srcAmount)
-      if (parseFloat(srcAmount) < parseFloat(converter.toEther(constansts.EPSILON))){
-        this.props.dispatch(exchangeActions.thowErrorSourceAmount("error.source_amount_too_small"))
-        isValidate = false
-      }
-    }
+
+    // var srcAmount
+    // var sourceAmountIsNumber = true
+    // if (!this.props.exchange.isHaveDestAmount){
+    //   srcAmount = parseFloat(this.props.exchange.sourceAmount)
+    //   if (isNaN(srcAmount)) {
+    //     this.props.dispatch(exchangeActions.thowErrorSourceAmount("error.source_amount_is_not_number"))
+    //     isValidate = false
+    //     sourceAmountIsNumber = false
+    //   }          
+    // }else{
+    //   if (this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol){
+    //     srcAmount = this.props.exchange.destAmount
+    //   }else{
+    //     srcAmount = converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)        
+    //   }
+    // }
+
+    // if (sourceAmountIsNumber){
+    //   if (this.props.exchange.sourceTokenSymbol !== "ETH"){
+    //     srcAmount = converter.calculateDest(srcAmount, this.props.exchange.rateSourceToEth, 6)
+    //   }
+    //   // console.log("converter_sourceamount")
+    //   // console.log(srcAmount)
+    //   if (parseFloat(srcAmount) < parseFloat(converter.toEther(constansts.EPSILON))){
+    //     this.props.dispatch(exchangeActions.thowErrorSourceAmount("error.source_amount_too_small"))
+    //     isValidate = false
+    //   }
+    // }
 
     
 
@@ -163,7 +175,7 @@ export default class ExchangeBody extends React.Component {
 
     //set snapshot
     this.props.dispatch(exchangeActions.setSnapshot(this.props.exchange))
-    this.props.dispatch(exchangeActions.updateRateSnapshot(this.props.ethereum))
+   // this.props.dispatch(exchangeActions.updateRateSnapshot(this.props.ethereum))
   }
 
   chooseToken = (symbol, address, type) => {
