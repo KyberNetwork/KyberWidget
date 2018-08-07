@@ -407,7 +407,7 @@
     }
 
     &::placeholder {
-      font-weight: 600;
+      font-weight: normal;
       color: #222222;
     }
   }
@@ -552,7 +552,6 @@
 
       &__rate {
         font-size: 12px;
-        font-weight: 600;
       }
     }
   }
