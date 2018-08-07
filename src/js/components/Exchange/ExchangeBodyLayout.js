@@ -110,7 +110,7 @@ const ExchangeBodyLayout = (props) => {
                 <div className="pay-info">
                   <div className="info-1">
                     {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
-                  </div> 
+                  </div>
                   <div className="info-2">
                     <div className="info-2__content">
                       <div>{props.translate("transaction.address") || "Address"}:</div>
@@ -122,11 +122,10 @@ const ExchangeBodyLayout = (props) => {
                       <div>{props.exchange.destAmount} {props.exchange.destTokenSymbol}</div>
                     </div>
                   </div>
-                  <div className="info-3"> 
+                  <div className="info-3">
 
                   </div>
                 </div>
-                {/* <div>Choose youy payment method</div> */}
                 <div>
                   <div className="choose-payment">
                     <span className="transaction-label">
@@ -138,12 +137,12 @@ const ExchangeBodyLayout = (props) => {
                       <div className="amount-pay">
                         <div>{props.translate("transaction.estimate_value_should_pay") || "Estimate value you should pay"}</div>
 
-                          {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
-                            <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)} {props.exchange.sourceTokenSymbol} </div>
-                          )}
-                          {props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol && (
-                            <div>{props.exchange.destAmount} {props.exchange.sourceTokenSymbol} </div>
-                          )}
+                        {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
+                          <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)} {props.exchange.sourceTokenSymbol} </div>
+                        )}
+                        {props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol && (
+                          <div>{props.exchange.destAmount} {props.exchange.sourceTokenSymbol} </div>
+                        )}
                       </div>
                     </div>
                     <div className={errorExchange ? "error" : ""}>
@@ -154,19 +153,19 @@ const ExchangeBodyLayout = (props) => {
               </div>
             )}
 
-        {!props.exchange.isHaveDestAmount && (
-           <div>            
-              <div className="pay-info">
-                <div className="info-1">
-                {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
-                </div>
-                <div className="info-2">
-                  <div className="info-2__content">
-                    <div>{props.translate("transaction.address") || "Address"}:</div>
-                    <div>{props.exchange.receiveAddr.slice(0, 8)} ... {props.exchange.receiveAddr.slice(-6)}</div>
+            {!props.exchange.isHaveDestAmount && (
+              <div>
+                <div className="pay-info">
+                  <div className="info-1">
+                    {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
                   </div>
-                </div>                
-              </div>    
+                  <div className="info-2">
+                    <div className="info-2__content">
+                      <div>{props.translate("transaction.address") || "Address"}:</div>
+                      <div>{props.exchange.receiveAddr.slice(0, 8)} ... {props.exchange.receiveAddr.slice(-6)}</div>
+                    </div>
+                  </div>
+                </div>
                 <div>
                   <div className="choose-payment">
                     <span className="transaction-label">
@@ -174,27 +173,24 @@ const ExchangeBodyLayout = (props) => {
                     </span>
                     <div className={errorExchange ? "error select-token-panel" : "select-token-panel"}>
                       {props.tokenSourceSelect}
-
-
                       <span className="transaction-label amount-enter-label">
                         {props.translate("transaction.enter_amount") || "ENTER AMOUNT YOU WILL PAY"}
                       </span>
-                      <div className={classSource}>                        
+                      <div className={classSource}>
                         <div>
                           <input id="inputSource" className="source-input" min="0" step="0.000001"
-                            placeholder="0" autoFocus
-                            type="text" maxLength="50" autoComplete="off"
-                            value={props.input.sourceAmount.value}
-                            onFocus={props.input.sourceAmount.onFocus}
-                            onBlur={props.input.sourceAmount.onBlur}
-                            onChange={handleChangeSource}
+                                 placeholder="0" autoFocus
+                                 type="text" maxLength="50" autoComplete="off"
+                                 value={props.input.sourceAmount.value}
+                                 onFocus={props.input.sourceAmount.onFocus}
+                                 onBlur={props.input.sourceAmount.onBlur}
+                                 onChange={handleChangeSource}
                           />
                         </div>
                         <div>
                           <span>{props.sourceTokenSymbol}</span>
                         </div>
                       </div>
-                      
                     </div>
                     <div className={errorExchange ? "error" : ""}>
                       {errorShow}
@@ -207,15 +203,11 @@ const ExchangeBodyLayout = (props) => {
                   </div>
                 )}
               </div>
-        )}
-</div>
+            )}
+          </div>
           <div>
             {props.advanceLayout}
           </div>
-          
-          
-            
-
           <div className="exchange-pading">
             <div class="checkbox">
               <input id="term-agree" type="checkbox" onChange={props.acceptedTerm}/>
@@ -223,46 +215,14 @@ const ExchangeBodyLayout = (props) => {
               {props.translate("transaction.i_agree_to") || "I agree to"} <a href="https://files.kyber.network/tac.html" target="_blank">{props.translate("transaction.term_and_condition") || "Terms &amp; Conditions"}</a>
               </label>
             </div>
-            
-            
-              <button className={props.classNamePaymentbtn} onClick={(e) => props.importAccount(e)}>{props.translate("transaction.next") || "Next"}</button>
-            </div>
-            
-            {/* <div className="large-6">
-              {props.addressBalanceLayout}
-            </div> */}
-
-            {/* <div class="address-balance large-6">
-              <p class="note">{props.translate("transaction.address_balance") || "Address Balance"}</p>
-              <div>
-                <span>{props.translate("transaction.click_to_ex_all_balance") || "Click to swap all balance"}</span>
-                <span className="balance" title={props.balance.value} onClick={() => {
-                  props.setAmount()
-                  setTimeout(moveCursor, 0);
-                }}>
-                  {props.balance.roundingValue}
-                </span>
-              </div>
-            </div> */}
+            <button className={props.classNamePaymentbtn} onClick={(e) => props.importAccount(e)}>{props.translate("transaction.next") || "Next"}</button>
           </div>
-        
+          </div>
         </div>
-        {/* <div className="grid-x exchange-col-3">
-          <div className="cell large-8">
-            
-          </div>
-        </div> */}
       </div>
     </div>
     </div>
   )
-  // return (
-
-  //   <div id="exchange">
-  //     {render}
-  //     {props.transactionLoadingScreen}
-  //   </div>
-  // )
 }
 
 export default ExchangeBodyLayout

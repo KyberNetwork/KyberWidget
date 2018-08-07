@@ -4,57 +4,69 @@ import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdow
 
 const TokenSelectorView = (props) => {
   var focusItem = props.listItem[props.focusItem]
-  var listShow = {}
-  Object.keys(props.listItem).map((key, i) => {
+  var listShow = {};
+  let priorityTokens = [];
+
+  Object.keys(props.listItem).map((key) => {
     var token = props.listItem[key],
-      matchName = token.name.toLowerCase().includes(props.searchWord),
-      matchSymbol = token.symbol.toLowerCase().includes(props.searchWord)
+        matchName = token.name.toLowerCase().includes(props.searchWord),
+        matchSymbol = token.symbol.toLowerCase().includes(props.searchWord);
+
     if (matchSymbol || matchName) {
-      listShow[key] = props.listItem[key]
+      listShow[key] = props.listItem[key];
     }
-  })
+
+    if (token.priority) {
+      priorityTokens.push(token);
+    }
+  });
 
   var getListToken = () => {
-    return Object.keys(listShow).map((key, i) => {
-      if (key !== props.focusItem) {
-        var item = listShow[key]
-        var balance = converter.toT(item.balance, item.decimal)
-        return (
-          <div key={key} onClick={(e) => props.selectItem(e, item.symbol, item.address)} className="token-item">
-              <div>
-                <div className="item-icon">
-                  <img src={require("../../../assets/img/tokens/" + item.icon)} />
-                </div>
+    const destRateEth = props.listItem[props.exchange.destTokenSymbol].rateEth;
 
-                <div>
-                  <div className="item-balance">
-                    {props.account !== false && (
-                      <span title={balance} class="item-balance-value">
-                        {converter.roundingNumber(balance)}
-                      </span>
-                    )}
-                    <span class="item-symbol">
-                      {item.symbol}
-                    </span>
-                  </div>                
-                </div>
-              </div>
-              <div>
-                  {item.name}
-              </div>
-          </div>
-        )
+    return Object.keys(listShow).map((key) => {
+      if (key === props.focusItem) {
+        return;
       }
+
+      var item = listShow[key];
+      const sourceRate = item.symbol === "ETH" ? 1 : converter.toT(item.rate, 18);
+      const destRate = converter.toT(destRateEth, 18);
+      const rate = item.symbol === props.exchange.destTokenSymbol ? 1 : converter.roundingNumber(sourceRate * destRate);
+
+      return (
+        <div
+          key={key}
+          onClick={(e) => props.selectItem(e, item.symbol, item.address)}
+          className={"token-item-container " + (rate == 0 ? "token-item-container--inactive" : "payment-gateway__hover-color")}>
+          <div className="token-item-content">
+            <div className="token-item">
+              <img className="token-item__icon" src={require("../../../assets/img/tokens/" + item.icon)}/>
+              <span className="token-item__symbol">{item.symbol}</span>
+            </div>
+
+            <div className="token-item">
+              <div className="token-item__rate">
+                {rate != 0 &&
+                  <div>1 {item.symbol} = {rate} {props.exchange.destTokenSymbol}</div>
+                }
+
+                {rate == 0 &&
+                  <div>Maintainance</div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      )
     })
   }
 
-
   var rateFocusItem = props.exchange.isSelectToken ? <img src={require('../../../assets/img/waiting.svg')} /> : converter.roundingNumber(converter.toT(props.exchange.offeredRate,18))
 
-
   return (
-    <div className="token-selector">
-      <Dropdown onShow = {(e) => props.showTokens(e)} onHide = {(e) => props.hideTokens(e)}>
+    <div className="token-chooser">
+      <Dropdown onShow = {(e) => props.showTokens(e)} onHide = {(e) => props.hideTokens(e)} active={props.open}>
         <DropdownTrigger className="notifications-toggle">
           <div className="focus-item d-flex">
             <div className="d-flex">
@@ -62,7 +74,6 @@ const TokenSelectorView = (props) => {
                 <img src={require("../../../assets/img/tokens/" + focusItem.icon)} />
               </div>
               <div>
-                {/* <div className="focus-name">{focusItem.name}</div> */}
                 <div className="focus-balance">
                   {props.account !== false && (
                     <span className="token-balance" title = {converter.toT(focusItem.balance)}>{converter.roundingNumber(converter.toT(focusItem.balance, focusItem.decimal))}</span>
@@ -71,22 +82,33 @@ const TokenSelectorView = (props) => {
                 </div>
               </div>
             </div>
-            {focusItem.symbol !== props.exchange.destTokenSymbol && (              
+            {focusItem.symbol !== props.exchange.destTokenSymbol && (
               <div className="rate-token">
                 1 {focusItem.symbol} = {rateFocusItem} {props.exchange.destTokenSymbol}
               </div>
             )}
-            
             <div><i className={'k k-angle ' + (props.open ? 'up' : 'down')}></i></div>
           </div>
         </DropdownTrigger>
         <DropdownContent>
           <div className="select-item">
-            <div className="search-item">
-              <input value={props.searchWord} placeholder={props.translate("search") || "Search"} onChange={(e) => props.changeWord(e)} type="text"/>
+            <div className="suggest-item">
+              {priorityTokens.map((token, i) => {
+                return (
+                  <div className="suggest-item__content" key={i} onClick={(e) => props.selectItem(e, token.symbol, token.address)}>
+                    <img className="suggest-item__icon" src={require(`../../../assets/img/tokens/${token.icon}`)} />
+                    <div className="suggest-item__symbol">{token.symbol}</div>
+                  </div>
+                )
+              })}
             </div>
-            <div className="list-item custom-scroll">
-              {getListToken()}
+            <div className="search-item">
+              <input value={props.searchWord} placeholder='Try "DAI"' onChange={(e) => props.changeWord(e)} type="text"/>
+            </div>
+            <div className="list-item">
+              <div className="list-item__content">
+                {getListToken()}
+              </div>
             </div>
           </div>
         </DropdownContent>
