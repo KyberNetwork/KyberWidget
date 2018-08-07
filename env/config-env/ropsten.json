@@ -38,8 +38,7 @@
         "icon": "omg.svg",
         "address": "0x4bfba4a8f28755cb2061c413459ee562c6b9c51b",
         "decimal": 18,
-        "usd_id":"omisego",
-        "priority": true
+        "usd_id":"omisego"
       },
       "EOS": {
         "name": "Eos",
@@ -47,8 +46,7 @@
         "icon": "eos.svg",
         "address": "0xd5b4218b950a53ff07985e2d88346925c335eae7",
         "decimal": 18,
-        "usd_id":"eos",
-        "priority": false
+        "usd_id":"eos"
       },
       "ELF": {
         "name":"Aelf",
@@ -56,8 +54,7 @@
         "symbol": "ELF",
         "icon": "aelf.svg",
         "decimal": 18,
-        "usd_id":"aelf",
-        "priority": false
+        "usd_id":"aelf"
       },
       "POWR": {
         "name":"Power Ledger",
@@ -65,8 +62,7 @@
         "symbol": "POWR",
         "icon": "pwr.svg",
         "decimal": 6,
-        "usd_id":"power-ledger",
-        "priority": false
+        "usd_id":"power-ledger"
       },
       "MANA": {
         "name":"Mana",
@@ -74,8 +70,7 @@
         "symbol": "MANA",
         "icon": "mana.svg",
         "decimal": 18,
-        "usd_id":"decentraland",
-        "priority": false
+        "usd_id":"decentraland"
       },
       "BAT": {
         "name":"Basic Attention Token",
@@ -83,8 +78,7 @@
         "symbol": "BAT",
         "icon": "bat.svg",
         "decimal": 18,
-        "usd_id":"basic-attention-token",
-        "priority": false
+        "usd_id":"basic-attention-token"
       },
       "REQ": {
         "name":"Request",
@@ -92,8 +86,7 @@
         "symbol": "REQ",
         "icon": "req.svg",
         "decimal": 18,
-        "usd_id":"request-network",
-        "priority": false
+        "usd_id":"request-network"
       },
       "GTO": {
         "name":"Gifto",
@@ -101,8 +94,7 @@
         "symbol": "GTO",
         "icon": "gifto.svg",
         "decimal": 5,
-        "usd_id":"gifto",
-        "priority": false
+        "usd_id":"gifto"
       },
       "RDN": {
         "name":"Raiden",
@@ -110,8 +102,7 @@
         "symbol": "RDN",
         "icon": "rdn.svg",
         "decimal": 18,
-        "usd_id":"raiden-network-token",
-        "priority": false
+        "usd_id":"raiden-network-token"
       },
       "APPC": {
         "name":"AppCoins",
@@ -119,8 +110,7 @@
         "symbol": "APPC",
         "icon": "appc.svg",
         "decimal": 18,
-        "usd_id":"appcoins",
-        "priority": false
+        "usd_id":"appcoins"
       },
       "ENG": {
         "name":"Enigma",
@@ -128,8 +118,7 @@
         "symbol": "ENG",
         "icon": "eng.svg",
         "decimal": 8,
-        "usd_id":"enigma-project",
-        "priority": false
+        "usd_id":"enigma-project"
       },
       "SALT": {
         "name":"Salt",
@@ -137,8 +126,7 @@
         "symbol": "SALT",
         "icon": "salt.svg",
         "decimal": 8,
-        "usd_id":"salt",
-        "priority": false
+        "usd_id":"salt"
       },
       "BQX": {
         "name" : "Ethos",
@@ -146,8 +134,7 @@
         "symbol": "BQX",
         "decimal": 8,
         "icon": "bqx.svg",
-        "usd_id":"ethos",
-        "priority": false
+        "usd_id":"ethos"
       },
       "ADX": {
         "name": "AdEx",
@@ -155,8 +142,7 @@
         "symbol": "ADX",
         "decimal": 4,
         "icon": "adx.svg",
-        "usd_id": "adx-net",
-        "priority": false
+        "usd_id": "adx-net"
       },
       "AST": {
         "name": "AirSwap",
@@ -164,8 +150,7 @@
         "symbol": "AST",
         "decimal": 4,
         "icon": "ast.svg",
-        "usd_id": "airswap",
-        "priority": false
+        "usd_id": "airswap"
       },
       "RCN": {
         "name": "Ripio Credit Network",
@@ -173,8 +158,7 @@
         "symbol": "RCN",
         "decimal": 18,
         "icon": "rcn.svg",
-        "usd_id": "ripio-credit-network",
-        "priority": false
+        "usd_id": "ripio-credit-network"
       },
       "ZIL": {
         "name": "Zilliqa",
@@ -182,8 +166,7 @@
         "symbol": "ZIL",
         "decimal": 12,
         "icon": "zil.svg",
-        "usd_id":"zilliqa",
-        "priority": false
+        "usd_id":"zilliqa"
       },
       "DAI": {
         "name" : "DAI",
@@ -192,7 +175,7 @@
         "address": "0xad6d458402f60fd3bd25163575031acdce07538d",
         "decimal": 18,
         "usd_id":"dai",
-        "priority": false
+        "priority": true
       },
       "LINK": {
         "name": "Chain Link",
@@ -200,8 +183,7 @@
         "symbol": "LINK",
         "decimal": 18,
         "icon": "link.svg",
-        "usd_id":"chainlink",
-        "priority": false
+        "usd_id":"chainlink"
       },
       "IOST": {
         "name": "IOStoken",
@@ -209,8 +191,7 @@
         "symbol": "IOST",
         "decimal": 18,
         "icon": "iost.svg",
-        "usd_id":"iostoken",
-        "priority": false
+        "usd_id":"iostoken"
       },
       "STORM": {
         "name": "Storm",
@@ -218,24 +199,21 @@
         "symbol": "STORM",
         "decimal": 18,
         "icon": "storm.svg",
-        "usd_id":"storm",
-        "priority": false
+        "usd_id":"storm"
       },
       "BBO" : {
         "name": "BigBom",
         "address": "0xa94758d328af7ef1815e73053e95b5f86588c16d",
         "symbol" : "BBO",
         "decimal": 18,
-        "icon": "bbo.svg",
-        "priority": false
+        "icon": "bbo.svg"
       },
       "COFI": {
         "name": "ConFi",
         "decimal": 18,
         "symbol" : "COFI",
         "address": "0xb91786188f8d4e35d6d67799e9f162587bf4da03",
-        "icon": "cofi.svg",
-        "priority": false
+        "icon": "cofi.svg"
       }
   },
   "ethScanUrl": "https://ropsten.etherscan.io/",
