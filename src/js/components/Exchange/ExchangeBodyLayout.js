@@ -123,22 +123,25 @@ const ExchangeBodyLayout = (props) => {
                       {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
                     </div>
                     <div className="info-2">
-                      <span>Monster Id: </span>
-                      <span>{props.exchange.monsterId}</span>
+                      <div className="info-2__content">
+                        <div>Monster Id:</div>
+                        <div>{props.exchange.monsterId}</div>
+                      </div>
+
+                      {props.exchange.monsterName && props.exchange.monsterName !== "" && (
+                        <div className="info-2__content">
+                          <div>Monster Name:</div>
+                          <div>{props.exchange.monsterName}</div>
+                        </div>
+                      )}
+
+                      {props.exchange.catchable && (
+                        <div className="info-2__content">
+                          <div>Price:</div>
+                          <div>{props.exchange.monsterInETH ? converter.toEther(props.exchange.monsterInETH): 0} ETH</div>
+                        </div>
+                      )}
                     </div>
-                    {props.exchange.monsterName && props.exchange.monsterName !== "" && (
-                      <div className="info-2">
-                        <span>Monster Name: </span>
-                        <span>{props.exchange.monsterName}</span>
-                      </div>
-                    )}
-                    {props.exchange.catchable && (
-                      <div className="info-2">
-                        <span>Price: </span>
-                        <span>{props.exchange.monsterInETH ? converter.toEther(props.exchange.monsterInETH): 0} ETH</span>
-                      </div>
-                    )}
-                    
                   </div>
 
                   <div>
@@ -163,9 +166,8 @@ const ExchangeBodyLayout = (props) => {
                         {props.exchange.expectedRate != 0 && props.exchange.catchable && (
                         <div className="amount-pay">
                           <div>{props.translate("transaction.estimate_value_should_pay_in_token") || "Estimate value you should pay"} in {props.exchange.sourceTokenSymbol}</div>
-                           {tokenPrice}
-                           {props.exchange.sourceTokenSymbol}
-                          </div>
+                          <div>{tokenPrice} {props.exchange.sourceTokenSymbol}</div>
+                        </div>
                         )}                        
                        
 
@@ -190,7 +192,9 @@ const ExchangeBodyLayout = (props) => {
                 </div>
 
 
-                <button className={props.classNamePaymentbtn} onClick={(e) => props.importAccount(e)}>{props.translate("transaction.next") || "Next"}</button>
+                <button className={props.classNamePaymentbtn} onClick={(e) => props.importAccount(e)}>
+                  {props.translate("transaction.next") || "Next"}
+                </button>
               </div>
             </div>
           </div>
