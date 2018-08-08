@@ -20,7 +20,6 @@ With that button, when a user click on it, a new window will pop up allowing him
 https://widget-etheremon.knstats.com/widget/payment?etheremonAddr=0x11f9f4ce02f3a4e2ae37f8dedf23e882fd67b2c0&monsterId=106&monsterName=etheremon_pikachuI&callback=https://yourwebsite.com/kybercallback
 ```
 
-that helps users to pay `1.2 DAI` equivalent amount of supported tokens (list of supported token will be given at the end of this Readme) to `0xFDF28Bf25779ED4cA74e958d54653260af604C20` (vendor's wallet), after the tx is broadcasted to the network, informations will be submitted to the callback url `https://yourwebsite.com/kybercallback`.
 
 ## Params to pass to the Widget
 In this version, we only support the widget via a new browser windows thus we can pass params via its url as url query params.
