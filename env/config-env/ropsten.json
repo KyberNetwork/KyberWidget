@@ -21,7 +21,8 @@
         "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "decimal": 18,
         "usd_id":"ethereum",
-        "gasLimit": "0"
+        "gasLimit": "0",
+        "priority": true
       },
       "KNC": {
         "name": "KyberNetwork",
@@ -29,7 +30,8 @@
         "icon": "knc.svg",
         "address": "0x4e470dc7321e84ca96fcaedd0c8abcebbaeb68c6",
         "decimal": 18,
-        "usd_id":"kyber-network"
+        "usd_id":"kyber-network",
+        "priority": true
       },
       "OMG": {
         "name": "OmiseGO",
@@ -46,15 +48,6 @@
         "address": "0xd5b4218b950a53ff07985e2d88346925c335eae7",
         "decimal": 18,
         "usd_id":"eos"
-      },
-      "SNT": {
-        "name":"Status",
-        "address": "0xbf5d8683b9be6c43fca607eb2a6f2626a18837a6",
-        "symbol": "SNT",
-        "icon": "snt.svg",
-        "decimal": 18,
-        "usd_id":"status",
-        "gasLimit": "1000000"
       },
       "ELF": {
         "name":"Aelf",
@@ -182,7 +175,8 @@
         "icon": "dai.svg",
         "address": "0xad6d458402f60fd3bd25163575031acdce07538d",
         "decimal": 18,
-        "usd_id":"dai"
+        "usd_id":"dai",
+        "priority": true
       },
       "LINK": {
         "name": "Chain Link",
@@ -238,5 +232,6 @@
     "api_key": "D8YAEQ3V4THAPDA9YSB1YGA1QY9KAMHY6M"
   },
   "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
-  "tracker":"https://tracker.kyber.network"
+  "tracker":"https://tracker.kyber.network",
+  "networkName": "ropsten"
 }

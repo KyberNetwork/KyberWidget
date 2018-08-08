@@ -1,11 +1,12 @@
 import React from "react"
 import { connect } from "react-redux"
 import { push } from 'react-router-redux'
-import { DropFile } from "../../components/ImportAccount"
+import DropFile from "../../components/ImportAccount/Keystore/DropFile"
 import { importNewAccount, throwError } from "../../actions/accountActions"
 import { verifyKey, anyErrors } from "../../utils/validators"
 import { addressFromKey } from "../../utils/keys"
 import { getTranslate } from 'react-localize-redux'
+import constants from "../../services/constants";
 
 @connect((store, props) => {
   var tokens = store.tokens.tokens
@@ -34,7 +35,6 @@ export default class ImportKeystore extends React.Component {
 
   onDrop = (files) => {
     try {
-      var _this = this
       var file = files[0]
       var fileReader = new FileReader()
       fileReader.onload = (event) => {
@@ -42,22 +42,19 @@ export default class ImportKeystore extends React.Component {
         var errors = {}
         errors["keyError"] = verifyKey(keystring)
         if (anyErrors(errors)) {
+          this.props.onOpenImportAccount(constants.IMPORT_ACCOUNT_TYPE.keystore);
           this.props.dispatch(throwError("Your uploaded JSON file is invalid. Please upload a correct JSON keystore."))
         } else {
           var address = addressFromKey(keystring)
           this.props.dispatch(importNewAccount(address,
             "keystore",
-            keystring,
-            this.props.ethereum,
-            this.props.tokens, this.props.screen))
+            keystring))
         }
-
       }
       fileReader.readAsText(file)
     } catch (e) {
       console.log(e)
     }
-
   }
 
   render() {

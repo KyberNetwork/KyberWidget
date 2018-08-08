@@ -8,7 +8,7 @@ const initState = {
     balance: '',
     type: ''
   },
-  choosenImportAccount: null,
+  chosenImportAccount: null,
   isStoreReady: false,
   account: false,
   loading: false,
@@ -94,13 +94,13 @@ const account = (state = initState, action) => {
     case "ACCOUNT.OPEN_IMPORT_ACCOUNT": {
       return {
         ...state,
-        choosenImportAccount: action.payload
+        chosenImportAccount: action.payload
       };
     }
     case "ACCOUNT.CLOSE_IMPORT_ACCOUNT": {
       return {
         ...state,
-        choosenImportAccount: null,
+        chosenImportAccount: null,
         error: '',
         showError: false
       };
@@ -114,7 +114,7 @@ const account = (state = initState, action) => {
 
     // case "ACCOUNT.RESET_IMPORT_ACCOUNT": {
     //   let newState = { ...state }
-    //   newState.choosenImportAccount = false
+    //   newState.chosenImportAccount = false
     //   newState.wallet = {
     //     index: '',
     //     address: '',
@@ -128,7 +128,7 @@ const account = (state = initState, action) => {
       var { step, oldStep } = action.payload
       if (step === 2 && oldStep === 3) {
         newState.account = false
-        newState.choosenImportAccount = false
+        newState.chosenImportAccount = false
         newState.wallet = {
           index: '',
           address: '',

@@ -2,20 +2,30 @@ import React from "react";
 import ImportByPKeyView from "./PrivateKey/ImportByPKeyView";
 import ImportByLedgerView from "./Ledger/ImportByLedgerView";
 import ImportByTrezorView from "./Trezor/ImportByTrezorView";
+import ImportByKeystoreView from "./Keystore/ImportByKeystoreView";
 import {
   ImportByPrivateKey,
   ImportByDeviceWithLedger,
   ImportByDeviceWithTrezor,
+  ImportKeystore,
 } from "../../containers/ImportAccount";
-import SignerAddress from './SignerAddress';
-import constants from '../../services/constants';
+import SignerAddress from "./SignerAddress";
+import constants from "../../services/constants";
 
 const ImportAccountView = (props) => {
-  let importComponent = '';
+  let importComponent = "";
 
-  switch (props.choosenImportAccount) {
+  switch (props.chosenImportAccount) {
+    case constants.IMPORT_ACCOUNT_TYPE.keystore:
+      importComponent =
+        <ImportByKeystoreView
+          translate={props.translate}
+          error={props.error}
+          onCloseImportAccount={props.onCloseImportAccount}
+        />;
+      break;
     case constants.IMPORT_ACCOUNT_TYPE.privateKey:
-      importComponent = <ImportByPrivateKey onCloseImportAccount={props.onCloseImportAccount}/>
+      importComponent = <ImportByPrivateKey onCloseImportAccount={props.onCloseImportAccount}/>;
       break;
     case constants.IMPORT_ACCOUNT_TYPE.ledger:
       importComponent = <ImportByDeviceWithLedger onCloseImportAccount={props.onCloseImportAccount} screen={props.screen}/>;
@@ -38,15 +48,15 @@ const ImportAccountView = (props) => {
 
         <div className={"import-account"}>
           {props.firstKey}
-          <ImportByTrezorView translate={props.translate} onOpenImportAccount={props.onOpenImportAccount}/>
-          {props.secondKey}
-          <ImportByPKeyView translate={props.translate} onOpenImportAccount={props.onOpenImportAccount}/>
-          <ImportByLedgerView translate={props.translate} onOpenImportAccount={props.onOpenImportAccount}/>
+          <ImportByTrezorView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
+          <ImportKeystore onOpenImportAccount={props.onOpenImportAccount} screen={props.screen} translate={props.translate}/>
+          <ImportByPKeyView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
+          <ImportByLedgerView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
         </div>
 
         <div className={"payment-gateway__hollow-button"} onClick={props.backToFirstStep}>{props.translate("transaction.back") || "Back"}</div>
 
-        <div className={"import-account-content " + (props.choosenImportAccount && props.isLoading === false ? 'import-account-content--active' : '')}>
+        <div className={"import-account-content " + (props.chosenImportAccount && props.isLoading === false ? 'import-account-content--active' : '')}>
           {importComponent}
         </div>
       </div>

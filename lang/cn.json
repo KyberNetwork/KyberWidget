@@ -137,7 +137,8 @@
     "receive_address": "接收的地址",
     "slippage_tip": "费率可能会改变。 您可以在高级选项中调整最小价格来更改最大滑点率",
     "max_slippage": "滑点率至多为${percent}%",
-    "included": "包括"
+    "included": "包括",
+    "contact_merchant": "请联系您的商家以修改错误的参数"
   },
 
   "modal": {
@@ -236,6 +237,7 @@
     "eth_balance_not_enough_for_fee": "您的ETH余额不足以支付交易费用",
     "handle_amount":"Kyber无法处理您的数量，请减少数量",
     "kyber_maintain":"此对正在暂时维修中",
+    "maintenance":"保养",
     "get_rate":"无法从区块链获得利率",
     "exchange_enable":"您已经超过了您的每日限额！ 您可以在明天00:00 UTC+0再次进行交易",
     "min_rate_greater_expected_rate": "您设置的最低汇率高于KyberNetwork推荐的汇率。 您的交易很有可能失败。",
@@ -248,7 +250,8 @@
     "receive_amount_is_invalid_number": "接收金额无效",
     "receive_amount_must_be_positive": "接收金额必须为正数",
     "commission_address_must_be_valid": "佣金地址必须是有效的以太坊地址",
-    "signer_include_invalid_address": "发送地址包含无效地址" 
+    "signer_include_invalid_address": "发送地址包含无效地址",
+    "invalid_network": "不支持当前网络"
   },
 
   "import": {
@@ -260,6 +263,7 @@
     "from_private_key": "请输入您的<br />密钥",
     "from_private_key_input_title": "请输入您的密钥",
     "from_private_key_input_title_placehoder": "请输入您的密钥",
+    "from_json_title": "选择您的JSON文件",
     "connect": "连接",
     "address": "地址",
     "balance": "余额",
@@ -363,6 +367,12 @@
     "sell_price": "卖价",
     "mid": "中间",
     "mid_price": "中间价"
+  },
+
+  "payment_header": {
+    "step_method": "支付方式",
+    "step_import": "导入地址",
+    "step_confirm": "确认"
   },
 
   "home": "主页",

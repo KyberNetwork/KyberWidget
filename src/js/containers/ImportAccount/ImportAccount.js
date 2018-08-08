@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { ImportAccountView } from '../../components/ImportAccount'
-import { ImportKeystore, ImportByMetamask} from "../ImportAccount"
+import { ImportByMetamask} from "../ImportAccount"
 import { getTranslate } from 'react-localize-redux'
 import { importAccountMetamask, openImportAccount, closeImportAccount } from "../../actions/accountActions"
 import BLOCKCHAIN_INFO from "../../../../env"
@@ -18,7 +18,6 @@ import { goToStep } from "../../actions/exchangeActions"
   
   return {
     ...store.account,
-    translate: getTranslate(store.locale),
     isVisitFirstTime: store.global.isVisitFirstTime,
     translate: getTranslate(store.locale),
     termOfServiceAccepted: store.global.termOfServiceAccepted,
@@ -39,8 +38,7 @@ export default class ImportAccount extends React.Component {
         var web3Service = new Web3Service(web3)
         var walletType = web3Service.getWalletType()
         if (walletType !== "metamask") {
-          this.props.dispatch(importAccountMetamask(web3Service, BLOCKCHAIN_INFO.networkId,
-          this.props.ethereum, this.props.tokens, this.props.screen, this.props.translate, walletType))
+          this.props.dispatch(importAccountMetamask(web3Service, BLOCKCHAIN_INFO.networkId))
         }
       }
     }
@@ -76,14 +74,14 @@ export default class ImportAccount extends React.Component {
         <ImportAccountView
           isLoading={this.props.loading}
           firstKey={<ImportByMetamask screen={this.props.screen}/>}
-          secondKey={<ImportKeystore screen={this.props.screen}/>}
           signerAddresses={this.getSignerAddresses()}
           onOpenImportAccount={this.openImportAccount.bind(this)}
           onCloseImportAccount={this.closeImportAccount.bind(this)}
-          choosenImportAccount={this.props.choosenImportAccount}
+          chosenImportAccount={this.props.chosenImportAccount}
           backToFirstStep={this.backToFirstStep.bind(this)}
           translate={this.props.translate}
           screen={this.props.screen}
+          error={this.props.error}
         />
       </div>
     )

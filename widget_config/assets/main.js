@@ -27,20 +27,23 @@
 
     function grabForm() {
         var form = document.querySelector(".params");
-        var data = [], invalid = false, name, value;
+        var data = [], error = [], msg, name, value;
         form.querySelectorAll("input, select").forEach(function (node) {
-            if (invalid) return;
 
             // do simple validation
             name = node.getAttribute("name");
             if (!node.checkValidity()) {
-                invalid = name;
+                msg = node.getAttribute("message") || ("Invalid input for: " + name);
+                node.setAttribute("title", msg);
+                error.push(msg);
                 return;
+            } else {
+                node.removeAttribute("title");
             }
 
             // set name - value
             if (node.type && node.type === 'checkbox') {
-                value = node.checked;
+                value = node.checked.toString();
             } else {
                 value = node.value;
             }
@@ -55,7 +58,7 @@
         });
 
         return {
-            invalid: invalid,
+            error: error,
             data: data.join("&")
         }
     }
@@ -92,9 +95,9 @@
 
     var generateTag = debounce(function () {
         var formData = grabForm();
-        if (formData.invalid) {
-            document.getElementById("widget").innerHTML = "<p class='error'>Invalid input for: " +
-                formData.invalid + "</p>";
+        if (formData.error && formData.error.length) {
+            document.getElementById("widget").innerHTML = "<p class='error'>" +
+                formData.error.join("<br>") + "</p>";
             document.getElementById("sourceHtml").value = "";
             document.getElementById("sourceCss").value = "";
             return;
@@ -102,9 +105,9 @@
 
         var widgetBaseUrl = getWidgetUrl();
         var url = widgetBaseUrl + "?" + formData.data;
-        var tagHtml = "<a href='javascript:void(0);' class='_kyberpay-widget'\n";
+        var tagHtml = "<a href='" + url + "' class='_kyberpay-widget'\n";
         tagHtml += "name='KyberPay - Powered by KyberNetwork' title='Pay by tokens'\n";
-        tagHtml += "onclick='window.open(\"" + url + "\");'>Pay by tokens</a>";
+        tagHtml += "target='_blank'>Pay by tokens</a>";
 
         document.getElementById("widget").innerHTML = tagHtml;
         document.getElementById("sourceHtml").value = tagHtml;

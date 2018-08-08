@@ -20,21 +20,23 @@ export default class ErrorPayment extends React.Component {
 
   render = () => {
     return (
-      <div className={"container"}>
+      <div className={"error-payment-container"}>
         <div className={"error-payment"}>
           <div className={"error-payment__icon-container"}>
             <div className={"error-payment__icon"}></div>
             <div className={"error-payment__icon-text"}>{this.props.translate("transaction.error") || "Error"}!</div>
           </div>
           <div className={"error-payment__content"}>
-            <ul className={"error-payment__content-text error-payment__content-text--bold"}>{this.getErrorPayment()}</ul>
-            <div className={"error-payment__content-text"}>
-              {this.props.translate("transaction.error") 
-                || "Please contact your merchant for wrong params"}
-            </div>
-            <div className={"error-payment__content-button"}>
-              <div className={"payment-gateway__hollow-button"} onClick={() => window.close()}>
-              {this.props.translate("transaction.back_to_website") || "Back to Website"}
+            <div className={"container"}>
+              <ul className={"error-payment__content-text error-payment__content-text--bold"}>{this.getErrorPayment()}</ul>
+              <div className={"error-payment__content-text"}>
+                {this.props.translate("transaction.contact_merchant")
+                  || "Please contact your merchant for wrong params"}
+              </div>
+              <div className={"error-payment__content-button"}>
+                <div className={"payment-gateway__hollow-button"} onClick={() => window.close()}>
+                {this.props.translate("transaction.back_to_website") || "Back to Website"}
+                </div>
               </div>
             </div>
           </div>

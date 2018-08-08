@@ -16,6 +16,8 @@ import * as exchangeActions from "../../actions/exchangeActions"
 
 import * as transferActions from "../../actions/transferActions"
 
+import * as accountActions from "../../actions/accountActions"
+
 
 import { default as _ } from 'underscore'
 import { clearSession } from "../../actions/globalActions"
@@ -82,6 +84,8 @@ export default class Payment extends React.Component {
 
   reImportAccount = () => {
     this.props.dispatch(exchangeActions.goToStep(2, 3))
+
+    this.props.dispatch(accountActions.clearWatchMetamask())
   }
 
   approveToken = () => {
@@ -123,9 +127,17 @@ export default class Payment extends React.Component {
       var tokenAddress = this.props.tokens[token].address
       var tokenDecimal = this.props.tokens[token].decimal
       var tokenName = this.props.tokens[token].tokenName
-      var amount = converter.stringToHex(this.props.exchange.destAmount, tokenDecimal)
+
+      var amount
+      if (this.props.exchange.isHaveDestAmount){
+        amount = converter.stringToHex(this.props.exchange.destAmount, tokenDecimal)
+      }else{
+        amount = converter.stringToHex(this.props.exchange.sourceAmount, tokenDecimal)
+      }
+      
+
       var destAddress = this.props.exchange.receiveAddr
-      var gas = converter.numberToHex(100000)
+      var gas = converter.numberToHex(this.props.exchange.gas)
       var gasPrice = converter.numberToHex(converter.gweiToWei(this.props.exchange.gasPrice))
 
       var balanceData = {
@@ -336,44 +348,59 @@ export default class Payment extends React.Component {
   }
 
   getAccountBgk = () => {
+    const sourceTokenSymbol = this.props.exchange.sourceTokenSymbol;
+    const sourceBalance = this.props.tokens[sourceTokenSymbol].balance;
+    const sourceDecimal = this.props.tokens[sourceTokenSymbol].decimal;
+    const ethBalance = this.props.tokens["ETH"].balance;
+    let icon, method;
+
     switch (this.props.account.type) {
       case "metamask":
-        return <div className="account-bgk">
-          <div className="metamask-bgk">
-            <img alt="metamask" src={require('../../../assets/img/landing/metamask_active.svg')}/>
-          </div>
-          <div className="text">METAMASK</div>
-        </div>
+        icon = 'metamask_active.svg';
+        method = "Metamask";
+        break;
       case "keystore":
-        return <div className="account-bgk">
-          <div className="keystore-bgk">
-            <img alt="keystore" src={require('../../../assets/img/landing/keystore_active.svg')}/>
-          </div>
-          <div className="text">JSON</div>
-        </div>
+        icon = 'keystore_active.svg';
+        method = "Json";
+        break;
       case "privateKey":
-        return <div className="account-bgk">
-          <div className="privateKey-bgk">
-            <img alt="private key" src={require('../../../assets/img/landing/privatekey_active.svg')}/>
-          </div>
-          <div className="text">Private key</div>
-        </div>
+        icon = 'privatekey_active.svg';
+        method = "Private key";
+        break;
       case "trezor":
-        return <div className="account-bgk">
-          <div className="trezor-bgk">
-            <img alt="keystore" src={require('../../../assets/img/landing/trezor_active.svg')}/>
-          </div>
-          <div className="text">Trezor</div>
-        </div>
+        icon = 'trezor_active.svg';
+        method = "Trezor";
+        break;
       case "ledger":
-        return <div className="account-bgk">
-          <div className="ledger-bgk">
-            <img alt="ledger" src={require('../../../assets/img/landing/ledger_active.svg')}/>
-          </div>
-          <div className="text">Ledger</div>
-        </div>
+        icon = 'ledger_active.svg';
+        method = "Ledger";
+        break;
+      default:
+        return false;
     }
-  }
+
+    return <div className="import-account-content__info import-account-content__info--center">
+      <div className="import-account-content__info-type">
+        <img className="import-account-content__info-type-image" src={require(`../../../assets/img/landing/${icon}`)}/>
+        <div className="import-account-content__info-type-text">{method}</div>
+      </div>
+      <div className="import-account-content__info-text">
+        <div className="import-account-content__info-text-address">
+          {this.props.translate("transaction.address") || "Address"}: {this.props.account.address.slice(0, 8)}...{this.props.account.address.slice(-6)}
+        </div>
+        <div className="import-account-content__info-text-balance">
+          <div>{this.props.translate("transaction.balance") || "Balance"}:</div>
+          <div>
+            <div>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</div>
+
+            {sourceTokenSymbol !== "ETH" && (
+              <div>{converter.roundingNumber(converter.toT(sourceBalance, sourceDecimal))} {sourceTokenSymbol}</div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  };
 
 
   toogleShowPassword = () => {
@@ -386,18 +413,17 @@ export default class Payment extends React.Component {
   }
   
   render() {
+    var gasUsed;
 
-    var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
-    //var destTokenSymbol = this.props.exchange.destTokenSymbol
-    var sourceBalance = this.props.tokens[sourceTokenSymbol].balance
-    var sourceDecimal = this.props.tokens[sourceTokenSymbol].decimal
-
-    var ethBalance = this.props.tokens["ETH"].balance
-
-    var gasUsed = this.props.exchange.gas
-    if (this.props.exchange.isNeedApprove) {
-      gasUsed += this.props.exchange.gas_approve
+    if (this.props.exchange.isFetchingGas){
+      gasUsed = <img src={require('../../../assets/img/waiting.svg')} />
+    }else{
+      gasUsed = this.props.exchange.gas
+      if (this.props.exchange.isNeedApprove) {
+        gasUsed += this.props.exchange.gas_approve
+      }
     }
+    
 
     var classError = ""
     var isHaveError = false
@@ -407,9 +433,14 @@ export default class Payment extends React.Component {
     }
     
     var classDisable = ""
-    if (!this.props.exchange.validateAccountComplete){
+    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming || this.props.exchange.isFetchingGas){
       classDisable += " disable"
     }
+
+    var signExchangeError = this.props.exchange.signError ? this.props.exchange.signError : ""
+    var broadcastExchangeError = this.props.exchange.broadcastError ? this.props.exchange.broadcastError: ""
+    var txError = signExchangeError + broadcastExchangeError
+
     return (
       <div id="exchange" className={"frame payment_confirm" + classError}>        
 
@@ -417,33 +448,7 @@ export default class Payment extends React.Component {
           {this.props.translate("transaction.confirm_transaction") || "Confirm Transaction"}
         </div>
 
-        <div className="account-item">
-          {this.getAccountBgk()}
-          <div className="account-info">
-            <div className="info-row address-info">
-                <span>{this.props.translate("transaction.address") || "Address"}:</span> 
-                <span>{this.props.account.address.slice(0, 8)} ... {this.props.account.address.slice(-6)}</span>
-              </div>            
-            {sourceTokenSymbol === "ETH" && (
-              <div className="info-row">
-                <span>{this.props.translate("transaction.balance") || "Balance"}:</span>
-                <span>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</span>
-              </div>
-            )}
-            {sourceTokenSymbol !== "ETH" && (
-              <div>
-              <div className="info-row">        
-                <span>{this.props.translate("transaction.balance") || "Balance"}:</span>        
-                <span>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</span>
-              </div>
-              <div className="info-row">
-                <span></span> 
-                <span>{converter.roundingNumber(converter.toT(sourceBalance, sourceDecimal))} {sourceTokenSymbol}</span>
-              </div>
-              </div>
-            )}
-          </div>
-        </div>
+        {this.getAccountBgk()}
 
         <div className="error-message">
           {this.getError()}
@@ -454,10 +459,6 @@ export default class Payment extends React.Component {
             {this.props.translate("transaction.you_about_to_pay") || "YOU ARE ABOUT TO PAY"}
           </div>
           <div className="content">
-            {/* <div>
-              <span>To:</span>
-              <span>kyber.network</span>
-            </div> */}
             <div>
               <span>{this.props.translate("transaction.address") || "Address"}:</span>
               <span>
@@ -482,8 +483,11 @@ export default class Payment extends React.Component {
           <div className="content">
             <div>
               <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
-              {this.props.exchange.isHaveDestAmount && (
+              {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
                 <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
+              )}
+              {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol && (
+                <span>{this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</span>
               )}
               {!this.props.exchange.isHaveDestAmount && (
                 <span>{this.props.exchange.sourceAmount} {this.props.exchange.sourceTokenSymbol}</span>
@@ -503,14 +507,22 @@ export default class Payment extends React.Component {
             </div>
             <div>
               <span>{this.props.translate("transaction.transaction_fee") || "Trasaction fee"}:</span>
-              <span>
-                {converter.calculateGasFee(this.props.exchange.gasPrice, gasUsed)}
-              </span>
+              {!this.props.exchange.isFetchingGas && (
+                <span>
+                  { converter.calculateGasFee(this.props.exchange.gasPrice, gasUsed)}
+                </span>
+              )}
+              
             </div>
           </div>
         </div>
 
         <div className="payment-bottom">
+          {txError !== "" && (
+              <div className="error-message">                 
+                {txError}
+            </div>
+          )}
           {this.props.exchange.isNeedApprove && (
               <div className="approve-intro">                 
                   {this.props.translate("modal.approve_exchange", {token: this.props.exchange.sourceTokenSymbol}) 
@@ -535,16 +547,21 @@ export default class Payment extends React.Component {
                    <div className="import-account-content__private-key-toggle" onClick={this.toogleShowPassword}></div>
                   <div className="import-account-content__private-key-icon"></div>
                </div>
-               {(this.props.exchange.errors.passwordError || this.props.transfer.errors.passwordError) && (
+               {(this.props.exchange.passwordError) && (
                  <div className="error-password">
-                   {this.props.exchange.errors.passwordError ? this.props.exchange.errors.passwordError : this.props.transfer.errors.passwordError}
+                   {this.props.exchange.passwordError}
                  </div>
                )}
                </div>
 
             )}
+            {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
+              <div className="confirm-message">{this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet"}</div>
+            )}
           <div className="control-btn">
-            <a className="back-btn" onClick={this.reImportAccount}>{this.props.translate("transaction.back") || "Back"}</a>
+            
+            <a className={"back-btn" + (this.props.exchange.isConfirming || this.props.transfer.isConfirming?" disable":"")} onClick={this.reImportAccount}>{this.props.translate("transaction.back") || "Back"}</a>
+
             {this.props.exchange.isNeedApprove && (
               <a className={"confirm-btn" + classDisable} onClick={this.approveToken}>
                 {this.props.translate("transaction.approve") || "Approve"}
@@ -557,9 +574,6 @@ export default class Payment extends React.Component {
               </a>
             )}
           </div>
-
-          
-
         </div>
       </div>
     )

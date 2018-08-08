@@ -119,7 +119,7 @@ const exchange = (state = initState, action) => {
     }
     case "EXCHANGE.GO_TO_STEP": {
       var {step, oldStep} = action.payload
-      if (step === 1){
+      if (step === 1 || step === 2){
         var errors = {}
         Object.keys(newState.errors).map(key => {
           errors[key] = ""
@@ -128,6 +128,9 @@ const exchange = (state = initState, action) => {
       }
       if ((step === 2) && (oldStep === 3)){
         newState.validateAccountComplete = false
+        newState.broadcastError = ""
+        newState.signError = ""
+        newState.passwordError = ""
       }
       newState.step = step
       return newState
@@ -339,9 +342,11 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.PROCESS_APPROVE": {
-      newState.isApproving = true
+      newState.isApproving = true;
+      newState.isConfirming = true;
       return newState
     }
+    case "TRANSFER.PROCESS_TRANSFER":
     case "EXCHANGE.PROCESS_EXCHANGE": {
       newState.isConfirming = true
       return newState
@@ -481,12 +486,12 @@ const exchange = (state = initState, action) => {
 
         var gasPriceSuggest = {...newState.gasPriceSuggest}
         
-        gasPriceSuggest.fastGas = fastGas
-        gasPriceSuggest.standardGas = standardGas
-        gasPriceSuggest.safeLowGas = safeLowGas
+        gasPriceSuggest.fastGas = Math.round(fastGas * 10) / 10
+        gasPriceSuggest.standardGas = Math.round(standardGas * 10)/10
+        gasPriceSuggest.safeLowGas = Math.round(safeLowGas * 10)/10
 
         newState.gasPriceSuggest = {...gasPriceSuggest}
-        newState.gasPrice = defaultGas
+        newState.gasPrice =  Math.round(defaultGas * 10)/10
 
         newState.selectedGas = selectedGas
       }
@@ -519,14 +524,14 @@ const exchange = (state = initState, action) => {
       }
       return newState
     }
-    // case "EXCHANGE.FETCH_GAS":{
-    //   newState.isFetchingGas = true
-    //   return newState
-    // }
-    // case "EXCHANGE.FETCH_GAS_SUCCESS":{
-    //   newState.isFetchingGas = false
-    //   return newState
-    // }
+    case "EXCHANGE.FETCH_GAS":{
+      newState.isFetchingGas = true
+      return newState
+    }
+    case "EXCHANGE.FETCH_GAS_SUCCESS":{
+      newState.isFetchingGas = false
+      return newState
+    }
     case "EXCHANGE.FETCH_GAS_SNAPSHOT":{
       newState.snapshot.isFetchingGas = true
       return newState
@@ -611,9 +616,9 @@ const exchange = (state = initState, action) => {
     //   return newState
     // }
     case "EXCHANGE.SET_APPROVE":{
-      const {isNeedApprove} = action.payload
-      newState.isNeedApprove = isNeedApprove
-      return newState
+      const {isNeedApprove} = action.payload;
+      newState.isNeedApprove = isNeedApprove;
+      return newState;
     }
     case "EXCHANGE.THROW_ERROR_EXCHANGE":{
       const {key, val} = action.payload
@@ -626,21 +631,32 @@ const exchange = (state = initState, action) => {
       newState.validateAccountComplete = true
       return newState
     }
-    case "GLOBAL.CLEAR_SESSION_FULFILLED":{
-      var resetState = {...initState}
-      resetState.sourceToken = newState.sourceToken
-      resetState.sourceTokenSymbol = newState.sourceTokenSymbol
-      
-      resetState.gasPrice = newState.gasPrice
-      resetState.selectedGas = newState.selectedGas
-      resetState.isEditGasPrice = newState.isEditGasPrice
-      
-      resetState.destToken = newState.destToken
-      resetState.destTokenSymbol = newState.destTokenSymbol
-
-      return resetState
+    case "EXCHANGE.SELECT_TOKEN_COMPLETE":{
+      newState.isSelectToken = false
+      return newState
     }
-    
+    case "GLOBAL.CLEAR_SESSION_FULFILLED":{
+      var resetState = {...initState};
+
+      resetState.sourceToken = newState.sourceToken;
+      resetState.sourceTokenSymbol = newState.sourceTokenSymbol;
+      resetState.destTokenSymbol = newState.destTokenSymbol;
+      resetState.sourceAmount = newState.sourceAmount;
+      resetState.destAmount = newState.destAmount;
+      resetState.isHaveDestAmount = newState.isHaveDestAmount;
+      resetState.receiveAddr = newState.receiveAddr;
+      resetState.gas = newState.gas;
+      resetState.gasPrice = newState.gasPrice;
+      resetState.selectedGas = newState.selectedGas;
+      resetState.isEditGasPrice = newState.isEditGasPrice;
+      resetState.destToken = newState.destToken;
+
+      return resetState;
+    }
+    case "EXCHANGE.UNSET_CONFIRMING": {
+      newState.isConfirming = false;
+      return newState
+    }
   }
   return state
 }

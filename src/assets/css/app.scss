@@ -68,6 +68,7 @@ $alert-color: #ff5d00;
 html body{
   color: $base-color;
   font-family: $font-openSans;
+  background-color: #F8F8F8;
 
   h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6{
     font-family: $font-cera;
@@ -480,6 +481,65 @@ html body{
       width: 100%;
       display: block;
       overflow: auto;
+    }
+  }
+}
+
+.kyber-payment-logo {
+  width: 161px;
+  height: 49px;
+  background-image: url($image-path + 'kyber-payment.svg');
+
+  &-container {
+    padding: 20px;
+
+    @include screen-max-width(mid-small) {
+      padding-left: 0;
+    }
+  }
+}
+
+.step-breadcrumb {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  margin-bottom: 12px;
+
+  &__item {
+    font-size: 12px;
+    letter-spacing: -0.1px;
+    color: #999999;
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+
+    &::before {
+      width: 25px;
+      height: 25px;
+      background-color: #ebebeb;
+      border-radius: 50%;
+      font-weight: 600;
+      margin-right: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:nth-child(1)::before {
+      content: '1';
+    }
+
+    &:nth-child(2)::before {
+      content: '2';
+    }
+
+    &:nth-child(3)::before {
+      content: '3';
     }
   }
 }

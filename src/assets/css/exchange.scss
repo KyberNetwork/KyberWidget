@@ -59,10 +59,10 @@
 }
 
 #exchange {
-  max-width:  450px;
+  max-width: $container-max-width;
   box-shadow: 0 7px 25px #ddd;
   background: white;
-  margin: 50px auto 0;
+  margin: 0 auto;
 
   .exchange-pading{
     //padding: 0 1rem;
@@ -91,11 +91,13 @@
       }
     }
   }
-  .checkbox{
+  .checkbox {
     margin-top: 15px;
-    label{
+    label {
       color: #999;
-      a{
+      font-size: 13px;
+
+      a {
         color: inherit;
         text-decoration: underline;
       }
@@ -104,7 +106,6 @@
 
   .rate-token {
     font-size: 14px;
-    font-weight: 600;
     color: #666666;
   }
 
@@ -137,6 +138,10 @@
     float: right;
     font-size: 18px;
     font-weight: 600;
+
+    &.disable {
+      opacity: 0.4;
+    }
   }
 
   .token-compare {
@@ -200,7 +205,6 @@
       }
     }
     .focus-item {
-      border-radius: 5px;
       background-color: #ffffff;
       border: 1px solid #dedede;
       padding: 10px 12px;

@@ -1,6 +1,7 @@
 import { fork, call, put, join, race, cancel } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 import { store } from '../store'
+import BLOCKCHAIN_INFO from "../../../env";
 
 
 export function* handleRequest(sendRequest, ...args) {
@@ -45,9 +46,10 @@ export function* submitCallback(hash){
     if (exchange.callback){
       var submitUrl = exchange.callback 
       var params = {
-        tx: hash
+        tx: hash,
+       // network: global.params.network
       }
-      if (exchange.paramForwarding === true || exchange.paramForwarding === 'true'){
+      if (exchange.paramForwarding !== false && exchange.paramForwarding !== 'false'){
         Object.keys(global.params).map(key=>{
           if (key !== "tx"){
             params[key] = global.params[key]
@@ -56,6 +58,9 @@ export function* submitCallback(hash){
       }
               
       try{
+        if (!params.network){
+          params.network = BLOCKCHAIN_INFO.networkName;
+        }
         const response = yield call(fetch, submitUrl, {
             method: 'POST',
             // headers: {

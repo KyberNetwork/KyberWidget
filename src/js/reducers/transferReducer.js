@@ -175,11 +175,11 @@ const transfer = (state = initState, action) => {
       newState.errors.signTransaction = action.payload
       return newState
     }
-    case "TRANSFER.PROCESS_TRANSFER": {
-      newState.isConfirming = true
-      newState.bcError = ""
-      return newState
-    }
+    // case "TRANSFER.PROCESS_TRANSFER": {
+    //   newState.isConfirming = true
+    //   newState.bcError = ""
+    //   return newState
+    // }
     case "TX.TX_ADDED": {
       newState.tempTx = action.payload
       return newState

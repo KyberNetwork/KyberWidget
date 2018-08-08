@@ -136,7 +136,8 @@
     "receive_address": "받는 주소",
     "slippage_tip": "고급 옵션에서 최소 비율을 조절하여 최대 미끄럼 비율을 변경할 수 있습니다.",
     "max_slippage": "가치를 잃은 ${percent}%로 최대입니다",
-    "included": "포함"
+    "included": "포함",
+    "contact_merchant": "잘못된 매개 변수 입니다, 판매자에게 문의하세요."
   },
 
   "modal": {
@@ -235,6 +236,7 @@
     "eth_balance_not_enough_for_fee": "Eth 잔액는 거래 비용으로 충분하지 않습니다.",
     "handle_amount":"카이버는 금액을 처리 할 수 없으므로 금액을 줄이십시오!",
     "kyber_maintain":"이 토큰 쌍은 일시적으로 유지 보수 중입니다",
+    "maintenance":"유지",
     "get_rate":"블록 체인에서 요금을 받을 수 없습니다.",
     "exchange_enable":"거래는 일일 한도를 초과했습니다! 내일 00:00 UTC+0 다시 거래 할 수도 있습니다",
     "min_rate_greater_expected_rate": "구성된 최소 환율은 카이버 네트워크에서 권장하는 것보다 높습니다. 귀하의 거래소는 실패 할 확률이 높습니다.",
@@ -247,7 +249,8 @@
     "receive_amount_is_invalid_number": "받는 금액이 유효하지 않습니다",
     "receive_amount_must_be_positive": "받는 금액은 양수여야 합니다",
     "commission_address_must_be_valid": "보너스 받는 주소는 유효한 이더리움 주소여야 합니다",
-    "signer_include_invalid_address": "보내는 주소에 잘못된 주소가 포함되어 있습니다" 
+    "signer_include_invalid_address": "보내는 주소에 잘못된 주소가 포함되어 있습니다",
+    "invalid_network": "현재 네트워크는 지원되지 않습니다."
   },
 
   "import": {
@@ -259,6 +262,7 @@
     "from_private_key": "Private Key",
     "from_private_key_input_title": "개인키 입력하기",
     "from_private_key_input_title_placehoder": "개인키 입력하기",
+    "from_json_title": "JSON 파일을 선택하세요.",
     "connect": "연결하기",
     "address": "주소",
     "balance": "잔액",
@@ -361,6 +365,12 @@
     "sell_price": "매도가격",
     "mid": "중간",
     "mid_price": "중간 가격"
+  },
+
+  "payment_header": {
+    "step_method": "지불 방법",
+    "step_import": "주소 가져오기",
+    "step_confirm": "확인"
   },
 
   "home": "홈",

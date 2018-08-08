@@ -44,7 +44,8 @@ import Language from "../../../../lang"
     tokens: store.tokens.tokens,
     account: store.account,
     translate: getTranslate(store.locale),
-    locale: store.locale
+    locale: store.locale,
+    exchange: store.exchange
     // currentLanguage: getActiveLanguage(store.locale).code
   }
 })
@@ -80,7 +81,9 @@ export default class Layout extends React.Component {
 
     var receiveAddr = common.getParameterByName("receiveAddr")
     var receiveToken = common.getParameterByName("receiveToken")
-    var receiveAmount = common.getParameterByName("receiveAmount")
+    var receiveAmount = common.getParameterByName("receiveAmount");
+    // console.log("receiveAmount")
+    // console.log(receiveAmount)
     var callback = common.getParameterByName("callback")
     var network = common.getParameterByName("network")
     var paramForwarding = common.getParameterByName("paramForwarding")
@@ -106,10 +109,9 @@ export default class Layout extends React.Component {
     }
     
 
-    if (receiveAmount){
-      receiveAmount = parseFloat(receiveAmount) // second argument is NOT optional
-      // console.log("receive_amount")
-      // console.log(receiveAmount)
+    if (receiveAmount && receiveAmount !== ""){
+      receiveAmount = receiveAmount.toString();
+
       if (isNaN(receiveAmount)) {
         errors["receiveAmount"] = this.props.translate('error.receive_amount_is_invalid_number') 
           || "Receive amount is invalid number"
@@ -118,6 +120,8 @@ export default class Layout extends React.Component {
         errors["receiveAmount"] = this.props.translate('error.receive_amount_must_be_positive') 
           || "Receive amount must be positive number"
       }
+    }else{
+      receiveAmount = null
     }
 
     
@@ -125,6 +129,13 @@ export default class Layout extends React.Component {
       if (validator.verifyAccount(commissionID)){
         errors["commissionID"] = this.props.translate('error.commission_address_must_be_valid') 
           || "Commission address must be a valid ethereum address"
+      }
+    }
+
+    if (callback){
+      if (!callback.startsWith("https://")){
+        errors["callback"] = this.props.translate('error.callback_https') 
+        || "Callback must be a https location"        
       }
     }
 
@@ -141,6 +152,10 @@ export default class Layout extends React.Component {
         errors["signer"] = this.props.translate('error.signer_include_invalid_address') || "Signer include invalid addresses"
       }      
     }
+
+    if (!validator.verifyNetwork(network)) {
+      errors["network"] = this.props.translate('error.invalid_network') || "Current network is not supported"
+    }
     
     if (validator.anyErrors(errors)){
       this.props.dispatch(haltPayment(errors))
@@ -153,7 +168,7 @@ export default class Layout extends React.Component {
   checkTimmer() {
     if (!this.props.account.account) return;
     if (this.props.utils.infoModal && this.props.utils.infoModal.open) return;
-    if (this.idleTime >= this.timeoutEndSession) {
+    if (this.idleTime >= this.timeoutEndSession && this.props.exchange.step > 2) {
       let timeOut = constanst.IDLE_TIME_OUT/60
       let titleModal = this.props.translate('error.time_out') || 'Time out'
       let contentModal = this.props.translate('error.clear_data_timeout', {time: timeOut}) || `We've cleared all your data because your session is timed out ${timeOut} minutes`
@@ -189,13 +204,11 @@ export default class Layout extends React.Component {
       <LayoutView
         history={history}
         Header={Header}
-        // ImportAccount={ImportAccount}
         Exchange={Exchange}
-        //market={market}
         supportedLanguages={Language.supportLanguage}
         setActiveLanguage={this.setActiveLanguage}      
         currentLanguage = {currentLanguage}  
-       // footer = {footer}
+        translate={this.props.translate}
       />
     )
   }

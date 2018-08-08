@@ -113,28 +113,43 @@ function* checkMaxCap(address){
     var linkReg = 'https://kybernetwork.zendesk.com'
     yield put(exchangeActions.thowErrorNotPossessKGt(translate("error.not_possess_kgt", { link: linkReg }) || "There seems to be a problem with your address, please contact us for more details"))
     return
+  }else{
+    yield put(exchangeActions.thowErrorNotPossessKGt(""))
   }
 
   var srcAmount
+  var sourceTokenSymbol = exchange.sourceTokenSymbol
   if (exchange.isHaveDestAmount){
     var destAmount = exchange.destAmount
     var minConversionRate =  converter.toTWei(exchange.minConversionRate, 18)
     srcAmount = converter.caculateSourceAmount(exchange.destAmount, minConversionRate, 6)
-    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)    
-    if (converter.compareTwoNumber(srcAmount, maxCapOneExchange) < 1){
-      var maxCap = converter.toEther(maxCapOneExchange)
-      yield put(exchangeActions.throwErrorExchange("exceed_cap", translate("error.dest_amount_too_high_cap", { cap: maxCap * constants.MAX_CAP_PERCENT })))
-    }
+    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)        
+    
   }else{
     srcAmount = exchange.sourceAmount
-    var sourceTokenSymbol = exchange.sourceTokenSymbol
     srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)    
-    if (converter.compareTwoNumber(srcAmount, maxCapOneExchange) === 1){
-      var maxCap = converter.toEther(maxCapOneExchange)
-      yield put(exchangeActions.throwErrorExchange("exceed_cap", translate("error.source_amount_too_high_cap", { cap: maxCap })))
-    }
+    // if (converter.compareTwoNumber(srcAmount, maxCapOneExchange) === 1){
+    //   var maxCap = converter.toEther(maxCapOneExchange)
+    //   yield put(exchangeActions.throwErrorExchange("exceed_cap", translate("error.source_amount_too_high_cap", { cap: maxCap })))
+    // }
   }
 
+  if (sourceTokenSymbol !== "ETH"){
+    var rate = tokens[sourceTokenSymbol].rate
+    var decimal = tokens[sourceTokenSymbol].decimal
+    srcAmount = converter.toT(srcAmount, decimal)
+    srcAmount = converter.caculateDestAmount(srcAmount, rate, 6)
+    srcAmount = converter.toTWei(srcAmount, 18)
+  }
+  // console.log("source_amount")
+  // console.log(srcAmount)
+  // console.log(maxCapOneExchange)
+  if (converter.compareTwoNumber(srcAmount, maxCapOneExchange) === 1){
+    var maxCap = converter.toEther(maxCapOneExchange)
+    yield put(exchangeActions.throwErrorExchange("exceed_cap", translate("error.source_amount_too_high_cap", { cap: maxCap * constants.MAX_CAP_PERCENT })))
+  }else{
+    yield put(exchangeActions.throwErrorExchange("exceed_cap", ""))
+  }
   
 }
 
@@ -164,13 +179,23 @@ function* checkBalance(address){
   })
   yield put(setBalanceToken(mapBalance))
 
+
+  // if (exchange.sourceTokenSymbol === exchange.destTokenSymbol){
+
+  // }
+
   //check whether balance is sufficient  
   var srcAmount
   if (exchange.isHaveDestAmount){
     var destAmount = exchange.destAmount
-    var minRate = converter.toTWei(exchange.minConversionRate, 18)
-    srcAmount = converter.caculateSourceAmount(exchange.destAmount, minRate, 6)
-    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)    
+    
+    if(exchange.sourceTokenSymbol === exchange.destTokenSymbol){
+      srcAmount = converter.toTWei(destAmount, tokens[sourceTokenSymbol].decimal)    
+    }else{
+      var minRate = converter.toTWei(exchange.minConversionRate, 18)
+      srcAmount = converter.caculateSourceAmount(exchange.destAmount, minRate, 6)
+      srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)    
+    }
   }else{
     srcAmount = exchange.sourceAmount
     //var sourceTokenSymbol = exchange.sourceTokenSymbol
@@ -180,6 +205,8 @@ function* checkBalance(address){
     var srcBalance = mapBalance[sourceTokenSymbol]
     if (converter.compareTwoNumber(srcBalance, srcAmount) === -1){
       yield put(exchangeActions.throwErrorExchange("exceed_balance", translate("error.source_amount_too_high") || "Source amount is over your balance"))
+    }else{
+      yield put(exchangeActions.throwErrorExchange("exceed_balance", ""))
     }
   }
 
@@ -203,6 +230,8 @@ function* checkBalance(address){
    // console.log(converter.compareTwoNumber(balanceETH, txFee))
     if (converter.compareTwoNumber(balanceETH, txFee) === -1){
       yield put(exchangeActions.throwErrorExchange("exceed_balance_fee", translate("error.eth_balance_not_enough_for_fee") || "Your balance is not enough for this transaction"))
+    }else{
+      yield put(exchangeActions.throwErrorExchange("exceed_balance_fee", ""))
     }
   }else{
     
@@ -210,6 +239,8 @@ function* checkBalance(address){
    // console.log(converter.compareTwoNumber(balanceETH, txFee))
     if (converter.compareTwoNumber(balanceETH, txFee) === -1){
       yield put(exchangeActions.throwErrorExchange("exceed_balance_fee", translate("error.eth_balance_not_enough_for_fee") || "Your balance is not enough for this transaction"))
+    }else{
+      yield put(exchangeActions.throwErrorExchange("exceed_balance_fee", ""))
     }
   }
 }
@@ -227,7 +258,66 @@ function* checkSigner(address){
       }
     }
     yield put(exchangeActions.throwErrorExchange("signer_invalid", translate("error.signer_invalid") || "You access an invalid address"))    
+  }else{
+    yield put(exchangeActions.throwErrorExchange("signer_invalid", "")    )
   }
+}
+
+
+// function* fetchingGasTransfer(){}
+function* fetchingGas(address){
+  var state = store.getState()
+  var exchange = state.exchange
+  var ethereum = state.connection.ethereum
+  // console.log("ethereum_conector")
+  // console.log(ethereum)
+  //temporaly hardcode for exchange gas limit
+  if (exchange.sourceTokenSymbol !== exchange.destTokenSymbol){
+    return
+  }
+  yield put(exchangeActions.fetchGas())
+  //if transfer estimate
+  var tokens = state.tokens.tokens
+  var decimal = tokens[exchange.sourceTokenSymbol].decimal
+  var amount
+  if (exchange.isHaveDestAmount){
+    amount = converter.stringToHex(exchange.destAmount, decimal)
+  }else{
+    amount = converter.stringToHex(exchange.sourceAmount, decimal)
+  }
+
+  var destAddr = exchange.receiveAddr
+
+  var txObj
+  if (exchange.sourceTokenSymbol === "ETH"){
+    txObj = {
+      from : address,
+      value: amount,
+      to:destAddr
+    }
+  }else{
+    var tokenAddr = tokens[exchange.sourceTokenSymbol].address
+    var data = yield call([ethereum, ethereum.call],"sendTokenData", tokenAddr, amount, destAddr)
+    txObj = {
+      from : address,
+      value:"0",
+      to:tokenAddr,
+      data: data
+    }
+  }
+  var gas
+  try{
+    var gas = yield call([ethereum, ethereum.call],"estimateGas", txObj)
+    if (exchange.sourceTokenSymbol !== "ETH"){
+      gas = Math.round(gas * 120 / 100)
+    }
+  }catch(e){
+    console.log(e)
+    gas = 250000
+    //yield put(exchangeActions.throwErrorExchange("gas_estimate", translate("error.gas_estimate") || "Exceed gas"))    
+  }
+  yield put(exchangeActions.setEstimateGas(gas, 0))
+  yield put(exchangeActions.fetchGasSuccess())
 }
 
 function* createNewAccount(address, type, keystring, ethereum) {
@@ -242,7 +332,11 @@ function* createNewAccount(address, type, keystring, ethereum) {
 
 export function* importNewAccount(action) {
   yield put(actions.importLoading())
-  const { address, type, keystring, ethereum, tokens, metamask, screen } = action.payload
+
+  var state = store.getState()
+  var ethereum = state.connection.ethereum
+
+  const { address, type, keystring, metamask } = action.payload
   var translate = getTranslate(store.getState().locale)
   try {
     var account
@@ -271,6 +365,8 @@ export function* importNewAccount(action) {
     // const account = yield call(service.newAccountInstance, address, type, keystring, ethereum)
     yield put(actions.closeImportLoading())
     yield put(actions.importNewAccountComplete(account))
+
+    
     yield put(exchangeActions.goToStep(3))
 
     //track login wallet
@@ -284,6 +380,8 @@ export function* importNewAccount(action) {
     // }
 
 
+    yield call(fetchingGas, address)
+    
     //check whether user need approve
     yield call(checkApproveAccount, address, type)
 
@@ -292,7 +390,6 @@ export function* importNewAccount(action) {
     yield call(checkBalance, address)
 
     yield call(checkSigner, address)
-
 
     yield put(exchangeActions.validateAccountComplete())
     //yield put.sync(actions.resetImportAccount())
@@ -321,13 +418,15 @@ export function* importNewAccount(action) {
     const { web3Service, address, networkId } = { ...metamask }
     const watchCoinbaseTask = yield fork(watchCoinbase, web3Service, address, networkId)
 
-    yield take('GLOBAL.CLEAR_SESSION')
+    yield take('ACCOUNT.CLEAR_WATCH_METAMASK')
     yield cancel(watchCoinbaseTask)
   }
 }
 
 export function* importMetamask(action) {
-  const { web3Service, networkId, ethereum, tokens, translate, screen } = action.payload
+  var translate = getTranslate(store.getState().locale)
+
+  const { web3Service, networkId } = action.payload
   try {
     const currentId = yield call([web3Service, web3Service.getNetworkId])
     if (parseInt(currentId, 10) !== networkId) {
@@ -350,9 +449,6 @@ export function* importMetamask(action) {
       address,
       "metamask",
       web3Service,
-      ethereum,
-      tokens,
-      screen,
       metamask
     ))
   } catch (e) {
@@ -368,7 +464,16 @@ function* watchCoinbase(web3Service, address, networkId) {
       yield call(delay, 500)
       const coinbase = yield call([web3Service, web3Service.getCoinbase])
       if (coinbase !== address) {
-        yield put(clearSession())
+        //check address
+        //var metamask = { web3Service, address, networkId }
+
+        //clear all error in exchange screen
+        yield put(actions.importAccountMetamask(
+          web3Service,
+          networkId         
+        ))
+
+       // yield put(clearSession())
         return
       }
       const currentId = yield call([web3Service, web3Service.getNetworkId])

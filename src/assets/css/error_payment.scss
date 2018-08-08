@@ -1,6 +1,10 @@
 .error-payment {
-  margin-top: 20px;
   box-shadow: 0 2px 8px 0 rgba(184, 184, 184, 0.5);
+  display: inline-block;
+
+  &-container {
+    text-align: center;
+  }
 
   &__icon {
     width: 42px;
@@ -23,13 +27,16 @@
 
   &__content {
     background-color: #f5f5f5;
-    padding: 40px 30px 30px;
+    padding-top: 10px;
+    text-align: center;
 
     &-text {
       font-size: 14px;
       line-height: 1.43;
       color: #666666;
       margin-bottom: 20px;
+      display: inline-block;
+      text-align: left;
 
       &--bold {
         font-weight: 600;
@@ -38,7 +45,7 @@
 
     &-button {
       text-align: center;
-      margin-top: 60px;
+      margin-top: 40px;
 
       div {
         padding: 15px 28px;

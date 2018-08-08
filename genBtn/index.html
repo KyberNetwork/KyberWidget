@@ -1,45 +1,24 @@
 <html>
     <body>
-
-        <script>
-
-var popup = window.open('http://localhost:3002/widget/payment?receiveAddr=0x3Cf628d49Ae46b49b210F0521Fbd9F82B461A9E1&receiveToken=KNC&receiveAmount=a')
-
-// When the popup has fully loaded, if not blocked by a popup blocker:
-
-// This does nothing, assuming the window hasn't changed its location.
-popup.postMessage("The user is 'bob' and the password is 'secret'",
-                  "https://secure.example.net");
-
-// This will successfully queue a message to be sent to the popup, assuming
-// the window hasn't changed its location.
-popup.postMessage("hello there!", "http://example.com");
-
-function receiveMessage(event)
-{
-  // Do we trust the sender of this message?  (might be
-  // different from what we originally opened, for example).
-//   if (event.origin !== "http://example.com")
-//     return;
-console.log(JSON.stringify(event.data))
-
-  // event.source is popup
-  // event.data is "hi there yourself!  the secret response is: rheeeeet!"
-}
-window.addEventListener("message", receiveMessage, false);
-
-//             var opener
-//             window.addEventListener("message", receiveMessage, false)
-//             function receiveMessage(){
-//                 opener.postMessage({status:'ready', location: window.location.href});
-//             }
-// function openPopUp(){
-//    opener = window.open("http://localhost:3002/widget/payment?receiveAddr=0x3Cf628d49Ae46b49b210F0521Fbd9F82B461A9E1&receiveToken=KNC&receiveAmount=1","Ratting","width=550,height=170,0,status=0");
+<script>
+  function createPopup(){
+    chrome.app.runtime.onLaunched.addListener(function() {
+   //var chrome = window.chrome
+   chrome.app.window.create('http://localhost:8080?receiveAddr=0x63B42a7662538A1dA732488c252433313396eade&receiveToken=ETH&callback=https%3A%2F%2Fkyberpay-sample.knstats.com%2Fcallback&paramForwarding=true&network=ropsten', {
+    'bounds': {
+      'width': 300,
+      'height': 325
+    },
+    'resizable': false,
+    frame: 'none'
+  });        
+});
+  }
    
-// }
-        </script>
-        <a href="javascript:void(0);"
- NAME="KyberPay - Powered by KyberNetwork"  title="Pay by tokens"
- onClick='openPopUp()'>Pay by tokens</a>
+</script>
+        
+        <a href='javascript:void(0);' class='_kyberpay-widget'
+name='KyberPay - Powered by KyberNetwork' title='Pay by tokens'
+onclick='createPopup()'>Pay by tokens</a>
     </body>
 </html>

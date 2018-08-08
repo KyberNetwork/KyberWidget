@@ -2,14 +2,10 @@ import React from "react"
 import { Switch, Route, Redirect } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
 import { Processing, InfoModal } from "../../containers/CommonElements/"
-import { Link } from 'react-router-dom'
-
 import constansts from "../../services/constants"
-
 import * as common from "../../utils/common"
-
 import BLOCKCHAIN_INFO from "../../../../env"
-//import { Rate } from "../Header"
+import PaymentHeader from "../Header/PaymentHeader";
 
 
 function getAllPathToken(){
@@ -59,6 +55,8 @@ const LayoutView = (props) => {
       <div>
         <Route component={props.Header} />
         <section id="content">
+          <PaymentHeader translate={props.translate}/>
+
           <Switch>
             {/* <Route exact path={constansts.BASE_HOST} component={props.ImportAccount} /> */}
 

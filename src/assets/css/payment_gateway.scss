@@ -77,6 +77,10 @@
     color: $theme-color-default;
   }
 
+  &__hover-color:hover {
+    color: $theme-color-default;
+  }
+
   &__arrow-down {
     width: 12px;
     height: 7px;
