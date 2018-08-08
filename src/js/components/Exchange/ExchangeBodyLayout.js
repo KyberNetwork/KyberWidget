@@ -158,7 +158,7 @@ const ExchangeBodyLayout = (props) => {
                             This monster is not catchable
                           </div>
                         )}
-                        {props.exchange.expectedRate == 0 && props.exchange.catchable && (
+                        {props.exchange.expectedRate == 0 && props.exchange.expectedRate && (
                           <div className="payment-error">
                             Cannot catch monster with {props.exchange.sourceTokenSymbol} at the momment
                           </div>

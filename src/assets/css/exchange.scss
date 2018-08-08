@@ -56,6 +56,12 @@
     font-weight: 600;
     color: #222;
   }
+
+  .payment-error {
+    font-size: 13px;
+    margin-top: 10px;
+    color: $error-color;
+  }
 }
 
 #exchange {

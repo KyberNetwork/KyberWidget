@@ -206,7 +206,9 @@ export default class ExchangeBody extends React.Component {
       !validators.anyErrors(this.props.exchange.errors) &&
       this.state.acceptedTerm &&
       !this.props.exchange.isSelectToken &&
-      this.props.exchange.kyber_enabled
+      this.props.exchange.kyber_enabled &&
+      this.props.exchange.expectedRate != 0 &&
+      this.props.exchange.catchable
     ) {
       classNamePaymentbtn = "button accent next"
     }else{
