@@ -687,6 +687,8 @@ const exchange = (state = initState, action) => {
       resetState.catchable = newState.catchable;
       resetState.monsterInETH = newState.monsterInETH;
       resetState.expectedRate = newState.expectedRate;
+      resetState.etheremonAddr = newState.etheremonAddr;
+      resetState.monsterName = newState.monsterName;
 
       return resetState;
     }
