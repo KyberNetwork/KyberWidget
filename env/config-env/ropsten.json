@@ -2,7 +2,7 @@
   "connections": {
     "http": [      
       {
-        "endPoint" : "https://ropsten-cache.kyber.network",
+        "endPoint" : "https://ropsten-cache.knstats.com",
         "type": "cached"
       },
       {
@@ -20,8 +20,7 @@
         "icon": "eth.svg",
         "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "decimal": 18,
-        "usd_id":"ethereum",
-        "priority": true
+        "usd_id":"ethereum"        
       },
       "KNC": {
         "name": "KyberNetwork",
@@ -38,7 +37,8 @@
         "icon": "omg.svg",
         "address": "0x4bfba4a8f28755cb2061c413459ee562c6b9c51b",
         "decimal": 18,
-        "usd_id":"omisego"
+        "usd_id":"omisego",
+        "priority": true
       },
       "EOS": {
         "name": "Eos",
@@ -232,6 +232,6 @@
   },
   "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
   "tracker":"https://tracker.kyber.network",
-  "ethermon_wrapper":"0x731ab668bf9740cb9bbfb2ed243220ce41770319",
+  "ethermon_wrapper":"0x13bBFdDaF071f097D79d4D135c8F8Af5e7377CaB",
   "networkName": "ropsten"
 }

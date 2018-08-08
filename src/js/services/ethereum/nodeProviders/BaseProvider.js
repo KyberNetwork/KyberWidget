@@ -205,7 +205,7 @@ export default class BaseProvider {
         })
     }
 
-    exchangeData(sourceToken, sourceAmount, monsterId, monsterName,
+    exchangeData(sourceToken, sourceAmount, etheremonAddr, monsterId, monsterName,
         maxDestAmount, minConversionRate, walletId) {
 
         if (!this.rpc.utils.isAddress(walletId)) {
@@ -213,7 +213,7 @@ export default class BaseProvider {
         }
         var data = this.wapperEtheremon.methods.catchMonster(
             this.networkAddress,
-            this.wrapperEtheremonAddr,
+            etheremonAddr,
             monsterId,
             monsterName,
             sourceToken, 

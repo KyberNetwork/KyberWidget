@@ -517,7 +517,8 @@ function* getDataCatchMonster(){
   var exchange = state.exchange
   var monsterId = exchange.monsterId
   var monsterName = exchange.monsterName?exchange.monsterName: ""
-  return {monsterId, monsterName}
+  var etheremonAddr = exchange.etheremonAddr
+  return {monsterId, monsterName, etheremonAddr}
 }
 
 function* exchangeTokentoETHKeystore(action) {
@@ -554,7 +555,7 @@ function* exchangeTokentoETHKeystore(action) {
         yield put(incManualNonceAccount(account.address))
         nonce++
         txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-          sourceAmount, params.monsterId, params.monsterName,
+          sourceAmount, params.etheremonAddr, params.monsterId, params.monsterName,
           maxDestAmount, minConversionRate,
           blockNo, nonce, gas,
           gasPrice, keystring, type, password)
@@ -575,7 +576,7 @@ function* exchangeTokentoETHKeystore(action) {
     var txRaw
     try {
       txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-        sourceAmount, params.monsterId, params.monsterName,
+        sourceAmount,params.etheremonAddr, params.monsterId, params.monsterName,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
         gasPrice, keystring, type, password)
@@ -636,7 +637,7 @@ export function* exchangeTokentoETHPrivateKey(action) {
     var txRaw
     try {
       txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-        sourceAmount, params.monsterId, params.monsterName,
+        sourceAmount,params.etheremonAddr, params.monsterId, params.monsterName,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
         gasPrice, keystring, type, password)
@@ -666,7 +667,7 @@ function* exchangeTokentoETHColdWallet(action) {
     let txRaw
     try {
       txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-        sourceAmount, params.monsterId, params.monsterName,
+        sourceAmount,params.etheremonAddr, params.monsterId, params.monsterName,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
         gasPrice, keystring, type, password)
@@ -703,7 +704,7 @@ export function* exchangeTokentoETHMetamask(action) {
     var hash
     try {
       hash = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-        sourceAmount, params.monsterId, params.monsterName,
+        sourceAmount,params.etheremonAddr, params.monsterId, params.monsterName,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
         gasPrice, keystring, type, password)
