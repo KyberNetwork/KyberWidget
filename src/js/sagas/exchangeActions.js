@@ -1023,35 +1023,21 @@ function* fetchGasApproveSnapshot() {
 
 
 function* getMaxGasExchange(source, dest){
-  // var state = store.getState()
-  // const exchange = state.exchange
+  var state = store.getState()
+  const exchange = state.exchange
+  const tokens = state.tokens.tokens
 
-  if (source === 'DGX'){
-    if (dest === 'ETH'){
-      return 750000
-    }else{
-      return (750000 + 330000)
-    }
-  }
-  if (source === 'ETH'){
-    if (dest === 'DGX'){
-      return 750000
-    }else{
-      return 330000
-    }
-  }
+  console.log("tokens: ", state)
 
-  if (source !== 'ETH'){
-    if (dest === 'DGX'){
-      return 750000 + 330000
-    }
-    if (dest === 'ETH'){
-      return 330000
-    }
-    else{
-      return 330000 * 2
-    }
-  }
+  var sourceTokenLimit = tokens[source].gasLimit
+  var destTokenLimit = tokens[dest].gasLimit
+
+  var sourceGasLimit = sourceTokenLimit ? parseInt(sourceTokenLimit) : exchange.max_gas
+  var destGasLimit = destTokenLimit ? parseInt(destTokenLimit) : exchange.max_gas
+
+  console.log("fee tx: ", sourceGasLimit + destGasLimit, source, dest)
+
+  return sourceGasLimit + destGasLimit
 }
 
 function* getMaxGasApprove(source){
