@@ -170,6 +170,7 @@ function* checkBalance(address) {
   var exchange = state.exchange
   var tokens = state.tokens.tokens
   var ethereum = state.connection.ethereum
+  var sourceTokenSymbol = exchange.sourceTokenSymbol
   const translate = getTranslate(state.locale)
 
   var listTokens = {
@@ -196,22 +197,27 @@ function* checkBalance(address) {
   // }
 
   //check whether balance is sufficient  
-  var srcAmount
-  if (exchange.isHaveDestAmount) {
-    var destAmount = exchange.destAmount
+  var destAmount = converter.toEther(exchange.monsterInETH)
+  var minConversionRate = exchange.minConversionRate
+  var srcAmount = converter.caculateSourceAmount(destAmount, minConversionRate, 6)
+  srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)
 
-    if (exchange.sourceTokenSymbol === exchange.destTokenSymbol) {
-      srcAmount = converter.toTWei(destAmount, tokens[sourceTokenSymbol].decimal)
-    } else {
-      var minRate = exchange.minConversionRate
-      srcAmount = converter.caculateSourceAmount(exchange.destAmount, minRate, 6)
-      srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)
-    }
-  } else {
-    srcAmount = exchange.sourceAmount
-    //var sourceTokenSymbol = exchange.sourceTokenSymbol
-    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)
-  }
+  // var srcAmount
+  // if (exchange.isHaveDestAmount) {
+  //   var destAmount = exchange.destAmount
+
+  //   if (exchange.sourceTokenSymbol === exchange.destTokenSymbol) {
+  //     srcAmount = converter.toTWei(destAmount, tokens[sourceTokenSymbol].decimal)
+  //   } else {
+  //     var minRate = exchange.minConversionRate
+  //     srcAmount = converter.caculateSourceAmount(exchange.destAmount, minRate, 6)
+  //     srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)
+  //   }
+  // } else {
+  //   srcAmount = exchange.sourceAmount
+  //   //var sourceTokenSymbol = exchange.sourceTokenSymbol
+  //   srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)
+  // }
   if (sourceTokenSymbol !== "ETH") {
     var srcBalance = mapBalance[sourceTokenSymbol]
     if (converter.compareTwoNumber(srcBalance, srcAmount) === -1) {
