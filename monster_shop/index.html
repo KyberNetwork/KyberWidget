@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Etheremon Shop</title>
+    <link rel="icon" href="https://www.etheremon.com/assets/images/icon.ico">
+    <link rel="stylesheet" href="assets/styles.css?v=2">
+</head>
+
+<body>
+    <div id="wrapper">
+        <h1>Etheremon Shop</h1>
+        <section class="options">
+            <input type="url" placeholder="callback URL">
+        </section>
+        <ul id="list"></ul>
+    </div>
+
+    <script id="sampleItem" type="text/template">
+        <li id="monster#{id}">
+            <div class="avatar" style="background-image: url('https://www.etheremon.com/#{slug}.png')">
+                <div class="id">ID: #{id}</div>
+                <div class="name">#{name}</div>
+                <div class="priceTag">
+                    <span class="price">…</span>
+                    <span class="token">ETH</span>
+                </div>
+            </div>
+            <div class="info">
+                <a class="action" target="_blank" href="https://widget-etheremon.knstats.com/widget/payment?etheremonAddr=0x11f9f4ce02f3a4e2ae37f8dedf23e882fd67b2c0&monsterId=#{id}&monsterName=#{name}&monsterAvatar=https%3A%2F%2Fwww.etheremon.com%2F#{slug}.png">BUY NOW</a>
+            </div>
+        </li>
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+    <script src="assets/main.js?v=2"></script>
+</body>
+
+</html>
