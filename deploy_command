@@ -1,1 +1,7 @@
 scp -r /Users/andrewnguyen/Documents/KyberWidget/dist/* ubuntu@13.229.137.2:/home/ubuntu/kyberwidget
+
+
+
+Thang playground:
+scp -r /Users/andrewnguyen/Documents/KyberWidget/dist/* ubuntu@54.169.164.237:/home/ubuntu/kyberwidget
+
