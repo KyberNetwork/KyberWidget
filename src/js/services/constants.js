@@ -68,9 +68,13 @@ const INIT_EXCHANGE_FORM_STATE = {
   slippageRate: 0,
   blockNo: 0,
 
+  monsterAvatar: "",
+
   throwOnFailure: "0x0000000000000000000000000000000000000000",
   gas: 900000,
   max_gas: 900000,
+  normal_max_gas: 330000,
+  max_gas_catch_mons: 570000,
 
   gas_approve: 120000,
   max_gas_approve: 120000,

@@ -417,14 +417,22 @@ export default class Payment extends React.Component {
     this.props.dispatch(exchangeActions.throwPassphraseError(""))
     this.props.dispatch(transferActions.throwPassphraseError(""))
   }
+
+  getGasUsed = () => {
+    var tokenSymbol = this.props.exchange.sourceTokenSymbol
+    var gasLimitToken = this.props.tokens[tokenSymbol].gasLimit
+    var gasLimit = gasLimitToken ? parseInt(gasLimitToken) : this.props.exchange.normal_max_gas
+    var gasUsed = gasLimit + this.props.exchange.max_gas_catch_mons
+    return gasUsed
+  }
   
   render() {
     var gasUsed;
-
     if (this.props.exchange.isFetchingGas){
       gasUsed = <img src={require('../../../assets/img/waiting.svg')} />
     }else{
-      gasUsed = this.props.exchange.gas
+      // gasUsed = this.props.exchange.gas
+      gasUsed = this.getGasUsed()
       if (this.props.exchange.isNeedApprove) {
         gasUsed += this.props.exchange.gas_approve
       }
@@ -464,6 +472,9 @@ export default class Payment extends React.Component {
           <div className="title">
             {this.props.translate("transaction.you_about_to_catch") || "YOU ARE ABOUT TO CATCH"}
           </div>
+          {this.props.exchange.monsterAvatar &&  this.props.exchange.monsterAvatar != "" ?
+            <div className="monster-avatar"><img src={this.props.exchange.monsterAvatar} /></div> : ""
+          }
           <div className="content">
             <div>
               <span>{this.props.translate("transaction.monster_id") || "Monster Id"}:</span>

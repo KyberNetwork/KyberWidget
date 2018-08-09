@@ -53,11 +53,9 @@ export default class MinRate extends React.Component {
 
    var displaySlippageRate
     if (this.props.exchange.isSelectToken){
-      displaySlippageRate = this.props.translate("transaction.our_suggest_loading", { src: src, desToken: desToken}) 
-            || (<span><strong> <img src={require('../../../assets/img/waiting.svg')} /> {desToken}</strong> is our suggested Min acceptable rate by default.</span>)
+      displaySlippageRate = (<span><strong> <img src={require('../../../assets/img/waiting.svg')} /> {desToken}</strong></span>)
     }else{
-      displaySlippageRate = this.props.translate("transaction.our_suggest", { suggestRate: converter.roundingNumber(converter.toT(slippageRate)) + " " + desToken}) 
-        || (<span><strong> {converter.roundingNumber(converter.toT(slippageRate)) + " " + desToken}</strong> is our suggested Min acceptable rate by default.</span>)
+      displaySlippageRate = (<span><strong> {converter.roundingNumber(converter.toT(slippageRate)) + " " + desToken}</strong></span>)
     }
 
     //console.log(displaySlippageRate)
@@ -101,8 +99,8 @@ export default class MinRate extends React.Component {
         </div>
         <div className="des-up">
           {this.props.translate("transaction.higher_min_acceptable_rate")
-          || "Higher Min acceptable rate typically results in lower success rate when the market is volatile."}
-          {displaySlippageRate}
+          || "Guard yourself during volatile times by setting the lowest conversion rate you would accept for this transaction. Setting a high value may result in a failed transaction and you would be charged gas fees. Our recommended Min Acceptable Rate is "}
+          {displaySlippageRate}.
         </div>
       </div>
     )

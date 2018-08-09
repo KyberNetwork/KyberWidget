@@ -82,6 +82,7 @@ export default class Layout extends React.Component {
     var etheremonAddr = common.getParameterByName("etheremonAddr")
     var monsterId = common.getParameterByName("monsterId")
     var monsterName = common.getParameterByName("monsterName")
+    var monsterAvatar = common.getParameterByName("monsterAvatar")
     //var receiveAmount = common.getParameterByName("receiveAmount");
     // console.log("receiveAmount")
     // console.log(receiveAmount)
@@ -162,7 +163,7 @@ export default class Layout extends React.Component {
       this.props.dispatch(haltPayment(errors))
     }else{
       //var tokenAddr = this.props.tokens[receiveToken].address
-      this.props.dispatch(initParamsExchange(etheremonAddr, monsterId, monsterName, callback, network, paramForwarding, signer, commissionID));
+      this.props.dispatch(initParamsExchange(etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID));
     }
   }
 
