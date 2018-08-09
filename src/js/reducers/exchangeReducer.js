@@ -583,22 +583,24 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.INIT_PARAMS_EXCHANGE":{
-      const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, network, paramForwarding, signer, commissionID} = action.payload
-      newState.destTokenSymbol = receiveToken
-      newState.destAmount = receiveAmount
-      if (receiveAmount === null){
-        newState.isHaveDestAmount = false
-      }else{
-        newState.isHaveDestAmount = true
-      }
-      newState.destToken = tokenAddr
-      newState.receiveAddr = receiveAddr
+      const {monsterAvatar, callback, network, paramForwarding, signer, commissionID} = action.payload
+      // {etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID}
+      // newState.destTokenSymbol = receiveToken
+      // newState.destAmount = receiveAmount
+      // if (receiveAmount === null){
+      newState.isHaveDestAmount = false
+      // }else{
+      //   newState.isHaveDestAmount = true
+      // }
+      // newState.destToken = tokenAddr
+      // newState.receiveAddr = receiveAddr
 
       newState.callback = callback
       newState.network = network
       newState.paramForwarding = paramForwarding
       newState.signer = signer
       newState.commissionID = commissionID
+      newState.monsterAvatar = monsterAvatar
       
       return newState
     }

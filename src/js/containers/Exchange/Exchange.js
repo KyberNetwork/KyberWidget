@@ -140,10 +140,10 @@ export default class Exchange extends React.Component {
         />
       )
 
-      var minRate = ""
-      if (this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol){
-        minRate = <MinRate />
-      }
+      var minRate = <MinRate />
+      //if (this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol){
+        // minRate = <MinRate />
+      //}
 
       var advanceConfig = <AdvanceConfigLayout totalGas={totalGas.toString()} minRate={minRate} gasConfig={gasConfig} translate={this.props.translate} />
       var exchangeBody = <ExchangeBody advanceLayout={advanceConfig} />

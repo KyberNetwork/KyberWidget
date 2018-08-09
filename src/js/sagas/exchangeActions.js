@@ -57,7 +57,7 @@ function* selectToken(action) {
   //const {gasUsed, gasApproved} = yield call(estimateGasUsed)
   var state = store.getState()
   var exchange = state.exchange
-  yield call(estimateGasUsed, symbol, exchange.destTokenSymbol)
+  // yield call(estimateGasUsed, symbol, exchange.destTokenSymbol)
 
 
   const {expectedRate, slippageRate} = yield call(getMonsterRateInToken, symbol, exchange.monsterInETH)

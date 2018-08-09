@@ -56,6 +56,9 @@ const ExchangeBodyLayout = (props) => {
                     <div className="info-1">
                       {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
                     </div>
+                    {props.exchange.monsterAvatar &&  props.exchange.monsterAvatar != "" ?
+                      <div className="monster-avatar"><img src={props.exchange.monsterAvatar} /></div> : ""
+                    }
                     <div className="info-2">
                       <div className="info-2__content">
                         <div>Monster Id:</div>
