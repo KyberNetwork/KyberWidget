@@ -1,4 +1,7 @@
-scp -r /Users/andrewnguyen/Documents/KyberWidget/dist/* ubuntu@52.77.238.156:/home/ubuntu/kyberwidget && ssh ubuntu@52.77.238.156 "export PATH=$PATH:/home/ubuntu/.nvm/versions/node/v8.10.0/bin && pm2 reload wconfig"
+scp -r /Users/andrewnguyen/Documents/KyberWidget/dist/* ubuntu@13.229.137.2:/home/ubuntu/kyberwidget
 
 
-scp -r /Users/andrewnguyen/Documents/KyberWidget/widget_config/* ubuntu@52.77.238.156:/home/ubuntu/kyberwidget/widget/config && ssh ubuntu@52.77.238.156 "export PATH=$PATH:/home/ubuntu/.nvm/versions/node/v8.10.0/bin && pm2 reload wconfig"
+
+Thang playground:
+scp -r /Users/andrewnguyen/Documents/KyberWidget/dist/* ubuntu@54.169.164.237:/home/ubuntu/kyberwidget
+

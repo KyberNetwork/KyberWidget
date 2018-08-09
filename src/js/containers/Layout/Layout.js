@@ -79,9 +79,11 @@ export default class Layout extends React.Component {
     var query  = common.getQueryParams(window.location.search)
     this.props.dispatch(initParamsGlobal(query))
 
-    var receiveAddr = common.getParameterByName("receiveAddr")
-    var receiveToken = common.getParameterByName("receiveToken")
-    var receiveAmount = common.getParameterByName("receiveAmount");
+    var etheremonAddr = common.getParameterByName("etheremonAddr")
+    var monsterId = common.getParameterByName("monsterId")
+    var monsterName = common.getParameterByName("monsterName")
+    var monsterAvatar = common.getParameterByName("monsterAvatar")
+    //var receiveAmount = common.getParameterByName("receiveAmount");
     // console.log("receiveAmount")
     // console.log(receiveAmount)
     var callback = common.getParameterByName("callback")
@@ -93,36 +95,36 @@ export default class Layout extends React.Component {
     
 
     var errors = {}
-    if (validator.verifyAccount(receiveAddr)){
-      errors["receiveAddr"] = this.props.translate('error.receive_address_must_be_ethereum_addr') 
-        || "Receive address must be a valid ethereum address"
+    if (validator.verifyAccount(etheremonAddr)){
+      errors["etheremonAddr"] = this.props.translate('error.etheremon_address_must_be_ethereum_addr') 
+        || "etheremonAddr must be a valid ethereum address"
     }
-    if (receiveToken){
-      receiveToken = receiveToken.toUpperCase()
-      if (!this.props.tokens[receiveToken]){
-        errors["receiveToken"] = this.props.translate('error.receive_token_is_not_support') 
-          || "Receive token is not supported by kyber"
-      }
+    if (monsterId){
+      monsterId = parseInt(monsterId, 10)
+      if (monsterId === 0){
+        errors["monsterId"] = this.props.translate('error.monster_id_is_not_int') 
+        || "monsterId must be interger"
+      }      
     }else{
-      errors["receiveToken"] = this.props.translate('error.receive_token_must_be_required') 
-        || "Receive token must be required"
+      errors["monsterId"] = this.props.translate('error.monster_id_must_be_require') 
+        || "monsterId must be required"
     }
     
 
-    if (receiveAmount && receiveAmount !== ""){
-      receiveAmount = receiveAmount.toString();
+    // if (receiveAmount && receiveAmount !== ""){
+    //   receiveAmount = receiveAmount.toString();
 
-      if (isNaN(receiveAmount)) {
-        errors["receiveAmount"] = this.props.translate('error.receive_amount_is_invalid_number') 
-          || "Receive amount is invalid number"
-      }
-      if (receiveAmount <= 0){
-        errors["receiveAmount"] = this.props.translate('error.receive_amount_must_be_positive') 
-          || "Receive amount must be positive number"
-      }
-    }else{
-      receiveAmount = null
-    }
+    //   if (isNaN(receiveAmount)) {
+    //     errors["receiveAmount"] = this.props.translate('error.receive_amount_is_invalid_number') 
+    //       || "Receive amount is invalid number"
+    //   }
+    //   if (receiveAmount <= 0){
+    //     errors["receiveAmount"] = this.props.translate('error.receive_amount_must_be_positive') 
+    //       || "Receive amount must be positive number"
+    //   }
+    // }else{
+    //   receiveAmount = null
+    // }
 
     
     if (commissionID){
@@ -160,8 +162,8 @@ export default class Layout extends React.Component {
     if (validator.anyErrors(errors)){
       this.props.dispatch(haltPayment(errors))
     }else{
-      var tokenAddr = this.props.tokens[receiveToken].address
-      this.props.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, network, paramForwarding, signer, commissionID));
+      //var tokenAddr = this.props.tokens[receiveToken].address
+      this.props.dispatch(initParamsExchange(etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID));
     }
   }
 

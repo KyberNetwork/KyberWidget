@@ -22,17 +22,20 @@ const TokenSelectorView = (props) => {
   });
 
   var getListToken = () => {
-    const destRateEth = props.listItem[props.exchange.destTokenSymbol].rateEth;
+   // const destRateEth = 1
 
     return Object.keys(listShow).map((key) => {
+      if (key === "ETH"){
+        return
+      }
       if (key === props.focusItem) {
         return;
       }
 
       var item = listShow[key];
       const sourceRate = item.symbol === "ETH" ? 1 : converter.toT(item.rate, 18);
-      const destRate = converter.toT(destRateEth, 18);
-      const rate = item.symbol === props.exchange.destTokenSymbol ? 1 : converter.roundingNumber(sourceRate * destRate);
+      //const destRate = converter.toT(destRateEth, 18);
+      const rate = converter.roundingNumber(sourceRate);
 
       return (
         <div
@@ -48,7 +51,7 @@ const TokenSelectorView = (props) => {
             <div className="token-item">
               <div className="token-item__rate">
                 {rate != 0 &&
-                  <div>1 {item.symbol} = {rate} {props.exchange.destTokenSymbol}</div>
+                  <div>1 {item.symbol} = {rate} ETH</div>
                 }
 
                 {rate == 0 &&
@@ -62,7 +65,10 @@ const TokenSelectorView = (props) => {
     })
   }
 
-  var rateFocusItem = props.exchange.isSelectToken ? <img src={require('../../../assets/img/waiting.svg')} /> : converter.roundingNumber(converter.toT(props.exchange.offeredRate,18))
+
+  //var rateFocusItem = converter.roundingNumber(converter.toT(props.tokens.offeredRate,18))
+  var rateFocusItem = focusItem.symbol === "ETH" ? "": converter.roundingNumber(converter.toT(props.tokens[focusItem.symbol].rate, 18))
+  
 
   return (
     <div className="token-chooser">
@@ -82,9 +88,9 @@ const TokenSelectorView = (props) => {
                 </div>
               </div>
             </div>
-            {focusItem.symbol !== props.exchange.destTokenSymbol && (
+            {focusItem.symbol !== "ETH" && (              
               <div className="rate-token">
-                1 {focusItem.symbol} = {rateFocusItem} {props.exchange.destTokenSymbol}
+                1 {focusItem.symbol} = {rateFocusItem} ETH
               </div>
             )}
             <div><i className={'k k-angle ' + (props.open ? 'up' : 'down')}></i></div>

@@ -6,7 +6,9 @@ const KYBER_NETWORK = [{"constant":false,"inputs":[{"name":"alerter","type":"add
 
 const KYBER_WRAPPER = [{"constant":true,"inputs":[{"name":"x","type":"bytes14"},{"name":"byteInd","type":"uint256"}],"name":"getInt8FromByte","outputs":[{"name":"","type":"int8"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"name":"reserve","type":"address"},{"name":"tokens","type":"address[]"}],"name":"getBalances","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"pricingContract","type":"address"},{"name":"tokenList","type":"address[]"}],"name":"getTokenIndicies","outputs":[{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"x","type":"bytes14"},{"name":"byteInd","type":"uint256"}],"name":"getByteFromBytes14","outputs":[{"name":"","type":"bytes1"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"name":"network","type":"address"},{"name":"sources","type":"address[]"},{"name":"dests","type":"address[]"},{"name":"qty","type":"uint256[]"}],"name":"getExpectedRates","outputs":[{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"pricingContract","type":"address"},{"name":"tokenList","type":"address[]"}],"name":"getTokenRates","outputs":[{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"},{"name":"","type":"int8[]"},{"name":"","type":"int8[]"},{"name":"","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"}]
 
-const KYBER_WALLET = [{ "constant": true, "inputs": [], "name": "ETH_TOKEN_ADDRESS", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "srcToken", "type": "address" }, { "name": "srcAmount", "type": "uint256" }, { "name": "destToken", "type": "address" }, { "name": "maxDestAmount", "type": "uint256" }, { "name": "minRate", "type": "uint256" }, { "name": "destination", "type": "address" }, { "name": "destinationData", "type": "bytes" }, { "name": "onlyApproveTokens", "type": "bool" }, { "name": "throwOnFail", "type": "bool" }], "name": "convertAndCall", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "network", "type": "address" }], "name": "setKyberNetwork", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "token", "type": "address" }, { "name": "from", "type": "address" }, { "name": "amount", "type": "uint256" }], "name": "recieveTokens", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "recieveEther", "outputs": [], "payable": true, "type": "function" }, { "constant": false, "inputs": [{ "name": "to", "type": "address" }, { "name": "value", "type": "uint256" }, { "name": "data", "type": "bytes" }], "name": "execute", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "kyberNetwork", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "inputs": [{ "name": "_kyberNetwork", "type": "address" }], "payable": false, "type": "constructor" }, { "payable": true, "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "origin", "type": "address" }, { "indexed": false, "name": "error", "type": "uint256" }, { "indexed": false, "name": "errorInfo", "type": "uint256" }], "name": "ErrorReport", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "owner", "type": "address" }, { "indexed": false, "name": "kyberNetwork", "type": "address" }], "name": "NewWallet", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "sender", "type": "address" }, { "indexed": false, "name": "network", "type": "address" }], "name": "SetKyberNetwork", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "sender", "type": "address" }, { "indexed": false, "name": "amountInWei", "type": "uint256" }], "name": "IncomingEther", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "from", "type": "address" }, { "indexed": false, "name": "token", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" }], "name": "IncomingTokens", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "sender", "type": "address" }, { "indexed": false, "name": "destination", "type": "address" }, { "indexed": false, "name": "destAmount", "type": "uint256" }], "name": "ConvertAndCall", "type": "event" }]
+const ETHEREMON_WRAPPER = [{"constant":true,"inputs":[{"name":"_kyber","type":"address"},{"name":"token","type":"address"},{"name":"monsterInETH","type":"uint256"}],"name":"getMonsterRates","outputs":[{"name":"expectedRate","type":"uint256"},{"name":"slippageRate","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"token","type":"address"},{"name":"expectedRate","type":"uint256"},{"name":"monsterInETH","type":"uint256"}],"name":"getMonsterPriceInTokens","outputs":[{"name":"monsterInTokens","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_etheremon","type":"address"},{"name":"_classId","type":"uint32"}],"name":"getMonsterPriceInETH","outputs":[{"name":"catchable","type":"bool"},{"name":"monsterInETH","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_kyber","type":"address"},{"name":"_etheremon","type":"address"},{"name":"_classId","type":"uint32"},{"name":"_name","type":"string"},{"name":"token","type":"address"},{"name":"tokenQty","type":"uint256"},{"name":"maxDestQty","type":"uint256"},{"name":"minRate","type":"uint256"},{"name":"walletId","type":"address"}],"name":"catchMonster","outputs":[{"name":"monsterId","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"token","type":"address"},{"name":"user","type":"address"}],"name":"getBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"balanceBefore","type":"uint256"},{"indexed":false,"name":"balanceAfter","type":"uint256"},{"indexed":false,"name":"change","type":"uint256"}],"name":"SwapTokenChange","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"sender","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"EtherChange","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"sender","type":"address"},{"indexed":false,"name":"monsterId","type":"uint256"},{"indexed":false,"name":"token","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"CaughtWithToken","type":"event"}]
+
+
 
 // contract datas
 // compiled with v0.4.11+commit.68ef5810
@@ -42,7 +44,7 @@ const INIT_EXCHANGE_FORM_STATE = {
   selected: false,
   isSelectToken: false,
   sourceToken: ETHER_ADDRESS,
-  sourceTokenSymbol: "ETH",
+  sourceTokenSymbol: "KNC",
   sourceAmount: "",
   destAmount: "",
   isHaveDestAmount: true,
@@ -66,12 +68,16 @@ const INIT_EXCHANGE_FORM_STATE = {
   slippageRate: 0,
   blockNo: 0,
 
-  throwOnFailure: "0x0000000000000000000000000000000000000000",
-  gas: 330000,
-  max_gas: 330000,
+  monsterAvatar: "",
 
-  gas_approve: 0,
-  max_gas_approve: 100000,
+  throwOnFailure: "0x0000000000000000000000000000000000000000",
+  gas: 900000,
+  max_gas: 900000,
+  normal_max_gas: 330000,
+  max_gas_catch_mons: 570000,
+
+  gas_approve: 120000,
+  max_gas_approve: 120000,
   
   //max_gas_total: 430000,
 
@@ -140,7 +146,8 @@ const INIT_EXCHANGE_FORM_STATE = {
   isAnalize: false,
   isAnalizeComplete: false,
   analizeError : {},
-  snapshot: {}
+  snapshot: {},
+  etheremonPrice: {}
 }
 
 const INIT_TRANSFER_FORM_STATE = {
@@ -255,9 +262,9 @@ const SUPPORTED_NETWORK = [
 ];
 
 module.exports = {
-  ERC20, KYBER_NETWORK, KYBER_WRAPPER, EPSILON, ETHER_ADDRESS, ETH, RESERVES, KYBER_WALLET,
+  ERC20, KYBER_NETWORK, KYBER_WRAPPER, EPSILON, ETHER_ADDRESS, ETH, RESERVES,
   KYBER_WALLET_DATA, INIT_EXCHANGE_FORM_STATE, INIT_TRANSFER_FORM_STATE,
   RATE_EPSILON, IDLE_TIME_OUT, HISTORY_EXCHANGE, STORAGE_KEY, CONNECTION_CHECKER,
   MAX_CAP_ONE_EXCHANGE_BASE_VALUE, MAX_CAP_ONE_EXCHANGE_BASE_RESERVE, MAX_CAP_PERCENT, CONFIG_ENV_LEDGER_LINK, LEDGER_SUPPORT_LINK, TRANSFER_TOPIC, BASE_HOST,
-  IMPORT_ACCOUNT_TYPE, MAX_AMOUNT_RATE_HANDLE, SUPPORTED_NETWORK
+  IMPORT_ACCOUNT_TYPE, MAX_AMOUNT_RATE_HANDLE, SUPPORTED_NETWORK, ETHEREMON_WRAPPER
 }

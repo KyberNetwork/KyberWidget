@@ -35,6 +35,16 @@
     text-transform: uppercase;
   }
 
+  .monster-avatar {
+    margin: 12px 0;
+    text-align: center;
+    img {
+      max-width: 100%;
+      max-height: 180px;
+      width: unset;
+    }
+  }
+
   .info-2 {
     font-size: 14px;
 
@@ -42,7 +52,7 @@
       display: flex;
 
       div:first-child {
-        width: 75px;
+        width: 115px;
       }
     }
   }
@@ -55,6 +65,12 @@
     font-size: 14px;
     font-weight: 600;
     color: #222;
+  }
+
+  .payment-error {
+    font-size: 13px;
+    margin-top: 10px;
+    color: $error-color;
   }
 }
 

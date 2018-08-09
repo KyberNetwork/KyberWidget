@@ -20,9 +20,7 @@
         "icon": "eth.svg",
         "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "decimal": 18,
-        "usd_id":"ethereum",
-        "gasLimit": "0",
-        "priority": true
+        "usd_id":"ethereum"        
       },
       "KNC": {
         "name": "KyberNetwork",
@@ -39,7 +37,8 @@
         "icon": "omg.svg",
         "address": "0x4bfba4a8f28755cb2061c413459ee562c6b9c51b",
         "decimal": 18,
-        "usd_id":"omisego"
+        "usd_id":"omisego",
+        "priority": true
       },
       "EOS": {
         "name": "Eos",
@@ -233,5 +232,6 @@
   },
   "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
   "tracker":"https://tracker.kyber.network",
+  "ethermon_wrapper":"0x9D11650Eb72d9c9a62575a1B2578057838C856e4",
   "networkName": "ropsten"
 }

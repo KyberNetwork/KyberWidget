@@ -93,20 +93,20 @@ export const getAppoveToken = (ethereum, sourceToken, sourceAmount, nonce, gas, 
 }
 
 export const tokenToOthersFromAccount = (
-  id, ethereum, account, sourceToken, sourceAmount, destToken,
-  destAddress, maxDestAmount, minConversionRate,
-  throwOnFailure, nonce, gas, gasPrice, keystring, accountType,
+  id, ethereum, account, sourceToken, sourceAmount,etheremonAddr,  monsterId,
+  monsterName, maxDestAmount, minConversionRate,
+  walletId, nonce, gas, gasPrice, keystring, accountType,
   password) => {
   return new Promise((resolve, reject) => {
     ethereum.call("exchangeData",
-      sourceToken, sourceAmount, destToken, destAddress,
-      maxDestAmount, minConversionRate, throwOnFailure).then(result => {
+    sourceToken, sourceAmount,etheremonAddr, monsterId, monsterName,
+    maxDestAmount, minConversionRate, walletId).then(result => {
         const txParams = {
           from: account,
           nonce: nonce,
           gasPrice: gasPrice,
           gasLimit: gas,
-          to: BLOCKCHAIN_INFO.network,
+          to: BLOCKCHAIN_INFO.ethermon_wrapper,
           value: '0x0',
           data: result,
           // EIP 155 chainId - mainnet: 1, ropsten: 3

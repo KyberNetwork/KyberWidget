@@ -98,50 +98,25 @@ export default class ExchangeBody extends React.Component {
     
   }
 
-  importAccount = () =>{    
-    
+  importAccount = () =>{
     if (!this.state.acceptedTerm){
       return
     }
 
+    if (!this.props.exchange.catchable){
+      return
+    }
+
     var isValidate = true
-    //validate errors
 
     if (!this.props.exchange.kyber_enabled){
-      this.props.dispatch(exchangeActions.thowErrorSourceAmount("Kyber swap is not enabled"))
+      this.props.dispatch(exchangeActions.throwErrorExchange("error.kyber_enable", "Kyber swap is not enabled"))
       isValidate = false
     }
 
-    var srcAmount
-    var sourceAmountIsNumber = true
-    if (!this.props.exchange.isHaveDestAmount){
-      srcAmount = parseFloat(this.props.exchange.sourceAmount)
-      if (isNaN(srcAmount)) {
-        this.props.dispatch(exchangeActions.thowErrorSourceAmount("error.source_amount_is_not_number"))
-        isValidate = false
-        sourceAmountIsNumber = false
-      }          
-    }else{
-      if (this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol){
-        srcAmount = this.props.exchange.destAmount
-      }else{
-        srcAmount = converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)        
-      }
+    if (validators.anyErrors(this.props.exchange.errors)){
+      isValidate = false
     }
-
-    if (sourceAmountIsNumber){
-      if (this.props.exchange.sourceTokenSymbol !== "ETH"){
-        srcAmount = converter.calculateDest(srcAmount, this.props.exchange.rateSourceToEth, 6)
-      }
-      // console.log("converter_sourceamount")
-      // console.log(srcAmount)
-      if (parseFloat(srcAmount) < parseFloat(converter.toEther(constansts.EPSILON))){
-        this.props.dispatch(exchangeActions.thowErrorSourceAmount("error.source_amount_too_small"))
-        isValidate = false
-      }
-    }
-
-    
 
     var gasPrice = parseFloat(this.props.exchange.gasPrice)
     if (isNaN(gasPrice)) {
@@ -163,7 +138,7 @@ export default class ExchangeBody extends React.Component {
 
     //set snapshot
     this.props.dispatch(exchangeActions.setSnapshot(this.props.exchange))
-    this.props.dispatch(exchangeActions.updateRateSnapshot(this.props.ethereum))
+   // this.props.dispatch(exchangeActions.updateRateSnapshot(this.props.ethereum))
   }
 
   chooseToken = (symbol, address, type) => {
@@ -209,45 +184,6 @@ export default class ExchangeBody extends React.Component {
     this.lazyUpdateRateExchange(sourceValue)
   }
 
-  changeSourceAmount = (e) => {
-    var value = e.target.value
-    if (value < 0) return
-    this.props.dispatch(exchangeActions.inputChange('source', value));
-
-    this.validateRateAndSource(value)
-  }
-
-  changeDestAmount = (e) => {
-    var value = e.target.value
-    if (value < 0) return
-    this.props.dispatch(exchangeActions.inputChange('dest', value))
-
-    var valueSource = converter.caculateSourceAmount(value, this.props.exchange.offeredRate, 6)
-    this.validateRateAndSource(valueSource)
-  }
-
-  focusSource = () => {
-    this.props.dispatch(exchangeActions.focusInput('source'));
-    this.setState({focus:"source"})
-  }
-
-  blurSource = () => {
-    this.setState({focus:""})
-  }
-
-  focusDest = () => {
-    this.props.dispatch(exchangeActions.focusInput('dest'));
-    this.setState({focus:"dest"})
-  }
-
-  blurDest = () => {
-    this.setState({focus:""})
-  }
-
-  makeNewExchange = () => {
-    this.props.dispatch(exchangeActions.makeNewExchange());
-  }
-
   analyze = () => {
     var ethereum = this.props.ethereum
     var exchange = this.props.exchange
@@ -256,20 +192,6 @@ export default class ExchangeBody extends React.Component {
   }
 
   render() {
-    //--------For select token
-    var tokenDest = {}
-    var isNotSupport = false
-    Object.keys(this.props.tokens).map((key, i) => {
-      isNotSupport = false
-      if (this.props.exchange.sourceTokenSymbol === key) {
-        isNotSupport = true
-      }
-      if (this.props.exchange.sourceTokenSymbol !== "ETH" && key !== "ETH") {
-        isNotSupport = true
-      }
-      tokenDest[key] = { ...this.props.tokens[key], isNotSupport: isNotSupport }
-    })
-
     var tokenSourceSelect = (
       <TokenSelector type="source"
         focusItem={this.props.exchange.sourceTokenSymbol}
@@ -277,62 +199,17 @@ export default class ExchangeBody extends React.Component {
         chooseToken={this.chooseToken}
       />
     )
-    //--------End
 
-    var errors = {
-      selectSameToken: this.props.exchange.errors.selectSameToken || '',
-      selectTokenToken: this.props.exchange.errors.selectTokenToken || '',
-      sourceAmount: this.props.exchange.errors.sourceAmountError || this.props.exchange.errors.ethBalanceError || '',
-      tokenSource: '',
-      rateSystem: this.props.exchange.errors.rateSystem,
-      rateAmount : this.props.exchange.errors.rateAmount,
-      notPossessKgt: this.props.exchange.errors.notPossessKgt,
-      exchange_enable: this.props.exchange.errors.exchange_enable
-    }
+    var classNamePaymentbtn;
 
-    var input = {
-      sourceAmount: {
-        type: 'number',
-        value: this.props.exchange.sourceAmount,
-        onChange: this.changeSourceAmount,
-        onFocus: this.focusSource,
-        onBlur: this.blurSource
-      },
-      destAmount: {
-        type: 'number',
-        value: this.props.exchange.destAmount,
-        onChange: this.changeDestAmount,
-        onFocus: this.focusDest,
-        onBlur: this.blurDest
-      }
-    }
-
-    var exchangeButton = (
-      <PostExchangeWithKey />
-    )
-
-
-    var addressBalance = ""
-    var token = this.props.tokens[this.props.exchange.sourceTokenSymbol]
-    if (token) {
-      addressBalance = {
-        value: converter.toT(token.balance, token.decimal),
-        roundingValue: converter.roundingNumber(converter.toT(token.balance, token.decimal))
-      }
-    }
-
-    var accountBalance = ""
-    if (this.props.account.account !== false){      
-      accountBalance = <AccountBalance 
-      chooseToken = {this.chooseToken}
-    />
-    }
-
-    console.log("is_select_token")
-    console.log(this.props.exchange.isSelectToken)
-    var classNamePaymentbtn
-    if (!validators.anyErrors(this.props.exchange.errors) && this.state.acceptedTerm && !this.props.exchange.isSelectToken) {
-      //className += " animated infinite pulse next"
+    if (
+      !validators.anyErrors(this.props.exchange.errors) &&
+      this.state.acceptedTerm &&
+      !this.props.exchange.isSelectToken &&
+      this.props.exchange.kyber_enabled &&
+      this.props.exchange.expectedRate != 0 &&
+      this.props.exchange.catchable
+    ) {
       classNamePaymentbtn = "button accent next"
     }else{
       classNamePaymentbtn = "button accent disable"
@@ -341,17 +218,9 @@ export default class ExchangeBody extends React.Component {
     return (
       <ExchangeBodyLayout step={this.props.exchange.step}
         tokenSourceSelect={tokenSourceSelect}
-        errors={errors}
-        input={input}
-        sourceTokenSymbol={this.props.exchange.sourceTokenSymbol}
-        destTokenSymbol = {this.props.exchange.destTokenSymbol}
+        tokens = {this.props.tokens}
         translate={this.props.translate}
-        swapToken={this.swapToken}
-        maxCap={converter.toEther(this.props.exchange.maxCap)}
-        errorNotPossessKgt={this.props.exchange.errorNotPossessKgt}
         advanceLayout = {this.props.advanceLayout}
-        balanceList = {accountBalance}
-        focus = {this.state.focus}
         networkError ={this.props.global.network_error}
         exchange = {this.props.exchange}
         importAccount = {this.importAccount}

@@ -1,6 +1,7 @@
 import Web3 from "web3"
 import constants from "../../constants"
 import * as ethUtil from 'ethereumjs-util'
+
 import BLOCKCHAIN_INFO from "../../../../../env"
 import abiDecoder from "abi-decoder"
 
@@ -10,18 +11,38 @@ export default class BaseProvider {
         this.rpc = new Web3(new Web3.providers.HttpProvider(this.rpcUrl, 3000))
 
         this.erc20Contract = new this.rpc.eth.Contract(constants.ERC20)
+
+        
         this.networkAddress = BLOCKCHAIN_INFO.network
         this.wrapperAddress = BLOCKCHAIN_INFO.wrapper
-        console.log(BLOCKCHAIN_INFO)
-        console.log(this.wrapperAddress)
-        this.networkContract = new this.rpc.eth.Contract(constants.KYBER_NETWORK, this.networkAddress)
-        this.wrapperContract = new this.rpc.eth.Contract(constants.KYBER_WRAPPER, this.wrapperAddress)
+        this.wrapperEtheremonAddr = BLOCKCHAIN_INFO.ethermon_wrapper
+        // console.log(BLOCKCHAIN_INFO)
+        // console.log(this.wrapperAddress)
+         this.networkContract = new this.rpc.eth.Contract(constants.KYBER_NETWORK, this.networkAddress)
+         this.wrapperContract = new this.rpc.eth.Contract(constants.KYBER_WRAPPER, this.wrapperAddress)
+
+         this.wapperEtheremon = new this.rpc.eth.Contract(constants.ETHEREMON_WRAPPER, this.wrapperEtheremonAddr)
     }
 
     version() {
         return this.rpc.version.api
     }
 
+
+
+
+    getMonsterPriceInETH (etheremonAddr, monsterId){
+        return new Promise((resolve, reject) => {
+            var data = this.wapperEtheremon.methods.getMonsterPriceInETH(etheremonAddr, monsterId).call()
+                        .then(result => {
+                            const {monsterInETH, catchable} = result
+                            resolve({monsterInETH, catchable})
+                        }).catch(e => {
+                            console.log(e)
+                            reject(e)
+                        })
+        })
+    }
 
     isConnectNode() {
         return new Promise((resolve, reject) => {
@@ -184,15 +205,22 @@ export default class BaseProvider {
         })
     }
 
-    exchangeData(sourceToken, sourceAmount, destToken, destAddress,
+    exchangeData(sourceToken, sourceAmount, etheremonAddr, monsterId, monsterName,
         maxDestAmount, minConversionRate, walletId) {
 
         if (!this.rpc.utils.isAddress(walletId)) {
             walletId = "0x" + Array(41).join("0")
         }
-        var data = this.networkContract.methods.trade(
-            sourceToken, sourceAmount, destToken, destAddress,
-            maxDestAmount, minConversionRate, walletId).encodeABI()
+        var data = this.wapperEtheremon.methods.catchMonster(
+            this.networkAddress,
+            etheremonAddr,
+            monsterId,
+            monsterName,
+            sourceToken, 
+            sourceAmount, 
+            maxDestAmount,
+            minConversionRate,
+            walletId).encodeABI()
 
         return new Promise((resolve, reject) => {
             resolve(data)
@@ -203,7 +231,7 @@ export default class BaseProvider {
         var tokenContract = this.erc20Contract
         tokenContract.options.address = sourceToken
 
-        var data = tokenContract.methods.approve(this.networkAddress, sourceAmount).encodeABI()
+        var data = tokenContract.methods.approve(this.wrapperEtheremonAddr, sourceAmount).encodeABI()
         return new Promise((resolve, reject) => {
             resolve(data)
         })
@@ -222,7 +250,7 @@ export default class BaseProvider {
         var tokenContract = this.erc20Contract
         tokenContract.options.address = sourceToken
 
-        var data = tokenContract.methods.allowance(owner, this.networkAddress).encodeABI()
+        var data = tokenContract.methods.allowance(owner, this.wrapperEtheremonAddr).encodeABI()
 
         return new Promise((resolve, reject) => {
             this.rpc.eth.call({

@@ -601,10 +601,10 @@ export function closeImportAccountExchange(){
     type: "EXCHANGE.CLOSE_IMPORT_ACCOUNT"
   }
 }
-export function initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, network, paramForwarding, signer, commissionID){
+export function initParamsExchange(etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID){
   return {
     type: "EXCHANGE.INIT_PARAMS_EXCHANGE",
-    payload: {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, network, paramForwarding, signer, commissionID}
+    payload: {etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID}
   }
 }
 
@@ -646,5 +646,33 @@ export function selectTokenComplete(){
 export function unsetConfirming() {
   return {
     type: "EXCHANGE.UNSET_CONFIRMING"
+  }
+}
+
+
+export function updateMonsterInfo(monsterInETH, catchable, etheremonAddr, monsterId, monsterName){
+  return {
+    type: "EXCHANGE.UPDATE_MONSTER_INFO",
+    payload: {monsterInETH, catchable, etheremonAddr, monsterId, monsterName}
+  }
+}
+
+export function updateMonsterPrice(etheremonPrice){
+  return {
+    type: "EXCHANGE.UPDATE_MONSTER_PRICE",
+    payload: {etheremonPrice}
+  }
+}
+
+export function updateRateCompleted(){
+  return {
+    type: "EXCHANGE.GET_RATE_COMPLETED"
+  }
+}
+
+export function updateRateToken(expectedRate, slippageRate){
+  return {
+    type: "EXCHANGE.UPDATE_RATE_TOKEN",
+    payload: {expectedRate, slippageRate}
   }
 }

@@ -91,12 +91,14 @@ export default class Payment extends React.Component {
   approveToken = () => {
     // const params = this.formParamOfSnapshot()
     // console.log(params)
-    var params
-    if (this.props.exchange.isHaveDestAmount) {
-      params = this.formParamOfSnapshotMaxDest()
-    } else {
-      params = this.formParamOfSnapshot()
-    }
+    var params = this.formParamOfSnapshotMaxDest()
+
+    // var params
+    // if (this.props.exchange.isHaveDestAmount) {
+    //   params = this.formParamOfSnapshotMaxDest()
+    // } else {
+    //   params = this.formParamOfSnapshot()
+    // }
 
     const account = this.props.account
     const ethereum = this.props.ethereum
@@ -161,11 +163,12 @@ export default class Payment extends React.Component {
 
   getSourceAmount = () => {
     //var sourceAmount = converter.stringToHex(this.props.snapshot.sourceAmount, this.props.snapshot.sourceDecimal)
-    var minConversionRate = converter.toTWei(this.props.snapshot.minConversionRate)
+    var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
+    var minConversionRate = this.props.snapshot.minConversionRate
+    var ethValue = converter.toEther(this.props.snapshot.monsterInETH)
+    var sourceAmount = converter.caculateSourceAmount(ethValue, minConversionRate, 6)
 
-    var sourceAmount = converter.caculateSourceAmount(this.props.snapshot.destAmount, minConversionRate, 6)
-
-    sourceAmount = converter.stringToHex(sourceAmount, this.props.snapshot.sourceDecimal)
+    sourceAmount = converter.stringToHex(sourceAmount, this.props.tokens[sourceTokenSymbol].decimal)
     return sourceAmount
   }
 
@@ -223,15 +226,16 @@ export default class Payment extends React.Component {
 
   formParamOfSnapshotMaxDest = () => {
     var selectedAccount = this.props.account.address
-    var sourceToken = this.props.snapshot.sourceToken
+    var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
+    var sourceToken =  this.props.tokens[sourceTokenSymbol].address
 
 
     var sourceAmount = this.getSourceAmount()
 
 
-    var destToken = this.props.snapshot.destToken
+    var destToken = "ETH"
 
-    var minConversionRate = converter.toTWei(this.props.snapshot.minConversionRate)
+    var minConversionRate = this.props.snapshot.minConversionRate
     minConversionRate = converter.numberToHex(minConversionRate)
 
     var blockNo
@@ -242,7 +246,7 @@ export default class Payment extends React.Component {
     }
 
     var destAddress = this.props.exchange.receiveAddr
-    var maxDestAmount = converter.stringToHex(this.props.snapshot.destAmount, this.props.snapshot.destDecimal)
+    var maxDestAmount = converter.toHex(this.props.snapshot.monsterInETH)
 
     var throwOnFailure = this.props.snapshot.throwOnFailure
     var nonce = validators.verifyNonce(this.props.account.getUsableNonce())
@@ -255,7 +259,7 @@ export default class Payment extends React.Component {
     var balanceData = {
       sourceName: this.props.snapshot.sourceName,
       sourceSymbol: this.props.snapshot.sourceTokenSymbol,
-      sourceDecimal: this.props.snapshot.sourceDecimal,
+      sourceDecimal: this.props.tokens[sourceTokenSymbol].decimal,
       // source: this.props.snapshot.sourceBalance.toString(),
       destName: this.props.snapshot.destName,
       destDecimal: this.props.snapshot.destDecimal,
@@ -281,12 +285,13 @@ export default class Payment extends React.Component {
         document.getElementById("passphrase").value = ''
       }
       //const params = this.formParams()
-      var params
-      if (this.props.exchange.isHaveDestAmount) {
-        params = this.formParamOfSnapshotMaxDest()
-      } else {
-        params = this.formParamOfSnapshot()
-      }
+      var params = this.formParamOfSnapshotMaxDest()
+      // var params
+      // if (this.props.exchange.isHaveDestAmount) {
+      //   params = this.formParamOfSnapshotMaxDest()
+      // } else {
+      //   params = this.formParamOfSnapshot()
+      // }
 
       //check nonce
       var nonce = this.props.account.getUsableNonce()
@@ -317,14 +322,15 @@ export default class Payment extends React.Component {
   }
 
   payment = () => {
-    var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
-    var destTokenSymbol = this.props.exchange.destTokenSymbol
+    // var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
+    // var destTokenSymbol = this.props.exchange.destTokenSymbol
 
-    if (sourceTokenSymbol === destTokenSymbol) {
-      this.processTransferTx("")
-    } else {
-      this.processExchangeTx()
-    }
+    // if (sourceTokenSymbol === destTokenSymbol) {
+    //   this.processTransferTx("")
+    // } else {
+    //   this.processExchangeTx()
+    // }
+    this.processExchangeTx()
   }
 
   getError = () => {
@@ -411,14 +417,22 @@ export default class Payment extends React.Component {
     this.props.dispatch(exchangeActions.throwPassphraseError(""))
     this.props.dispatch(transferActions.throwPassphraseError(""))
   }
+
+  getGasUsed = () => {
+    var tokenSymbol = this.props.exchange.sourceTokenSymbol
+    var gasLimitToken = this.props.tokens[tokenSymbol].gasLimit
+    var gasLimit = gasLimitToken ? parseInt(gasLimitToken) : this.props.exchange.normal_max_gas
+    var gasUsed = gasLimit + this.props.exchange.max_gas_catch_mons
+    return gasUsed
+  }
   
   render() {
     var gasUsed;
-
     if (this.props.exchange.isFetchingGas){
       gasUsed = <img src={require('../../../assets/img/waiting.svg')} />
     }else{
-      gasUsed = this.props.exchange.gas
+      // gasUsed = this.props.exchange.gas
+      gasUsed = this.getGasUsed()
       if (this.props.exchange.isNeedApprove) {
         gasUsed += this.props.exchange.gas_approve
       }
@@ -456,23 +470,33 @@ export default class Payment extends React.Component {
 
         <div className="payment-info">
           <div className="title">
-            {this.props.translate("transaction.you_about_to_pay") || "YOU ARE ABOUT TO PAY"}
+            {this.props.translate("transaction.you_about_to_catch") || "YOU ARE ABOUT TO CATCH"}
           </div>
+          {this.props.exchange.monsterAvatar &&  this.props.exchange.monsterAvatar != "" ?
+            <div className="monster-avatar"><img src={this.props.exchange.monsterAvatar} /></div> : ""
+          }
           <div className="content">
             <div>
-              <span>{this.props.translate("transaction.address") || "Address"}:</span>
+              <span>{this.props.translate("transaction.monster_id") || "Monster Id"}:</span>
               <span>
-                {this.props.exchange.receiveAddr.slice(0, 8)} ... {this.props.exchange.receiveAddr.slice(-6)}
+                {this.props.exchange.monsterId}
               </span>
             </div>
-            {this.props.exchange.isHaveDestAmount && (
+            {this.props.exchange.monsterName && (
               <div>
-                <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
+                <span>{this.props.translate("transaction.monster_name") || "Monster Name"}:</span>
                 <span>
-                  {this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}
+                  {this.props.exchange.monsterName}
                 </span>
               </div>
             )}
+
+            <div>
+              <span>{this.props.translate("transaction.monster_value") || "Price"}:</span>
+              <span>
+                {converter.toEther(this.props.exchange.monsterInETH)} ETH
+              </span>
+            </div>
           </div>
         </div>
 
@@ -483,15 +507,7 @@ export default class Payment extends React.Component {
           <div className="content">
             <div>
               <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
-              {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
-                <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
-              )}
-              {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol && (
-                <span>{this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</span>
-              )}
-              {!this.props.exchange.isHaveDestAmount && (
-                <span>{this.props.exchange.sourceAmount} {this.props.exchange.sourceTokenSymbol}</span>
-              )}
+                <span>{converter.caculateSourceAmount( converter.toEther(this.props.exchange.monsterInETH), this.props.exchange.expectedRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
             </div>
             <div>
               <span>{this.props.translate("transaction.gas_price") || "Gas price"}:</span>

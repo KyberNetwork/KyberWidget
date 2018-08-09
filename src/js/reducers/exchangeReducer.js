@@ -583,22 +583,24 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.INIT_PARAMS_EXCHANGE":{
-      const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, network, paramForwarding, signer, commissionID} = action.payload
-      newState.destTokenSymbol = receiveToken
-      newState.destAmount = receiveAmount
-      if (receiveAmount === null){
-        newState.isHaveDestAmount = false
-      }else{
-        newState.isHaveDestAmount = true
-      }
-      newState.destToken = tokenAddr
-      newState.receiveAddr = receiveAddr
+      const {monsterAvatar, callback, network, paramForwarding, signer, commissionID} = action.payload
+      // {etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID}
+      // newState.destTokenSymbol = receiveToken
+      // newState.destAmount = receiveAmount
+      // if (receiveAmount === null){
+      newState.isHaveDestAmount = false
+      // }else{
+      //   newState.isHaveDestAmount = true
+      // }
+      // newState.destToken = tokenAddr
+      // newState.receiveAddr = receiveAddr
 
       newState.callback = callback
       newState.network = network
       newState.paramForwarding = paramForwarding
       newState.signer = signer
       newState.commissionID = commissionID
+      newState.monsterAvatar = monsterAvatar
       
       return newState
     }
@@ -635,6 +637,38 @@ const exchange = (state = initState, action) => {
       newState.isSelectToken = false
       return newState
     }
+
+    case "EXCHANGE.UPDATE_MONSTER_INFO":{
+      const {monsterInETH, catchable, etheremonAddr, monsterId, monsterName} = action.payload
+      newState.monsterInETH = monsterInETH
+      newState.catchable = catchable
+      newState.etheremonAddr = etheremonAddr
+      newState.monsterId = monsterId
+      newState.monsterName = monsterName
+      return newState
+    }
+
+    case "EXCHANGE.GET_RATE_COMPLETED":{
+      newState.isSelectToken = false
+      return newState
+    }
+
+    case "EXCHANGE.UPDATE_MONSTER_PRICE":{
+      const {etheremonPrice} = action.payload
+      newState.etheremonPrice = {...etheremonPrice}
+      return newState
+    }
+
+    case "EXCHANGE.UPDATE_RATE_TOKEN":{
+      const {expectedRate, slippageRate} = action.payload
+      newState.expectedRate = expectedRate
+      newState.slippageRate = slippageRate
+      if (!newState.isEditRate){
+        newState.minConversionRate = slippageRate
+      }
+      return newState
+    }
+
     case "GLOBAL.CLEAR_SESSION_FULFILLED":{
       var resetState = {...initState};
 
@@ -651,8 +685,16 @@ const exchange = (state = initState, action) => {
       resetState.isEditGasPrice = newState.isEditGasPrice;
       resetState.destToken = newState.destToken;
 
+      resetState.monsterId = newState.monsterId;
+      resetState.catchable = newState.catchable;
+      resetState.monsterInETH = newState.monsterInETH;
+      resetState.expectedRate = newState.expectedRate;
+      resetState.etheremonAddr = newState.etheremonAddr;
+      resetState.monsterName = newState.monsterName;
+
       return resetState;
     }
+    
     case "EXCHANGE.UNSET_CONFIRMING": {
       newState.isConfirming = false;
       return newState

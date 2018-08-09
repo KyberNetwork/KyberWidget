@@ -35,10 +35,10 @@ export function updateAllRate(ethereum, tokens) {
   }
 }
 
-export function updateAllRateComplete(rates,rateUSD) {
+export function updateAllRateComplete(rates) {
   return {
     type: 'GLOBAL.ALL_RATE_UPDATED_FULFILLED',
-    payload: { rates, rateUSD}
+    payload: { rates}
   }
 }
 
