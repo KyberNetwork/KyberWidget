@@ -209,6 +209,7 @@ export default class Layout extends React.Component {
         setActiveLanguage={this.setActiveLanguage}      
         currentLanguage = {currentLanguage}  
         translate={this.props.translate}
+        step={this.props.exchange.step}
       />
     )
   }
