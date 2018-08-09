@@ -9,6 +9,7 @@ $animation-time: 0.5s;
     transform: translateY(70px);
     animation: moving-up $animation-time forwards;
     transition: all .3s;
+    padding: 30px 25px 50px;
   }
 
   .signer-address {
@@ -66,7 +67,7 @@ $animation-time: 0.5s;
     position: relative;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 25px 0 10px;
+    margin: 12px 0 10px;
 
     &__item {
       max-height: 170px;
@@ -329,7 +330,7 @@ $animation-time: 0.5s;
 
 .import-account-content__info {
   padding: 15px;
-  margin: 20px 0 15px;
+  margin: 12px 0 15px;
   border-radius: 5px;
   background-color: #fcfcfe;
   box-shadow: 0 2px 6px 0 rgba(184, 184, 184, 0.5);

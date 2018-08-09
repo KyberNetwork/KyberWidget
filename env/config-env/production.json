@@ -223,7 +223,8 @@
         "symbol":"DGX",
         "decimal": 9,
         "icon": "dgx.svg",
-        "usd_id":"dgx"
+        "usd_id":"dgx",
+        "gasLimit": "750000"
       },
       "ABT": {
         "name": "ArcBlock",

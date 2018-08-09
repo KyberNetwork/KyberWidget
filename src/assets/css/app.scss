@@ -514,12 +514,20 @@ html body{
     align-items: center;
     margin-right: 5px;
 
+    &.active {
+      color: #31cb9e;
+      font-weight: 600;      
+      &::before {
+        background-color: #31cb9e;
+        color: white;
+      }
+    }
+
     &::before {
       width: 25px;
       height: 25px;
       background-color: #ebebeb;
       border-radius: 50%;
-      font-weight: 600;
       margin-right: 5px;
       display: flex;
       justify-content: center;

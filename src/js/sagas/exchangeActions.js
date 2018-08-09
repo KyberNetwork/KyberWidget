@@ -1095,7 +1095,18 @@ function* fetchGasApproveSnapshot() {
 }
 
 
-function* getMaxGasExchange(source, dest) {
+function* getMaxGasExchange(source, dest){
+  // var state = store.getState()
+  // const exchange = state.exchange
+  // const tokens = state.tokens.tokens
+
+  // var sourceTokenLimit = tokens[source].gasLimit
+  // var destTokenLimit = tokens[dest].gasLimit
+
+  // var sourceGasLimit = sourceTokenLimit ? parseInt(sourceTokenLimit) : exchange.max_gas
+  // var destGasLimit = destTokenLimit ? parseInt(destTokenLimit) : exchange.max_gas
+
+  // return sourceGasLimit + destGasLimit
   // var state = store.getState()
   // const exchange = state.exchange
 
