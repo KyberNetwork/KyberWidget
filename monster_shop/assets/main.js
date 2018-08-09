@@ -55,7 +55,7 @@
         })
 
         document.querySelector(".options input").addEventListener("blur", function () {
-            var callbackUrl = document.querySelector(".options input").value || "";
+            var callbackUrl = this.value || "";
 
             document.querySelectorAll(".action").forEach(function (tag) {
                 var href = tag.getAttribute("data-href");
