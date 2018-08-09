@@ -16,8 +16,7 @@
         "icon": "eth.svg",
         "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "decimal": 18,
-        "usd_id":"ethereum",
-        "gasLimit": "0"
+        "usd_id":"ethereum"
       },
       "KNC": {
         "name": "KyberNetwork",

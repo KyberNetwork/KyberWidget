@@ -572,7 +572,7 @@ export default class Payment extends React.Component {
 
             )}
             {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
-              <div className="confirm-message">{this.props.account.type !== "keystore"? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}</div>
+              <div className="confirm-message">{this.props.account.type !== "keystore" && this.props.account.type !== "privateKey" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}</div>
             )}
           <div className="control-btn">
             
