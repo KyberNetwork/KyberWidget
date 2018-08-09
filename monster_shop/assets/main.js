@@ -23,9 +23,7 @@
         return target.split(search).join(replacement);
     };
 
-    function getPrice(monsterId) {
-        var web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io"));
-        var instance = web3.eth.contract(abi).at("0x11f9f4ce02f3a4e2ae37f8dedf23e882fd67b2c0");
+    function getPrice(instance, monsterId) {
         instance.getPrice(monsterId, function (err, value) {
             var price = value[1].div(Math.pow(10, 18)).toNumber();
             document.querySelector("#monster" + monsterId + " .price").textContent = price;
@@ -33,8 +31,11 @@
     }
 
     (function geneteHtml(monsters) {
-        var sampleHtml = document.getElementById("sampleItem").innerHTML;
 
+        var web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io"));
+        var instance = web3.eth.contract(abi).at("0x11f9f4ce02f3a4e2ae37f8dedf23e882fd67b2c0");
+
+        var sampleHtml = document.getElementById("sampleItem").innerHTML;
         var allHtml = "";
 
         monsters.forEach(function (item) {
@@ -44,7 +45,7 @@
             }
             allHtml += html;
 
-            getPrice(item.id);
+            getPrice(instance, item.id);
         })
 
         document.getElementById("list").innerHTML = allHtml;
