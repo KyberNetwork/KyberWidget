@@ -55,7 +55,10 @@ const LayoutView = (props) => {
       <div>
         <Route component={props.Header} />
         <section id="content">
-          <PaymentHeader translate={props.translate}/>
+          <PaymentHeader 
+            translate={props.translate}
+            step={props.step}
+          />
 
           <Switch>
             {/* <Route exact path={constansts.BASE_HOST} component={props.ImportAccount} /> */}

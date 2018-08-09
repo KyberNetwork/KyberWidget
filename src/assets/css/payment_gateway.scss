@@ -1,45 +1,46 @@
 .payment-gateway {
   &__step-title {
-    font-size: 14px;
+    font-size: 16px;
     display: flex;
     align-items: center;
     min-height: 40px;
-    padding-left: 55px;
-    font-weight: 600;
+    // padding-left: 55px;
+    // font-weight: 600;
     line-height: 1.29;
     letter-spacing: -0.1px;
     position: relative;
-    color: $theme-color-default;
+    // color: $theme-color-default;
+    color: #222222;
     margin-bottom: 20px;
 
-    &::before {
-      font-size: 20px;
-      font-weight: bold;
-      color: white;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      font-family: $font-openSans;
-      background-color: $theme-color-default;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+    // &::before {
+    //   font-size: 20px;
+    //   font-weight: bold;
+    //   color: white;
+    //   position: absolute;
+    //   top: 0;
+    //   left: 0;
+    //   width: 40px;
+    //   height: 40px;
+    //   border-radius: 50%;
+    //   font-family: $font-openSans;
+    //   background-color: $theme-color-default;
+    //   display: flex;
+    //   justify-content: center;
+    //   align-items: center;
+    // }
 
-    &--1::before {
-      content: '1';
-    }
+    // &--1::before {
+    //   content: '1';
+    // }
 
-    &--2::before {
-      content: '2';
-    }
+    // &--2::before {
+    //   content: '2';
+    // }
 
-    &--3::before {
-      content: '3';
-    }
+    // &--3::before {
+    //   content: '3';
+    // }
   }
 
   &__hollow-button {
