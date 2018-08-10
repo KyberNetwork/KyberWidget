@@ -425,6 +425,17 @@ export default class Payment extends React.Component {
     var gasUsed = gasLimit + this.props.exchange.max_gas_catch_mons
     return gasUsed
   }
+
+  getMaxGasApprove = (source) => {
+    var tokenSymbol = this.props.exchange.sourceTokenSymbol
+    var gasApprove = this.props.tokens[tokenSymbol].gasApprove
+    if (gasApprove) return gasApprove
+    if (source !== 'DGX') {
+      return 100000
+    } else {
+      return 120000
+    }
+  }
   
   render() {
     var gasUsed;
@@ -433,8 +444,9 @@ export default class Payment extends React.Component {
     }else{
       // gasUsed = this.props.exchange.gas
       gasUsed = this.getGasUsed()
-      if (this.props.exchange.isNeedApprove) {
-        gasUsed += this.props.exchange.gas_approve
+      if (!this.props.exchange.isNeedApprove) {
+        var gasApprove = this.getMaxGasApprove()
+        gasUsed += gasApprove
       }
     }
     
