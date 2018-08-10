@@ -28,7 +28,8 @@ export default class MinRate extends React.Component {
   //   };
   // }
   onSliderChange = (value) => {
-    var minRate = converter.caculatorRateToPercentage(value,this.props.exchange.expectedRate)
+    var rateValue = value <= 10 ? 10 : value
+    var minRate = converter.caculatorRateToPercentage(rateValue,this.props.exchange.expectedRate)
     this.props.dispatch(actions.setMinRate(minRate.toString()))
   }
   // onAfterChange = (value) => {
