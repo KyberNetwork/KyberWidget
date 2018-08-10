@@ -39,12 +39,26 @@
             font-weight: 600;
         }
         .monster-avatar {
-            margin: 12px 0;
-            text-align: center;
-            img {
-                max-width: 100%;
-                max-height: 180px;
-                width: unset;
+            padding: 25px 20px;
+            border-radius: 3px;
+            background-color: #dee8fc;
+            margin-top: 15px;
+            .avatar {
+                margin: 12px 0;
+                text-align: center;
+                img {
+                    max-width: 100%;
+                    max-height: 180px;
+                    width: unset;
+                }
+            }
+            .content>div {
+                >span:first-child {
+                    width: 115px;
+                }
+                >span:last-child {
+                    font-weight: 600;
+                }
             }
         }
         .content{

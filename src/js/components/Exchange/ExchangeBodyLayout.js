@@ -56,28 +56,30 @@ const ExchangeBodyLayout = (props) => {
                     <div className="info-1">
                       {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
                     </div>
-                    {props.exchange.monsterAvatar &&  props.exchange.monsterAvatar != "" ?
-                      <div className="monster-avatar"><img src={props.exchange.monsterAvatar} /></div> : ""
-                    }
-                    <div className="info-2">
-                      <div className="info-2__content">
-                        <div>Monster Id:</div>
-                        <div>{props.exchange.monsterId}</div>
+                    <div className={props.exchange.monsterAvatar &&  props.exchange.monsterAvatar != "" ? "monster-avatar" : "" }>
+                      {props.exchange.monsterAvatar &&  props.exchange.monsterAvatar != "" ?
+                        <div className="avatar"><img src={props.exchange.monsterAvatar} /></div> : ""
+                      }
+                      <div className="info-2">
+                        <div className="info-2__content">
+                          <div>Monster Id:</div>
+                          <div>{props.exchange.monsterId}</div>
+                        </div>
+
+                        {props.exchange.monsterName && props.exchange.monsterName !== "" && (
+                          <div className="info-2__content">
+                            <div>Monster Name:</div>
+                            <div>{props.exchange.monsterName}</div>
+                          </div>
+                        )}
+
+                        {props.exchange.catchable && (
+                          <div className="info-2__content">
+                            <div>Price:</div>
+                            <div>{props.exchange.monsterInETH ? converter.toEther(props.exchange.monsterInETH): 0} ETH</div>
+                          </div>
+                        )}
                       </div>
-
-                      {props.exchange.monsterName && props.exchange.monsterName !== "" && (
-                        <div className="info-2__content">
-                          <div>Monster Name:</div>
-                          <div>{props.exchange.monsterName}</div>
-                        </div>
-                      )}
-
-                      {props.exchange.catchable && (
-                        <div className="info-2__content">
-                          <div>Price:</div>
-                          <div>{props.exchange.monsterInETH ? converter.toEther(props.exchange.monsterInETH): 0} ETH</div>
-                        </div>
-                      )}
                     </div>
                   </div>
 

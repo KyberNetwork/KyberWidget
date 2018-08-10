@@ -470,32 +470,34 @@ export default class Payment extends React.Component {
 
         <div className="payment-info">
           <div className="title">
-            {this.props.translate("transaction.you_about_to_catch") || "YOU ARE ABOUT TO CATCH"}
+            {this.props.translate("transaction.you_about_to_pay") || "YOU ARE ABOUT TO PAY"}
           </div>
-          {this.props.exchange.monsterAvatar &&  this.props.exchange.monsterAvatar != "" ?
-            <div className="monster-avatar"><img src={this.props.exchange.monsterAvatar} /></div> : ""
-          }
-          <div className="content">
-            <div>
-              <span>{this.props.translate("transaction.monster_id") || "Monster Id"}:</span>
-              <span>
-                {this.props.exchange.monsterId}
-              </span>
-            </div>
-            {this.props.exchange.monsterName && (
+          <div className={this.props.exchange.monsterAvatar && this.props.exchange.monsterAvatar != "" ? "monster-avatar" : "" }>
+            {this.props.exchange.monsterAvatar &&  this.props.exchange.monsterAvatar != "" ?
+              <div className="avatar"><img src={this.props.exchange.monsterAvatar} /></div> : ""
+            }
+            <div className="content">
               <div>
-                <span>{this.props.translate("transaction.monster_name") || "Monster Name"}:</span>
+                <span>{this.props.translate("transaction.monster_id") || "Monster Id"}:</span>
                 <span>
-                  {this.props.exchange.monsterName}
+                  {this.props.exchange.monsterId}
                 </span>
               </div>
-            )}
+              {this.props.exchange.monsterName && (
+                <div>
+                  <span>{this.props.translate("transaction.monster_name") || "Monster Name"}:</span>
+                  <span>
+                    {this.props.exchange.monsterName}
+                  </span>
+                </div>
+              )}
 
-            <div>
-              <span>{this.props.translate("transaction.monster_value") || "Price"}:</span>
-              <span>
-                {converter.toEther(this.props.exchange.monsterInETH)} ETH
-              </span>
+              <div>
+                <span>{this.props.translate("transaction.monster_value") || "Price"}:</span>
+                <span>
+                  {converter.toEther(this.props.exchange.monsterInETH)} ETH
+                </span>
+              </div>
             </div>
           </div>
         </div>
