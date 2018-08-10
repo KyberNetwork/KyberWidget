@@ -206,8 +206,7 @@ export default class BaseProvider {
     }
 
     exchangeData(sourceToken, sourceAmount, etheremonAddr, monsterId, monsterName,
-        maxDestAmount, minConversionRate, walletId) {
-
+        maxDestAmount, minConversionRate, walletId) {            
         if (!this.rpc.utils.isAddress(walletId)) {
             walletId = "0x" + Array(41).join("0")
         }
