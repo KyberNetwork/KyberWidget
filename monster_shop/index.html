@@ -6,14 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Etheremon Shop</title>
     <link rel="icon" href="https://www.etheremon.com/assets/images/icon.ico">
-    <link rel="stylesheet" href="assets/styles.css?v=2">
+    <link rel="stylesheet" href="assets/styles.css?v=3">
 </head>
 
 <body>
     <div id="wrapper">
         <h1>Etheremon Shop</h1>
         <section class="options">
-            <input type="url" placeholder="callback URL">
+            <input type="url" list="sampleCallbacks" placeholder="callback URL">
+            <datalist id="sampleCallbacks">
+                <option value="https://kyberpay-sample.knstats.com/callback">
+            </datalist>
         </section>
         <ul id="list"></ul>
     </div>
@@ -21,7 +24,7 @@
     <script id="sampleItem" type="text/template">
         <li id="monster#{id}">
             <div class="avatar" style="background-image: url('https://www.etheremon.com/#{slug}.png')">
-                <div class="id">ID: #{id}</div>
+                <div class="id">#{id}</div>
                 <div class="name">#{name}</div>
                 <div class="priceTag">
                     <span class="price">…</span>
@@ -34,7 +37,7 @@
         </li>
     </script>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
-    <script src="assets/main.js?v=2"></script>
+    <script src="assets/main.js?v=3"></script>
 </body>
 
 </html>

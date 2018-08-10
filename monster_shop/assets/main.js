@@ -1,19 +1,16 @@
 (function () {
 
     var monsters = [
-
-        {
-            id: 109,
-            name: "Purgast",
-            slug: "49aede488f0a4e0f53371669a8d700b5"
-        },
-
         {
             id: 106,
             name: "Ikopi",
             slug: "325db34365c36c186fd2217ace32591c"
+        },
+        {
+            id: 109,
+            name: "Purgast",
+            slug: "49aede488f0a4e0f53371669a8d700b5"
         }
-
     ];
 
     var abi = [{ "constant": true, "inputs": [{ "name": "_classId", "type": "uint32" }], "name": "getPrice", "outputs": [{ "name": "catchable", "type": "bool" }, { "name": "price", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }];
