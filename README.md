@@ -11,13 +11,13 @@ Eg.
 ```
 <a href="javascript:void(0);"
  NAME="KyberPay - Powered by KyberNetwork" title="Pay by tokens"
- onClick=window.open("https://widget-etheremon.knstats.com/widget/payment?etheremonAddr=0x11f9f4ce02f3a4e2ae37f8dedf23e882fd67b2c0&monsterId=106&monsterName=etheremon_pikachu&callback=https://yourwebsite.com/kybercallback&network=ropsten","Ratting","width=550,height=170,0,status=0");>Pay by tokens</a>
+ onClick=window.open("https://widget-etheremon.knstats.com/widget/payment?etheremonAddr=0x11f9f4ce02f3a4e2ae37f8dedf23e882fd67b2c0&monsterId=106&monsterName=etheremon_pikachu&monsterAvatar=https://images4.alphacoders.com/641/thumb-1920-641968.jpg&callback=https://yourwebsite.com/kybercallback&network=ropsten","Ratting","width=550,height=170,0,status=0");>Pay by tokens</a>
 ```
 
 With that button, when a user click on it, a new window will pop up allowing him/her to do the payment. In this example, we *passed several params to the widget via its url*:
 
 ```
-https://widget-etheremon.knstats.com/widget/payment?etheremonAddr=0x11f9f4ce02f3a4e2ae37f8dedf23e882fd67b2c0&monsterId=106&monsterName=etheremon_pikachuI&callback=https://yourwebsite.com/kybercallback
+https://widget-etheremon.knstats.com/widget/payment?etheremonAddr=0x11f9f4ce02f3a4e2ae37f8dedf23e882fd67b2c0&monsterId=106&monsterName=etheremon_pikachu&monsterAvatar=https://images4.alphacoders.com/641/thumb-1920-641968.jpg&callback=https://yourwebsite.com/kybercallback
 ```
 
 
@@ -32,6 +32,7 @@ The widget supports following params:
 - ***paramForwarding*** (bool) - default: `true`, if it is true, all params that were passed to the widget will be submitted via the `callback`. It is useful that you can give your user a secret token (ideally one time token) to pass to the callback just so you know the callback is not coming from a malicious actor.
 - ***signer*** (string) - concatenation of a list of ethereum address by underscore `_`, eg. 0xFDF28Bf25779ED4cA74e958d54653260af604C20_0xFDF28Bf25779ED4cA74e958d54653260af604C20 - If you pass this param, the user will be forced to pay from one of those addresses.
 - ***commissionID*** - Ethereum address - your Ethereum wallet to get commission of the fees for the transaction. Your wallet must be whitelisted by KyberNetwork (the permissionless registration will be available soon) in order to get the commission, otherwise it will be ignored.
+- ***monsterAvatar*** (string) - this param is optional. Link of monster's avatar.
 
 ## Supported tokens
 - OMG
