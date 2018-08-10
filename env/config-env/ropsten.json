@@ -199,7 +199,9 @@
         "symbol": "STORM",
         "decimal": 18,
         "icon": "storm.svg",
-        "usd_id":"storm"
+        "usd_id":"storm",
+        "gasLimit": "750000",
+        "gasApprove": 120000
       },
       "BBO" : {
         "name": "BigBom",
