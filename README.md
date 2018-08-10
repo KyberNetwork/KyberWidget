@@ -26,7 +26,7 @@ In this version, we only support the widget via a new browser windows thus we ca
 The widget supports following params:
 - ***etheremonAddr*** (etheremon address with 0x prefix) - **required** - Etheremon external payment Ethereum wallet. *Must double check this param very carefully*.
 - ***monsterId*** (int) - **required** - Id of monster
-- ***monsterName*** (float) - default: `Etheremon monster`, Name of monster
+- ***monsterName*** (string) - Name of monster
 - ***callback*** (string) - missing or blank value will prevent the widget to call the callback, the information will not be informed anywhere.
 - ***network*** (string) - default: `ropsten`, ethereum network that the widget will run. Possible value: `test, ropsten, production, mainnet`.
 - ***paramForwarding*** (bool) - default: `true`, if it is true, all params that were passed to the widget will be submitted via the `callback`. It is useful that you can give your user a secret token (ideally one time token) to pass to the callback just so you know the callback is not coming from a malicious actor.
