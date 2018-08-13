@@ -444,7 +444,7 @@ export default class Payment extends React.Component {
     }else{
       // gasUsed = this.props.exchange.gas
       gasUsed = this.getGasUsed()
-      if (!this.props.exchange.isNeedApprove) {
+      if (this.props.exchange.isNeedApprove) {
         var gasApprove = this.getMaxGasApprove()
         gasUsed += gasApprove
       }
