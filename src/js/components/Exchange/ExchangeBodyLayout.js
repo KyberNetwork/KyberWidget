@@ -119,7 +119,7 @@ const ExchangeBodyLayout = (props) => {
 
                     <div className="info-2__content">
                       <div>{props.translate("transaction.amount") || "Amount"}:</div>
-                      <div>{props.exchange.destAmount} {props.exchange.destTokenSymbol}</div>
+                      <div>{converter.roundingNumber(props.exchange.destAmount)} {props.exchange.destTokenSymbol}</div>
                     </div>
                   </div>
                   <div className="info-3">
@@ -141,7 +141,7 @@ const ExchangeBodyLayout = (props) => {
                           <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)} {props.exchange.sourceTokenSymbol} </div>
                         )}
                         {props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol && (
-                          <div>{props.exchange.destAmount} {props.exchange.sourceTokenSymbol} </div>
+                          <div>{converter.roundingNumber(props.exchange.destAmount)} {props.exchange.sourceTokenSymbol} </div>
                         )}
                       </div>
                     </div>

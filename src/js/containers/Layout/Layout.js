@@ -87,7 +87,8 @@ export default class Layout extends React.Component {
     // console.log(receiveAmount)
     var callback = common.getParameterByName("callback")
     var network = common.getParameterByName("network")
-    var paramForwarding = common.getParameterByName("paramForwarding")
+    var rawParamForwarding = common.getParameterByName("paramForwarding")
+    var paramForwarding = rawParamForwarding === "true" ? rawParamForwarding : "false"
     var signer = common.getParameterByName("signer")
     var commissionID = common.getParameterByName("commissionID")
 
