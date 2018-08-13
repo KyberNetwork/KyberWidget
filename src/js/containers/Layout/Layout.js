@@ -45,8 +45,9 @@ import Language from "../../../../lang"
     account: store.account,
     translate: getTranslate(store.locale),
     locale: store.locale,
-    exchange: store.exchange
+    exchange: store.exchange,
     // currentLanguage: getActiveLanguage(store.locale).code
+    haltPayment: store.global.haltPayment
   }
 })
 
@@ -210,6 +211,7 @@ export default class Layout extends React.Component {
         currentLanguage = {currentLanguage}  
         translate={this.props.translate}
         step={this.props.exchange.step}
+        haltPayment={this.props.haltPayment}
       />
     )
   }

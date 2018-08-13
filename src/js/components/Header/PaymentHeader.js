@@ -4,7 +4,7 @@ const PaymentHeader = (props) => {
 
   var getClass = (step) => {
     var currentStep = props.step
-    if (step === currentStep) {
+    if (step === currentStep  && !props.haltPayment) {
       return "step-breadcrumb__item active"
     }
     return "step-breadcrumb__item"
