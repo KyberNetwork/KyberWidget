@@ -136,7 +136,8 @@ export default class ExchangeBody extends React.Component {
       // console.log("converter_sourceamount")
       // console.log(srcAmount)
       if (parseFloat(srcAmount) < parseFloat(converter.toEther(constansts.EPSILON))){
-        this.props.dispatch(exchangeActions.thowErrorSourceAmount("error.source_amount_too_small"))
+        var minAmount = converter.toEther(constansts.EPSILON)
+        this.props.dispatch(exchangeActions.thowErrorSourceAmount(this.props.translate("error.source_amount_too_small", {minAmount: minAmount})))
         isValidate = false
       }
     }
