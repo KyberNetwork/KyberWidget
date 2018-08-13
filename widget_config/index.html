@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="favicon.ico">
     <title>KyberPay Configuration</title>
-    <link rel="stylesheet" href="assets/styles.css?v=1">
-    <style id="widget_style">
-._kyberpay-widget {
+    <link rel="stylesheet" href="assets/styles.css?v=6">
+    <style id="widget_button_style">
+.kyber-widget-button {
     display: inline-block;
     width: 100%;
     max-width: 180px;
@@ -27,6 +27,29 @@
     background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 47 67'><g fill='%2331CB9E'><path d='m20 33.509 25.029 14.318c0.87928 0.49892 1.9708-0.13607 1.9708-1.1339v-26.382c0-1.013-1.0915-1.6328-1.9708-1.1339l-25.029 14.333z'/><path d='m44.473 12.835-17.096-12.566c-0.79409-0.58482-1.9307-0.16495-2.1332 0.76476l-6.2438 27.966 25.318-14.006c0.8408-0.46485 0.91866-1.5895 0.1557-2.1593'/><path d='m27.361 66.738 17.111-12.569c0.76291-0.56995 0.68506-1.6949-0.14013-2.1598l-25.332-14.009 6.2434 27.973c0.18683 0.92992 1.339 1.3349 2.1175 0.76493'/><path d='m13.497 33.008 6.4714-30.416c0.25466-1.1954-1.0936-2.058-2.0523-1.3165l-16.568 12.772c-0.85387 0.65068-1.3482 1.6797-1.3482 2.7541v32.398c0 1.0744 0.49435 2.1034 1.3482 2.7541l16.568 12.772c0.95873 0.74148 2.3069-0.12106 2.0523-1.3165l-6.4714-30.401z'/></g></svg>");
 }
     </style>
+    <style id="widget_popup_style">
+#kyber-widget {
+    background-color: rgba(0,0,0,.7);
+    position: fixed;
+    overflow: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+#kyber-widget::before {
+    content: "×";
+    position: absolute;
+    top: 16px;
+    right: 8px;
+    display: inline-block;
+    padding: 6px;
+    font-size: 36px;
+    color: #fff;
+    line-height: 0;
+    cursor: pointer;
+}
+    </style>
 </head>
 
 <body>
@@ -39,13 +62,13 @@
                     <label class="item-name">Widget Type:</label>
                     <div class="item-value w30">
                         <label>
-                            <input type="radio" checked> New Window
+                            <input data-ignored="true" type="radio" name="type" checked id="typePopup"> Popup
                         </label>
                         <label>
-                            <input type="radio" disabled> Popup
+                            <input data-ignored="true" type="radio" name="type"> New Tab
                         </label>
                         <label>
-                            <input type="radio" disabled> Embedded
+                            <input data-ignored="true" type="radio" name="type" disabled> Embedded
                         </label>
                     </div>
                 </div>
@@ -53,10 +76,10 @@
                     <label class="item-name">Theme:</label>
                     <div class="item-value w30">
                         <label>
-                            <input type="radio" checked> Light
+                            <input data-ignored="true" type="radio" checked> Light
                         </label>
                         <label>
-                            <input type="radio" disabled> Dark
+                            <input data-ignored="true" type="radio" disabled> Dark
                         </label>
                     </div>
                 </div>
@@ -68,7 +91,7 @@
                     <label class="item-name required">Recipient Address:</label>
                     <div class="item-value">
                         <input name="receiveAddr" required class="full-length" type="text" spellcheck="false" value="0x63B42a7662538A1dA732488c252433313396eade"
-                            placeholder="0x..." pattern="^0x[a-fA-F0-9]{40}$" message="Recipient Address is required and must be a valid Ethereum address.">
+                            placeholder="self or 0x..." pattern="^(self)|(0x[a-fA-F0-9]{40})$" message="Recipient Address is required and must be 'self' or a valid Ethereum address.">
                     </div>
                 </div>
                 <div class="item">
@@ -147,11 +170,84 @@
                     <textarea id="sourceCss" spellcheck="false" disabled></textarea>
                 </div>
             </div>
+            <div class="item">
+                <label class="item-name align-top">
+                    Javascript Source:
+                    <button class="btn-copy" data-copy-target="#sourceJs">Copy</button>
+                </label>
+                <div class="item-value">
+                    <textarea id="sourceJs" spellcheck="false" disabled></textarea>
+                </div>
+            </div>
         </section>
 
     </div>
 
-    <script src="assets/main.js?v=4"></script>
+    <script src="assets/main.js?v=14"></script>
+    <script id="widget_js" type="text/template">
+(function(global, baseUrl){
+    if (!global.kyberWidgetOptions) {
+        global.kyberWidgetOptions = {};
+        global.kyberWidgetOptions.onClose = function() {
+            var popup = document.getElementById("kyber-widget");
+            if (popup) {
+                document.body.style.overflow = null;
+                popup.remove();
+            }
+        }
+
+        var script = document.createElement("script");
+        script.async = true;
+        script.onerror = function() {
+            global.kyberWidgetOptions.jsLoadError = true;
+        };
+        script.src = baseUrl + "/app.min.js?t=" + Date.now();
+        document.body.appendChild(script);
+
+        var css = document.createElement("link");
+        css.setAttribute("rel", "stylesheet")
+        css.setAttribute("href", baseUrl + "/app.bundle.css?t=" + Date.now());
+        document.head.appendChild(css);
+    }
+
+    document.querySelectorAll(".kyber-widget-button").forEach(function(tag){
+        tag.addEventListener("click", function(e){
+            if (global.kyberWidgetOptions.jsLoadError) return;
+            
+            e.preventDefault();
+
+            // remove old tag, just to ensure
+            var oldPopup = document.getElementById("kyber-widget");
+            if (oldPopup) {
+                oldPopup.remove();
+            }
+
+            // create new tag
+            var popup = document.createElement("DIV");
+            popup.id = "kyber-widget";
+
+            // set tag attributes
+            popup.setAttribute("data-widget-attribute", "true");
+            var params = new URL(tag.href).searchParams.entries();
+            for (var pair of params) {
+                popup.setAttribute("data-widget-" + pair[0], decodeURIComponent(pair[1]));
+            }
+            popup.addEventListener("click", function(e){
+                if (event.target === this) {
+                    global.kyberWidgetOptions.onClose();
+                }
+            });
+
+            // add the tag
+            document.body.appendChild(popup);
+            document.body.style.overflow = "hidden";
+
+            // render the widget
+            global.kyberWidgetInstance && global.kyberWidgetInstance.render();
+        })
+    });
+})(this, "${baseUrl}");
+    </script>
 </body>
 
 </html>
