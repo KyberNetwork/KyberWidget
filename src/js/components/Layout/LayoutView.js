@@ -58,6 +58,7 @@ const LayoutView = (props) => {
           <PaymentHeader 
             translate={props.translate}
             step={props.step}
+            haltPayment={props.haltPayment}
           />
 
           <Switch>

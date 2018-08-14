@@ -71,7 +71,7 @@ textarea {
     height: 120px;
     font-family: monospace;
 }
-#sourceCss {
+#sourceCss, #sourceJs {
     height: 300px;
 }
 .align-top {
