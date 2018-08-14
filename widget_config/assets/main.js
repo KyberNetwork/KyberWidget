@@ -26,12 +26,9 @@
     };
 
     function grabForm() {
-        var form = document.querySelector("form");
+        var form = document.querySelector(".params");
         var data = [], error = [], msg, name, value;
         form.querySelectorAll("input, select").forEach(function (node) {
-            
-            if (node.type && node.type === 'radio' && !node.checked) return;
-
             // do simple validation
             name = node.getAttribute("name");
             if (!node.checkValidity()) {
@@ -66,13 +63,13 @@
     }
 
     function copyClipboard(selector) {
-        var input = document.querySelector(selector); // input, textarea
-        input.removeAttribute("disabled");
-        input.select();
-
-        var result = document.execCommand("copy", true);
-        input.setAttribute("disabled", "disabled");
-
+        var input = document.querySelector(selector).textContent;
+        var aux = document.createElement("input");
+        aux.setAttribute("value", input);
+        document.body.appendChild(aux);
+        aux.select();
+        var result = document.execCommand("copy");
+        document.body.removeChild(aux);
         return result;
     }
 
@@ -110,8 +107,8 @@
         if (formData.error && formData.error.length) {
             document.getElementById("widget").innerHTML = "<p class='error'>" +
                 formData.error.join("<br>") + "</p>";
-            document.getElementById("sourceHtml").value = "";
-            document.getElementById("sourceCss").value = "";
+            document.getElementById("sourceHtml").innerText = "";
+            document.getElementById("sourceCss").innerText = "";
             return;
         }
 
@@ -124,15 +121,21 @@
         tagHtml += "target='_blank'>Pay by tokens</a>";
 
         document.getElementById("widget").innerHTML = tagHtml;
-        document.getElementById("sourceHtml").value = tagHtml;
-        document.getElementById("sourceCss").value = document.getElementById("widget_button_style").innerHTML.trim();
+        document.getElementById("sourceHtml").innerText = tagHtml;
+
+        document.getElementById("sourceCss").innerText = document.getElementById("widget_button_style").innerHTML.trim();
 
         if (isPopup) {
-            document.getElementById("sourceJs").value = runTemplateJS(widgetBaseUrl);
-            document.getElementById("sourceCss").value += "\n" + document.getElementById("widget_popup_style").innerHTML.trim();
+            document.getElementById("sourceJs").innerText = runTemplateJS(widgetBaseUrl);
+            document.getElementById("sourceCss").innerText += "\n" + document.getElementById("widget_popup_style").innerHTML.trim();
         } else {
-            document.getElementById("sourceJs").value = "";
+            document.getElementById("sourceJs").innerText = "";
         }
+
+        Prism.highlightElement(document.getElementById("sourceHtml"));
+        Prism.highlightElement(document.getElementById("sourceJs"));
+        Prism.highlightElement(document.getElementById("sourceCss"));
+
     }, 50, false);
 
 
