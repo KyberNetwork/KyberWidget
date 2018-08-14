@@ -1,7 +1,10 @@
 
 
-@import '../bower/foundation-sites/assets/foundation-float';
-@import '../bower/foundation-sites/assets/foundation-prototype';
+// @import '../bower/foundation-sites/assets/foundation-float';
+// @import '../bower/foundation-sites/assets/foundation-prototype';
+
+ @import 'foundation-float.min.css';
+ @import 'foundation-prototype.min.css';
 
 @import '../bower/animate.css/animate.css';
 @import 'settings';
