@@ -7,7 +7,6 @@
     <link rel="icon" href="favicon.ico">
     <title>KyberPay Configuration</title>
     <link rel="stylesheet" href="assets/styles.css?v=7">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css">
     <style id="widget_button_style">
 .kyber-widget-button {
     display: inline-block;
@@ -51,6 +50,52 @@
     cursor: pointer;
 }
     </style>
+    <style id="tab">
+        .code-tab{
+            padding: 1.5rem 0;
+            position: relative;
+        }
+        /* Style the tab */
+        .tab {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        /* Style the buttons inside the tab */
+        .tablinks {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css">
 </head>
 
 <body>
@@ -153,44 +198,71 @@
                 <label class="item-name align-top"></label>
                 <div id="widget" class="item-value"></div>
             </div>
-            <div class="item">
-                <label class="item-name align-top">
-                    HTML Source:
-                    <button class="btn-copy" data-copy-target="#sourceHtml">Copy</button>
-                </label>
-                <div class="item-value">
-                    <pre><code id="sourceHtml" class="language-markup">
+            <div class="code-tab">
+                <div class="tab">
+                    <button class="tablinks" onclick="openCode(event, 'item-sourceHtml')" id="defaultOpen">HTML</button>
+                    <button class="tablinks" onclick="openCode(event, 'item-sourceCss')">CSS</button>
+                    <button class="tablinks" onclick="openCode(event, 'item-sourceJs')">Javascript</button>
+                    <button class="btn-copy" data-copy-target="sourceHtml">Copy</button>
+                </div>
+                <div id="item-sourceHtml" class="tabcontent">
+                 <pre><code id="sourceHtml" class="language-markup">
+                 </code></pre>
+                </div>
+
+                <div id="item-sourceCss" class="tabcontent">
+                <pre><code id="sourceCss" class="language-css">
                     </code></pre>
                 </div>
 
-            </div>
-            <div class="item">
-                <label class="item-name align-top">
-                    CSS Source:
-                    <button class="btn-copy" data-copy-target="#sourceCss">Copy</button>
-                </label>
-                <div class="item-value">
-                    <pre><code id="sourceCss" class="language-css">
+                <div id="item-sourceJs" class="tabcontent">
+                <pre><code id="sourceJs" class="language-javascript">
                     </code></pre>
                 </div>
+                <!--<div class="item">-->
+                <!--<div>-->
+                <!--<label class="item-name align-top">-->
+                <!--HTML Source:-->
+                <!--</label>-->
+                <!--<button class="btn-copy" data-copy-target="sourceHtml">Copy</button>-->
+                <!--</div>-->
+                <!--<div class="item-value">-->
+                <!--<pre><code id="sourceHtml" class="language-markup">-->
+                <!--</code></pre>-->
+                <!--</div>-->
 
+                <!--</div>-->
+                <!--<div class="item">-->
+                <!--<div>-->
+                <!--<label class="item-name align-top">-->
+                <!--CSS Source:-->
+                <!--</label>-->
+                <!--<button class="btn-copy" data-copy-target="sourceCss">Copy</button>-->
+                <!--</div>-->
+                <!--<div class="item-value">-->
+                <!--<pre><code id="sourceCss" class="language-css">-->
+                <!--</code></pre>-->
+                <!--</div>-->
+
+                <!--</div>-->
+                <!--<div class="item">-->
+                <!--<div>-->
+                <!--<label class="item-name align-top">-->
+                <!--Javascript Source:-->
+                <!--</label>-->
+                <!--<button class="btn-copy" data-copy-target="sourceJs">Copy</button>-->
+                <!--</div>-->
+                <!--<div class="item-value">-->
+                <!--<pre><code id="sourceJs" class="language-javascript">-->
+                <!--</code></pre>-->
+                <!--</div>-->
+
+                <!--</div>-->
             </div>
-            <div class="item">
-                <label class="item-name align-top">
-                    Javascript Source:
-                    <button class="btn-copy" data-copy-target="#sourceJs">Copy</button>
-                </label>
-                <div class="item-value">
-                    <pre><code id="sourceJs" class="language-javascript">
-                    </code></pre>
-                </div>
-
-            </div>
-
         </section>
 
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
+    <script src="assets/prism.js"></script>
     <script src="assets/main.js?v=15"></script>
     <script id="widget_js" type="text/template">
 (function(global, baseUrl){
@@ -256,7 +328,28 @@
     });
 })(this, "${baseUrl}");
     </script>
+    <script>
+      function openCode(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.visibility = "hidden";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.visibility = "visible";
+        evt.currentTarget.className += " active";
+        var buttonCopy = document.getElementsByClassName("btn-copy");
+        // console.log(cityName.replace('item-',''));
+        buttonCopy[0].setAttribute('data-copy-target',cityName.replace('item-',''));
+        // console.log(buttonCopy)
+      }
 
+      // Get the element with id="defaultOpen" and click on it
+      document.getElementById("defaultOpen").click();
+    </script>
 </body>
 
 </html>

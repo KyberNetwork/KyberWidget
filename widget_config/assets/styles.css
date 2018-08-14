@@ -72,7 +72,7 @@ textarea {
     font-family: monospace;
 }
 #sourceHtml {
-    height: 120px; 
+    height: 120px;
 }
 #sourceCss, #sourceJs {
     height: 300px;
@@ -97,10 +97,14 @@ textarea {
 }
 .btn-copy {
     display: block;
+    float: right;
     position: absolute;
-    top: 1.8rem;
+    top: 50%;
     right: 2rem;
     cursor: pointer;
+    margin-top: -10px;
+    height: 25px;
+    outline: none;
 }
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {

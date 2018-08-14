@@ -63,12 +63,12 @@
     }
 
     function copyClipboard(selector) {
-        var input = document.querySelector(selector).textContent;
+        var input = document.getElementById(selector).innerText;
         var aux = document.createElement("input");
         aux.setAttribute("value", input);
         document.body.appendChild(aux);
         aux.select();
-        var result = document.execCommand("copy");
+        var result=document.execCommand("copy");
         document.body.removeChild(aux);
         return result;
     }
@@ -121,21 +121,20 @@
         tagHtml += "target='_blank'>Pay by tokens</a>";
 
         document.getElementById("widget").innerHTML = tagHtml;
-        document.getElementById("sourceHtml").innerText = tagHtml;
+        document.getElementById("sourceHtml").textContent = tagHtml;
 
-        document.getElementById("sourceCss").innerText = document.getElementById("widget_button_style").innerHTML.trim();
+        document.getElementById("sourceCss").textContent = document.getElementById("widget_button_style").innerHTML.trim();
 
         if (isPopup) {
-            document.getElementById("sourceJs").innerText = runTemplateJS(widgetBaseUrl);
-            document.getElementById("sourceCss").innerText += "\n" + document.getElementById("widget_popup_style").innerHTML.trim();
+            document.getElementById("sourceJs").textContent = runTemplateJS(widgetBaseUrl);
+            document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_popup_style").innerHTML.trim();
         } else {
-            document.getElementById("sourceJs").innerText = "";
+            document.getElementById("sourceJs").textContent = "";
         }
 
         Prism.highlightElement(document.getElementById("sourceHtml"));
         Prism.highlightElement(document.getElementById("sourceJs"));
         Prism.highlightElement(document.getElementById("sourceCss"));
-
     }, 50, false);
 
 
