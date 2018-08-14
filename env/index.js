@@ -8,7 +8,7 @@ var network
 
 var widgetParent = document.getElementById(constants.APP_NAME)
 
-//console.log(widgetParent)
+console.log(widgetParent)
 if (widgetParent){
   var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
   if (attributeWidget === true || attributeWidget === 'true'){
