@@ -28,7 +28,7 @@ function getAllPathToken(){
 
 const LayoutView = (props) => {
   var listToken = getAllPathToken()
-  var defaultPathExchange = constansts.BASE_HOST + "/widget/payment"
+  var defaultPathExchange = constansts.BASE_HOST + constansts.PAYMENT_PATH
 
   var params = common.queryParamsString(window.location.href)
   if (props.currentLanguage !== "en"){
@@ -63,8 +63,8 @@ const LayoutView = (props) => {
           <Switch>
             {/* <Route exact path={constansts.BASE_HOST} component={props.ImportAccount} /> */}
 
-            <Route exact path={constansts.BASE_HOST + "/widget/payment"} component={props.Exchange} />
-            <Route exact path={constansts.BASE_HOST + "/widget/payment/*"} component={props.Exchange} />
+            <Route exact path={constansts.BASE_HOST + constansts.PAYMENT_PATH} component={props.Exchange} />
+            <Route exact path={constansts.BASE_HOST + constansts.PAYMENT_PATH +"*"} component={props.Exchange} />
             
             <Redirect to={defaultPathExchange} />
             

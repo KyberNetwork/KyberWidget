@@ -10,8 +10,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = env => {
 
     //const outputPath = env.chain ? 'dist/' + env.chain : '/src';
-
-    const outputPath = 'dist'
+    const folder = env.folder? env.folder: ""
+    const outputPath = `dist/${folder}`
 
     const timestamp = Date.now();
 
@@ -20,7 +20,7 @@ module.exports = env => {
     };
     let plugins = [
         new webpack.ProgressPlugin(),
-        new ExtractTextPlugin(`[name].bundle.${timestamp}.css`, {
+        new ExtractTextPlugin(`[name].bundle.css?v=${timestamp}`, {
             allChunks: true
         }),        
         new HtmlWebpackPlugin({
@@ -36,7 +36,7 @@ module.exports = env => {
         ])
     ];
     if (env && env.build !== 'true') {
-        entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
+        //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
         plugins.push(new webpack.DefinePlugin({
             //'env': JSON.stringify(env.chain),
             'process.env': {
@@ -64,7 +64,7 @@ module.exports = env => {
             })
         );
         plugins.push(new CompressionPlugin({
-                asset: '[path].gz[query]',
+                asset: `[path].gz[query]`,
                 algorithm: 'gzip',
                 test: /\.js$|\.css$|\.html$/,
                 threshold: 10240,
@@ -78,7 +78,7 @@ module.exports = env => {
         entry: entry,
         output: {
             path: path.join(__dirname, outputPath),
-            filename: `[name].min.${timestamp}.js`,
+            filename: `[name].min.js?v=${timestamp}`,
             publicPath: '/'
         },
         module: {

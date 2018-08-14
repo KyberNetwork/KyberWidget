@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getTranslate } from 'react-localize-redux'
+import * as widgetOptions from "../../utils/widget-options"
 
 @connect((store) => {
   const translate = getTranslate(store.locale)
@@ -17,6 +18,7 @@ export default class ErrorPayment extends React.Component {
       return <li key={key}>{this.props.global.errorsPayment[key]}</li>
     })
   };
+  
 
   render = () => {
     return (
@@ -34,7 +36,7 @@ export default class ErrorPayment extends React.Component {
                   || "Please contact your merchant for wrong params"}
               </div>
               <div className={"error-payment__content-button"}>
-                <div className={"payment-gateway__hollow-button"} onClick={() => window.close()}>
+                <div className={"payment-gateway__hollow-button"} onClick={widgetOptions.onClose}>
                 {this.props.translate("transaction.back_to_website") || "Back to Website"}
                 </div>
               </div>

@@ -76,27 +76,65 @@ export default class Layout extends React.Component {
 
 
   componentDidMount(){
-    var query  = common.getQueryParams(window.location.search)
+    var widgetParent = document.getElementById(constanst.APP_NAME)
+    var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
+
+    
+    var query = {}
+    var receiveAddr
+    var receiveToken
+    var receiveAmount
+    var callback
+    var network
+    var paramForwarding
+    var signer
+    var commissionID
+
+    if (attributeWidget === true || attributeWidget === 'true'){
+      for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++){
+          var nodeName = atts[i].nodeName
+          if(nodeName.includes('data-widget')){
+            var key = nodeName.replace('data-widget-','');
+            query[key] = atts[i].nodeValue
+          }
+      }
+
+      //this.props.dispatch(initParamsGlobal(query))
+
+      receiveAddr = widgetParent.getAttribute('data-widget-receiveAddr')
+      receiveToken = widgetParent.getAttribute('data-widget-receiveToken')
+      receiveAmount = widgetParent.getAttribute('data-widget-receiveAmount')
+      callback = widgetParent.getAttribute('data-widget-callback')
+      network = widgetParent.getAttribute('data-widget-network')
+      paramForwarding = widgetParent.getAttribute('data-widget-paramForwarding')
+      signer = widgetParent.getAttribute('data-widget-signer')
+      commissionID = widgetParent.getAttribute('data-widget-commissionID')
+
+    }else{
+      query  = common.getQueryParams(window.location.search)
+
+      receiveAddr = common.getParameterByName("receiveAddr")
+      receiveToken = common.getParameterByName("receiveToken")
+      receiveAmount = common.getParameterByName("receiveAmount");
+      callback = common.getParameterByName("callback")
+      network = common.getParameterByName("network")
+      paramForwarding = common.getParameterByName("paramForwarding")
+      signer = common.getParameterByName("signer")
+      commissionID = common.getParameterByName("commissionID")
+    }
+
+    
     this.props.dispatch(initParamsGlobal(query))
-
-    var receiveAddr = common.getParameterByName("receiveAddr")
-    var receiveToken = common.getParameterByName("receiveToken")
-    var receiveAmount = common.getParameterByName("receiveAmount");
-    // console.log("receiveAmount")
-    // console.log(receiveAmount)
-    var callback = common.getParameterByName("callback")
-    var network = common.getParameterByName("network")
-    var paramForwarding = common.getParameterByName("paramForwarding")
-    var signer = common.getParameterByName("signer")
-    var commissionID = common.getParameterByName("commissionID")
-
     
 
     var errors = {}
-    if (validator.verifyAccount(receiveAddr)){
-      errors["receiveAddr"] = this.props.translate('error.receive_address_must_be_ethereum_addr') 
-        || "Receive address must be a valid ethereum address"
+    if(receiveAddr !== 'self'){
+      if (validator.verifyAccount(receiveAddr)){
+        errors["receiveAddr"] = this.props.translate('error.receive_address_must_be_ethereum_addr') 
+          || "Receive address must be a valid ethereum address"
+      }
     }
+    
     if (receiveToken){
       receiveToken = receiveToken.toUpperCase()
       if (!this.props.tokens[receiveToken]){
