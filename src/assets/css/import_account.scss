@@ -10,6 +10,12 @@ $animation-time: 0.5s;
     animation: moving-up $animation-time forwards;
     transition: all .3s;
     padding: 30px 25px 50px;
+    box-sizing: border-box;
+    @include screen-max-width(medium) {
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-top: 15px;
+    }
   }
 
   .signer-address {
@@ -126,13 +132,13 @@ $animation-time: 0.5s;
 
         &__name {
           color: #cccccc;
-          margin: 5px 0 0;
+          margin: 0;
           font-weight: 400;
           font-family: $font-cera;
         }
 
         &__balance {
-          font-weight: 600;
+          font-weight: 500;
           text-shadow: 0 0 16px #e8e8e8;
         }
 
@@ -140,6 +146,10 @@ $animation-time: 0.5s;
           display: flex;
           justify-content: center;
           align-items: center;
+          padding: 0 0.9375rem;
+          @include screen-max-width(medium) {
+            padding: 0;
+          }
         }
 
         .more-info {
@@ -147,9 +157,10 @@ $animation-time: 0.5s;
           text-align: left;
           color: #999;
           line-height: 1.5;
-          .error {
-            color: #d45a58;
-          }
+          font-weight: 100;
+          // .error {
+          //   color: #d45a58;
+          // }
         }
 
         &__button,
@@ -229,6 +240,7 @@ $animation-time: 0.5s;
       visibility: hidden;
       transform: translateX(-50px);
       transition: all .3s;
+      box-sizing: border-box;
 
       &__title {
         font-family: $font-cera;
@@ -244,7 +256,7 @@ $animation-time: 0.5s;
 
       &__button {
         text-align: center;
-        font-weight: 600;
+        font-weight: 500;
         width: 35%;
         padding: 10px;
         border-radius: 4px;
@@ -276,9 +288,10 @@ $animation-time: 0.5s;
           margin: 0;
           box-shadow: inset 0 1px 2px hsla(0,0%,4%,.1);
           border: 1px solid #cacaca;
+          transition: box-shadow .5s,border-color .25s ease-in-out,-webkit-box-shadow .5s;
           &:focus {
             border-color: #666;
-            box-shadow: 0 0 10px #ccc;
+            box-shadow: 0 0 5px #ccc;
           }
 
           &.security{
@@ -344,6 +357,9 @@ $animation-time: 0.5s;
   border-radius: 5px;
   background-color: #fcfcfe;
   box-shadow: 0 2px 6px 0 rgba(184, 184, 184, 0.5);
+  @include screen-max-width(medium) {
+    padding: 15px 5px;
+  }
 
   &-type {
     text-align: center;
@@ -352,7 +368,7 @@ $animation-time: 0.5s;
 
     &-image {
       min-width: 35px;
-      margin-bottom: 4px;
+      // margin-bottom: 4px;
     }
 
     &-text {
@@ -368,6 +384,7 @@ $animation-time: 0.5s;
     font-size: 14px;
     margin-bottom: 2px;
     color: $base-color;
+    line-height: 1.5;
 
     &-address {
       margin-bottom: 3px;

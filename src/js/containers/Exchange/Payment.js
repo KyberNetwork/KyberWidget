@@ -484,13 +484,13 @@ export default class Payment extends React.Component {
             <div>
               <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
               {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
-                <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
+                <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.destTokenSymbol}</span>
               )}
               {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol && (
                 <span>{(''+this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</span>
               )}
               {!this.props.exchange.isHaveDestAmount && (
-                <span>{(''+this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.sourceAmount) : this.props.exchange.destAmount} {this.props.exchange.sourceTokenSymbol}</span>
+                <span>{(''+this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.sourceAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</span>
               )}
             </div>
             <div>

@@ -39,7 +39,7 @@
     font-size: 14px;
     &__content {
       display: flex;
-      margin: 8px 0;
+      // margin: 8px 0;
       div:first-child {
         width: 75px;
       }
@@ -59,16 +59,25 @@
 
 #exchange {
   max-width: $container-max-width;
-  box-shadow: 0 7px 25px #ddd;
+  // box-shadow: 0 7px 25px #ddd;
   background: white;
   margin: 0 auto;
+  box-sizing: border-box;
+  border: 1px solid #eee;
+
+  .exchange-pading-top{
+    padding-top: 30px;
+  }
 
   .exchange-pading{
     //padding: 0 1rem;
     padding: 0  25px;
-  }
-  .exchange-pading-top{
-    padding-top: 30px;
+    @include screen-max-width(medium) {
+      padding: 0 20px;
+      &.exchange-pading-top {
+        padding-top: 15px;
+      }
+    }
   }
 
   .estimate-dest-value{
@@ -93,6 +102,7 @@
   }
   .checkbox {
     margin-top: 15px;
+    display: flex;
     input {
       margin-left: 0;
       &:hover {
@@ -133,7 +143,7 @@
 
   .advance-title-mobile {
     font-size: 14px;
-    font-weight: 600;
+    // font-weight: 600;
   }
 
   .button-payment {

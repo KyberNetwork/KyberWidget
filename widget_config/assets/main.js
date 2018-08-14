@@ -29,6 +29,9 @@
         var form = document.querySelector("form");
         var data = [], error = [], msg, name, value;
         form.querySelectorAll("input, select").forEach(function (node) {
+            
+            if (node.type && node.type === 'radio' && !node.checked) return;
+
             // do simple validation
             name = node.getAttribute("name");
             if (!node.checkValidity()) {
@@ -39,8 +42,6 @@
             } else {
                 node.removeAttribute("title");
             }
-
-            if (node.type && node.type === 'radio' && !node.checked) return;
 
             // set name - value
             if (node.type && node.type === 'checkbox') {

@@ -10,6 +10,7 @@
   max-width: $container-max-width;
   padding: $container-vertical-padding $container-side-padding;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .cssload-container {
