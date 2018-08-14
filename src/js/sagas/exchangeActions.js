@@ -1459,7 +1459,7 @@ function* verifyExchange() {
 
   if (converter.compareTwoNumber(srcAmount, constansts.EPSILON) === -1) {
     var minAmount = converter.toEther(constansts.EPSILON)
-    yield put(actions.throwErrorExchange("src_small", translate("error.source_amount_too_small", {minAmount: minAmount})))
+    yield put(actions.throwErrorExchange("src_small", translate("error.source_amount_too_small", {minAmount: minAmount}) || `Source amount is too small. Minimum amount is ${minAmount} ETH equivalent.`))
   } else {
     yield put(actions.throwErrorExchange("src_small", ""))
   }
