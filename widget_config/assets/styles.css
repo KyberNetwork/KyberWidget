@@ -68,14 +68,7 @@ select {
 }
 textarea {
     width: 100%;
-    height: 120px;
     font-family: monospace;
-}
-#sourceHtml {
-    height: 120px;
-}
-#sourceCss, #sourceJs {
-    height: 300px;
 }
 .align-top {
     vertical-align: top;
@@ -99,12 +92,9 @@ textarea {
     display: block;
     float: right;
     position: absolute;
-    top: 50%;
+    top: 1.8rem;
     right: 2rem;
     cursor: pointer;
-    margin-top: -10px;
-    height: 25px;
-    outline: none;
 }
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
