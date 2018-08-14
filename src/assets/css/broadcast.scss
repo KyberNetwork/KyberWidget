@@ -16,6 +16,9 @@
 .tx-hash {
   margin-top: 5px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   a {
     padding: 10px;
@@ -36,17 +39,17 @@
     }
 
     &.copy-tx {
-      padding: 5px 10px;
+      padding: 5px 10px 3px;
       background-color: #F5F5F5;
       border-radius: 6px;
       position: absolute;
       right: 5px;
-      top: 5px;
+      // top: 5px;
 
       img {
         position: relative;
         bottom: 1px;
-        width: 20px;
+        width: 18px;
       }
     }
   }

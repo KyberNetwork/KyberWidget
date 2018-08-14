@@ -95,10 +95,12 @@ export default class MinRate extends React.Component {
                     width: 30
                   }}
           />
-          <div className="row small-12">
-          <div className="column small-1"><label className="des-down">0%</label></div>
-          <div className="column small-9 min-convention-rate"><span>{displayMinRate} {" " + desToken}</span></div>
-          <div className="column small-1"><label className="des-down">{percent}%</label></div>
+          <div className="show-rate">
+          <div className="rate-percent">
+            <div className=""><label className="des-down">0%</label></div>
+            <div className=""><label className="des-down">{percent}%</label></div>
+          </div>
+          <div className="min-convention-rate"><span>{displayMinRate} {" " + desToken}</span></div>
           </div>
           {this.props.exchange.errors.rateError && <div className="error-text">{this.props.exchange.errors.rateError}</div>}
         </div>
