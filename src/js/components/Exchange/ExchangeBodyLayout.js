@@ -199,7 +199,7 @@ const ExchangeBodyLayout = (props) => {
                 </div>
                 {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
                   <div className="estimate-dest-value">
-                    {props.translate("transaction.estimate_dest_value") || "Estimate dest value"}: {props.exchange.offeredRate == "0"? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}
+                    {props.translate("transaction.estimate_dest_value") || "You will get approximately"}: {props.exchange.offeredRate == "0"? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}
                   </div>
                 )}
               </div>
