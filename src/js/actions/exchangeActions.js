@@ -648,3 +648,11 @@ export function unsetConfirming() {
     type: "EXCHANGE.UNSET_CONFIRMING"
   }
 }
+
+
+export function updateReceiveAddress(address){
+  return {
+    type: "EXCHANGE.UPDATE_RECEIVE_ADDRESS",
+    payload: {address}
+  }
+}

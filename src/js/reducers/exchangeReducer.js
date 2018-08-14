@@ -635,6 +635,11 @@ const exchange = (state = initState, action) => {
       newState.isSelectToken = false
       return newState
     }
+    case "EXCHANGE.UPDATE_RECEIVE_ADDRESS":{
+      const {address} = action.payload
+      newState.receiveAddr = address
+      return newState
+    }
     case "GLOBAL.CLEAR_SESSION_FULFILLED":{
       var resetState = {...initState};
 
@@ -661,4 +666,4 @@ const exchange = (state = initState, action) => {
   return state
 }
 
-export default exchange;
+export {initState, exchange} ;

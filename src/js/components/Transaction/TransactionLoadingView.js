@@ -3,6 +3,8 @@ import BLOCKCHAIN_INFO from "../../../../env"
 import ReactTooltip from 'react-tooltip'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
+import * as widgetOptions from "../../utils/widget-options"
+
 const TransactionLoadingView = (props) => {
   var isBroadcasting = props.broadcasting;
   var broadcastError = props.error;
@@ -45,7 +47,7 @@ const TransactionLoadingView = (props) => {
           </div>
 
           <div className="container transaction-loading__button-container">
-            <div className={"payment-gateway__hollow-button"} onClick={() => window.close()}>
+            <div className={"payment-gateway__hollow-button"} onClick={widgetOptions.onClose}>
               {props.translate("transaction.back_to_website") || "Back to Website"}
             </div>
           </div>
@@ -92,7 +94,7 @@ const TransactionLoadingView = (props) => {
         </div>
 
         <div className="container transaction-loading__button-container">
-          <div className={"payment-gateway__hollow-button"} onClick={() => window.close()}>
+          <div className={"payment-gateway__hollow-button"} onClick={widgetOptions.onClose}>
           {props.translate("transaction.back_to_website") || "Back to Website"}
         </div>
         </div>

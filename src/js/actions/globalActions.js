@@ -234,3 +234,9 @@ export function haltPayment(errors){
     payload: {errors}
   }
 }
+
+export function initSession(){
+  return {
+    type: "GLOBAL.INIT_SESSION"
+  }
+}

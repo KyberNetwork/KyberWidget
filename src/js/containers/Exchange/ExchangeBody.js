@@ -136,7 +136,8 @@ export default class ExchangeBody extends React.Component {
       // console.log("converter_sourceamount")
       // console.log(srcAmount)
       if (parseFloat(srcAmount) < parseFloat(converter.toEther(constansts.EPSILON))){
-        this.props.dispatch(exchangeActions.thowErrorSourceAmount("error.source_amount_too_small"))
+        var minAmount = converter.toEther(constansts.EPSILON)
+        this.props.dispatch(exchangeActions.thowErrorSourceAmount(this.props.translate("error.source_amount_too_small", {minAmount: minAmount}) || `Source amount is too small. Minimum amount is ${minAmount} ETH equivalent.`))
         isValidate = false
       }
     }
@@ -357,6 +358,7 @@ export default class ExchangeBody extends React.Component {
         importAccount = {this.importAccount}
         acceptedTerm = {this.acceptedTerm}
         classNamePaymentbtn = {classNamePaymentbtn}
+        global = {this.props.global}
       />
     )
   }
