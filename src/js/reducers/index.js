@@ -7,8 +7,8 @@ import { routerReducer } from 'react-router-redux'
 import * as BLOCKCHAIN_INFO from "../../../env"
 import constants from "../services/constants"
 
-import account from './accountReducer'
-import tokens from './tokensReducer'
+import {initState as initStateAcccount, account} from './accountReducer'
+import {initState as initStateTokens, tokens} from './tokensReducer'
 import {initState as initStateExchange, exchange} from './exchangeReducer'
 import transfer from './transferReducer'
 import {initState as initStateGlobal, global} from './globalReducer'
@@ -50,6 +50,8 @@ const rootReducer = (state, action) => {
     state.exchange = initStateExchange
     state.global = initStateGlobal
     state.txs = initStateTxs
+    state.account = initStateAcccount
+    state.tokens = initStateTokens
   }
   //   var global = {...state.global}
   //   global.termOfServiceAccepted = true
