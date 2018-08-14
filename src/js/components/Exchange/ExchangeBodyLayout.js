@@ -119,7 +119,7 @@ const ExchangeBodyLayout = (props) => {
 
                     <div className="info-2__content">
                       <div>{props.translate("transaction.amount") || "Amount"}:</div>
-                      <div>{props.exchange.destAmount} {props.exchange.destTokenSymbol}</div>
+                      <div>{converter.roundingNumber(props.exchange.destAmount)} {props.exchange.destTokenSymbol}</div>
                     </div>
                   </div>
                   <div className="info-3">
@@ -141,7 +141,7 @@ const ExchangeBodyLayout = (props) => {
                           <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)} {props.exchange.sourceTokenSymbol} </div>
                         )}
                         {props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol && (
-                          <div>{props.exchange.destAmount} {props.exchange.sourceTokenSymbol} </div>
+                          <div>{converter.roundingNumber(props.exchange.destAmount)} {props.exchange.sourceTokenSymbol} </div>
                         )}
                       </div>
                     </div>
@@ -199,7 +199,7 @@ const ExchangeBodyLayout = (props) => {
                 </div>
                 {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
                   <div className="estimate-dest-value">
-                    {props.translate("transaction.estimate_dest_value") || "Estimate dest value"}: {props.exchange.offeredRate == "0"? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}
+                    {props.translate("transaction.estimate_dest_value") || "You will get approximately"}: {props.exchange.offeredRate == "0"? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}
                   </div>
                 )}
               </div>
