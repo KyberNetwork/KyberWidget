@@ -31,7 +31,7 @@
 }
     </style>
     <style id="widget_popup_style">
-#kyber-widget {
+#kyber-widget-overlay {
     background-color: rgba(0,0,0,.7);
     position: fixed;
     overflow: auto;
@@ -40,7 +40,7 @@
     right: 0;
     bottom: 0;
 }
-#kyber-widget::before {
+#kyber-widget-overlay::before {
     content: "×";
     position: absolute;
     top: 16px;
@@ -51,6 +51,14 @@
     color: #fff;
     line-height: 0;
     cursor: pointer;
+}
+#kyber-widget {
+    background-color: #fff;
+    position: absolute;
+    width: 400px;
+    transform: translateX(-50%) translateY(-50%);
+    left: 50%;
+    top: 50%;
 }
     </style>
 </head>
@@ -192,10 +200,10 @@
     if (!global.kyberWidgetOptions) {
         global.kyberWidgetOptions = {};
         global.kyberWidgetOptions.onClose = function() {
-            var popup = document.getElementById("kyber-widget");
-            if (popup) {
+            var overlay = document.getElementById("kyber-widget-overlay");
+            if (overlay) {
                 document.body.style.overflow = null;
-                popup.remove();
+                overlay.remove();
             }
         }
 
@@ -225,7 +233,16 @@
                 oldPopup.remove();
             }
 
-            // create new tag
+            // create the overlay
+            var overlay = document.createElement("DIV");
+            overlay.id = "kyber-widget-overlay";
+            overlay.addEventListener("click", function(e){
+                if (event.target === this) {
+                    global.kyberWidgetOptions.onClose();
+                }
+            });
+            
+            // create the popup
             var popup = document.createElement("DIV");
             popup.id = "kyber-widget";
 
@@ -235,14 +252,10 @@
             for (var pair of params) {
                 popup.setAttribute("data-widget-" + pair[0].replace(/([a-z])([A-Z])/g, '$1-$2'), decodeURIComponent(pair[1]));
             }
-            popup.addEventListener("click", function(e){
-                if (event.target === this) {
-                    global.kyberWidgetOptions.onClose();
-                }
-            });
 
-            // add the tag
-            document.body.appendChild(popup);
+            // add the tags to body
+            overlay.appendChild(popup);
+            document.body.appendChild(overlay);
             document.body.style.overflow = "hidden";
 
             // render the widget
