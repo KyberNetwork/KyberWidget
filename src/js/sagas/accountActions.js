@@ -263,6 +263,15 @@ function* checkSigner(address){
   }
 }
 
+function* checkReceiveAddress(address){
+  var state = store.getState()
+  var global = state.global
+  if(global.params.receiveAddr === 'self'){
+    yield put.sync(exchangeActions.updateReceiveAddress(address))
+  }
+  return
+}
+
 
 // function* fetchingGasTransfer(){}
 function* fetchingGas(address){
@@ -361,6 +370,8 @@ export function* importNewAccount(action) {
     if (accountRequest.status === "success") {
       account = accountRequest.data
     }
+
+    yield call(checkReceiveAddress, address)
 
     // const account = yield call(service.newAccountInstance, address, type, keystring, ethereum)
     yield put(actions.closeImportLoading())

@@ -111,11 +111,15 @@ const ExchangeBodyLayout = (props) => {
                   <div className="info-1">
                     {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
                   </div>
+
+                  
                   <div className="info-2">
-                    <div className="info-2__content">
-                      <div>{props.translate("transaction.address") || "Address"}:</div>
-                      <div>{props.exchange.receiveAddr.slice(0, 8)} ... {props.exchange.receiveAddr.slice(-6)}</div>
-                    </div>
+                    {props.global.params && props.global.params.receiveAddr && props.global.params.receiveAddr !== 'self' && (
+                      <div className="info-2__content">
+                        <div>{props.translate("transaction.address") || "Address"}:</div>                      
+                        <div>{props.global.params.receiveAddr.slice(0, 8)} ... {props.global.params.receiveAddr.slice(-6)}</div>
+                      </div>
+                    )}  
 
                     <div className="info-2__content">
                       <div>{props.translate("transaction.amount") || "Amount"}:</div>
@@ -155,17 +159,19 @@ const ExchangeBodyLayout = (props) => {
 
             {!props.exchange.isHaveDestAmount && (
               <div>
-                <div className="pay-info">
-                  <div className="info-1">
-                    {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
-                  </div>
-                  <div className="info-2">
-                    <div className="info-2__content">
-                      <div>{props.translate("transaction.address") || "Address"}:</div>
-                      <div>{props.exchange.receiveAddr.slice(0, 8)} ... {props.exchange.receiveAddr.slice(-6)}</div>
+                {props.global.params && props.global.params.receiveAddr && props.global.params.receiveAddr !== 'self' && (
+                  <div className="pay-info">
+                    <div className="info-1">
+                      {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
+                    </div>
+                    <div className="info-2">
+                      <div className="info-2__content">
+                        <div>{props.translate("transaction.address") || "Address"}:</div>
+                        <div>{props.global.params.receiveAddr.slice(0, 8)} ... {props.global.params.receiveAddr.slice(-6)}</div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
                 <div>
                   <div className="choose-payment">
                     <span className="transaction-label">
@@ -199,7 +205,7 @@ const ExchangeBodyLayout = (props) => {
                 </div>
                 {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
                   <div className="estimate-dest-value">
-                    {props.translate("transaction.estimate_dest_value") || "Estimate dest value"}: {props.exchange.offeredRate == "0"? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}
+                    {props.translate("transaction.estimate_dest_value") || "You will get approximately"}: {props.exchange.offeredRate == "0"? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}
                   </div>
                 )}
               </div>

@@ -9,12 +9,12 @@ import constants from "../services/constants"
 
 import account from './accountReducer'
 import tokens from './tokensReducer'
-import exchange from './exchangeReducer'
+import {initState as initStateExchange, exchange} from './exchangeReducer'
 import transfer from './transferReducer'
-import global from './globalReducer'
+import {initState as initStateGlobal, global} from './globalReducer'
 import connection from './connection'
 import utils from './utilsReducer'
-import txs from './txsReducer'
+import {initState as initStateTxs, txs} from './txsReducer'
 import locale from './languageReducer'
 //import market from './marketReducer'
 
@@ -46,7 +46,11 @@ const appReducer = combineReducers({
 
 const rootReducer = (state, action) => {
   //let isGoToRoot = action.type === '@@router/LOCATION_CHANGE' && action.payload.pathname === constants.BASE_HOST
-  // if (action.type === 'GLOBAL.CLEAR_SESSION_FULFILLED') {
+  if (action.type === 'GLOBAL.INIT_SESSION') {
+    state.exchange = initStateExchange
+    state.global = initStateGlobal
+    state.txs = initStateTxs
+  }
   //   var global = {...state.global}
   //   global.termOfServiceAccepted = true
 
