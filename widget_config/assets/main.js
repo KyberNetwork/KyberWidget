@@ -26,7 +26,7 @@
     };
 
     function grabForm() {
-        var form = document.querySelector(".params");
+        var form = document.querySelector("form");
         var data = [], error = [], msg, name, value;
         form.querySelectorAll("input, select").forEach(function (node) {
             // do simple validation
@@ -39,6 +39,8 @@
             } else {
                 node.removeAttribute("title");
             }
+
+            if (node.type && node.type === 'radio' && !node.checked) return;
 
             // set name - value
             if (node.type && node.type === 'checkbox') {
@@ -117,7 +119,7 @@
         var widgetBaseUrl = getWidgetUrl();
         var url = widgetBaseUrl + "?" + formData.data;
         var tagHtml = "<a href='" + url + "' class='kyber-widget-button'\n";
-        tagHtml += "name='KyberPay - Powered by KyberNetwork' title='Pay by tokens'\n";
+        tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay by tokens'\n";
         tagHtml += "target='_blank'>Pay by tokens</a>";
 
         document.getElementById("widget").innerHTML = tagHtml;

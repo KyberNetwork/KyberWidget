@@ -71,6 +71,9 @@ textarea {
     height: 120px;
     font-family: monospace;
 }
+#sourceHtml {
+    height: 120px; 
+}
 #sourceCss, #sourceJs {
     height: 300px;
 }
