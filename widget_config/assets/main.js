@@ -26,9 +26,12 @@
     };
 
     function grabForm() {
-        var form = document.querySelector(".params");
+        var form = document.querySelector("form");
         var data = [], error = [], msg, name, value;
         form.querySelectorAll("input, select").forEach(function (node) {
+
+            if (node.type && node.type === 'radio' && !node.checked) return;
+
             // do simple validation
             name = node.getAttribute("name");
             if (!node.checkValidity()) {
@@ -63,7 +66,7 @@
     }
 
     function copyClipboard(selector) {
-        var input = document.getElementById(selector).innerText;
+        var input = document.getElementById(selector).textContent;
         var aux = document.createElement("input");
         aux.setAttribute("value", input);
         document.body.appendChild(aux);
@@ -107,8 +110,9 @@
         if (formData.error && formData.error.length) {
             document.getElementById("widget").innerHTML = "<p class='error'>" +
                 formData.error.join("<br>") + "</p>";
-            document.getElementById("sourceHtml").innerText = "";
-            document.getElementById("sourceCss").innerText = "";
+            document.getElementById("sourceHtml").textContent = "";
+            document.getElementById("sourceCss").textContent = "";
+            document.getElementById("sourceJs").textContent = "";
             return;
         }
 
