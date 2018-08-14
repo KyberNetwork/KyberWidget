@@ -127,7 +127,7 @@ $animation-time: 0.5s;
         &__name {
           color: #cccccc;
           margin: 5px 0 0;
-          font-weight: 600;
+          font-weight: 400;
           font-family: $font-cera;
         }
 
@@ -146,6 +146,10 @@ $animation-time: 0.5s;
           font-size: 14px;
           text-align: left;
           color: #999;
+          line-height: 1.5;
+          .error {
+            color: #d45a58;
+          }
         }
 
         &__button,
@@ -266,10 +270,16 @@ $animation-time: 0.5s;
           height: 45px;
           background-color: white;
           color: #666;
-          padding: 0 40px;
+          padding: 0;
           border-radius: 4px;
           text-align: center;
           margin: 0;
+          box-shadow: inset 0 1px 2px hsla(0,0%,4%,.1);
+          border: 1px solid #cacaca;
+          &:focus {
+            border-color: #666;
+            box-shadow: 0 0 10px #ccc;
+          }
 
           &.security{
             font-family: 'text-security-disc';
