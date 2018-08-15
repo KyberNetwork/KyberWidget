@@ -94,13 +94,12 @@
   box-sizing: border-box;
   border: 1px solid #eee;
 
-  .exchange-pading-top{
-    padding-top: 30px;
-  }
-
   .exchange-pading{
     //padding: 0 1rem;
-    padding: 0  20px;
+    padding: 0 20px;
+    &.exchange-pading-top{
+      padding-top: 20px;
+    }
     @include screen-max-width(medium) {
       &.exchange-pading-top {
         padding-top: 15px;
