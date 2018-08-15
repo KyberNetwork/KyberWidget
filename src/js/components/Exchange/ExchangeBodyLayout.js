@@ -128,10 +128,12 @@ const ExchangeBodyLayout = (props) => {
                     {props.translate("transaction.i_agree_to") || "I agree to"} <a href="https://files.kyber.network/tac.html" target="_blank">{props.translate("transaction.term_and_condition") || "Terms &amp; Conditions"}</a>
                   </label>
                 </div>
-
-                <button className={props.classNamePaymentbtn} onClick={(e) => props.importAccount(e)}>
-                  {props.translate("transaction.next") || "Next"}
-                </button>
+                
+                <div className="button-payment">
+                  <button className={props.classNamePaymentbtn} onClick={(e) => props.importAccount(e)}>
+                    {props.translate("transaction.next") || "Next"}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
