@@ -46,15 +46,15 @@ export default class EthereumService extends React.Component {
     for (var node of BLOCKCHAIN_INFO[this.network].connections.http) {
       switch (node.type) {
         case "cached":
-          var provider = new providers.CachedServerProvider({ url: node.endPoint })
+          var provider = new providers.CachedServerProvider({ url: node.endPoint, network: this.network })
           this.listProviders.push(provider)
           break
         case "prune":
-          var provider = new providers.PruneProvider({ url: node.endPoint })
+          var provider = new providers.PruneProvider({ url: node.endPoint, network: this.network })
           this.listProviders.push(provider)
           break
         case "none_prune":
-          var provider = new providers.NonePruneProvider({ url: node.endPoint })
+          var provider = new providers.NonePruneProvider({ url: node.endPoint, network: this.network })
           this.listProviders.push(provider)
           break
       }

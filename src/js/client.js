@@ -12,7 +12,7 @@ import constanst from "./services/constants"
 //import platform from 'platform'
 //import { blackList } from './blacklist'
 import {initSession, initParamsGlobal } from "./actions/globalActions"
-import {initSession, initParamsExchange } from "./actions/exchangeActions"
+import {initParamsExchange } from "./actions/exchangeActions"
 
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import { persistor, store } from "./store"

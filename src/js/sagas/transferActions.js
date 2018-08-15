@@ -111,11 +111,14 @@ function* transferKeystore(action, callService) {
     token, amount,
     destAddress, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData } = action.payload
+
+  var networkId  = common.getNetworkId()  
+
   try {
     var rawTx = yield call(keyService.callSignTransaction, callService, formId, ethereum, address,
       token, amount,
       destAddress, nonce, gas,
-      gasPrice, keystring, type, password)
+      gasPrice, keystring, type, password, networkId)
   } catch (e) {
     yield put(exchangeActions.throwPassphraseError(e.message))
     return
@@ -135,13 +138,16 @@ function* transferColdWallet(action, callService) {
     token, amount,
     destAddress, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData } = action.payload
+
+  var networkId  = common.getNetworkId()  
+
   try {
     var rawTx
     try {
       rawTx = yield call(keyService.callSignTransaction, callService, formId, ethereum, address,
         token, amount,
         destAddress, nonce, gas,
-        gasPrice, keystring, type, password)
+        gasPrice, keystring, type, password, networkId)
     } catch (e) {
       let msg = ''
       if(e.native && type == 'ledger'){
@@ -171,13 +177,16 @@ function* transferMetamask(action, callService) {
     token, amount,
     destAddress, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData } = action.payload
+
+    var networkId  = common.getNetworkId()  
+
   try {
     var hash
     try {
       hash = yield call(keyService.callSignTransaction, callService, formId, ethereum, address,
         token, amount,
         destAddress, nonce, gas,
-        gasPrice, keystring, type, password)
+        gasPrice, keystring, type, password, networkId)
     } catch (e) {
       console.log(e)
       yield put(exchangeActions.setSignError(e))

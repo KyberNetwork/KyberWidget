@@ -6,10 +6,10 @@ import constants from "../services/constants"
 import * as converter from "../utils/converter"
 
 const initState = function (network) {
-  network = network ? network: "ropsten"
+  var network = network ? network: "ropsten"
   let tokens = {}
   Object.keys(BLOCKCHAIN_INFO[network].tokens).forEach((key) => {
-    tokens[key] = BLOCKCHAIN_INFO.tokens[key]
+    tokens[key] = BLOCKCHAIN_INFO[network].tokens[key]
     tokens[key].rate = 0
     tokens[key].minRate = 0
     tokens[key].rateEth = 0

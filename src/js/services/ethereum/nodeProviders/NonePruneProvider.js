@@ -5,7 +5,8 @@ export default class NonePruneProvider extends BaseProvider {
     constructor(props) {
         super(props)
         this.rpcUrl = props.url
-        this.initContract()
+        this.network = props.network
+        this.initContract(this.network)
     }
     getBalanceAtSpecificBlock(address, blockno) {
         return new Promise((resolve, reject) => {

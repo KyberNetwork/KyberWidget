@@ -2,7 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import { Route } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
-import InfoKyber from "../../components/InfoKyber"
+//import InfoKyber from "../../components/InfoKyber"
 import { Exchange } from "../../containers/Exchange"
 import { Header } from "../../containers/Header"
 import { ImportAccount } from "../ImportAccount"
