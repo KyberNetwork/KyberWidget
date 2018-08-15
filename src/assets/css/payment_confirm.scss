@@ -1,0 +1,124 @@
+
+
+.payment_confirm{
+    padding: 30px 25px 3rem;
+    @include screen-max-width(medium) {
+        padding-top: 15px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .confirm-message{
+        margin-bottom: 20px;
+        font-size: 13px;
+        font-style: italic;
+    }
+    &.error{
+        .confirm-btn{
+            opacity: 0.6;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+        .error-message{
+            color: #f1637d;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        // .approve-intro{
+        //     display: none;
+        // }
+    }
+    .approve-intro{
+        color: #999;
+        font-size: 13px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+    .payment-info{
+        margin-top: 30px;
+        font-size: 14px;
+        .title{
+            color: #222;
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .content{
+            color: #666;
+            >div{
+                margin-top: 7px;
+                >span{
+                    &:first-child{
+                        display: inline-block;
+                        width: 140px;
+                    }
+                }
+            }
+        }
+    }
+
+    .payment-bottom{
+        margin-top: 40px;
+        #import-account{
+            padding-top: 0;
+            margin-bottom: 25px;
+        }
+        .error-message{
+            color: #f1637d;
+            font-size: 13px;
+            max-height: 100px;
+            overflow: auto;
+            margin-bottom: 20px;
+            word-wrap: break-word;
+        }
+        .error-password{
+            color: #f1637d;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        .password{
+            input{
+                width: 100%;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 10px;
+                font-size: 18px;
+                height: 45px;
+                margin-bottom: 25px;
+            }
+        }
+        .control-btn{
+            display: flex;
+            justify-content: space-between;
+            a{
+                display: block;
+                text-align: center;
+                padding: 12px 0;
+                font-size: 18px;
+                width: 140px;
+                border-radius: 5px;
+                &:hover {
+                    cursor: pointer;
+                }
+                &.disable{
+                    cursor: initial;
+                    pointer-events: none;
+                    opacity: 0.8;
+                }
+                &.back-btn{
+                    border: 2px solid #999999;
+                    
+                    color: #666;
+                }
+                &.confirm-btn{
+                    background: #31CB9E;
+                    color: white;                    
+                }
+                @include screen-max-width(medium) {
+                    width: 100px;
+                }
+            }
+        }
+    }
+    
+}

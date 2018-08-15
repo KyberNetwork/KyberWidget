@@ -65,7 +65,7 @@ All you have to do is to place a button with proper url to your website.
 Eg.
 ```
 <a href="javascript:void(0);"
- NAME="KyberPay - Powered by KyberNetwork"  title="Pay by tokens"
+ NAME="KyberPay - Powered by KyberNetwork" title="Pay by tokens"
  onClick=window.open("https://developer.kyber.network/widget/payment?receiveAddr=0xFDF28Bf25779ED4cA74e958d54653260af604C20&receiveAmount=1.2&receiveToken=DAI&callback=https://yourwebsite.com/kybercallback&network=ropsten","Ratting","width=550,height=170,0,status=0");>Pay by tokens</a>
 ```
 
@@ -87,7 +87,61 @@ The widget supports following params:
 - ***network*** (string) - default: `ropsten`, ethereum network that the widget will run. Possible value: `test, ropsten, production, mainnet`.
 - ***paramForwarding*** (bool) - default: `true`, if it is true, all params that were passed to the widget will be submitted via the `callback`. It is useful that you can give your user a secret token (ideally one time token) to pass to the callback just so you know the callback is not coming from a malicious actor.
 - ***signer*** (string) - concatenation of a list of ethereum address by underscore `_`, eg. 0xFDF28Bf25779ED4cA74e958d54653260af604C20_0xFDF28Bf25779ED4cA74e958d54653260af604C20 - If you pass this param, the user will be forced to pay from one of those addresses.
-- ***commissionID*** - Ethereum address - your Ethereum wallet to get commission of the fees for the transaction. Your wallet must be whitelisted by KyberNetwork (the permissionless registration will be available soon) in order to get the commission, otherwise it will be ignored.
+- ***commissionId*** - Ethereum address - your Ethereum wallet to get commission of the fees for the transaction. Your wallet must be whitelisted by KyberNetwork (the permissionless registration will be available soon) in order to get the commission, otherwise it will be ignored.
 
 ## Supported tokens
+<<<<<<< HEAD
 See all supported tokens [here](https://tracker.kyber.network/#/tokens)
+=======
+- OMG
+- KNC
+- SNT
+- ELF
+- POWR
+- MANA
+- BAT
+- REQ
+- GTO
+- RDN
+- APPC
+- ENG
+- SALT
+- BQX
+- ADX
+- AST
+- RCN
+- ZIL
+- DAI
+- LINK
+- IOST
+- STORM
+- MOT
+- DGX
+- ABT
+- ENJ
+- AION
+- AE
+- BLZ
+- PAL
+- ELEC
+- BBO
+- POLY
+- LBA
+- EDU
+- CVC
+- WAX
+- SUB
+- POE
+- PAY
+- CHAT
+- DTA
+- BNT
+- TUSD
+- TOMO
+- MDS
+- LEND
+- WINGS
+- MTL
+- WABI
+- ETH
+>>>>>>> 4dced8779da5f6e0a56f73f78465f2a91910b6be

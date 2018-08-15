@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="23px" height="26px" viewBox="0 0 23 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50 (54983) - http://www.bohemiancoding.com/sketch -->
+    <title>mco</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="-292.236857%" y1="107.013929%" x2="-11.6486317%" y2="-156.323929%" id="linearGradient-1">
+            <stop stop-color="#5E003F" offset="0%"></stop>
+            <stop stop-color="#C04372" offset="52%"></stop>
+            <stop stop-color="#CD5770" offset="56%"></stop>
+            <stop stop-color="#DF736E" offset="62%"></stop>
+            <stop stop-color="#ED886C" offset="70%"></stop>
+            <stop stop-color="#F7986B" offset="78%"></stop>
+            <stop stop-color="#FDA16A" offset="87%"></stop>
+            <stop stop-color="#FFA46A" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="-207.8966%" y1="82.6335714%" x2="-33.8101748%" y2="-33.5071429%" id="linearGradient-2">
+            <stop stop-color="#5E003F" offset="0%"></stop>
+            <stop stop-color="#C15866" offset="48%"></stop>
+            <stop stop-color="#EB8B69" offset="81%"></stop>
+            <stop stop-color="#FFA46A" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Wallet" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop" transform="translate(-102.000000, -416.000000)">
+            <g id="mco" transform="translate(100.000000, 415.000000)">
+                <rect id="Rectangle" x="0" y="0" width="28" height="28"></rect>
+                <g id="Group" transform="translate(2.500000, 1.000000)">
+                    <polygon id="path0_fill-path" fill="#FFFFFF" points="10.9518252 0.00637013 0 6.50156 0 19.5003714 10.9518252 25.9932214 10.9645267 26 22 19.4999071 22 6.50156 10.9651617 0"></polygon>
+                    <path d="M2.7177352,13.9063786 L5.6609992,11.6946143 L8.2626856,13.3642786 L8.2626856,16.3661643 L10.231044,18.2709429 L10.230124,19.1645071 L8.3335256,20.9496857 L6.730582,20.9496857 L2.7177352,13.9063786 Z M12.018144,19.1666429 L12.01428,18.2674143 L13.975996,16.3665357 L13.975996,13.3642786 L16.549696,11.6742786 L19.487348,13.9063786 L15.494456,20.9292571 L13.912976,20.9292571 L12.018144,19.1666429 Z M9.22806,13.3642786 L8.2704136,10.8450643 L13.96422,10.8450643 L13.025912,13.3642786 L13.303016,16.1790571 L11.10578,16.1838857 L8.9346444,16.1877857 L9.22806,13.3642786 Z M11.10578,10.1557857 L5.6947448,10.1531857 L6.7007004,5.63821143 L15.485072,5.63821143 L16.545096,10.1590357 L11.10578,10.1557857 Z M11.10578,0.00637013 L0,6.50156 L0,19.5003714 L11.10578,25.9932214 L11.11866,26 L22.309264,19.4999071 L22.309264,6.50156 L11.119304,0 L11.10578,0.00637013 Z" id="path0_fill" fill="url(#linearGradient-1)" fill-rule="nonzero"></path>
+                    <path d="M12.0383471,19.1666429 L12.0344462,18.2674143 L14.0143843,16.3665357 L14.0143843,13.3642786 L16.6121,11.6742786 L19.5770657,13.9063786 L15.5469914,20.9292571 L13.9504243,20.9292571 L12.0383471,19.1666429 Z M11.1179287,0.00676013929 L11.1179287,5.63834143 L15.5367121,5.63834143 L16.60755,10.1592214 L11.1179287,10.1563429 L11.1179287,10.8453429 L14.0020343,10.8453429 L13.0549657,13.3642786 L13.335645,16.1790571 L11.1179287,16.1838857 L11.1179287,25.9932214 L11.130929,26 L22.4255143,19.5003714 L22.4255143,6.50156 L11.1306688,0 L11.1179287,0.00676013929 Z" id="path1_fill" fill="url(#linearGradient-2)" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

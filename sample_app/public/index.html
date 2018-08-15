@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sample App</title>
+</head>
+
+<body>
+    <h4>This is a sample app</h4>
+
+    <p>Visit <a href="https://kyberpay.knstats.com/widget/config/?widget_url=https%3A%2F%2Fkyberpay.knstats.com" target="_blank">https://kyberpay.knstats.com/widget/config</a> to config the Kyber Widget.</p>
+    <p>Please set <code><b>https://kyberpay-sample.knstats.com/callback</b></code> as the <i>callback URL</i>.</p>
+    <br>
+    <p>To get the list of transaction in JSON format, click <a href="/list" target="_blank">/list</a>.</p>
+    <p>To clear transaction history, click <a href="/clear" target="_blank">/clear</a>.</p>
+    
+    <h4>Transaction list</h4>
+    <p>This list auto-updates, so no need to refresh page.</p>
+
+    <ul id="txs"></ul>
+
+    <script>
+        function getList() {
+            fetch("/list")
+                .then(resp => resp.json())
+                .then(txs => {
+                    var ul = document.getElementById("txs");
+                    if (txs.length === ul.getElementsByTagName("li").length) {
+                        return;
+                    }
+                    
+                    console.log(txs[txs.length - 1]);
+
+                    ul.innerHTML = "";
+
+                    txs.forEach(tx => {
+                        var dt = new Date(tx._timestamp);
+                        var dtText = dt.toLocaleString("vi-VN");
+                        var hash = tx.tx;
+                        var html = `${dtText} - <a href="https://ropsten.etherscan.io/tx/${hash}" target="_blank">${hash}</a>`;
+                        var li = document.createElement("li");
+                        li.innerHTML = html;
+                        ul.appendChild(li);
+
+                    });
+                })
+        }
+
+        getList();
+        setInterval(getList, 5000);
+    </script>
+</body>
+
+</html>

@@ -59,3 +59,7 @@ typings/
 
 # next.js build output
 .next
+widget_config/.DS_Store
+.DS_Store
+server.js
+.DS_Store
