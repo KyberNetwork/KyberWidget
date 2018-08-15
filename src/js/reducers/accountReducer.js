@@ -143,4 +143,4 @@ const account = (state = initState, action) => {
   return state
 }
 
-export default account;
+export {initState, account}

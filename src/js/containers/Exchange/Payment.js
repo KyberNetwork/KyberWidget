@@ -65,9 +65,10 @@ function getKeyService(type) {
   const ethereum = store.connection.ethereum
 
   const keyService = getKeyService(account.type)
+  const global = store.global
 
   return {
-    translate, exchange, transfer, tokens, account, ethereum, keyService, snapshot
+    translate, exchange, transfer, tokens, account, ethereum, keyService, snapshot, global
 
   }
 })
@@ -411,7 +412,22 @@ export default class Payment extends React.Component {
     this.props.dispatch(exchangeActions.throwPassphraseError(""))
     this.props.dispatch(transferActions.throwPassphraseError(""))
   }
-  
+
+  // getSourcePay = () => {
+    
+  // }
+
+  getDestPay = () => {
+    if (this.props.exchange.isHaveDestAmount){
+      return this.props.exchange.destAmount
+    }else{
+      if (this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol){
+        return this.props.exchange.sourceAmount
+      }else{
+        return converter.calculateDest(this.props.exchange.sourceAmount, this.props.exchange.offeredRate, 6)
+      }
+    }
+  }
   render() {
     var gasUsed;
 
@@ -455,25 +471,35 @@ export default class Payment extends React.Component {
         </div>
 
         <div className="payment-info">
-          <div className="title">
-            {this.props.translate("transaction.you_about_to_pay") || "YOU ARE ABOUT TO PAY"}
-          </div>
-          <div className="content">
+          {this.props.global.params.receiveAddr === 'self' && (
             <div>
-              <span>{this.props.translate("transaction.address") || "Address"}:</span>
-              <span>
-                {this.props.exchange.receiveAddr.slice(0, 8)} ... {this.props.exchange.receiveAddr.slice(-6)}
-              </span>
+              You are about to buy {this.getDestPay()} {this.props.exchange.destTokenSymbol}
             </div>
-            {this.props.exchange.isHaveDestAmount && (
-              <div>
-                <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
-                <span>
-                  {(''+this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}
-                </span>
+          )}
+          {this.props.global.params.receiveAddr !== 'self' && (
+            <div>
+               <div className="title">
+                {this.props.translate("transaction.you_about_to_pay") || "YOU ARE ABOUT TO PAY"}
               </div>
-            )}
-          </div>
+              <div className="content">
+                <div>
+                  <span>{this.props.translate("transaction.address") || "Address"}:</span>
+                  <span>
+                    {this.props.exchange.receiveAddr.slice(0, 8)} ... {this.props.exchange.receiveAddr.slice(-6)}
+                  </span>
+                </div>
+                {this.props.exchange.isHaveDestAmount && (
+                  <div>
+                    <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
+                    <span>
+                      {(''+this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+         
         </div>
 
         <div className="payment-info">

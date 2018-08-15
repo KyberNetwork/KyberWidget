@@ -44,7 +44,7 @@ Modal.setAppElement('body');
 
 window.kyberWidgetInstance = {}
 
-console.log(document.getElementById(constanst.APP_NAME))
+//console.log(document.getElementById(constanst.APP_NAME))
 window.kyberWidgetInstance.render = renderApp => {
   if(!document.getElementById(constanst.APP_NAME)){
     return

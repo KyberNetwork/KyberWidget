@@ -174,4 +174,4 @@ const tokens = (state = initState, action) => {
   }
 }
 
-export default tokens
+export {initState, tokens}
