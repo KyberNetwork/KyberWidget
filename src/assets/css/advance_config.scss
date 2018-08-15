@@ -9,24 +9,31 @@ $radio-color: #5D9E7A;
 .advance-config{
   padding: 0 25px;
   margin-top: 15px;
-  background-color: rgba(245, 245, 245, 0.39);
-  box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  // background-color: rgba(245, 245, 245, 0.39);
+  // box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+
+  @include screen-max-width(medium) {
+    padding: 0 20px;
+    padding-left: 20p;
+    padding-right: 20px;
+  }
 
   .advance-title-mobile{
     &.title {
       padding: 8px 0;
     }
     border-radius: 5px;
-    text-align: right;
+    // text-align: right;
     cursor: pointer;
     >div {
       display: flex;
-      justify-content: flex-end;
+      // justify-content: flex-end;
+      color: #222;
       align-items: center;
       img {
         width: 13px;
         transition: 0.2s;
-        margin-left: 13px;
+        margin-right: 10px;
         &.advance-arrow-up {
           transform: rotate(180deg);
           transition: 0.2s;
@@ -50,20 +57,23 @@ $radio-color: #5D9E7A;
       div:first-child {
         font-size: 12px;
         color: #6e6e6e;
+        line-height: 1.5;
       }
 
       div:last-child {
         font-size: 20px;
         font-weight: 600;
         margin-bottom: 5px;
+        line-height: 1.5;
       }
     }
   }
 
   .min-convention-rate{
     text-align: center;
-    margin-top: 10px;
-    padding-left: 35px;
+    margin-top: -10px;
+    // padding-left: 35px;
+    margin-bottom: 15px;
     font-size: 14px;
     font-weight: 600;
     color: #ef8102;
@@ -79,19 +89,21 @@ $radio-color: #5D9E7A;
     justify-content: space-between;
   }
   .gas_input {
-    width: 50%;
+    max-width: 40%;
 
     input {
       padding-left: 10px;
       padding-top: 0;
       padding-bottom: 0;
       color: #aaa;
+      width: 100%;
     }
   }
 
   .gas_input-label-container {
-    width: 40%;
-    min-width: 170px;
+    // width: 40%;
+    // min-width: 170px;
+    margin-right: 1px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -237,6 +249,14 @@ $radio-color: #5D9E7A;
 
   .min-rate{
     margin-bottom: 0.75rem;
+
+    .show-rate {
+      .rate-percent {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
+      }
+    }
 
     .sub_title {
       display: inline-block;
