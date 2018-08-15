@@ -9,7 +9,7 @@ $animation-time: 0.5s;
     transform: translateY(70px);
     animation: moving-up $animation-time forwards;
     transition: all .3s;
-    padding: 30px 25px 50px;
+    padding: 30px 20px 50px;
     box-sizing: border-box;
     @include screen-max-width(medium) {
       padding-left: 20px;
@@ -82,7 +82,7 @@ $animation-time: 0.5s;
       transition: all .3s;
       width: calc(50% - 10px);
       margin: 0 10px 20px;
-      padding: 15px 0;
+      padding: 20px 0;
       border-radius: 3px;
       background-color: #fcfcfe;
       box-shadow: 0 2px 6px 0 rgba(184, 184, 184, 0.5);
