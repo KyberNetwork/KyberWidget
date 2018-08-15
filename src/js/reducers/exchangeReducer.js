@@ -703,4 +703,4 @@ const exchange = (state = initState, action) => {
   return state
 }
 
-export default exchange;
+export {initState, exchange} ;

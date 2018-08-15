@@ -1508,8 +1508,9 @@ function* verifyExchange() {
     srcAmount = converter.toTWei(srcAmount, 18)
   }
 
-  if (converter.compareTwoNumber(srcAmount, constants.EPSILON) === -1) {
-    yield put(actions.throwErrorExchange("src_small", translate("error.source_amount_too_small")))
+  if (converter.compareTwoNumber(srcAmount, constansts.EPSILON) === -1) {
+    var minAmount = converter.toEther(constansts.EPSILON)
+    yield put(actions.throwErrorExchange("src_small", translate("error.source_amount_too_small", {minAmount: minAmount}) || `Source amount is too small. Minimum amount is ${minAmount} ETH equivalent.`))
   } else {
     yield put(actions.throwErrorExchange("src_small", ""))
   }

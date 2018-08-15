@@ -66,3 +66,19 @@ export function findNetworkName(networkId){
         return null
     }
   }
+
+
+export function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function lineToCamel(str){
+  var arrKeys = str.split("-")
+  var key = arrKeys[0]
+  for (var j = 1; j < arrKeys.length; j++){
+    key += capitalizeFirstLetter(arrKeys[j])
+  }
+  return key
+}
+
+

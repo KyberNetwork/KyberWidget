@@ -77,22 +77,77 @@ export default class Layout extends React.Component {
 
 
   componentDidMount(){
-    var query  = common.getQueryParams(window.location.search)
+    var widgetParent = document.getElementById(constanst.APP_NAME)
+    var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
+
+    
+    var query = {}
+    var etheremonAddr
+    var monsterId
+    var monsterName
+    var monsterAvatar
+
+    var callback
+    var network
+    var paramForwarding
+    var signer
+    var commissionID
+
+    // var etheremonAddr = common.getParameterByName("etheremonAddr")
+    // var monsterId = common.getParameterByName("monsterId")
+    // var monsterName = common.getParameterByName("monsterName")
+    // var monsterAvatar = common.getParameterByName("monsterAvatar")
+    // var callback = common.getParameterByName("callback")
+    // var network = common.getParameterByName("network")
+    // var paramForwarding = common.getParameterByName("paramForwarding")
+    // var signer = common.getParameterByName("signer")
+    // var commissionID = common.getParameterByName("commissionID")
+
+
+    if (attributeWidget === true || attributeWidget === 'true'){
+      for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++){
+          var nodeName = atts[i].nodeName
+          if(nodeName.includes('data-widget')){
+            var key = nodeName.replace('data-widget-','');
+            
+            key = common.lineToCamel(key)
+
+            query[key] = atts[i].nodeValue
+          }
+      }
+
+      //this.props.dispatch(initParamsGlobal(query))
+
+      etheremonAddr = widgetParent.getAttribute('data-widget-etheremon-addr')
+      monsterId = widgetParent.getAttribute('data-widget-monster-id')
+      monsterName = widgetParent.getAttribute('data-widget-monster-name')
+      monsterAvatar = widgetParent.getAttribute('data-widget-monster-avatar')
+      
+      callback = widgetParent.getAttribute('data-widget-callback')
+      network = widgetParent.getAttribute('data-widget-network')
+      paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
+      signer = widgetParent.getAttribute('data-widget-signer')
+      commissionID = widgetParent.getAttribute('data-widget-commission-id')
+
+    }else{
+      query  = common.getQueryParams(window.location.search)
+
+      etheremonAddr = common.getParameterByName("etheremonAddr")
+      monsterId = common.getParameterByName("monsterId")
+      monsterName = common.getParameterByName("monsterName")
+      monsterAvatar = common.getParameterByName("monsterAvatar")
+
+      callback = common.getParameterByName("callback")
+      network = common.getParameterByName("network")
+      paramForwarding = common.getParameterByName("paramForwarding")
+      signer = common.getParameterByName("signer")
+      commissionID = common.getParameterByName("commissionId")
+    }
+
+
+    paramForwarding = paramForwarding === "true" ||  paramForwarding === true? paramForwarding : "false"
+    
     this.props.dispatch(initParamsGlobal(query))
-
-    var etheremonAddr = common.getParameterByName("etheremonAddr")
-    var monsterId = common.getParameterByName("monsterId")
-    var monsterName = common.getParameterByName("monsterName")
-    var monsterAvatar = common.getParameterByName("monsterAvatar")
-    //var receiveAmount = common.getParameterByName("receiveAmount");
-    // console.log("receiveAmount")
-    // console.log(receiveAmount)
-    var callback = common.getParameterByName("callback")
-    var network = common.getParameterByName("network")
-    var paramForwarding = common.getParameterByName("paramForwarding")
-    var signer = common.getParameterByName("signer")
-    var commissionID = common.getParameterByName("commissionID")
-
     
 
     var errors = {}

@@ -26,9 +26,11 @@
     };
 
     function grabForm() {
-        var form = document.querySelector(".params");
+        var form = document.querySelector("form");
         var data = [], error = [], msg, name, value;
         form.querySelectorAll("input, select").forEach(function (node) {
+            
+            if (node.type && node.type === 'radio' && !node.checked) return;
 
             // do simple validation
             name = node.getAttribute("name");
@@ -64,7 +66,7 @@
     }
 
     function copyClipboard(selector) {
-        var input = document.querySelector(selector); // input, textarea, contenteditable
+        var input = document.querySelector(selector); // input, textarea
         input.removeAttribute("disabled");
         input.select();
 
@@ -75,7 +77,7 @@
     }
 
     function wireEvents() {
-        var form = document.querySelector(".params");
+        var form = document.querySelector("form");
         form.querySelectorAll("input, select").forEach(function (node) {
             node.addEventListener('change', generateTag);
             node.addEventListener('keyup', generateTag);
@@ -93,6 +95,16 @@
         });
     }
 
+    function runTemplateJS(baseUrl) {
+        var js = document.getElementById("widget_js").innerHTML.trim().replace("${baseUrl}", baseUrl);
+
+        var script = document.createElement("script");
+        script.innerHTML = js;
+        document.getElementsByTagName('body')[0].appendChild(script);
+
+        return js;
+    }
+
     var generateTag = debounce(function () {
         var formData = grabForm();
         if (formData.error && formData.error.length) {
@@ -103,15 +115,24 @@
             return;
         }
 
+        var isPopup = document.getElementById("typePopup").checked;
+
         var widgetBaseUrl = getWidgetUrl();
         var url = widgetBaseUrl + "?" + formData.data;
-        var tagHtml = "<a href='" + url + "' class='_kyberpay-widget'\n";
-        tagHtml += "name='KyberPay - Powered by KyberNetwork' title='Pay by tokens'\n";
+        var tagHtml = "<a href='" + url + "' class='kyber-widget-button'\n";
+        tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay by tokens'\n";
         tagHtml += "target='_blank'>Pay by tokens</a>";
 
         document.getElementById("widget").innerHTML = tagHtml;
         document.getElementById("sourceHtml").value = tagHtml;
-        document.getElementById("sourceCss").value = document.getElementById("widget_style").innerHTML.trim();
+        document.getElementById("sourceCss").value = document.getElementById("widget_button_style").innerHTML.trim();
+
+        if (isPopup) {
+            document.getElementById("sourceJs").value = runTemplateJS(widgetBaseUrl);
+            document.getElementById("sourceCss").value += "\n" + document.getElementById("widget_popup_style").innerHTML.trim();
+        } else {
+            document.getElementById("sourceJs").value = "";
+        }
     }, 50, false);
 
 

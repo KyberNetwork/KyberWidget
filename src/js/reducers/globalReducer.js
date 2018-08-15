@@ -3,7 +3,7 @@ import Rate from "../services/rate"
 import BigNumber from "bignumber.js"
 import constants from '../services/constants';
 
-const initState = {
+var initState = {
   termOfServiceAccepted: false,
   showBalance: false,
   nodeName: "Infura Kovan",
@@ -153,4 +153,5 @@ const global = (state = initState, action) => {
   return state
 }
 
-export default global
+export {global, initState}
+

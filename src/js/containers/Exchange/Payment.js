@@ -65,9 +65,10 @@ function getKeyService(type) {
   const ethereum = store.connection.ethereum
 
   const keyService = getKeyService(account.type)
+  const global = store.global
 
   return {
-    translate, exchange, transfer, tokens, account, ethereum, keyService, snapshot
+    translate, exchange, transfer, tokens, account, ethereum, keyService, snapshot, global
 
   }
 })
@@ -419,6 +420,7 @@ export default class Payment extends React.Component {
   }
 
   getGasUsed = () => {
+    console.log("gas_limit")
     var tokenSymbol = this.props.exchange.sourceTokenSymbol
     var gasLimitToken = this.props.tokens[tokenSymbol].gasLimit
     var gasLimit = gasLimitToken ? parseInt(gasLimitToken) : this.props.exchange.normal_max_gas
@@ -444,7 +446,7 @@ export default class Payment extends React.Component {
     }else{
       // gasUsed = this.props.exchange.gas
       gasUsed = this.getGasUsed()
-      if (!this.props.exchange.isNeedApprove) {
+      if (this.props.exchange.isNeedApprove) {
         var gasApprove = this.getMaxGasApprove()
         gasUsed += gasApprove
       }

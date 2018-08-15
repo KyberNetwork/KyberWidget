@@ -226,6 +226,7 @@ export default class ExchangeBody extends React.Component {
         importAccount = {this.importAccount}
         acceptedTerm = {this.acceptedTerm}
         classNamePaymentbtn = {classNamePaymentbtn}
+        global = {this.props.global}
       />
     )
   }

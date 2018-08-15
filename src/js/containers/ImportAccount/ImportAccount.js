@@ -30,8 +30,8 @@ import { goToStep } from "../../actions/exchangeActions"
 
 export default class ImportAccount extends React.Component {
   componentDidMount = () => {
-    var swapPage = document.getElementById("swap-app")
-    swapPage.className = swapPage.className === "" ? "no-min-height" : swapPage.className + " no-min-height"
+    // var swapPage = document.getElementById("swap-app")
+    // swapPage.className = swapPage.className === "" ? "no-min-height" : swapPage.className + " no-min-height"
 
     if (this.props.termOfServiceAccepted){
       if (typeof web3 !== "undefined") {

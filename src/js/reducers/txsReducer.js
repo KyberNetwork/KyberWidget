@@ -43,4 +43,4 @@ const txs = (state = initState, action) => {
   return state
 }
 
-export default txs
+export {initState, txs} 

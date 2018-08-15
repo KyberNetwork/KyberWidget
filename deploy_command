@@ -1,4 +1,4 @@
-scp -r /Users/andrewnguyen/Documents/KyberWidget/dist/* ubuntu@13.229.137.2:/home/ubuntu/kyberwidget
+scp -r /Users/andrewnguyen/Documents/KyberWidget/dist/native/* ubuntu@13.229.137.2:/home/ubuntu/kyberwidget
 
 
 
