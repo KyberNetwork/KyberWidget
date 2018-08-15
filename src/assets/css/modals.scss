@@ -649,6 +649,12 @@ $divider-color: darken($title-background-color, 5);
   box-shadow: 0 2px 8px 0 rgba(184, 184, 184, 0.5);
   display: inline-block;
   margin: 0 auto;
+  @include screen-max-width(medium) {
+    display: block;
+    .container {
+      padding: 10px 20px 30px;
+    }
+  }
 
   .title {
     font-weight: 600;

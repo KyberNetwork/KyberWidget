@@ -13,7 +13,10 @@ const PaymentHeader = (props) => {
   return (
     <div>
       <div className="kyber-payment-logo-container">
-        <div className="kyber-payment-logo"></div>
+        <div className="kyber-payment-logo">
+          {/* <img src={require("../../../assets/img/widget/pure-logo.svg")}/> */}
+          {/* KyberWidget */}
+        </div>
       </div>
       <div className="step-breadcrumb container">
         <div className={getClass(1)}>{props.translate("payment_header.step_method") || "Payment method"}</div>
