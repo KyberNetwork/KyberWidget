@@ -1,13 +1,15 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="favicon.ico">
-    <title>KyberPay Configuration</title>
-    <link rel="stylesheet" href="assets/styles.css?v=7">
-    <style id="widget_button_style">
+    <link rel="icon" href="https://kyber.network/favicon.ico">
+    <title>KyberWidget Configuration</title>
+</head>
+<body>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css">
+<link rel="stylesheet" href="assets/styles.css?v=11">
+<style id="widget_button_style">
 .kyber-widget-button {
     display: inline-block;
     width: 100%;
@@ -29,8 +31,8 @@
 .kyber-widget-button:hover {
     color: #fff;
 }
-    </style>
-    <style id="widget_popup_style">
+</style>
+<style id="widget_popup_style">
 #kyber-widget-overlay {
     background-color: rgba(0,0,0,.7);
     position: fixed;
@@ -39,6 +41,15 @@
     left: 0;
     right: 0;
     bottom: 0;
+    animation: fadein .5s;
+}
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
 }
 #kyber-widget-overlay::before {
     content: "×";
@@ -60,56 +71,8 @@
     left: 50%;
     top: 50%;
 }
-    </style>
-    <style id="tab">
-        .code-tab{
-            padding: 1.5rem 0;
-            position: relative;
-        }
-        /* Style the tab */
-        .tab {
-            position: relative;
-            overflow: hidden;
-            border: 1px solid #ccc;
-            background-color: #f1f1f1;
-        }
+</style>
 
-        /* Style the buttons inside the tab */
-        .tablinks {
-            background-color: inherit;
-            float: left;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 14px 16px;
-            transition: 0.3s;
-            font-size: 17px;
-        }
-
-        /* Change background color of buttons on hover */
-        .tab button:hover {
-            background-color: #ddd;
-        }
-
-        /* Create an active/current tablink class */
-        .tab button.active {
-            background-color: #ccc;
-        }
-
-        /* Style the tab content */
-        .tabcontent {
-            padding: 6px 12px;
-            border: 1px solid #ccc;
-            border-top: none;
-            position: absolute;
-            left: 0;
-            right: 0;
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css">
-</head>
-
-<body>
     <div id="wrapper">
         <h1 class="center">Kyber Payment Widget Configuration</h1>
         <form>
@@ -209,72 +172,30 @@
                 <label class="item-name align-top"></label>
                 <div id="widget" class="item-value"></div>
             </div>
-            <div class="code-tab">
-                <div class="tab">
-                    <button class="tablinks" onclick="openCode(event, 'item-sourceHtml')" id="defaultOpen">HTML</button>
-                    <button class="tablinks" onclick="openCode(event, 'item-sourceCss')">CSS</button>
-                    <button class="tablinks" onclick="openCode(event, 'item-sourceJs')">Javascript</button>
-                    <button class="btn-copy" data-copy-target="sourceHtml">Copy</button>
-                </div>
-                <div id="item-sourceHtml" class="tabcontent">
-                 <pre><code id="sourceHtml" class="language-markup">
-                 </code></pre>
+            <div class="source-tabs">
+                <div class="tabrow">
+                    <button class="tablink active" data-tab="#sourceHtmlItem" id="defaultOpen">HTML</button>
+                    <button class="tablink" data-tab="#sourceCssItem">CSS</button>
+                    <button class="tablink" data-tab="#sourceJsItem">Javascript</button>
+                    <button class="btn-copy">Copy</button>
                 </div>
 
-                <div id="item-sourceCss" class="tabcontent">
-                <pre><code id="sourceCss" class="language-css">
-                    </code></pre>
+                <div id="sourceJsItem" class="tabcontent">
+                    <pre><code id="sourceJs" class="language-javascript"></code></pre>
                 </div>
 
-                <div id="item-sourceJs" class="tabcontent">
-                <pre><code id="sourceJs" class="language-javascript">
-                    </code></pre>
+                <div id="sourceCssItem" class="tabcontent">
+                    <pre><code id="sourceCss" class="language-css"></code></pre>
                 </div>
-                <!--<div class="item">-->
-                <!--<div>-->
-                <!--<label class="item-name align-top">-->
-                <!--HTML Source:-->
-                <!--</label>-->
-                <!--<button class="btn-copy" data-copy-target="sourceHtml">Copy</button>-->
-                <!--</div>-->
-                <!--<div class="item-value">-->
-                <!--<pre><code id="sourceHtml" class="language-markup">-->
-                <!--</code></pre>-->
-                <!--</div>-->
 
-                <!--</div>-->
-                <!--<div class="item">-->
-                <!--<div>-->
-                <!--<label class="item-name align-top">-->
-                <!--CSS Source:-->
-                <!--</label>-->
-                <!--<button class="btn-copy" data-copy-target="sourceCss">Copy</button>-->
-                <!--</div>-->
-                <!--<div class="item-value">-->
-                <!--<pre><code id="sourceCss" class="language-css">-->
-                <!--</code></pre>-->
-                <!--</div>-->
-
-                <!--</div>-->
-                <!--<div class="item">-->
-                <!--<div>-->
-                <!--<label class="item-name align-top">-->
-                <!--Javascript Source:-->
-                <!--</label>-->
-                <!--<button class="btn-copy" data-copy-target="sourceJs">Copy</button>-->
-                <!--</div>-->
-                <!--<div class="item-value">-->
-                <!--<pre><code id="sourceJs" class="language-javascript">-->
-                <!--</code></pre>-->
-                <!--</div>-->
-
-                <!--</div>-->
+                <div id="sourceHtmlItem" class="tabcontent">
+                    <pre><code id="sourceHtml" class="language-markup"></code></pre>
+                </div>
             </div>
         </section>
-
     </div>
-    <script src="assets/prism.js"></script>
-    <script src="assets/main.js?v=15"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
+    <script src="assets/main.js?v=22"></script>
     <script id="widget_js" type="text/template">
 (function(global, baseUrl){
     if (!global.kyberWidgetOptions) {
@@ -287,6 +208,7 @@
             }
         }
 
+        // add script tag
         var script = document.createElement("script");
         script.async = true;
         script.onerror = function() {
@@ -295,6 +217,7 @@
         script.src = baseUrl + "/app.min.js?t=" + Date.now();
         document.body.appendChild(script);
 
+        // add CSS tag
         var css = document.createElement("link");
         css.setAttribute("rel", "stylesheet")
         css.setAttribute("href", baseUrl + "/app.bundle.css?t=" + Date.now());
@@ -303,17 +226,20 @@
 
     document.querySelectorAll(".kyber-widget-button").forEach(function(tag){
         tag.addEventListener("click", function(e){
+
+            // error from last time's load -> fallback to new tab mode
             if (global.kyberWidgetOptions.jsLoadError) return;
 
+            // js loading ok, disable new tab mode
             e.preventDefault();
 
-            // remove old tag, just to ensure
-            var oldPopup = document.getElementById("kyber-widget");
-            if (oldPopup) {
-                oldPopup.remove();
+            // remove old overlay, just to ensure
+            var oldOverlay = document.getElementById("kyber-widget-overlay");
+            if (oldOverlay) {
+                oldOverlay.remove();
             }
 
-            // create the overlay
+            // create a new overlay
             var overlay = document.createElement("DIV");
             overlay.id = "kyber-widget-overlay";
             overlay.addEventListener("click", function(e){
@@ -322,11 +248,11 @@
                 }
             });
             
-            // create the popup
+            // create the widget container
             var popup = document.createElement("DIV");
             popup.id = "kyber-widget";
 
-            // set tag attributes
+            // set widget attributes
             popup.setAttribute("data-widget-attribute", "true");
             var params = new URL(tag.href).searchParams.entries();
             for (var pair of params) {
@@ -343,28 +269,6 @@
         })
     });
 })(this, "${baseUrl}");
-    </script>
-    <script>
-      function openCode(evt, cityName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-          tabcontent[i].style.visibility = "hidden";
-        }
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-          tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(cityName).style.visibility = "visible";
-        evt.currentTarget.className += " active";
-        var buttonCopy = document.getElementsByClassName("btn-copy");
-        // console.log(cityName.replace('item-',''));
-        buttonCopy[0].setAttribute('data-copy-target',cityName.replace('item-',''));
-        // console.log(buttonCopy)
-      }
-
-      // Get the element with id="defaultOpen" and click on it
-      document.getElementById("defaultOpen").click();
     </script>
 </body>
 
