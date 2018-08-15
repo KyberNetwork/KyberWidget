@@ -2,7 +2,8 @@
   // padding-bottom: 50px;
 
   @include screen-max-width(mid-small) {
-    padding: 0 1rem 1rem;
+    // padding: 0 1rem 0 1rem;
+    padding: 0;
   }
 }
 
