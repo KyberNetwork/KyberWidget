@@ -234,6 +234,6 @@
   },
   "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
   "tracker":"https://tracker.kyber.network",
-  "ethermon_wrapper":"0x9D11650Eb72d9c9a62575a1B2578057838C856e4",
+  "ethermon_wrapper":"0xa87dc865f5a3ffb01d6dac99e2064e580dcd5b3f",
   "networkName": "ropsten"
 }
