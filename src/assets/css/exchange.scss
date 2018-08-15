@@ -60,10 +60,9 @@
 
   .info-2 {
     font-size: 14px;
-
     &__content {
       display: flex;
-
+      // margin: 8px 0;
       div:first-child {
         width: 115px;
       }
@@ -89,16 +88,25 @@
 
 #exchange {
   max-width: $container-max-width;
-  box-shadow: 0 7px 25px #ddd;
+  // box-shadow: 0 7px 25px #ddd;
   background: white;
   margin: 0 auto;
+  box-sizing: border-box;
+  border: 1px solid #eee;
+
+  .exchange-pading-top{
+    padding-top: 30px;
+  }
 
   .exchange-pading{
     //padding: 0 1rem;
     padding: 0  25px;
-  }
-  .exchange-pading-top{
-    padding-top: 30px;
+    @include screen-max-width(medium) {
+      padding: 0 20px;
+      &.exchange-pading-top {
+        padding-top: 15px;
+      }
+    }
   }
 
   .estimate-dest-value{
@@ -117,15 +125,25 @@
       &:last-child {
         font-size: 20px;
         font-weight: 600;
+        margin-top: 8px;
       }
     }
   }
   .checkbox {
     margin-top: 15px;
+    display: flex;
+    input {
+      margin-left: 0;
+      &:hover {
+        cursor: pointer;
+      }
+    }
     label {
       color: #999;
       font-size: 13px;
-
+      &:hover {
+        cursor: pointer;
+      }
       a {
         color: inherit;
         text-decoration: underline;
@@ -154,22 +172,25 @@
 
   .advance-title-mobile {
     font-size: 14px;
-    font-weight: 600;
+    // font-weight: 600;
   }
 
-  .accent {
-    line-height: 55px;
-    padding: 0 25px;
-    background: #31CB9E;
-    text-transform: unset;
-    border-radius: 4px;
-    margin: 10px 0 25px;
-    float: right;
-    font-size: 18px;
-    font-weight: 600;
-
-    &.disable {
-      opacity: 0.4;
+  .button-payment {
+    text-align: right;
+    .accent {
+      line-height: 40px;
+      padding: 3px 35px;
+      background: #31CB9E;
+      text-transform: unset;
+      border-radius: 4px;
+      margin: 20px 0 20px;
+      // float: right;
+      font-size: 15px;
+      font-weight: 600;
+  
+      &.disable {
+        opacity: 0.4;
+      }
     }
   }
 
