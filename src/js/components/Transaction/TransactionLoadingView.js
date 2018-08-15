@@ -76,7 +76,7 @@ const TransactionLoadingView = (props) => {
             <div class="info tx-title">
               <div className="tx-title-text">{props.translate("transaction.transaction") || "Transaction hash"}</div>
               <div className="tx-hash">
-                <a class="text-light" href={BLOCKCHAIN_INFO.ethScanUrl + 'tx/' + props.txHash} target="_blank"
+                <a class="text-light" href={BLOCKCHAIN_INFO[props.network].ethScanUrl + 'tx/' + props.txHash} target="_blank"
                    title={props.translate("modal.view_on_etherscan") || "View on Etherscan"} >
                   {props.txHash}
                 </a>

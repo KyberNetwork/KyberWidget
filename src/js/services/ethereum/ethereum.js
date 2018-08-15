@@ -40,8 +40,10 @@ export default class EthereumService extends React.Component {
     //       break
     //   }
     // })
+    this.network = props.network
+
     this.listProviders = []
-    for (var node of BLOCKCHAIN_INFO.connections.http) {
+    for (var node of BLOCKCHAIN_INFO[this.network].connections.http) {
       switch (node.type) {
         case "cached":
           var provider = new providers.CachedServerProvider({ url: node.endPoint })
@@ -215,7 +217,7 @@ export default class EthereumService extends React.Component {
   fetchRateData() {
     var state = store.getState()
     var ethereum = state.connection.ethereum  
-    store.dispatch(updateAllRate(ethereum, BLOCKCHAIN_INFO.tokens))
+    store.dispatch(updateAllRate(ethereum, BLOCKCHAIN_INFO[this.network].tokens))
   }
 
   fetchTokenBalance() {
@@ -223,14 +225,14 @@ export default class EthereumService extends React.Component {
     var ethereum = state.connection.ethereum
     var account = state.account.account
     if (account.address) {
-      store.dispatch(updateTokenBalance(ethereum, account.address, BLOCKCHAIN_INFO.tokens))
+      store.dispatch(updateTokenBalance(ethereum, account.address, BLOCKCHAIN_INFO[this.network].tokens))
     }
   }
 
   fetchRateUSD() {
     var state = store.getState()
     var ethereum = state.connection.ethereum
-    store.dispatch(updateAllRateUSD(ethereum, BLOCKCHAIN_INFO.tokens))
+    store.dispatch(updateAllRateUSD(ethereum, BLOCKCHAIN_INFO[this.network].tokens))
   }
 
   fetchTxsData = () => {

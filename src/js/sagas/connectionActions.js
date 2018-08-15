@@ -16,9 +16,13 @@ import NotiService from "../services/noti_service/noti_service"
 
 
 
+
+
 export function* createNewConnection(action) {
-  var translate = getTranslate(store.getState().locale)
-  var connectionInstance = new EthereumService()
+  var state = store.getState()
+  var network = state.exchange.network
+  var translate = getTranslate(state.locale)
+  var connectionInstance = new EthereumService({network})
   yield put(setConnection(connectionInstance))
   //connectionInstance.subcribe()
 
@@ -45,6 +49,8 @@ export function* createNewConnection(action) {
 }
 
 function* watchMetamaskAccount(ethereum, web3Service) {
+  var state = store.getState()
+  var exchange = state.exchange
   //check 
   var translate = getTranslate(store.getState().locale)
   while (true) {
@@ -59,7 +65,7 @@ function* watchMetamaskAccount(ethereum, web3Service) {
 
           //test network id
           const currentId = yield call([web3Service, web3Service.getNetworkId])
-          const networkId = BLOCKCHAIN_INFO.networkId
+          const networkId = BLOCKCHAIN_INFO[exchange.network].networkId
           if (parseInt(currentId, 10) !== networkId) {
             const currentName = common.findNetworkName(parseInt(currentId, 10))
             const expectedName = common.findNetworkName(networkId)

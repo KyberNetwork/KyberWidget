@@ -69,12 +69,15 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
 // }
 
 function* doTxFail(ethereum, account, e) {
+  var state = store.getState()
+  var exchange = state.exchange
+  
   yield put (exchangeActions.goToStep(4))
 
   let error = e;
   if (!error){
     var translate = getTranslate(store.getState().locale);
-    var link = BLOCKCHAIN_INFO.ethScanUrl + "address/" + account.address;
+    var link = BLOCKCHAIN_INFO[exchange.network].ethScanUrl + "address/" + account.address;
     error = translate("error.broadcast_tx", {link: link}) || "Potentially Failed! We likely couldn't broadcast the transaction to the blockchain. Please check on Etherscan to verify."
   }
 

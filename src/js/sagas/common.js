@@ -59,7 +59,7 @@ export function* submitCallback(hash){
               
       try{
         if (!params.network){
-          params.network = BLOCKCHAIN_INFO.networkName;
+          params.network = BLOCKCHAIN_INFO[exchange.network].networkName;
         }
         const response = yield call(fetch, submitUrl, {
             method: 'POST',

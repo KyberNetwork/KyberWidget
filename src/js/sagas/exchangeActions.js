@@ -221,12 +221,14 @@ function* getInfo(hash) {
 // }
 
 function* doTxFail(ethereum, account, e) {
+  var state = store.getState()
+  var exchange = state.exchange
   yield put(actions.goToStep(4));
 
   var error = e
   if (!error) {
     var translate = getTranslate(store.getState().locale)
-    var link = BLOCKCHAIN_INFO.ethScanUrl + "address/" + account.address
+    var link = BLOCKCHAIN_INFO[exchange.network].ethScanUrl + "address/" + account.address
     error = translate("error.broadcast_tx", { link: link }) || "Potentially Failed! We likely couldn't broadcast the transaction to the blockchain. Please check on Etherscan to verify."
   }
   yield put(actions.setBroadcastError(error))
@@ -1200,7 +1202,7 @@ function* getGasUsed() {
   var state = store.getState()
   const ethereum = state.connection.ethereum
   const exchange = state.exchange
-  const kyber_address = BLOCKCHAIN_INFO.network
+  const kyber_address = BLOCKCHAIN_INFO[exchange.network].network
 
 
   const maxGas = yield call(getMaxGasExchange)

@@ -199,7 +199,8 @@ const INIT_TRANSFER_FORM_STATE = {
     signTransaction: '',
     ethBalanceError: ''
   },
-  snapshot: {}
+  snapshot: {},
+  network: 'ropsten'
 }
 
 

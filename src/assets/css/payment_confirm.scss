@@ -92,6 +92,9 @@
                 font-size: 18px;
                 width: 140px;
                 border-radius: 5px;
+                &:hover {
+                    cursor: pointer;
+                }
                 &.disable{
                     cursor: initial;
                     pointer-events: none;

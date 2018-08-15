@@ -4,7 +4,7 @@ import session from 'redux-persist/lib/storage/session'
 //import localForage from 'localforage'
 
 import { routerReducer } from 'react-router-redux'
-import * as BLOCKCHAIN_INFO from "../../../env"
+//import * as BLOCKCHAIN_INFO from "../../../env"
 import constants from "../services/constants"
 
 import {initState as initStateAcccount, account} from './accountReducer'

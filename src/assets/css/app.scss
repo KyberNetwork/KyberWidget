@@ -3,9 +3,6 @@
 // @import '../bower/foundation-sites/assets/foundation-float';
 // @import '../bower/foundation-sites/assets/foundation-prototype';
 
- @import 'foundation-float.min.css';
- @import 'foundation-prototype.min.css';
-
 @import '../bower/animate.css/animate.css';
 @import 'settings';
 @import "util";
@@ -578,4 +575,7 @@ $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
     }
   }
   
+  input {
+    outline: none;
+  }
 }
