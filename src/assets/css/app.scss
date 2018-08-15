@@ -517,6 +517,9 @@ $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
     height: 49px;
     background-image: url($image-path + '/widget/kyber-widget.svg');
     background-repeat: no-repeat;
+    @include screen-max-width(medium) {
+      margin-left: 10px;
+    }
   
     &-container {
       padding: 10px 15px;
@@ -542,7 +545,7 @@ $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
     box-shadow: inset 0 5px 3px -4px rgba(0,0,0,.2);
 
     @include screen-max-width(medium) {
-      padding: 12px 0;
+      padding: 12px 10px;
     }
   
     &__item {
