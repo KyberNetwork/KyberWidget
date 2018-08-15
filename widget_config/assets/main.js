@@ -118,8 +118,8 @@
         });
     }
 
-    function runTemplateJS(baseUrl) {
-        var js = document.getElementById("widget_js").innerHTML.trim().replace("${baseUrl}", baseUrl);
+    function runTemplateJS(baseUrl, scriptID) {
+        var js = document.getElementById(scriptID).innerHTML.trim().replace("${baseUrl}", baseUrl);
 
         var script = document.createElement("script");
         script.innerHTML = js;
@@ -139,7 +139,8 @@
             return;
         }
 
-        var isPopup = document.getElementById("typePopup").checked;
+        var isPopup = document.getElementById("modePopup").checked;
+        var isFrame = document.getElementById("modeFrame").checked;
 
         var widgetBaseUrl = getWidgetUrl();
         var url = widgetBaseUrl + "?" + formData.data;
@@ -149,12 +150,16 @@
 
         document.getElementById("widget").innerHTML = tagHtml;
         document.getElementById("sourceHtml").textContent = tagHtml;
-
         document.getElementById("sourceCss").textContent = document.getElementById("widget_button_style").innerHTML.trim();
 
         if (isPopup) {
-            document.getElementById("sourceJs").textContent = runTemplateJS(widgetBaseUrl);
+            document.getElementById("sourceJs").textContent = runTemplateJS(widgetBaseUrl, "widget_popup_js");
+            document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_common_style").innerHTML.trim();
             document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_popup_style").innerHTML.trim();
+        } else if (isFrame) {
+            document.getElementById("sourceJs").textContent = runTemplateJS(widgetBaseUrl, "widget_iframe_js");
+            document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_common_style").innerHTML.trim();
+            document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_iframe_style").innerHTML.trim();
         } else {
             document.getElementById("sourceJs").textContent = "";
         }

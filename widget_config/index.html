@@ -32,7 +32,7 @@
     color: #fff;
 }
 </style>
-<style id="widget_popup_style">
+<style id="widget_common_style">
 #kyber-widget-overlay {
     background-color: rgba(0,0,0,.7);
     position: fixed;
@@ -63,13 +63,30 @@
     line-height: 0;
     cursor: pointer;
 }
+</style>
+<style id="widget_popup_style">
 #kyber-widget {
     background-color: #fff;
     position: absolute;
     width: 400px;
+    box-sizing: border-box;
     transform: translateX(-50%) translateY(-50%);
     left: 50%;
     top: 50%;
+}
+</style>
+<style id="widget_iframe_style">
+#kyber-widget-iframe {
+    background-color: #fff;
+    position: absolute;
+    width: 400px;
+    box-sizing: border-box;
+    transform: translateX(-50%) translateY(-50%);
+    left: 50%;
+    top: 50%;
+    height: 80%;
+    min-height: 660px;
+    border: 0;
 }
 </style>
 
@@ -82,13 +99,13 @@
                     <label class="item-name">Widget Mode:</label>
                     <div class="item-value w30">
                         <label>
-                            <input id="typePopup" type="radio" name="mode" value="dom" checked> Popup
+                            <input id="modePopup" type="radio" name="mode" value="dom" checked> Popup
                         </label>
                         <label>
                             <input type="radio" name="mode" value="tab"> New Tab
                         </label>
                         <label>
-                            <input type="radio" name="mode" value="iframe" disabled> iFrame
+                            <input id="modeFrame" type="radio" name="mode" value="iframe"> iFrame
                         </label>
                     </div>
                 </div>
@@ -194,9 +211,9 @@
             </div>
         </section>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
-    <script src="assets/main.js?v=22"></script>
-    <script id="widget_js" type="text/template">
+    <script data-manual src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
+    <script src="assets/main.js?v=24"></script>
+    <script id="widget_popup_js" type="text/template">
 (function(global, baseUrl){
     if (!global.kyberWidgetOptions) {
         global.kyberWidgetOptions = {};
@@ -207,21 +224,6 @@
                 overlay.remove();
             }
         }
-
-        // add script tag
-        var script = document.createElement("script");
-        script.async = true;
-        script.onerror = function() {
-            global.kyberWidgetOptions.jsLoadError = true;
-        };
-        script.src = baseUrl + "/app.min.js?t=" + Date.now();
-        document.body.appendChild(script);
-
-        // add CSS tag
-        var css = document.createElement("link");
-        css.setAttribute("rel", "stylesheet")
-        css.setAttribute("href", baseUrl + "/app.bundle.css?t=" + Date.now());
-        document.head.appendChild(css);
     }
 
     document.querySelectorAll(".kyber-widget-button").forEach(function(tag){
@@ -232,6 +234,32 @@
 
             // js loading ok, disable new tab mode
             e.preventDefault();
+
+            // add script tag
+            if (!document.getElementById("kyber-widget-script")) {
+                var script = document.createElement("script");
+                script.id = "kyber-widget-script";
+                script.async = true;
+                script.onerror = function() {
+                    global.kyberWidgetOptions.jsLoadError = true;
+                    alert("Error loading KyberWidget.");
+                    global.kyberWidgetOptions.onClose();
+                };
+                script.onload = function() {
+                    global.kyberWidgetOptions.jsLoadError = false;
+                };
+                script.src = baseUrl + "/app.min.js?t=" + Date.now();
+                document.body.appendChild(script);
+            }
+
+            // add CSS tag
+            if (!document.getElementById("kyber-widget-css")) {
+                var css = document.createElement("link");
+                css.id = "kyber-widget-css";
+                css.setAttribute("rel", "stylesheet")
+                css.setAttribute("href", baseUrl + "/app.bundle.css?t=" + Date.now());
+                document.head.appendChild(css);
+            }
 
             // remove old overlay, just to ensure
             var oldOverlay = document.getElementById("kyber-widget-overlay");
@@ -261,6 +289,53 @@
 
             // add the tags to body
             overlay.appendChild(popup);
+            document.body.appendChild(overlay);
+            document.body.style.overflow = "hidden";
+
+            // render the widget
+            global.kyberWidgetInstance && global.kyberWidgetInstance.render();
+        })
+    });
+})(this, "${baseUrl}");
+    </script>
+    <script id="widget_iframe_js" type="text/template">
+(function(global, baseUrl){
+    document.querySelectorAll(".kyber-widget-button").forEach(function(tag){
+        tag.addEventListener("click", function(e){
+            e.preventDefault();
+
+            // remove old overlay, just to ensure
+            var oldOverlay = document.getElementById("kyber-widget-overlay");
+            if (oldOverlay) {
+                oldOverlay.remove();
+            }
+
+            // create a new overlay
+            var overlay = document.createElement("DIV");
+            overlay.id = "kyber-widget-overlay";
+            overlay.addEventListener("click", function(e){
+                if (event.target === this) {
+                    global.kyberWidgetOptions.onClose();
+                }
+            });
+            
+            // create the iframe
+            var iframe = document.createElement("IFRAME");
+            iframe.id = "kyber-widget-iframe";
+            iframe.onload = function() {
+                iframe.contentWindow.kyberWidgetOptions = {};
+                iframe.contentWindow.kyberWidgetOptions.onClose = function() {
+                    var overlay = document.getElementById("kyber-widget-overlay");
+                    if (overlay) {
+                        document.body.style.overflow = null;
+                        overlay.remove();
+                    }
+                }
+            }
+            iframe.src = tag.href;
+
+            // add the tags to body
+            overlay.appendChild(iframe);
             document.body.appendChild(overlay);
             document.body.style.overflow = "hidden";
 
