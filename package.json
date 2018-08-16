@@ -103,6 +103,7 @@
     "webpack-shell-plugin": "^0.5.0"
   },
   "scripts": {
+    "build-extension": "NODE_ENV=production webpack --env.build=true --config webpack.chrome-extension.js --env.folder=extension",
     "build-native": "NODE_ENV=production webpack --env.build=true --config webpack.config.js --env.folder=native",
     "build-dev": "NODE_ENV=production webpack --env.build=true --config webpack.config.dev.js --env.folder=dev --env.logger=true",
     "build-bundle": "NODE_ENV=production webpack --env.build=true --config webpack.config.bundle.js --env.folder=bundle",
