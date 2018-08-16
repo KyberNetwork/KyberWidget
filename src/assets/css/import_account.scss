@@ -6,8 +6,8 @@ $animation-time: 0.5s;
     box-shadow: 0 2px 8px 0 rgba(184, 184, 184, 0.5);
     padding-bottom: 30px;
     background-color: white;
-    transform: translateY(70px);
-    animation: moving-up $animation-time forwards;
+    //transform: translateY(70px);
+    //animation: moving-up $animation-time forwards;
     transition: all .3s;
     padding: 30px 20px 50px;
     box-sizing: border-box;
@@ -141,6 +141,7 @@ $animation-time: 0.5s;
           margin: 0;
           font-weight: 400;
           font-family: $font-cera;
+          transition: 0.5s;
         }
 
         &__balance {
@@ -148,6 +149,11 @@ $animation-time: 0.5s;
           text-shadow: 0 0 16px #e8e8e8;
         }
 
+        .importer__icon{
+          background-repeat: no-repeat;
+            background-position: center;
+            transition: 0.5s;
+        }
         &.metamask {
           display: flex;
           justify-content: center;
@@ -155,8 +161,6 @@ $animation-time: 0.5s;
           padding: 0 0.9375rem;
           .importer__icon {
             background-image: url(../img/landing/metamask_disable.png);
-            background-repeat: no-repeat;
-            background-position: center;
           }
           @include screen-max-width(medium) {
             padding: 0;
@@ -165,29 +169,21 @@ $animation-time: 0.5s;
         &.json {
           .importer__icon {
             background-image: url(../img/landing/keystore_disable.png);
-            background-repeat: no-repeat;
-            background-position: center;
           }
         }
         &.trezor {
           .importer__icon {
             background-image: url(../img/landing/trezor_disable.png);
-            background-repeat: no-repeat;
-            background-position: center;
           }
         }
         &.pkey {
           .importer__icon {
             background-image: url(../img/landing/privatekey_disable.png);
-            background-repeat: no-repeat;
-            background-position: center;
           }
         }
         &.ledger {
           .importer__icon {
             background-image: url(../img/landing/ledger_disable.png);
-            background-repeat: no-repeat;
-            background-position: center;
           }
         }
 
