@@ -75,6 +75,12 @@ $animation-time: 0.5s;
     justify-content: center;
     margin: 12px 0 10px;
 
+    &__json {
+      input {
+        max-width: 100%;
+      }
+    }
+
     &__item {
       max-height: 170px;
       position: relative;
@@ -147,8 +153,41 @@ $animation-time: 0.5s;
           justify-content: center;
           align-items: center;
           padding: 0 0.9375rem;
+          .importer__icon {
+            background-image: url(../img/landing/metamask_disable.png);
+            background-repeat: no-repeat;
+            background-position: center;
+          }
           @include screen-max-width(medium) {
             padding: 0;
+          }
+        }
+        &.json {
+          .importer__icon {
+            background-image: url(../img/landing/keystore_disable.png);
+            background-repeat: no-repeat;
+            background-position: center;
+          }
+        }
+        &.trezor {
+          .importer__icon {
+            background-image: url(../img/landing/trezor_disable.png);
+            background-repeat: no-repeat;
+            background-position: center;
+          }
+        }
+        &.pkey {
+          .importer__icon {
+            background-image: url(../img/landing/privatekey_disable.png);
+            background-repeat: no-repeat;
+            background-position: center;
+          }
+        }
+        &.ledger {
+          .importer__icon {
+            background-image: url(../img/landing/ledger_disable.png);
+            background-repeat: no-repeat;
+            background-position: center;
           }
         }
 
@@ -172,6 +211,10 @@ $animation-time: 0.5s;
         &__symbol {
           position: relative;
           top: 4px;
+          .importer__icon {
+            height: 30px;
+            margin-bottom: 6px;
+          }
         }
       }
 
@@ -225,6 +268,38 @@ $animation-time: 0.5s;
 
       &:hover {
         box-shadow: 0 3px 10px 0 rgb(184, 184, 184);
+      }
+      &:hover {
+        .importer {
+          .importer__name {
+            color: #666;
+          }
+          &.metamask {
+            .importer__icon {
+              background-image: url(../img/landing/metamask_active.svg);
+            }
+          }
+          &.json {
+            .importer__icon {
+              background-image: url(../img/landing/keystore_active.svg);
+            }
+          }
+          &.trezor {
+            .importer__icon {
+              background-image: url(../img/landing/trezor_active.svg);
+            }
+          }
+          &.pkey {
+            .importer__icon {
+              background-image: url(../img/landing/privatekey_active.svg);
+            }
+          }
+          &.ledger {
+            .importer__icon {
+              background-image: url(../img/landing/ledger_active.svg);
+            }
+          }
+        }
       }
     }
 

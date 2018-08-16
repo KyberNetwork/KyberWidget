@@ -35,16 +35,17 @@
         
 }
 
-html body{
-  color: $base-color;
-  font-family: $font-openSans;
-  background-color: #F8F8F8;
-  line-height:  1.5;
+// html body{
+  // color: $base-color;
+  // font-family: $font-openSans;
+  // background-color: #F8F8F8;
+  // line-height:  1.5;
 
-  h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6{
-    font-family: $font-cera;
-  }
-}
+  // h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6{
+  //   font-family: $font-cera;
+  //   // font-family: $font-openSans;
+  // }
+// }
 
 $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
   $alert-color: #ff5d00;
@@ -97,9 +98,18 @@ $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
   // @import '../assets/bower/foundation-sites/assets/foundation-float';
   // @import '../assets/bower/foundation-sites/assets/foundation-prototype';
 
+  color: $base-color;
+  font-family: $font-openSans;
+  background-color: #F8F8F8;
+  line-height:  1.5;
+
+  h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6{
+    font-family: $font-cera;
+    // font-family: $font-openSans;
+  }
   
   * {
-    font-weight: 100;
+    font-weight: normal;
   }
   
   #waiting {
