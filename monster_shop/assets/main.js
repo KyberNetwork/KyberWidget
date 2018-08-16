@@ -26,18 +26,10 @@
     })
   }
 
-  window.kyberWidgetOptions = {};
-  window.kyberWidgetOptions.onClose = function () {
-    var overlay = document.getElementById("kyber-widget-overlay");
-    if (overlay) {
-      document.body.style.overflow = null;
-      overlay.remove();
-    }
-  }
   function wireEvents() {
     document.querySelectorAll(".action").forEach(function (tag) {
       tag.addEventListener("click", function (e) {
-        var baseUrl = tag.href.split("?")[0];
+
         var isPopup = document.getElementById("modePopup").checked;
         var isFrame = document.getElementById("modeFrame").checked;
         if (!isPopup && !isFrame) return;
@@ -47,34 +39,6 @@
 
         // js loading ok, disable new tab mode
         e.preventDefault();
-
-        if (isPopup) {
-          // add script tag
-          if (!document.getElementById("kyber-widget-script")) {
-            var script = document.createElement("script");
-            script.id = "kyber-widget-script";
-            script.async = true;
-            script.onerror = function () {
-              window.kyberWidgetOptions.jsLoadError = true;
-              alert("Error loading KyberWidget.");
-              window.kyberWidgetOptions.onClose();
-            };
-            script.onload = function () {
-              window.kyberWidgetOptions.jsLoadError = false;
-            };
-            script.src = baseUrl + "/app.min.js?t=" + Date.now();
-            document.body.appendChild(script);
-          }
-
-          // add CSS tag
-          if (!document.getElementById("kyber-widget-css")) {
-            var css = document.createElement("link");
-            css.id = "kyber-widget-css";
-            css.setAttribute("rel", "stylesheet")
-            css.setAttribute("href", baseUrl + "/app.bundle.css?t=" + Date.now());
-            document.head.appendChild(css);
-          }
-        }
 
         // remove old overlay, just to ensure
         var oldOverlay = document.getElementById("kyber-widget-overlay");
@@ -86,7 +50,7 @@
         var overlay = document.createElement("DIV");
         overlay.id = "kyber-widget-overlay";
         overlay.addEventListener("click", function (e) {
-          if (event.target === this) {
+          if (e.target === this) {
             window.kyberWidgetOptions.onClose();
           }
         });
@@ -108,7 +72,7 @@
           var iframe = document.createElement("IFRAME");
           iframe.id = "kyber-widget-iframe";
           iframe.onload = function () {
-            iframe.contentWindow.kyberWidgetOptions = { onClose: global.kyberWidgetOptions.onClose };
+            iframe.contentWindow.kyberWidgetOptions = { onClose: window.kyberWidgetOptions.onClose };
           }
           iframe.src = tag.href;
           overlay.appendChild(iframe);
@@ -161,5 +125,42 @@
     wireEvents();
 
   })(monsters);
+
+  (function init() {
+    window.kyberWidgetOptions = {};
+    window.kyberWidgetOptions.onClose = function () {
+      var overlay = document.getElementById("kyber-widget-overlay");
+      if (overlay) {
+        document.body.style.overflow = null;
+        overlay.remove();
+      }
+    }
+
+    // add script tag
+    if (!document.getElementById("kyber-widget-script")) {
+      var script = document.createElement("script");
+      script.id = "kyber-widget-script";
+      script.async = true;
+      script.onerror = function () {
+        window.kyberWidgetOptions.jsLoadError = true;
+        alert("Error loading KyberWidget.");
+        window.kyberWidgetOptions.onClose();
+      };
+      script.onload = function () {
+        window.kyberWidgetOptions.jsLoadError = false;
+      };
+      script.src = "https://widget-etheremon.knstats.com/app.min.js?t=" + Date.now();
+      document.body.appendChild(script);
+    }
+
+    // add CSS tag
+    if (!document.getElementById("kyber-widget-css")) {
+      var css = document.createElement("link");
+      css.id = "kyber-widget-css";
+      css.setAttribute("rel", "stylesheet")
+      css.setAttribute("href", "https://widget-etheremon.knstats.com/app.bundle.css?t=" + Date.now());
+      document.head.appendChild(css);
+    }
+  })();
 
 })(this);
