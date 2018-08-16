@@ -75,6 +75,9 @@ $radio-color: #5D9E7A;
     font-size: 14px;
     font-weight: 600;
     color: #ef8102;
+    img {
+      vertical-align: middle;
+    }
   }
   .gas-change{
     padding-top: 0px;
@@ -206,6 +209,9 @@ $radio-color: #5D9E7A;
     font-style: italic;
     line-height: 1.54;
     color: #666666;
+    img {
+      vertical-align: middle;
+    }
   }
 
   .des-down{
