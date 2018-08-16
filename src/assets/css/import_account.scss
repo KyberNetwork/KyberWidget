@@ -6,8 +6,8 @@ $animation-time: 0.5s;
     box-shadow: 0 2px 8px 0 rgba(184, 184, 184, 0.5);
     padding-bottom: 30px;
     background-color: white;
-    transform: translateY(70px);
-    animation: moving-up $animation-time forwards;
+    //transform: translateY(70px);
+    //animation: moving-up $animation-time forwards;
     transition: all .3s;
     padding: 30px 20px 50px;
     box-sizing: border-box;
@@ -75,6 +75,12 @@ $animation-time: 0.5s;
     justify-content: center;
     margin: 12px 0 10px;
 
+    &__json {
+      input {
+        max-width: 100%;
+      }
+    }
+
     &__item {
       max-height: 170px;
       position: relative;
@@ -135,6 +141,7 @@ $animation-time: 0.5s;
           margin: 0;
           font-weight: 400;
           font-family: $font-cera;
+          transition: 0.5s;
         }
 
         &__balance {
@@ -142,13 +149,41 @@ $animation-time: 0.5s;
           text-shadow: 0 0 16px #e8e8e8;
         }
 
+        .importer__icon{
+          background-repeat: no-repeat;
+            background-position: center;
+            transition: 0.5s;
+        }
         &.metamask {
           display: flex;
           justify-content: center;
           align-items: center;
           padding: 0 0.9375rem;
+          .importer__icon {
+            background-image: url(../img/landing/metamask_disable.png);
+          }
           @include screen-max-width(medium) {
             padding: 0;
+          }
+        }
+        &.json {
+          .importer__icon {
+            background-image: url(../img/landing/keystore_disable.png);
+          }
+        }
+        &.trezor {
+          .importer__icon {
+            background-image: url(../img/landing/trezor_disable.png);
+          }
+        }
+        &.pkey {
+          .importer__icon {
+            background-image: url(../img/landing/privatekey_disable.png);
+          }
+        }
+        &.ledger {
+          .importer__icon {
+            background-image: url(../img/landing/ledger_disable.png);
           }
         }
 
@@ -158,9 +193,12 @@ $animation-time: 0.5s;
           color: #999;
           line-height: 1.5;
           font-weight: 100;
-          // .error {
-          //   color: #d45a58;
-          // }
+          .error {
+            color: #999999;
+          }
+          strong {
+            font-weight: bold;
+          }
         }
 
         &__button,
@@ -172,6 +210,10 @@ $animation-time: 0.5s;
         &__symbol {
           position: relative;
           top: 4px;
+          .importer__icon {
+            height: 30px;
+            margin-bottom: 6px;
+          }
         }
       }
 
@@ -225,6 +267,38 @@ $animation-time: 0.5s;
 
       &:hover {
         box-shadow: 0 3px 10px 0 rgb(184, 184, 184);
+      }
+      &:hover {
+        .importer {
+          .importer__name {
+            color: #666;
+          }
+          &.metamask {
+            .importer__icon {
+              background-image: url(../img/landing/metamask_active.svg);
+            }
+          }
+          &.json {
+            .importer__icon {
+              background-image: url(../img/landing/keystore_active.svg);
+            }
+          }
+          &.trezor {
+            .importer__icon {
+              background-image: url(../img/landing/trezor_active.svg);
+            }
+          }
+          &.pkey {
+            .importer__icon {
+              background-image: url(../img/landing/privatekey_active.svg);
+            }
+          }
+          &.ledger {
+            .importer__icon {
+              background-image: url(../img/landing/ledger_active.svg);
+            }
+          }
+        }
       }
     }
 
@@ -289,6 +363,9 @@ $animation-time: 0.5s;
           box-shadow: inset 0 1px 2px hsla(0,0%,4%,.1);
           border: 1px solid #cacaca;
           transition: box-shadow .5s,border-color .25s ease-in-out,-webkit-box-shadow .5s;
+          box-sizing: border-box;
+          padding-left: 30px;
+          padding-right: 35px;
           &:focus {
             border-color: #666;
             box-shadow: 0 0 5px #ccc;
@@ -297,6 +374,9 @@ $animation-time: 0.5s;
           &.security{
             font-family: 'text-security-disc';
             font-size: 25px;
+            box-sizing: border-box;
+            padding-left: 30px;
+            padding-right: 35px;
           }
         }
 
@@ -398,6 +478,9 @@ $animation-time: 0.5s;
 
       > div:first-child {
         width: 61px;
+      }
+      div {
+        font-weight: bold;
       }
     }
   }
