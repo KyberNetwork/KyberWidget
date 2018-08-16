@@ -153,6 +153,13 @@ pre[class*="language-"] {
     margin: 0;
     height: 240px;
 }
+.disabled, input[disabled] {
+    color: #b3b3b3;
+    cursor: not-allowed;
+}
+label input, select, .pointer {
+    cursor: pointer;
+}
 @media (max-width: 839px) {
     #wrapper {
         width: 600px;
