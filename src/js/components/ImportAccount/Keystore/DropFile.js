@@ -28,10 +28,11 @@ const DropFile = (props) => {
 
   return (
     <div className="import-account__item" onDrop={(e) => props.onDrop(e)} onClick={(e) => props.onDrop(e)}>
-      <Dropzone onDrop={(e) => props.onDrop(e)} disablePreview={true} className="column column-block">
+      <Dropzone onDrop={(e) => props.onDrop(e)} disablePreview={true} className="column column-block import-account__json">
         <div className="importer json">
           <div className="importer__symbol">
-            <img src={require('../../../../assets/img/landing/keystore_disable.png')} />
+            {/* <img src={require('../../../../assets/img/landing/keystore_disable.png')} /> */}
+            <div className="importer__icon"></div>
             <div className="importer__name">{props.translate("import.json") || "JSON"}</div>
           </div>
         </div>
