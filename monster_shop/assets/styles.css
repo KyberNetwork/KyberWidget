@@ -113,3 +113,17 @@ h1 {
     width: 100%;
     padding: 4px 8px;
 }
+.mode{
+    width: 400px;
+    max-width: 90%;
+    margin: 0 auto;
+    padding-top: 8px;
+    padding-bottom: 10px;
+}
+.w30 label {
+    width: 30%;
+}
+.item-value label {
+    padding-right: 2rem;
+    display: inline-block;
+}
