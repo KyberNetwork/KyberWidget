@@ -1,6 +1,5 @@
 (function () {
 
-
   var monsters = [
     {
       id: 106,
@@ -17,8 +16,7 @@
   var abi = [{ "constant": true, "inputs": [{ "name": "_classId", "type": "uint32" }], "name": "getPrice", "outputs": [{ "name": "catchable", "type": "bool" }, { "name": "price", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }];
 
   String.prototype.replaceAll = function (search, replacement) {
-    var target = this;
-    return target.split(search).join(replacement);
+    return this.split(search).join(replacement);
   };
 
   function getPrice(instance, monsterId) {
@@ -27,6 +25,104 @@
       document.querySelector("#monster" + monsterId + " .price").textContent = price;
     })
   }
+
+  window.kyberWidgetOptions = {};
+  window.kyberWidgetOptions.onClose = function () {
+    var overlay = document.getElementById("kyber-widget-overlay");
+    if (overlay) {
+      document.body.style.overflow = null;
+      overlay.remove();
+    }
+  }
+  function wireEvents() {
+    document.querySelectorAll(".action").forEach(function (tag) {
+      tag.addEventListener("click", function (e) {
+        var baseUrl = tag.href.split("?")[0];
+        var isPopup = document.getElementById("modePopup").checked;
+        var isFrame = document.getElementById("modeFrame").checked;
+        if (!isPopup && !isFrame) return;
+
+        // error from last time's load -> fallback to new tab mode
+        if (isPopup && window.kyberWidgetOptions.jsLoadError) return;
+
+        // js loading ok, disable new tab mode
+        e.preventDefault();
+
+        if (isPopup) {
+          // add script tag
+          if (!document.getElementById("kyber-widget-script")) {
+            var script = document.createElement("script");
+            script.id = "kyber-widget-script";
+            script.async = true;
+            script.onerror = function () {
+              window.kyberWidgetOptions.jsLoadError = true;
+              alert("Error loading KyberWidget.");
+              window.kyberWidgetOptions.onClose();
+            };
+            script.onload = function () {
+              window.kyberWidgetOptions.jsLoadError = false;
+            };
+            script.src = baseUrl + "/app.min.js?t=" + Date.now();
+            document.body.appendChild(script);
+          }
+
+          // add CSS tag
+          if (!document.getElementById("kyber-widget-css")) {
+            var css = document.createElement("link");
+            css.id = "kyber-widget-css";
+            css.setAttribute("rel", "stylesheet")
+            css.setAttribute("href", baseUrl + "/app.bundle.css?t=" + Date.now());
+            document.head.appendChild(css);
+          }
+        }
+
+        // remove old overlay, just to ensure
+        var oldOverlay = document.getElementById("kyber-widget-overlay");
+        if (oldOverlay) {
+          oldOverlay.remove();
+        }
+
+        // create a new overlay
+        var overlay = document.createElement("DIV");
+        overlay.id = "kyber-widget-overlay";
+        overlay.addEventListener("click", function (e) {
+          if (event.target === this) {
+            window.kyberWidgetOptions.onClose();
+          }
+        });
+
+        if (isPopup) {
+          // create the widget container
+          var popup = document.createElement("DIV");
+          popup.id = "kyber-widget";
+
+          // set widget attributes
+          popup.setAttribute("data-widget-attribute", "true");
+          var params = new URL(tag.href).searchParams.entries();
+          for (var pair of params) {
+            popup.setAttribute("data-widget-" + pair[0].replace(/([a-z])([A-Z])/g, '$1-$2'), decodeURIComponent(pair[1]));
+          }
+          overlay.appendChild(popup);
+        } else {
+          // create the iframe
+          var iframe = document.createElement("IFRAME");
+          iframe.id = "kyber-widget-iframe";
+          iframe.onload = function () {
+            iframe.contentWindow.kyberWidgetOptions = { onClose: global.kyberWidgetOptions.onClose };
+          }
+          iframe.src = tag.href;
+          overlay.appendChild(iframe);
+        }
+
+        // add the tags to body
+        document.body.appendChild(overlay);
+        document.body.style.overflow = "hidden";
+
+        // render the widget
+        isPopup && window.kyberWidgetInstance && window.kyberWidgetInstance.render();
+      })
+    });
+  };
 
   (function geneteHtml(monsters) {
 
@@ -44,7 +140,6 @@
       allHtml += html;
 
       getPrice(instance, item.id);
-
     })
 
     document.getElementById("list").innerHTML = allHtml;
@@ -63,84 +158,8 @@
       })
     })
 
+    wireEvents();
+
   })(monsters);
 
-  function getWidgetUrl() {
-    var url = new URLSearchParams(location.search).get("widget_url");
-    return url || "https://widget-etheremon.knstats.com";
-
-  }
-
-  // Returns a function, that, as long as it continues to be invoked, will not
-  // be triggered. The function will be called after it stops being called for
-  // N milliseconds. If `immediate` is passed, trigger the function on the
-  // leading edge, instead of the trailing.
-  function debounce(func, wait, immediate) {
-    var timeout;
-    return function () {
-      var context = this, args = arguments;
-      var later = function () {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-      var callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    };
-  };
-
-
-
-  function runTemplateJS(baseUrl, scriptID) {
-    var js = document.getElementById(scriptID).innerHTML.trim().replace("${baseUrl}", baseUrl);
-
-    var script = document.createElement("script");
-    script.className = "script";
-    script.innerHTML = js;
-    document.getElementsByTagName('body')[0].appendChild(script);
-    return js;
-  }
-  function wireEvents() {
-    var form = document.querySelector("form");
-    form.querySelectorAll("input").forEach(function (node) {
-      node.addEventListener('change', generateTag);
-    });
-  }
-  function removeElementsByClass(className){
-    var elements = document.getElementsByClassName(className);
-    while(elements.length > 0){
-      elements[0].parentNode.removeChild(elements[0]);
-    }
-  }
-  function recreateNode(el, withChildren) {
-    if (withChildren) {
-      el.parentNode.replaceChild(el.cloneNode(true), el);
-    }
-    else {
-      var newEl = el.cloneNode(false);
-      while (el.hasChildNodes()) newEl.appendChild(el.firstChild);
-      el.parentNode.replaceChild(newEl, el);
-    }
-  }
-  var generateTag = debounce(function () {
-
-    var isPopup = document.getElementById("modePopup").checked;
-    var isFrame = document.getElementById("modeFrame").checked;
-
-    var widgetBaseUrl = getWidgetUrl();
-    var url = widgetBaseUrl;
-    document.querySelectorAll(".action").forEach(function (tag) {
-      recreateNode(tag);
-    });
-    removeElementsByClass("script");
-    removeElementsByClass("ReactModalPortal");
-    if (isPopup) {
-      runTemplateJS(widgetBaseUrl, "widget_popup_js");
-    } else if (isFrame) {
-      runTemplateJS(widgetBaseUrl, "widget_iframe_js");
-    }
-  }, 50, false);
-  generateTag();
-  wireEvents();
 })(this);

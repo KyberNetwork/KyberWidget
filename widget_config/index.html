@@ -53,7 +53,7 @@
 }
 #kyber-widget-overlay::before {
     content: "×";
-    position: absolute;
+    position: fixed;
     top: 16px;
     right: 8px;
     display: inline-block;
@@ -66,14 +66,14 @@
 </style>
 <style id="widget_popup_style">
 #kyber-widget {
-    background-color: #fff;
     position: absolute;
     box-sizing: border-box;
     transform: translateX(-50%) translateY(-50%);
     left: 50%;
     top: 50%;
-    overflow: hidden auto;
     max-height: 100%;
+    width: 100%;
+    max-width: 405px;
 }
 </style>
 <style id="widget_iframe_style">
