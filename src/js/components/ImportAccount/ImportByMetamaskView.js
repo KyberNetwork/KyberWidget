@@ -6,7 +6,8 @@ const ImportByMetamaskView = (props) => {
       <div className="column column-block">
         <div className="importer metamask">
           <div className="importer__symbol">
-            <img src={require('../../../assets/img/landing/metamask_disable.png')} />
+            {/* <img src={require('../../../assets/img/landing/metamask_disable.png')} /> */}
+            <div className="importer__icon"></div>
             <div className="importer__name">{props.translate("import.from_metamask") || "METAMASK"}</div>
           </div>
 
