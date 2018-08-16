@@ -58,7 +58,7 @@ const ExchangeBodyLayout = (props) => {
                     </div>
                     <div className={props.exchange.monsterAvatar &&  props.exchange.monsterAvatar != "" ? "monster-avatar" : "" }>
                       {props.exchange.monsterAvatar &&  props.exchange.monsterAvatar != "" ?
-                        <div className="avatar"><img src={props.exchange.monsterAvatar} /></div> : ""
+                        <div className="kyber-avatar"><img src={props.exchange.monsterAvatar} /></div> : ""
                       }
                       <div className="info-2">
                         <div className="info-2__content">
