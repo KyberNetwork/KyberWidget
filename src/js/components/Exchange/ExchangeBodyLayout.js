@@ -203,9 +203,14 @@ const ExchangeBodyLayout = (props) => {
                     </div>
                   </div>
                 </div>
-                {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
+                {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (props.global.params && props.global.params.receiveAddr && props.global.params.receiveAddr === 'self') && (
                   <div className="estimate-dest-value">
                     {props.translate("transaction.estimate_dest_value") || "You will get approximately"}: {props.exchange.offeredRate == "0"? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}
+                  </div>
+                )}
+                {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (!props.global.params || !props.global.params.receiveAddr || props.global.params.receiveAddr !== 'self') && (
+                  <div className="estimate-dest-value">
+                    Estimate dest amount: {props.exchange.offeredRate == "0"? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}
                   </div>
                 )}
               </div>
@@ -221,7 +226,9 @@ const ExchangeBodyLayout = (props) => {
               {props.translate("transaction.i_agree_to") || "I agree to"} <a href="https://files.kyber.network/tac.html" target="_blank">{props.translate("transaction.term_and_condition") || "Terms &amp; Conditions"}</a>
               </label>
             </div>
-            <button className={props.classNamePaymentbtn} onClick={(e) => props.importAccount(e)}>{props.translate("transaction.next") || "Next"}</button>
+            <div className="button-payment">
+              <button className={props.classNamePaymentbtn} onClick={(e) => props.importAccount(e)}>{props.translate("transaction.next") || "Next"}</button>
+            </div>
           </div>
           </div>
         </div>

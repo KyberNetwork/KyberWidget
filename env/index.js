@@ -1,8 +1,25 @@
 
 
 import * as common from "../src/js/utils/common"
+import * as constants from "../src/js/services/constants"
 
-var network = common.getParameterByName("network")
+
+var network
+
+var widgetParent = document.getElementById(constants.APP_NAME)
+
+console.log(widgetParent)
+if (widgetParent){
+  var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
+  if (attributeWidget === true || attributeWidget === 'true'){
+    network = widgetParent.getAttribute('data-widget-network')
+  }else{
+    network = common.getParameterByName("network")
+  }
+}else{
+  network = common.getParameterByName("network")
+}
+
 var config_file
 
 switch (network) {

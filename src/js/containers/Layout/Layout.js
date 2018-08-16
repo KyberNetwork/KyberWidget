@@ -96,20 +96,23 @@ export default class Layout extends React.Component {
           var nodeName = atts[i].nodeName
           if(nodeName.includes('data-widget')){
             var key = nodeName.replace('data-widget-','');
+            
+            key = common.lineToCamel(key)
+
             query[key] = atts[i].nodeValue
           }
       }
 
       //this.props.dispatch(initParamsGlobal(query))
 
-      receiveAddr = widgetParent.getAttribute('data-widget-receiveAddr')
-      receiveToken = widgetParent.getAttribute('data-widget-receiveToken')
-      receiveAmount = widgetParent.getAttribute('data-widget-receiveAmount')
+      receiveAddr = widgetParent.getAttribute('data-widget-receive-addr')
+      receiveToken = widgetParent.getAttribute('data-widget-receive-token')
+      receiveAmount = widgetParent.getAttribute('data-widget-receive-amount')
       callback = widgetParent.getAttribute('data-widget-callback')
       network = widgetParent.getAttribute('data-widget-network')
-      paramForwarding = widgetParent.getAttribute('data-widget-paramForwarding')
+      paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
       signer = widgetParent.getAttribute('data-widget-signer')
-      commissionID = widgetParent.getAttribute('data-widget-commissionID')
+      commissionID = widgetParent.getAttribute('data-widget-commission-id')
 
     }else{
       query  = common.getQueryParams(window.location.search)
@@ -121,7 +124,7 @@ export default class Layout extends React.Component {
       network = common.getParameterByName("network")
       paramForwarding = common.getParameterByName("paramForwarding")
       signer = common.getParameterByName("signer")
-      commissionID = common.getParameterByName("commissionID")
+      commissionID = common.getParameterByName("commissionId")
     }
 
 
