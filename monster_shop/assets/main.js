@@ -59,6 +59,7 @@
           // create the widget container
           var popup = document.createElement("DIV");
           popup.id = "kyber-widget";
+          popup.classList.add("kyber-widget");
 
           // set widget attributes
           popup.setAttribute("data-widget-attribute", "true");
@@ -147,7 +148,7 @@
         window.kyberWidgetOptions.onClose();
       };
       script.onload = function () {
-        window.kyberWidgetOptions.jsLoadError = false;
+        document.getElementById("kyber-widget") && global.kyberWidgetInstance.render();
       };
       script.src = "https://widget-etheremon.knstats.com/app.min.js?t=" + Date.now();
       document.body.appendChild(script);
