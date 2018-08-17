@@ -488,7 +488,7 @@ export default class Payment extends React.Component {
           </div>
           <div className={this.props.exchange.monsterAvatar && this.props.exchange.monsterAvatar != "" ? "monster-avatar" : "" }>
             {this.props.exchange.monsterAvatar &&  this.props.exchange.monsterAvatar != "" ?
-              <div className="avatar"><img src={this.props.exchange.monsterAvatar} /></div> : ""
+              <div className="kyber-avatar"><img src={this.props.exchange.monsterAvatar} /></div> : ""
             }
             <div className="content">
               <div>
