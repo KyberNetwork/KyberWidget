@@ -6,7 +6,7 @@ import { closeInfoModal} from "../../actions/utilActions"
 import { getTranslate } from 'react-localize-redux'
 
 @connect((store) => {
-  var modal = store.utils.infoModal
+  var modal = store.utils.infoModal  
   return {
     modal: modal ? modal : { open: false, },
     translate: getTranslate(store.locale)

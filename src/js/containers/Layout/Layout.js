@@ -212,12 +212,13 @@ export default class Layout extends React.Component {
   checkTimmer() {
     if (!this.props.account.account) return;
     if (this.props.utils.infoModal && this.props.utils.infoModal.open) return;
-    if (this.idleTime >= this.timeoutEndSession && this.props.exchange.step > 2) {
+    if (this.idleTime >= this.timeoutEndSession) {
       let timeOut = constanst.IDLE_TIME_OUT/60
       let titleModal = this.props.translate('error.time_out') || 'Time out'
       let contentModal = this.props.translate('error.clear_data_timeout', {time: timeOut}) || `We've cleared all your data because your session is timed out ${timeOut} minutes`
       this.props.dispatch(openInfoModal(titleModal, contentModal));
       this.endSession();
+      this.idleTime = 0
     } else {
       this.idleTime++;
     }
