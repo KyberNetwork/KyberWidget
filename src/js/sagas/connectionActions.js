@@ -21,6 +21,9 @@ import NotiService from "../services/noti_service/noti_service"
 export function* createNewConnection(action) {
   var state = store.getState()
   var network = state.exchange.network
+  console.log("network_name")
+  console.log(network)
+  console.log(state.exchange)
   var translate = getTranslate(state.locale)
   var connectionInstance = new EthereumService({network})
   yield put(setConnection(connectionInstance))

@@ -11,7 +11,7 @@ import constanst from "./services/constants"
 //import NotSupportPage from "./components/NotSupportPage"
 //import platform from 'platform'
 //import { blackList } from './blacklist'
-import {initSession, initParamsGlobal } from "./actions/globalActions"
+import {initSession, initParamsGlobal,haltPayment } from "./actions/globalActions"
 import {initParamsExchange } from "./actions/exchangeActions"
 
 import { PersistGate } from 'redux-persist/lib/integration/react'
@@ -19,6 +19,9 @@ import { persistor, store } from "./store"
 import Modal from 'react-modal';
 
 import { getTranslate } from 'react-localize-redux'
+
+import * as common from "./utils/common"
+import * as validator  from "./utils/validators"
 
 //console.log(platform)
 //check browser compatible
@@ -47,7 +50,10 @@ var illegal = false
 // }
 
 function initParams(){
-  var translate = getTranslate(store.locale)
+  //var translate = getTranslate(store.locale)
+  var translate = (...args) => {
+    return null
+  }
 
   var widgetParent = document.getElementById(constanst.APP_NAME)
     var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
@@ -125,7 +131,7 @@ function initParams(){
     
     if (receiveToken){
       receiveToken = receiveToken.toUpperCase()
-      if (!this.props.tokens[receiveToken]){
+      if (!BLOCKCHAIN_INFO[network].tokens[receiveToken]){
         errors["receiveToken"] = translate('error.receive_token_is_not_support') 
           || "Receive token is not supported by kyber"
       }
@@ -186,7 +192,7 @@ function initParams(){
     if (validator.anyErrors(errors)){
       store.dispatch(haltPayment(errors))
     }else{
-      var tokenAddr =  BLOCKCHAIN_INFO[network][receiveToken].address
+      var tokenAddr =  BLOCKCHAIN_INFO[network].tokens[receiveToken].address
       store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, network, paramForwarding, signer, commissionID));
     }
 }

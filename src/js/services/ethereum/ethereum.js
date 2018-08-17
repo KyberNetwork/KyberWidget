@@ -40,6 +40,9 @@ export default class EthereumService extends React.Component {
     //       break
     //   }
     // })
+    console.log("network_name")
+    console.log(props.network)
+    
     this.network = props.network
 
     this.listProviders = []

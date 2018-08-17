@@ -71,12 +71,12 @@ export default class Layout extends React.Component {
 
     this.intervalIdle = setInterval(this.checkTimmer.bind(this), 10000)
 
-    this.props.dispatch(createNewConnectionInstance())
+    //this.props.dispatch(createNewConnectionInstance())
     // createNewConnection()
   }
 
 
-  componentDidMount(){
+  componentDidMount1(){
     var widgetParent = document.getElementById(constanst.APP_NAME)
     var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
 
