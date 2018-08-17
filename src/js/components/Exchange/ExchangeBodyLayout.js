@@ -82,6 +82,9 @@ const ExchangeBodyLayout = (props) => {
     classSource += " error"
   }
 
+  var haveProductName = props.exchange.productName === "" ? false : true
+  var haveProductAvatar = props.exchange.productAvatar === "" ? false : true
+
   return  (
     <div id="exchange">
     <div className="grid-x">
@@ -112,8 +115,10 @@ const ExchangeBodyLayout = (props) => {
                     {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
                   </div>
 
-                  
-                  <div className="info-2">
+                  <div className={`${haveProductAvatar ? "kyber-product-avatar" : ""} ${haveProductName ? "info-2 kyber-product-name" : "info-2"}`}>
+                    {haveProductAvatar && <div>
+                      <img />
+                    </div>}
                     {props.global.params && props.global.params.receiveAddr && props.global.params.receiveAddr !== 'self' && (
                       <div className="info-2__content">
                         <div>{props.translate("transaction.address") || "Address"}:</div>                      
@@ -125,6 +130,10 @@ const ExchangeBodyLayout = (props) => {
                       <div>{props.translate("transaction.amount") || "Amount"}:</div>
                       <div>{(''+props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount} {props.exchange.destTokenSymbol}</div>
                     </div>
+                    { haveProductName && <div className="info-2__content">
+                      <div>{props.translate("transaction.product_name") || "Product name"}:</div>
+                      <div>{props.exchange.productName}</div>
+                    </div>}
                   </div>
                   <div className="info-3">
 
@@ -164,11 +173,16 @@ const ExchangeBodyLayout = (props) => {
                     <div className="info-1">
                       {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
                     </div>
-                    <div className="info-2">
+                    {}
+                    <div className={`${haveProductAvatar ? "kyber-product-avatar" : ""} ${haveProductName ? "info-2 kyber-product-name" : "info-2"}`}>
                       <div className="info-2__content">
                         <div>{props.translate("transaction.address") || "Address"}:</div>
                         <div>{props.global.params.receiveAddr.slice(0, 8)} ... {props.global.params.receiveAddr.slice(-6)}</div>
                       </div>
+                      { haveProductName && <div className="info-2__content">
+                        <div>{props.translate("transaction.product_name") || "Product name"}:</div>
+                        <div>{props.exchange.productName}</div>
+                      </div>}
                     </div>
                   </div>
                 )}

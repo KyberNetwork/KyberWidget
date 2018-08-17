@@ -90,6 +90,8 @@ export default class Layout extends React.Component {
     var paramForwarding
     var signer
     var commissionID
+    var productName
+    var productAvatar
 
     if (attributeWidget === true || attributeWidget === 'true'){
       for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++){
@@ -113,6 +115,8 @@ export default class Layout extends React.Component {
       paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
       signer = widgetParent.getAttribute('data-widget-signer')
       commissionID = widgetParent.getAttribute('data-widget-commission-id')
+      productName   = widgetParent.getAttribute('data-widget-product-name')
+      productAvatar = widgetParent.getAttribute('data-widget-product-avatar')
 
     }else{
       query  = common.getQueryParams(window.location.search)
@@ -125,6 +129,8 @@ export default class Layout extends React.Component {
       paramForwarding = common.getParameterByName("paramForwarding")
       signer = common.getParameterByName("signer")
       commissionID = common.getParameterByName("commissionId")
+      productName   = common.getParameterByName("productName")
+      productAvatar = common.getParameterByName("productAvatar")
     }
 
 
@@ -205,7 +211,7 @@ export default class Layout extends React.Component {
       this.props.dispatch(haltPayment(errors))
     }else{
       var tokenAddr = this.props.tokens[receiveToken].address
-      this.props.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, network, paramForwarding, signer, commissionID));
+      this.props.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID));
     }
   }
 

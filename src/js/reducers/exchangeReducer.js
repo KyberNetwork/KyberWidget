@@ -583,7 +583,7 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.INIT_PARAMS_EXCHANGE":{
-      const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, network, paramForwarding, signer, commissionID} = action.payload
+      const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, network, paramForwarding, signer, commissionID} = action.payload
       newState.destTokenSymbol = receiveToken
       newState.destAmount = receiveAmount
       if (receiveAmount === null){
@@ -593,6 +593,9 @@ const exchange = (state = initState, action) => {
       }
       newState.destToken = tokenAddr
       newState.receiveAddr = receiveAddr
+
+      newState.productName = productName
+      newState.productAvatar = productAvatar
 
       newState.callback = callback
       newState.network = network
