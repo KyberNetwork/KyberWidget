@@ -34,7 +34,7 @@
         var isFrame = document.getElementById("modeFrame").checked;
         if (!isPopup && !isFrame) return;
 
-        // error from last time's load -> fallback to new tab mode
+        // error loading js, just fallback to new tab mode
         if (isPopup && window.kyberWidgetOptions.jsLoadError) return;
 
         // js loading ok, disable new tab mode
