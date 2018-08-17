@@ -20,7 +20,7 @@ const AdvanceConfigLayout = (props) => {
 
       <div className="advance-title-mobile title" onClick={(e) => toggleShowAdvance()}>
         <div className="title-advanced">
-          <img src={require("../../../assets/img/exchange/arrow-down-swap.svg")} id="advance-arrow"/>
+          <img src={require("../../../assets/img/widget/dropdown-advance.svg")} id="advance-arrow"/>
           {props.translate("transaction.advanced") || "Advanced"}
         </div>        
       </div>

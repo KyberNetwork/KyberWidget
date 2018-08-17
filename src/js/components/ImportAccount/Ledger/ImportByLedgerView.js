@@ -7,7 +7,8 @@ const ImportByLedgerView = (props) => {
       <div className="column">
         <div className="importer ledger">
           <div className="importer__symbol">
-            <img src={require('../../../../assets/img/landing/ledger_disable.png')} />
+            {/* <img src={require('../../../../assets/img/landing/ledger_disable.png')} /> */}
+            <div className="importer__icon"></div>
             <div className="importer__name">{props.translate("import.from_ledger") || "LEDGER"}</div>
           </div>
         </div>

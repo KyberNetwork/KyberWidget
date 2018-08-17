@@ -2,6 +2,11 @@
 
 .payment_confirm{
     padding: 30px 25px 3rem;
+    @include screen-max-width(medium) {
+        padding-top: 15px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 
     .confirm-message{
         margin-bottom: 20px;
@@ -32,6 +37,7 @@
     .payment-info{
         margin-top: 30px;
         font-size: 14px;
+        color: #666666;
         .title{
             color: #222;
             text-transform: uppercase;
@@ -108,6 +114,9 @@
                 &.confirm-btn{
                     background: #31CB9E;
                     color: white;                    
+                }
+                @include screen-max-width(medium) {
+                    width: 100px;
                 }
             }
         }
