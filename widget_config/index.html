@@ -234,7 +234,7 @@
         script.async = true;
         script.onerror = function() {
             global.kyberWidgetOptions.jsLoadError = true;
-            alert("Error loading KyberWidget.");
+            console.log("Error loading KyberWidget.");
             global.kyberWidgetOptions.onClose();
         };
         script.onload = function() {

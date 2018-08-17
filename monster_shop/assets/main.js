@@ -144,7 +144,7 @@
       script.async = true;
       script.onerror = function () {
         window.kyberWidgetOptions.jsLoadError = true;
-        alert("Error loading KyberWidget.");
+        console.log("Error loading KyberWidget.");
         window.kyberWidgetOptions.onClose();
       };
       script.onload = function () {
