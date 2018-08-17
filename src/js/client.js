@@ -49,13 +49,13 @@ var illegal = false
 //   // break
 // }
 
-function initParams(){
+function initParams(appId){
   //var translate = getTranslate(store.locale)
   var translate = (...args) => {
     return null
   }
 
-  var widgetParent = document.getElementById(constanst.APP_NAME)
+  var widgetParent = document.getElementById(appId)
     var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
 
     
@@ -202,8 +202,10 @@ Modal.setAppElement('body');
 window.kyberWidgetInstance = {}
 
 //console.log(document.getElementById(constanst.APP_NAME))
-window.kyberWidgetInstance.render = renderApp => {
-  if(!document.getElementById(constanst.APP_NAME)){
+window.kyberWidgetInstance.render = (widgetId) => {
+  var appId = widgetId ? widgetId: constanst.APP_NAME
+
+  if(!document.getElementById(appId)){
     return
   }
   // if (illegal) {
@@ -219,14 +221,14 @@ window.kyberWidgetInstance.render = renderApp => {
   //     </PersistGate>, document.getElementById(constanst.APP_NAME));
   // }
   store.dispatch(initSession())
-  initParams()
+  initParams(appId)
 
   ReactDOM.render(
     <PersistGate persistor={persistor}>
       <Provider store={store}>
         <Layout />
       </Provider>
-    </PersistGate>, document.getElementById(constanst.APP_NAME));
+    </PersistGate>, document.getElementById(appId));
 }
 
 
