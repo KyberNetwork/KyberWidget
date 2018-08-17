@@ -82,8 +82,8 @@ const ExchangeBodyLayout = (props) => {
     classSource += " error"
   }
 
-  var haveProductName = props.exchange.productName === "" ? false : true
-  var haveProductAvatar = props.exchange.productAvatar === "" ? false : true
+  var haveProductName = props.exchange.productName && props.exchange.productName !== "" ? true : false
+  var haveProductAvatar = props.exchange.productAvatar && props.exchange.productAvatar !== "" ? true : false
 
   return  (
     <div id="exchange">
@@ -116,8 +116,8 @@ const ExchangeBodyLayout = (props) => {
                   </div>
 
                   <div className={`${haveProductAvatar ? "kyber-product-avatar" : ""} ${haveProductName ? "info-2 kyber-product-name" : "info-2"}`}>
-                    {haveProductAvatar && <div>
-                      <img />
+                    {haveProductAvatar && <div className="kyber-pAvatar">
+                      <img src={props.exchange.productAvatar}/>
                     </div>}
                     {props.global.params && props.global.params.receiveAddr && props.global.params.receiveAddr !== 'self' && (
                       <div className="info-2__content">
@@ -173,8 +173,10 @@ const ExchangeBodyLayout = (props) => {
                     <div className="info-1">
                       {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
                     </div>
-                    {}
                     <div className={`${haveProductAvatar ? "kyber-product-avatar" : ""} ${haveProductName ? "info-2 kyber-product-name" : "info-2"}`}>
+                      {haveProductAvatar && <div className="kyber-pAvatar">
+                        <img src={props.exchange.productAvatar}/>
+                      </div>}
                       <div className="info-2__content">
                         <div>{props.translate("transaction.address") || "Address"}:</div>
                         <div>{props.global.params.receiveAddr.slice(0, 8)} ... {props.global.params.receiveAddr.slice(-6)}</div>

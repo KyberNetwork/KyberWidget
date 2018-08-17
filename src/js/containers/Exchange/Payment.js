@@ -457,6 +457,9 @@ export default class Payment extends React.Component {
     var broadcastExchangeError = this.props.exchange.broadcastError ? this.props.exchange.broadcastError: ""
     var txError = signExchangeError + broadcastExchangeError
 
+    var haveProductName = this.props.exchange.productName && this.props.exchange.productName !== "" ? true : false
+    var haveProductAvatar = this.props.exchange.productAvatar && this.props.exchange.productAvatar !== "" ? true : false
+
     return (
       <div id="exchange" className={"frame payment_confirm" + classError}>        
 
@@ -481,7 +484,10 @@ export default class Payment extends React.Component {
                <div className="title">
                 {this.props.translate("transaction.you_about_to_pay") || "YOU ARE ABOUT TO PAY"}
               </div>
-              <div className="content">
+              <div className="content" className={`${haveProductAvatar ? "kyber-product-avatar" : ""} ${haveProductName ? "content kyber-product-name" : "content"}`}>
+                {haveProductAvatar && <div className="kyber-pAvatar">
+                    <img src={this.props.exchange.productAvatar}/>
+                </div>}
                 <div>
                   <span>{this.props.translate("transaction.address") || "Address"}:</span>
                   <span>
@@ -496,6 +502,10 @@ export default class Payment extends React.Component {
                     </span>
                   </div>
                 )}
+                { haveProductName && <div>
+                  <span>{this.props.translate("transaction.product_name") || "Product name"}:</span>
+                  <span>{this.props.exchange.productName}</span>
+                </div>}
               </div>
             </div>
           )}
