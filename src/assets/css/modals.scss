@@ -12,14 +12,23 @@ $divider-color: darken($title-background-color, 5);
   position: relative;
   overflow: visible;
   border-radius: 0;
-  //color: $white;
+  color: #2c2c2c;
   outline: none;
   // background-color: $k-primary;
   // border: 2px solid $white;
   box-shadow: 0 20px 40px 0 rgba($medium-gray, .2);
+  background-color: #fefefe;
+  padding: 1rem;
+  border: 1px solid #cacaca;
+  margin: 0 auto;
+
+  .text-center {
+    text-align: center;
+  }
   @include breakpoint(small only) {
     // top: 0 !important;
-    height: auto;
+    // height: auto;
+    height: 100vh;
   }
   .message {
     margin-bottom: 25px;
@@ -34,6 +43,9 @@ $divider-color: darken($title-background-color, 5);
       font-size: 3rem;
       color: #aaa;
     //color: $white;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   .title {
