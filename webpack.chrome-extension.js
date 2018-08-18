@@ -16,7 +16,11 @@ module.exports = env => {
     const timestamp = Date.now();
 
     let entry = {
-        app: ['babel-polyfill', './js/client.js', './assets/css/app.scss']
+        app: ['babel-polyfill', './js/client.js', './assets/css/app.scss'],
+        // popup: path.join(__dirname, "src", "js", "popup.js"),
+        // options: path.join(__dirname, "src", "js", "options.js"),
+        background: path.join(__dirname, "extension", "js", "background.js"),
+        contentScript: path.join(__dirname, "extension", "js", "contentScript.js")
     };
     let plugins = [
         new webpack.ProgressPlugin(),
@@ -34,14 +38,18 @@ module.exports = env => {
         new CopyWebpackPlugin([
           { from: './assets/img/kyber-payment.png', to: '' },
           { from: '../extension/icon-16.png', to: '' },
+          { from: '../extension/js/inpage.js', to: '' },
           {
             from: "../extension/manifest.json",
             transform: function (content, path) {
+                var data = JSON.parse(content.toString())
+                data.background.scripts = data.background.scripts.map(s => `${s}.min.${timestamp}.js`)
+                data.content_scripts = data.content_scripts.map(s => ({...s, js: s.js.map(j => `${j}.min.${timestamp}.js`)}))
               // generates the manifest file using the package.json informations
               return Buffer.from(JSON.stringify({
                 description: process.env.npm_package_description,
                 version: process.env.npm_package_version,
-                ...JSON.parse(content.toString())
+                ...data
               }))
             }
           }
@@ -58,15 +66,17 @@ module.exports = env => {
     } else {
         //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
         plugins.push(new CleanPlugin([outputPath+'/app.*', outputPath+'/libary.*']))
-        plugins.push(new UglifyJsPlugin({
-            uglifyOptions: {
-                comments: false,
-                compress: {
-                    drop_console: true,
-                    warnings: false
-                }
-            }
-        }));
+        plugins.push(new CleanPlugin([outputPath+'/background.*', outputPath+'/libary.*']))
+        plugins.push(new CleanPlugin([outputPath+'/contentScript.*', outputPath+'/libary.*']))
+        // plugins.push(new UglifyJsPlugin({
+        //     uglifyOptions: {
+        //         comments: false,
+        //         compress: {
+        //             drop_console: true,
+        //             warnings: false
+        //         }
+        //     }
+        // }));
         plugins.push(
             new webpack.DefinePlugin({
                 //'env': JSON.stringify(env.chain),
@@ -88,21 +98,30 @@ module.exports = env => {
         context: path.join(__dirname, 'src'),
         devtool: env && env.build !== 'true' ? 'inline-sourcemap' : false,
         entry: entry,
+        node: {
+            fs: 'empty'
+        },
         output: {
             path: path.join(__dirname, outputPath),
             filename: `[name].min.${timestamp}.js`,
             publicPath: '/'
         },
         module: {
-            loaders: [{
-                test: /\.jsx?$/,
-                exclude: /(node_modules|bower_components)/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['react', 'es2015', 'stage-0'],
-                    plugins: ['react-html-attrs', 'transform-decorators-legacy', 'transform-class-properties'],
-                }
-            },
+            loaders: [
+                {
+                    test: /contentScript.js$/,
+                    loader: "transform-loader?brfs"
+                },
+                {
+                    test: /\.jsx?$/,
+                    exclude: /(node_modules|bower_components)/,
+                    loader: 'babel-loader',
+                    query: {
+                        presets: ['react', 'es2015', 'stage-0'],
+                        plugins: ['react-html-attrs', 'transform-decorators-legacy', 'transform-class-properties'],
+                    }
+                },
+            
                 {
                     test: /\.css$/,
                     use: ['style-loader', 'css-loader'],

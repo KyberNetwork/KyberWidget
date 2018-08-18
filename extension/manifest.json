@@ -4,6 +4,32 @@
     "default_popup": "index.html",
     "default_icon": "icon-16.png"
   },
+  "background": {
+    "scripts": ["background"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["contentScript"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ], 
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "clipboardWrite",
+    "http://localhost:8545/",
+    "https://*.infura.io/",
+    "activeTab",
+    "*://*.eth/",
+    "*://*.test/",
+    "notifications"
+  ],
+  "web_accessible_resources": [
+    "inpage.js"
+  ],
   "icons": {
     "16": "icon-16.png"
   },
