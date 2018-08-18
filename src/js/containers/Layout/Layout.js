@@ -2,7 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import { Route } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
-import InfoKyber from "../../components/InfoKyber"
+//import InfoKyber from "../../components/InfoKyber"
 import { Exchange } from "../../containers/Exchange"
 import { Header } from "../../containers/Header"
 import { ImportAccount } from "../ImportAccount"
@@ -71,153 +71,154 @@ export default class Layout extends React.Component {
 
     this.intervalIdle = setInterval(this.checkTimmer.bind(this), 10000)
 
-    this.props.dispatch(createNewConnectionInstance())
+    //this.props.dispatch(createNewConnectionInstance())
     // createNewConnection()
   }
 
 
-  componentDidMount(){
-    var widgetParent = document.getElementById(constanst.APP_NAME)
-    var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
+  // componentDidMount1(){
+  //   var widgetParent = document.getElementById(constanst.APP_NAME)
+  //   var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
 
     
-    var query = {}
-    var receiveAddr
-    var receiveToken
-    var receiveAmount
-    var callback
-    var network
-    var paramForwarding
-    var signer
-    var commissionID
+  //   var query = {}
+  //   var receiveAddr
+  //   var receiveToken
+  //   var receiveAmount
+  //   var callback
+  //   var network
+  //   var paramForwarding
+  //   var signer
+  //   var commissionID
 
-    if (attributeWidget === true || attributeWidget === 'true'){
-      for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++){
-          var nodeName = atts[i].nodeName
-          if(nodeName.includes('data-widget')){
-            var key = nodeName.replace('data-widget-','');
+  //   if (attributeWidget === true || attributeWidget === 'true'){
+  //     for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++){
+  //         var nodeName = atts[i].nodeName
+  //         if(nodeName.includes('data-widget')){
+  //           var key = nodeName.replace('data-widget-','');
             
-            key = common.lineToCamel(key)
+  //           key = common.lineToCamel(key)
 
-            query[key] = atts[i].nodeValue
-          }
-      }
+  //           query[key] = atts[i].nodeValue
+  //         }
+  //     }
 
-      //this.props.dispatch(initParamsGlobal(query))
+  //     //this.props.dispatch(initParamsGlobal(query))
 
-      receiveAddr = widgetParent.getAttribute('data-widget-receive-addr')
-      receiveToken = widgetParent.getAttribute('data-widget-receive-token')
-      receiveAmount = widgetParent.getAttribute('data-widget-receive-amount')
-      callback = widgetParent.getAttribute('data-widget-callback')
-      network = widgetParent.getAttribute('data-widget-network')
-      paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
-      signer = widgetParent.getAttribute('data-widget-signer')
-      commissionID = widgetParent.getAttribute('data-widget-commission-id')
+  //     receiveAddr = widgetParent.getAttribute('data-widget-receive-addr')
+  //     receiveToken = widgetParent.getAttribute('data-widget-receive-token')
+  //     receiveAmount = widgetParent.getAttribute('data-widget-receive-amount')
+  //     callback = widgetParent.getAttribute('data-widget-callback')
+  //     network = widgetParent.getAttribute('data-widget-network')
+  //     paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
+  //     signer = widgetParent.getAttribute('data-widget-signer')
+  //     commissionID = widgetParent.getAttribute('data-widget-commission-id')
 
-    }else{
-      query  = common.getQueryParams(window.location.search)
+  //   }else{
+  //     query  = common.getQueryParams(window.location.search)
 
-      receiveAddr = common.getParameterByName("receiveAddr")
-      receiveToken = common.getParameterByName("receiveToken")
-      receiveAmount = common.getParameterByName("receiveAmount");
-      callback = common.getParameterByName("callback")
-      network = common.getParameterByName("network")
-      paramForwarding = common.getParameterByName("paramForwarding")
-      signer = common.getParameterByName("signer")
-      commissionID = common.getParameterByName("commissionId")
-    }
+  //     receiveAddr = common.getParameterByName("receiveAddr")
+  //     receiveToken = common.getParameterByName("receiveToken")
+  //     receiveAmount = common.getParameterByName("receiveAmount");
+  //     callback = common.getParameterByName("callback")
+  //     network = common.getParameterByName("network")
+  //     paramForwarding = common.getParameterByName("paramForwarding")
+  //     signer = common.getParameterByName("signer")
+  //     commissionID = common.getParameterByName("commissionId")
+  //   }
 
 
-    paramForwarding = paramForwarding === "true" ||  paramForwarding === true? paramForwarding : "false"
+  //   paramForwarding = paramForwarding === "true" ||  paramForwarding === true? paramForwarding : "false"
     
-    this.props.dispatch(initParamsGlobal(query))
-    
-
-    var errors = {}
-    if(receiveAddr !== 'self'){
-      if (validator.verifyAccount(receiveAddr)){
-        errors["receiveAddr"] = this.props.translate('error.receive_address_must_be_ethereum_addr') 
-          || "Receive address must be a valid ethereum address"
-      }
-    }
-    
-    if (receiveToken){
-      receiveToken = receiveToken.toUpperCase()
-      if (!this.props.tokens[receiveToken]){
-        errors["receiveToken"] = this.props.translate('error.receive_token_is_not_support') 
-          || "Receive token is not supported by kyber"
-      }
-    }else{
-      errors["receiveToken"] = this.props.translate('error.receive_token_must_be_required') 
-        || "Receive token must be required"
-    }
+  //   this.props.dispatch(initParamsGlobal(query))
     
 
-    if (receiveAmount && receiveAmount !== ""){
-      receiveAmount = receiveAmount.toString();
+  //   var errors = {}
+  //   if(receiveAddr !== 'self'){
+  //     if (validator.verifyAccount(receiveAddr)){
+  //       errors["receiveAddr"] = this.props.translate('error.receive_address_must_be_ethereum_addr') 
+  //         || "Receive address must be a valid ethereum address"
+  //     }
+  //   }
+    
+  //   if (receiveToken){
+  //     receiveToken = receiveToken.toUpperCase()
+  //     if (!this.props.tokens[receiveToken]){
+  //       errors["receiveToken"] = this.props.translate('error.receive_token_is_not_support') 
+  //         || "Receive token is not supported by kyber"
+  //     }
+  //   }else{
+  //     errors["receiveToken"] = this.props.translate('error.receive_token_must_be_required') 
+  //       || "Receive token must be required"
+  //   }
+    
 
-      if (isNaN(receiveAmount)) {
-        errors["receiveAmount"] = this.props.translate('error.receive_amount_is_invalid_number') 
-          || "Receive amount is invalid number"
-      }
-      if (receiveAmount <= 0){
-        errors["receiveAmount"] = this.props.translate('error.receive_amount_must_be_positive') 
-          || "Receive amount must be positive number"
-      }
-    }else{
-      receiveAmount = null
-    }
+  //   if (receiveAmount && receiveAmount !== ""){
+  //     receiveAmount = receiveAmount.toString();
+
+  //     if (isNaN(receiveAmount)) {
+  //       errors["receiveAmount"] = this.props.translate('error.receive_amount_is_invalid_number') 
+  //         || "Receive amount is invalid number"
+  //     }
+  //     if (receiveAmount <= 0){
+  //       errors["receiveAmount"] = this.props.translate('error.receive_amount_must_be_positive') 
+  //         || "Receive amount must be positive number"
+  //     }
+  //   }else{
+  //     receiveAmount = null
+  //   }
 
     
-    if (commissionID){
-      if (validator.verifyAccount(commissionID)){
-        errors["commissionID"] = this.props.translate('error.commission_address_must_be_valid') 
-          || "Commission address must be a valid ethereum address"
-      }
-    }
+  //   if (commissionID){
+  //     if (validator.verifyAccount(commissionID)){
+  //       errors["commissionID"] = this.props.translate('error.commission_address_must_be_valid') 
+  //         || "Commission address must be a valid ethereum address"
+  //     }
+  //   }
 
-    if (callback){
-      if (!callback.startsWith("https://")){
-        errors["callback"] = this.props.translate('error.callback_https') 
-        || "Callback must be a https location"        
-      }
-    }
+  //   if (callback){
+  //     if (!callback.startsWith("https://")){
+  //       errors["callback"] = this.props.translate('error.callback_https') 
+  //       || "Callback must be a https location"        
+  //     }
+  //   }
 
-    if (signer){
-      var invalidAddresses = []
-      var addressArr = signer.split("_")
+  //   if (signer){
+  //     var invalidAddresses = []
+  //     var addressArr = signer.split("_")
       
-      addressArr.map(address => {
-        if (validator.verifyAccount(address)){
-          invalidAddresses.push(address)
-        }
-      })      
-      if (invalidAddresses.length > 0){
-        errors["signer"] = this.props.translate('error.signer_include_invalid_address') || "Signer include invalid addresses"
-      }      
-    }
+  //     addressArr.map(address => {
+  //       if (validator.verifyAccount(address)){
+  //         invalidAddresses.push(address)
+  //       }
+  //     })      
+  //     if (invalidAddresses.length > 0){
+  //       errors["signer"] = this.props.translate('error.signer_include_invalid_address') || "Signer include invalid addresses"
+  //     }      
+  //   }
 
-    if (!validator.verifyNetwork(network)) {
-      errors["network"] = this.props.translate('error.invalid_network') || "Current network is not supported"
-    }
+  //   if (!validator.verifyNetwork(network)) {
+  //     errors["network"] = this.props.translate('error.invalid_network') || "Current network is not supported"
+  //   }
     
-    if (validator.anyErrors(errors)){
-      this.props.dispatch(haltPayment(errors))
-    }else{
-      var tokenAddr = this.props.tokens[receiveToken].address
-      this.props.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, network, paramForwarding, signer, commissionID));
-    }
-  }
+  //   if (validator.anyErrors(errors)){
+  //     this.props.dispatch(haltPayment(errors))
+  //   }else{
+  //     var tokenAddr = this.props.tokens[receiveToken].address
+  //     this.props.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, network, paramForwarding, signer, commissionID));
+  //   }
+  // }
 
   checkTimmer() {
     if (!this.props.account.account) return;
     if (this.props.utils.infoModal && this.props.utils.infoModal.open) return;
-    if (this.idleTime >= this.timeoutEndSession && this.props.exchange.step > 2) {
+    if (this.idleTime >= this.timeoutEndSession) {
       let timeOut = constanst.IDLE_TIME_OUT/60
       let titleModal = this.props.translate('error.time_out') || 'Time out'
       let contentModal = this.props.translate('error.clear_data_timeout', {time: timeOut}) || `We've cleared all your data because your session is timed out ${timeOut} minutes`
       this.props.dispatch(openInfoModal(titleModal, contentModal));
       this.endSession();
+      this.idleTime = 0
     } else {
       this.idleTime++;
     }

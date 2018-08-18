@@ -4,30 +4,30 @@ import { ConnectedRouter } from 'react-router-redux'
 import { Processing, InfoModal } from "../../containers/CommonElements/"
 import constansts from "../../services/constants"
 import * as common from "../../utils/common"
-import BLOCKCHAIN_INFO from "../../../../env"
+//import BLOCKCHAIN_INFO from "../../../../env"
 import PaymentHeader from "../Header/PaymentHeader";
 
 
-function getAllPathToken(){
-  var tokens = []
-  Object.keys(BLOCKCHAIN_INFO.tokens).map(key => {
-    tokens.push(key)
-  })
+// function getAllPathToken(network){
+//   var tokens = []
+//   Object.keys(BLOCKCHAIN_INFO.tokens).map(key => {
+//     tokens.push(key)
+//   })
 
-  var path = "("
-  for (var i = 0; i< tokens.length ; i++){
-    if (i === tokens.length -1){
-      path += tokens[i].toLowerCase() + "|" + tokens[i]
-    }else{
-      path += tokens[i].toLowerCase() + "|" + tokens[i] + "|"
-    }
-  }
-  path += ")"
-  return path
-}
+//   var path = "("
+//   for (var i = 0; i< tokens.length ; i++){
+//     if (i === tokens.length -1){
+//       path += tokens[i].toLowerCase() + "|" + tokens[i]
+//     }else{
+//       path += tokens[i].toLowerCase() + "|" + tokens[i] + "|"
+//     }
+//   }
+//   path += ")"
+//   return path
+// }
 
 const LayoutView = (props) => {
-  var listToken = getAllPathToken()
+  //var listToken = getAllPathToken(props.network)
   var defaultPathExchange = constansts.BASE_HOST + constansts.PAYMENT_PATH
 
   var params = common.queryParamsString(window.location.href)
