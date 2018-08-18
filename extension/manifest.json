@@ -1,12 +1,21 @@
 {
   "name": "Chrome Extension Webpack",
   "browser_action": {
-    "default_popup": "index.html",
     "default_icon": "icon-16.png"
   },
   "background": {
     "scripts": ["background"],
     "persistent": false
+  },
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "windows": "Alt+Shift+K",
+        "mac": "Alt+Shift+K",
+        "chromeos": "Alt+Shift+K",
+        "linux": "Alt+Shift+K"
+      }
+    }
   },
   "content_scripts": [
     {
@@ -18,10 +27,12 @@
   ], 
   "permissions": [
     "storage",
+    "tabs",
     "unlimitedStorage",
     "clipboardWrite",
     "http://localhost:8545/",
     "https://*.infura.io/",
+    "https://*.knstats.io/",
     "activeTab",
     "*://*.eth/",
     "*://*.test/",
