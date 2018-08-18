@@ -34,7 +34,7 @@
         var isFrame = document.getElementById("modeFrame").checked;
         if (!isPopup && !isFrame) return;
 
-        // error from last time's load -> fallback to new tab mode
+        // error loading js, just fallback to new tab mode
         if (isPopup && window.kyberWidgetOptions.jsLoadError) return;
 
         // js loading ok, disable new tab mode
@@ -59,6 +59,7 @@
           // create the widget container
           var popup = document.createElement("DIV");
           popup.id = "kyber-widget";
+          popup.classList.add("kyber-widget");
 
           // set widget attributes
           popup.setAttribute("data-widget-attribute", "true");
@@ -143,11 +144,11 @@
       script.async = true;
       script.onerror = function () {
         window.kyberWidgetOptions.jsLoadError = true;
-        alert("Error loading KyberWidget.");
+        console.log("Error loading KyberWidget.");
         window.kyberWidgetOptions.onClose();
       };
       script.onload = function () {
-        window.kyberWidgetOptions.jsLoadError = false;
+        document.getElementById("kyber-widget") && global.kyberWidgetInstance.render();
       };
       script.src = "https://widget-etheremon.knstats.com/app.min.js?t=" + Date.now();
       document.body.appendChild(script);

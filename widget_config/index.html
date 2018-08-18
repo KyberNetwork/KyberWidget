@@ -227,40 +227,40 @@
         }
     }
 
+    // add script tag
+    if (!document.getElementById("kyber-widget-script")) {
+        var script = document.createElement("script");
+        script.id = "kyber-widget-script";
+        script.async = true;
+        script.onerror = function() {
+            global.kyberWidgetOptions.jsLoadError = true;
+            console.log("Error loading KyberWidget.");
+            global.kyberWidgetOptions.onClose();
+        };
+        script.onload = function() {
+            document.getElementById("kyber-widget") && global.kyberWidgetInstance.render();
+        };
+        script.src = baseUrl + "/app.min.js?t=" + Date.now();
+        document.body.appendChild(script);
+    }
+
+    // add CSS tag
+    if (!document.getElementById("kyber-widget-css")) {
+        var css = document.createElement("link");
+        css.id = "kyber-widget-css";
+        css.setAttribute("rel", "stylesheet")
+        css.setAttribute("href", baseUrl + "/app.bundle.css?t=" + Date.now());
+        document.head.appendChild(css);
+    }
+
     document.querySelectorAll(".kyber-widget-button").forEach(function(tag){
         tag.addEventListener("click", function(e){
 
-            // error from last time's load -> fallback to new tab mode
+            // error loadding js, just fallback to new tab mode
             if (global.kyberWidgetOptions.jsLoadError) return;
 
             // js loading ok, disable new tab mode
             e.preventDefault();
-
-            // add script tag
-            if (!document.getElementById("kyber-widget-script")) {
-                var script = document.createElement("script");
-                script.id = "kyber-widget-script";
-                script.async = true;
-                script.onerror = function() {
-                    global.kyberWidgetOptions.jsLoadError = true;
-                    alert("Error loading KyberWidget.");
-                    global.kyberWidgetOptions.onClose();
-                };
-                script.onload = function() {
-                    global.kyberWidgetOptions.jsLoadError = false;
-                };
-                script.src = baseUrl + "/app.min.js?t=" + Date.now();
-                document.body.appendChild(script);
-            }
-
-            // add CSS tag
-            if (!document.getElementById("kyber-widget-css")) {
-                var css = document.createElement("link");
-                css.id = "kyber-widget-css";
-                css.setAttribute("rel", "stylesheet")
-                css.setAttribute("href", baseUrl + "/app.bundle.css?t=" + Date.now());
-                document.head.appendChild(css);
-            }
 
             // remove old overlay, just to ensure
             var oldOverlay = document.getElementById("kyber-widget-overlay");
@@ -280,6 +280,7 @@
             // create the widget container
             var popup = document.createElement("DIV");
             popup.id = "kyber-widget";
+            popup.classList.add("kyber-widget");
 
             // set widget attributes
             popup.setAttribute("data-widget-attribute", "true");
