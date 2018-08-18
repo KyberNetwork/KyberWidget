@@ -10,6 +10,8 @@ import constants from "../services/constants"
 
 import * as converters from "../utils/converter"
 
+import * as common from "./common"
+
 import { store } from '../store'
 
 function* getBalance(accAddr, tokenAddr, tokenSymbol, ethereum, blockNumber) {
@@ -27,7 +29,9 @@ function* updateTx(action) {
     const { tx, ethereum, tokens, account, listToken } = action.payload
     var newTx
     try {
-      newTx = yield call(tx.sync, ethereum, tx)
+      var state = store.getState()
+      var exchange = state.exchange
+      newTx = yield call(tx.sync, ethereum, tx, exchange.network)
     }catch(err){
       console.log(err)
       return

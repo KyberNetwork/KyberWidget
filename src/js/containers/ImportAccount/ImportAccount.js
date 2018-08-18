@@ -24,7 +24,8 @@ import { goToStep } from "../../actions/exchangeActions"
     ethereum: store.connection.ethereum,
     tokens: supportTokens,
     exchange: store.exchange,
-    screen: props.screen
+    screen: props.screen,
+    network: store.exchange.network
   }
 })
 
@@ -38,7 +39,7 @@ export default class ImportAccount extends React.Component {
         var web3Service = new Web3Service(web3)
         var walletType = web3Service.getWalletType()
         if (walletType !== "metamask") {
-          this.props.dispatch(importAccountMetamask(web3Service, BLOCKCHAIN_INFO.networkId))
+          this.props.dispatch(importAccountMetamask(web3Service, BLOCKCHAIN_INFO[this.props.network].networkId))
         }
       }
     }

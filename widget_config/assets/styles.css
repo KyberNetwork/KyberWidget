@@ -14,7 +14,7 @@ body, form {
 #wrapper {
     width: 840px;
     max-width: 100%;
-    margin: 5rem auto;
+    margin: 5rem auto 280px;
     line-height: 1.4;
 }
 .section {
@@ -68,14 +68,7 @@ select {
 }
 textarea {
     width: 100%;
-    height: 120px;
     font-family: monospace;
-}
-#sourceHtml {
-    height: 120px; 
-}
-#sourceCss, #sourceJs {
-    height: 300px;
 }
 .align-top {
     vertical-align: top;
@@ -98,8 +91,9 @@ textarea {
 .btn-copy {
     display: block;
     position: absolute;
-    top: 1.8rem;
-    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 6px;
     cursor: pointer;
 }
 input[type="number"]::-webkit-outer-spin-button,
@@ -109,6 +103,62 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 input[type="number"] {
     -moz-appearance: textfield;
+}
+.source-tabs{
+    padding: 1.5rem 0;
+    position: relative;
+}
+/* Style the tab */
+.tabrow {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Style the buttons inside the tab */
+.tablink {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: 0.3s;
+    font-size: 14px;
+}
+
+/* Change background color of buttons on hover */
+.tablink:hover {
+    border-bottom: 1px solid #ccc;
+}
+
+/* Create an active/current tablink class */
+.tablink.active {
+    border-bottom: 3px solid #31CB9E;
+}
+
+/* Style the tab content */
+.tabcontent {
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+#sourceCssItem, #sourceJsItem {
+    visibility: hidden;
+}
+code[class*="language-"] {
+    font-size: 14px;
+    border: 0;
+}
+pre[class*="language-"] {
+    padding: 1em;
+    margin: 0;
+    height: 240px;
+}
+.disabled, input[disabled] {
+    color: #b3b3b3;
+    cursor: not-allowed;
+}
+label input, select, .pointer {
+    cursor: pointer;
 }
 @media (max-width: 839px) {
     #wrapper {
@@ -120,10 +170,6 @@ input[type="number"] {
         max-width: 100%;
         padding-right: 0;
         padding-bottom: 0.5rem;
-    }
-    .btn-copy {
-        top: 0;
-        right: 0;
     }
     .item-name:empty {
         height: 0;

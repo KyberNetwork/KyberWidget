@@ -147,7 +147,8 @@ const INIT_EXCHANGE_FORM_STATE = {
   isAnalizeComplete: false,
   analizeError : {},
   snapshot: {},
-  etheremonPrice: {}
+  etheremonPrice: {},
+  network: 'ropsten'
 }
 
 const INIT_TRANSFER_FORM_STATE = {
@@ -206,7 +207,8 @@ const INIT_TRANSFER_FORM_STATE = {
     signTransaction: '',
     ethBalanceError: ''
   },
-  snapshot: {}
+  snapshot: {},
+  network: 'ropsten'
 }
 
 

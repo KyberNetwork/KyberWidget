@@ -6,16 +6,22 @@ import BLOCKCHAIN_INFO from "../../../../../env"
 import abiDecoder from "abi-decoder"
 
 export default class BaseProvider {
-
-    initContract() {
+    // constructor(props) {
+    //     super(props)
+    //     this.network = props.network     
+    // }
+    
+    initContract(network) {
+        this.network = network
+        
         this.rpc = new Web3(new Web3.providers.HttpProvider(this.rpcUrl, 3000))
 
         this.erc20Contract = new this.rpc.eth.Contract(constants.ERC20)
 
         
-        this.networkAddress = BLOCKCHAIN_INFO.network
-        this.wrapperAddress = BLOCKCHAIN_INFO.wrapper
-        this.wrapperEtheremonAddr = BLOCKCHAIN_INFO.ethermon_wrapper
+        this.networkAddress = BLOCKCHAIN_INFO[this.network].network
+        this.wrapperAddress = BLOCKCHAIN_INFO[this.network].wrapper
+        this.wrapperEtheremonAddr = BLOCKCHAIN_INFO[this.network].ethermon_wrapper
         // console.log(BLOCKCHAIN_INFO)
         // console.log(this.wrapperAddress)
          this.networkContract = new this.rpc.eth.Contract(constants.KYBER_NETWORK, this.networkAddress)
@@ -142,7 +148,7 @@ export default class BaseProvider {
         var data = this.networkContract.methods.getUserCapInWei(address).encodeABI()
         return new Promise((resolve, reject) => {
             this.rpc.eth.call({
-                to: BLOCKCHAIN_INFO.network,
+                to: BLOCKCHAIN_INFO[this.network].network,
                 data: data
             })
                 .then(result => {
@@ -342,7 +348,7 @@ export default class BaseProvider {
     }
 
     tokenIsSupported(address) {
-        let tokens = BLOCKCHAIN_INFO.tokens
+        let tokens = BLOCKCHAIN_INFO[this.network].tokens
         for (let token in tokens) {
             if (tokens[token].address.toLowerCase() == address.toLowerCase()) {
                 return true
@@ -441,7 +447,7 @@ export default class BaseProvider {
     }
 
     getListReserve() {
-        return Promise.resolve([BLOCKCHAIN_INFO.reserve])
+        return Promise.resolve([BLOCKCHAIN_INFO[this.network].reserve])
     }
 
     getAbiByName(name, abi) {
@@ -516,7 +522,7 @@ export default class BaseProvider {
         var data = this.networkContract.methods.getUserCapInWei(address).encodeABI()
         return new Promise((resolve, reject) => {
             this.rpc.eth.call({
-                to: BLOCKCHAIN_INFO.network,
+                to: BLOCKCHAIN_INFO[this.network].network,
                 data: data
             }, blockno)
                 .then(result => {
@@ -605,7 +611,7 @@ export default class BaseProvider {
         return new Promise((resolve, reject) => {
             var data = this.networkContract.methods.maxGasPrice().encodeABI()
             this.rpc.eth.call({
-                to: BLOCKCHAIN_INFO.network,
+                to: BLOCKCHAIN_INFO[this.network].network,
                 data: data
             }, blockno)
                 .then(result => {
@@ -622,7 +628,7 @@ export default class BaseProvider {
 
         return new Promise((resolve, reject) => {
             this.rpc.eth.call({
-                to: BLOCKCHAIN_INFO.network,
+                to: BLOCKCHAIN_INFO[this.network].network,
                 data: data
             }, blockno)
                 .then(result => {
@@ -662,7 +668,7 @@ export default class BaseProvider {
     }
     wrapperGetChosenReserve(input, blockno) {
         return new Promise((resolve) => {
-            resolve(BLOCKCHAIN_INFO.reserve)
+            resolve(BLOCKCHAIN_INFO[this.network].reserve)
         })
     }
 }

@@ -19,7 +19,8 @@ import bowser from 'bowser'
     tokens: supportTokens,
     translate: getTranslate(store.locale),
     metamask: store.global.metamask,
-    screen: props.screen
+    screen: props.screen,
+    network: store.exchange.network
   }
 })
 
@@ -46,7 +47,7 @@ export default class ImportByMetamask extends React.Component {
   }
 
   dispatchAccMetamask(web3Service){
-    this.props.dispatch(importAccountMetamask(web3Service, BLOCKCHAIN_INFO.networkId))
+    this.props.dispatch(importAccountMetamask(web3Service, BLOCKCHAIN_INFO[this.props.network].networkId))
   }
 
   render() {

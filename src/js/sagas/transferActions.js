@@ -69,12 +69,15 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
 // }
 
 function* doTxFail(ethereum, account, e) {
+  var state = store.getState()
+  var exchange = state.exchange
+  
   yield put (exchangeActions.goToStep(4))
 
   let error = e;
   if (!error){
     var translate = getTranslate(store.getState().locale);
-    var link = BLOCKCHAIN_INFO.ethScanUrl + "address/" + account.address;
+    var link = BLOCKCHAIN_INFO[exchange.network].ethScanUrl + "address/" + account.address;
     error = translate("error.broadcast_tx", {link: link}) || "Potentially Failed! We likely couldn't broadcast the transaction to the blockchain. Please check on Etherscan to verify."
   }
 
@@ -108,11 +111,14 @@ function* transferKeystore(action, callService) {
     token, amount,
     destAddress, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData } = action.payload
+
+  var networkId  = common.getNetworkId()  
+
   try {
     var rawTx = yield call(keyService.callSignTransaction, callService, formId, ethereum, address,
       token, amount,
       destAddress, nonce, gas,
-      gasPrice, keystring, type, password)
+      gasPrice, keystring, type, password, networkId)
   } catch (e) {
     yield put(exchangeActions.throwPassphraseError(e.message))
     return
@@ -132,13 +138,16 @@ function* transferColdWallet(action, callService) {
     token, amount,
     destAddress, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData } = action.payload
+
+  var networkId  = common.getNetworkId()  
+
   try {
     var rawTx
     try {
       rawTx = yield call(keyService.callSignTransaction, callService, formId, ethereum, address,
         token, amount,
         destAddress, nonce, gas,
-        gasPrice, keystring, type, password)
+        gasPrice, keystring, type, password, networkId)
     } catch (e) {
       let msg = ''
       if(e.native && type == 'ledger'){
@@ -168,13 +177,16 @@ function* transferMetamask(action, callService) {
     token, amount,
     destAddress, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData } = action.payload
+
+    var networkId  = common.getNetworkId()  
+
   try {
     var hash
     try {
       hash = yield call(keyService.callSignTransaction, callService, formId, ethereum, address,
         token, amount,
         destAddress, nonce, gas,
-        gasPrice, keystring, type, password)
+        gasPrice, keystring, type, password, networkId)
     } catch (e) {
       console.log(e)
       yield put(exchangeActions.setSignError(e))
