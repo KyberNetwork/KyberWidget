@@ -14,7 +14,7 @@ export default class BaseProvider {
         this.network = network
         
         this.rpc = new Web3(new Web3.providers.HttpProvider(this.rpcUrl, 3000))
-
+        console.log("+++++++!!!!!!!!!!!!!!!!!!!!!", this.rpc)
         this.erc20Contract = new this.rpc.eth.Contract(constants.ERC20)
         this.networkAddress = BLOCKCHAIN_INFO[this.network].network
         this.wrapperAddress = BLOCKCHAIN_INFO[this.network].wrapper

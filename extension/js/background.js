@@ -2,7 +2,7 @@ const extension = require('extensionizer')
 const height = 620
 const width = 360
 
-import Web3 from 'Web3';
+import Web3 from '../web3-metamask';
 
 import MetamaskInpageProvider from 'metamask-crx/app/scripts/lib/inpage-provider.js';
 import PortStream from 'metamask-crx/app/scripts/lib/port-stream.js';
@@ -44,15 +44,15 @@ chrome.runtime.onMessage.addListener(
         // })
         // this._popupId = currentPopup.id 
       }
-      window.open('index.html?' + paramQuery(request.payload))
-      // const creation = extension.windows.create({
-      //   url: 'index.html?' + paramQuery(request.payload),
-      //   type: 'popup',
-      //   width,
-      //   height,
-      // }, cb)
+      // window.open('index.html?' + paramQuery(request.payload))
+      const creation = extension.windows.create({
+        url: 'index.html?' + paramQuery(request.payload),
+        type: 'popup',
+        width,
+        height,
+      }, cb)
       
-      // creation && creation.then && creation.then(cb)
+      creation && creation.then && creation.then(cb)
       sendResponse({status: "done"});
     }
       
