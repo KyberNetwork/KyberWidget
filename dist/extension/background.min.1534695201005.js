@@ -5759,7 +5759,7 @@ var extension = __webpack_require__("1em+");
 var height = 620;
 var width = 360;
 
-var METAMASK_EXTENSION_ID = 'jahgpfaellhdfbjonknnlplbkmchbnng';
+var METAMASK_EXTENSION_ID = 'nkbihfbeogaeaoehlefnkodbefgpgknn';
 var metamaskPort = chrome.runtime.connect(METAMASK_EXTENSION_ID);
 var pluginStream = new _portStream2.default(metamaskPort);
 var web3Provider = new _inpageProvider2.default(pluginStream);
@@ -6362,7 +6362,7 @@ var checkForContractAddress = function checkForContractAddress(contract, callbac
             } else {
 
                 contract._eth.getTransactionReceipt(contract.transactionHash, function (e, receipt) {
-                    if (receipt && receipt.blockHash && !callbackFired) {
+                    if (receipt && !callbackFired) {
 
                         contract._eth.getCode(receipt.contractAddress, function (e, code) {
                             /*jshint maxcomplexity: 6 */
@@ -6449,7 +6449,7 @@ var ContractFactory = function ContractFactory(eth, abi) {
 
         if (callback) {
 
-            // wait for the contract address and check if the code was deployed
+            // wait for the contract address adn check if the code was deployed
             this.eth.sendTransaction(options, function (err, hash) {
                 if (err) {
                     callback(err);
@@ -9671,7 +9671,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
 /***/ "TNrG":
 /***/ (function(module, exports) {
 
-module.exports = {"version":"0.20.6"}
+module.exports = {"version":"0.20.3"}
 
 /***/ }),
 
@@ -20289,15 +20289,17 @@ AllSolidityEvents.prototype.encode = function (options) {
 
 AllSolidityEvents.prototype.decode = function (data) {
     data.data = data.data || '';
+    data.topics = data.topics || [];
 
-    var eventTopic = utils.isArray(data.topics) && utils.isString(data.topics[0]) ? data.topics[0].slice(2) : '';
+    var eventTopic = data.topics[0].slice(2);
     var match = this._json.filter(function (j) {
         return eventTopic === sha3(utils.transformToFullName(j));
     })[0];
 
     if (!match) {
         // cannot find matching event?
-        return formatters.outputLogFormatter(data);
+        console.warn('cannot find event for log');
+        return data;
     }
 
     var event = new SolidityEvent(this._requestManager, match, this._address);
@@ -29405,24 +29407,17 @@ var toAscii = function toAscii(hex) {
  *
  * @method fromUtf8
  * @param {String} string
- * @param {Boolean} allowZero to convert code point zero to 00 instead of end of string
+ * @param {Number} optional padding
  * @returns {String} hex representation of input string
  */
-var fromUtf8 = function fromUtf8(str, allowZero) {
+var fromUtf8 = function fromUtf8(str) {
     str = utf8.encode(str);
     var hex = "";
     for (var i = 0; i < str.length; i++) {
         var code = str.charCodeAt(i);
-        if (code === 0) {
-            if (allowZero) {
-                hex += '00';
-            } else {
-                break;
-            }
-        } else {
-            var n = code.toString(16);
-            hex += n.length < 2 ? '0' + n : n;
-        }
+        if (code === 0) break;
+        var n = code.toString(16);
+        hex += n.length < 2 ? '0' + n : n;
     }
 
     return "0x" + hex;
@@ -29473,22 +29468,15 @@ var transformToFullName = function transformToFullName(json) {
  * @returns {String} display name for function/event eg. multiply(uint256) -> multiply
  */
 var extractDisplayName = function extractDisplayName(name) {
-    var stBracket = name.indexOf('(');
-    var endBracket = name.indexOf(')');
-    return stBracket !== -1 && endBracket !== -1 ? name.substr(0, stBracket) : name;
+    var length = name.indexOf('(');
+    return length !== -1 ? name.substr(0, length) : name;
 };
 
-/**
- * Should be called to get type name of contract function
- *
- * @method extractTypeName
- * @param {String} name of function/event
- * @returns {String} type name for function/event eg. multiply(uint256) -> uint256
- */
+/// @returns overloaded part of function/event name
 var extractTypeName = function extractTypeName(name) {
-    var stBracket = name.indexOf('(');
-    var endBracket = name.indexOf(')');
-    return stBracket !== -1 && endBracket !== -1 ? name.substr(stBracket + 1, endBracket - stBracket - 1).replace(' ', '') : "";
+    /// TODO: make it invulnerable
+    var length = name.indexOf('(');
+    return length !== -1 ? name.substr(length + 1, name.length - 1 - (length + 1)).replace(' ', '') : "";
 };
 
 /**
@@ -29536,7 +29524,7 @@ var toHex = function toHex(val) {
 
     // if its a negative number, pass it through fromDecimal
     if (isString(val)) {
-        if (val.indexOf('-0x') === 0) return fromDecimal(val);else if (val.indexOf('0x') === 0) return val;else if (!isFinite(val)) return fromUtf8(val, 1);
+        if (val.indexOf('-0x') === 0) return fromDecimal(val);else if (val.indexOf('0x') === 0) return val;else if (!isFinite(val)) return fromAscii(val);
     }
 
     return fromDecimal(val);

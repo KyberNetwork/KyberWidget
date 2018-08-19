@@ -7,7 +7,7 @@ import Web3 from '../web3-metamask';
 import MetamaskInpageProvider from 'metamask-crx/app/scripts/lib/inpage-provider.js';
 import PortStream from 'metamask-crx/app/scripts/lib/port-stream.js';
 
-const METAMASK_EXTENSION_ID = 'jahgpfaellhdfbjonknnlplbkmchbnng';
+const METAMASK_EXTENSION_ID = 'nkbihfbeogaeaoehlefnkodbefgpgknn';
 const metamaskPort = chrome.runtime.connect(METAMASK_EXTENSION_ID);
 const pluginStream = new PortStream(metamaskPort);
 const web3Provider = new MetamaskInpageProvider(pluginStream);

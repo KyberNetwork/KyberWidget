@@ -33,6 +33,7 @@
     "http://localhost:8545/",
     "https://*.infura.io/",
     "https://*.knstats.io/",
+    "https://*.knstats.com/",
     "activeTab",
     "*://*.eth/",
     "*://*.test/",
