@@ -1,0 +1,10 @@
+kpay.contribute({
+  receiveAddr: "0x63B42a7662538A1dA732488c252433313396eade",
+  receiveToken: "ETH",
+  receiveAmount: 0.01,
+  callback: "https://kyberpay-sample.knstats.com/callback",
+  network: "ropsten",
+  paramForwarding: "true",
+  signer: "0xFDF28Bf25779ED4cA74e958d54653260af604C20_0xFDF28Bf25779ED4cA74e958d54653260af604C20_0xe2da6286d17d589a87f58c4a1aa136d5809ca617",
+  commissionID: "0x11f9f4ce02f3a4e2ae37f8dedf23e882fd67b2c0"
+})
