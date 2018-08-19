@@ -3,11 +3,7 @@ const path = require('path')
 const extension = require('extensionizer')
 var requireText = require('require-text')
 
-// const inpageContent = requireText('./inpage.js', require)
-console.log(__dirname)
 const inpageContent = fs.readFileSync(path.join(__dirname, '..', '..', 'dist', 'extension', 'inpage.js')).toString()
-
-console.log("+++++++++++++inpageContent +++++++", inpageContent)
 // const inpageSuffix = '//# sourceURL=' + extension.extension.getURL('inpage.js') + '\n'
 const inpageBundle = inpageContent
 

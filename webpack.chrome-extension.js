@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -17,10 +18,10 @@ module.exports = env => {
 
     let entry = {
         app: ['babel-polyfill', './js/client.js', './assets/css/app.scss'],
-        // popup: path.join(__dirname, "src", "js", "popup.js"),
-        // options: path.join(__dirname, "src", "js", "options.js"),
+
         background: path.join(__dirname, "extension", "js", "background.js"),
-        contentScript: path.join(__dirname, "extension", "js", "contentScript.js")
+        contentScript: path.join(__dirname, "extension", "js", "contentScript.js"),
+        extensionContentScript: path.join(__dirname, "extension", "js", "extensionContentScript.js")
     };
     let plugins = [
         new webpack.ProgressPlugin(),
@@ -32,8 +33,19 @@ module.exports = env => {
             filename: 'index.html',
             template: './app.html',
             favicon: './assets/img/favicon.png',
-            inject: 'body'
+            inject: 'body',
+            chunksSortMode: 'manual',
+            chunks: ['extensionContentScript', 'app'],
         }),
+        // new ScriptExtHtmlWebpackPlugin({
+        //     custom: [
+        //     {
+        //         test: /extensionContentScript/,
+        //         attribute: 'nonce',
+        //         value: timestamp
+        //     }
+        //     ]
+        // }),
         new webpack.HashedModuleIdsPlugin(),
         new CopyWebpackPlugin([
           { from: './assets/img/kyber-payment.png', to: '' },
@@ -68,6 +80,7 @@ module.exports = env => {
         plugins.push(new CleanPlugin([outputPath+'/app.*', outputPath+'/libary.*']))
         plugins.push(new CleanPlugin([outputPath+'/background.*', outputPath+'/libary.*']))
         plugins.push(new CleanPlugin([outputPath+'/contentScript.*', outputPath+'/libary.*']))
+        plugins.push(new CleanPlugin([outputPath+'/extensionContentScript.*', outputPath+'/libary.*']))
         // plugins.push(new UglifyJsPlugin({
         //     uglifyOptions: {
         //         comments: false,
@@ -85,14 +98,14 @@ module.exports = env => {
                 }
             })
         );
-        plugins.push(new CompressionPlugin({
-                asset: '[path].gz[query]',
-                algorithm: 'gzip',
-                test: /\.js$|\.css$|\.html$/,
-                threshold: 10240,
-                minRatio: 0.8
-            })
-        )
+        // plugins.push(new CompressionPlugin({
+        //         asset: '[path].gz[query]',
+        //         algorithm: 'gzip',
+        //         test: /\.js$|\.css$|\.html$/,
+        //         threshold: 10240,
+        //         minRatio: 0.8
+        //     })
+        // )
     }
     return {
         context: path.join(__dirname, 'src'),
