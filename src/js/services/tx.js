@@ -28,7 +28,7 @@ export default class Tx {
       this.error, this.errorInfo, this.recap, this.eventTrade, this.blockNumber)
   }
 
-  sync = (ethereum, tx) => {
+  sync = (ethereum, tx, network) => {
     return new Promise((resolve, reject) => {
       ethereum.call("txMined", tx.hash).then((receipt) => {
         console.log(receipt)
@@ -45,8 +45,8 @@ export default class Tx {
           } else {
             var theLog
             for (var i = 0; i < logs.length; i++) {
-              if (logs[i].address.toLowerCase() == BLOCKCHAIN_INFO.network.toLowerCase() &&
-                logs[i].topics[0].toLowerCase() == BLOCKCHAIN_INFO.trade_topic.toLowerCase()) {
+              if (logs[i].address.toLowerCase() == BLOCKCHAIN_INFO[network].network.toLowerCase() &&
+                logs[i].topics[0].toLowerCase() == BLOCKCHAIN_INFO[network].trade_topic.toLowerCase()) {
                 theLog = logs[i]
                 newTx.eventTrade = theLog.data
                 break

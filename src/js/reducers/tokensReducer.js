@@ -5,10 +5,12 @@ import constants from "../services/constants"
 
 import * as converter from "../utils/converter"
 
-const initState = function () {
+
+function initTokens(network) {
+  var network = network ? network: "ropsten"
   let tokens = {}
-  Object.keys(BLOCKCHAIN_INFO.tokens).forEach((key) => {
-    tokens[key] = BLOCKCHAIN_INFO.tokens[key]
+  Object.keys(BLOCKCHAIN_INFO[network].tokens).forEach((key) => {
+    tokens[key] = BLOCKCHAIN_INFO[network].tokens[key]
     tokens[key].rate = 0
     tokens[key].minRate = 0
     tokens[key].rateEth = 0
@@ -20,7 +22,9 @@ const initState = function () {
     tokens: tokens,
     count: { storageKey: constants.STORAGE_KEY }
   }
-}()
+}
+
+const initState = initTokens()
 
 const tokens = (state = initState, action) => {
   switch (action.type) {
@@ -149,6 +153,13 @@ const tokens = (state = initState, action) => {
       // })
       return Object.assign({}, state, { tokens: tokens }) 
     }
+
+    case 'EXCHANGE.INIT_PARAMS_EXCHANGE':{
+      const {network} = action.payload
+      var newState = initTokens(network)
+      return Object.assign({}, state, JSON.parse(JSON.stringify(newState))) 
+    }
+
     case 'GLOBAL.CLEAR_SESSION_FULFILLED': {
       let tokens = {...state.tokens}
       Object.keys(state.tokens).forEach((key) => {

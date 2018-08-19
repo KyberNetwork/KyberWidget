@@ -35,21 +35,29 @@
         
 }
 
-html body{
-  color: $base-color;
-  font-family: $font-openSans;
-  background-color: #F8F8F8;
-  line-height:  1.5;
+// html body{
+  // color: $base-color;
+  // font-family: $font-openSans;
+  // background-color: #F8F8F8;
+  // line-height:  1.5;
 
-  h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6{
-    font-family: $font-cera;
-  }
-}
+  // h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6{
+  //   font-family: $font-cera;
+  //   // font-family: $font-openSans;
+  // }
+// }
 
 $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
   $alert-color: #ff5d00;
 
-#kyber-widget{
+  .ReactModalPortal {
+    font-family: $font-openSans;
+    
+    @import 'modals';
+    @import 'custom_react_modals';
+  }
+
+.kyber-widget{
 
   //@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600');
 
@@ -97,7 +105,22 @@ $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
   // @import '../assets/bower/foundation-sites/assets/foundation-float';
   // @import '../assets/bower/foundation-sites/assets/foundation-prototype';
 
+  color: $base-color;
+  font-family: $font-openSans;
+  background-color: #F8F8F8;
+  line-height:  1.5;
+
+  h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6{
+    font-family: $font-cera;
+    // font-family: $font-openSans;
+  }
   
+  * {
+    font-weight: normal;
+  }
+  strong {
+    font-weight: bold;
+  }
   
   #waiting {
     &.ledger{
@@ -514,10 +537,13 @@ $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
     height: 49px;
     background-image: url($image-path + '/widget/kyber-widget.svg');
     background-repeat: no-repeat;
+    @include screen-max-width(medium) {
+      margin-left: 10px;
+    }
   
     &-container {
       padding: 10px 15px;
-      max-width: 370px;
+      max-width: 405px;
       margin: 0 auto;
       box-sizing: border-box;
       background: white;
@@ -533,13 +559,13 @@ $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
     justify-content: space-between;
     padding: 0;
     // margin-bottom: 12px;
-    padding: 12px 12px;
+    padding: 20px 20px 14px;
     box-sizing: border-box;
     background-color: hsla(0,0%,96%,.39);
     box-shadow: inset 0 5px 3px -4px rgba(0,0,0,.2);
 
     @include screen-max-width(medium) {
-      padding: 12px 0;
+      padding: 12px 10px;
     }
   
     &__item {
@@ -550,11 +576,10 @@ $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
       display: flex;
       align-items: center;
       margin-right: 5px;
-      font-weight: 100;
   
       &.active {
         color: #31cb9e;
-        font-weight: 500;
+        font-weight: normal;
         &::before {
           background-color: #31cb9e;
           color: white;
@@ -562,8 +587,8 @@ $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
       }
   
       &::before {
-        width: 25px;
-        height: 25px;
+        width: 20px;
+        height: 20px;
         background-color: #ebebeb;
         border-radius: 50%;
         margin-right: 5px;

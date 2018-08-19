@@ -29,7 +29,7 @@
         var form = document.querySelector("form");
         var data = [], error = [], msg, name, value;
         form.querySelectorAll("input, select").forEach(function (node) {
-            
+
             if (node.type && node.type === 'radio' && !node.checked) return;
 
             // do simple validation
@@ -66,14 +66,32 @@
     }
 
     function copyClipboard(selector) {
-        var input = document.querySelector(selector); // input, textarea
-        input.removeAttribute("disabled");
-        input.select();
-
-        var result = document.execCommand("copy", true);
-        input.setAttribute("disabled", "disabled");
-
+        var input = document.querySelector(selector).textContent;
+        var aux = document.createElement("input");
+        aux.setAttribute("value", input);
+        document.body.appendChild(aux);
+        aux.select();
+        var result=document.execCommand("copy");
+        document.body.removeChild(aux);
         return result;
+    }
+
+    function openTab(tabLink) {
+        var i, tabcontent, tablinks;
+        var tabSelector = tabLink.getAttribute("data-tab");
+
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.visibility = "hidden";
+        }
+        document.querySelector(tabSelector).style.visibility = "visible";
+
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].classList.remove("active");
+        }
+
+        tabLink.classList.add("active");
     }
 
     function wireEvents() {
@@ -86,17 +104,22 @@
             });
         });
 
-        document.querySelectorAll(".btn-copy").forEach(function (btn){
-            btn.addEventListener('click', function(){
-                if (!copyClipboard(this.getAttribute("data-copy-target"))) {
-                    alert("Copy failed. Please use browser's copy feature instead.");
-                }
-            })
+        document.querySelectorAll(".tablink").forEach(function (link) {
+            link.addEventListener('click', function () {
+                openTab(link);
+            });
+        });
+
+        document.querySelector(".btn-copy").addEventListener('click', function(){
+            var selector = document.querySelector(".tablink.active").getAttribute("data-tab") + " code";
+            if (!copyClipboard(selector)) {
+                alert("Copy failed. Please use browser's copy feature instead.");
+            }
         });
     }
 
-    function runTemplateJS(baseUrl) {
-        var js = document.getElementById("widget_js").innerHTML.trim().replace("${baseUrl}", baseUrl);
+    function runTemplateJS(baseUrl, scriptID) {
+        var js = document.getElementById(scriptID).innerHTML.trim().replace("${baseUrl}", baseUrl);
 
         var script = document.createElement("script");
         script.innerHTML = js;
@@ -110,12 +133,14 @@
         if (formData.error && formData.error.length) {
             document.getElementById("widget").innerHTML = "<p class='error'>" +
                 formData.error.join("<br>") + "</p>";
-            document.getElementById("sourceHtml").value = "";
-            document.getElementById("sourceCss").value = "";
+            document.getElementById("sourceHtml").textContent = "";
+            document.getElementById("sourceCss").textContent = "";
+            document.getElementById("sourceJs").textContent = "";
             return;
         }
 
-        var isPopup = document.getElementById("typePopup").checked;
+        var isPopup = document.getElementById("modePopup").checked;
+        var isFrame = document.getElementById("modeFrame").checked;
 
         var widgetBaseUrl = getWidgetUrl();
         var url = widgetBaseUrl + "?" + formData.data;
@@ -124,15 +149,24 @@
         tagHtml += "target='_blank'>Pay by tokens</a>";
 
         document.getElementById("widget").innerHTML = tagHtml;
-        document.getElementById("sourceHtml").value = tagHtml;
-        document.getElementById("sourceCss").value = document.getElementById("widget_button_style").innerHTML.trim();
+        document.getElementById("sourceHtml").textContent = tagHtml;
+        document.getElementById("sourceCss").textContent = document.getElementById("widget_button_style").innerHTML.trim();
 
         if (isPopup) {
-            document.getElementById("sourceJs").value = runTemplateJS(widgetBaseUrl);
-            document.getElementById("sourceCss").value += "\n" + document.getElementById("widget_popup_style").innerHTML.trim();
+            document.getElementById("sourceJs").textContent = runTemplateJS(widgetBaseUrl, "widget_popup_js");
+            document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_common_style").innerHTML.trim();
+            document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_popup_style").innerHTML.trim();
+        } else if (isFrame) {
+            document.getElementById("sourceJs").textContent = runTemplateJS(widgetBaseUrl, "widget_iframe_js");
+            document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_common_style").innerHTML.trim();
+            document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_iframe_style").innerHTML.trim();
         } else {
-            document.getElementById("sourceJs").value = "";
+            document.getElementById("sourceJs").textContent = "";
         }
+
+        Prism.highlightElement(document.getElementById("sourceHtml"));
+        Prism.highlightElement(document.getElementById("sourceJs"));
+        Prism.highlightElement(document.getElementById("sourceCss"));
     }, 50, false);
 
 

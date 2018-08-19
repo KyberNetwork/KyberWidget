@@ -7,15 +7,13 @@ $radio-color: #5D9E7A;
 }
 
 .advance-config{
-  padding: 0 25px;
+  padding: 0 20px;
   margin-top: 15px;
-  // background-color: rgba(245, 245, 245, 0.39);
+  background-color: rgba(245, 245, 245, 0.39);
   // box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.2);
 
   @include screen-max-width(medium) {
     padding: 0 20px;
-    padding-left: 20p;
-    padding-right: 20px;
   }
 
   .advance-title-mobile{
@@ -77,6 +75,9 @@ $radio-color: #5D9E7A;
     font-size: 14px;
     font-weight: 600;
     color: #ef8102;
+    img {
+      vertical-align: middle;
+    }
   }
   .gas-change{
     padding-top: 0px;
@@ -208,6 +209,9 @@ $radio-color: #5D9E7A;
     font-style: italic;
     line-height: 1.54;
     color: #666666;
+    img {
+      vertical-align: middle;
+    }
   }
 
   .des-down{

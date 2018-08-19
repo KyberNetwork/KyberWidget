@@ -113,3 +113,67 @@ h1 {
     width: 100%;
     padding: 4px 8px;
 }
+.mode{
+    width: 400px;
+    max-width: 90%;
+    margin: 0 auto;
+    padding-top: 8px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+.mode label {
+    padding-right: 2rem;
+    display: inline-block;
+}
+#kyber-widget-overlay {
+    background-color: rgba(0, 0, 0, .7);
+    position: fixed;
+    overflow: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    animation: fadein .5s;
+}
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+#kyber-widget-overlay::before {
+    content: "×";
+    position: fixed;
+    top: 16px;
+    right: 8px;
+    display: inline-block;
+    padding: 6px;
+    font-size: 36px;
+    color: #fff;
+    line-height: 0;
+    cursor: pointer;
+}
+#kyber-widget {
+    position: absolute;
+    box-sizing: border-box;
+    transform: translateX(-50%) translateY(-50%);
+    left: 50%;
+    top: 50%;
+    max-height: 100%;
+    width: 100%;
+    max-width: 405px;
+}
+#kyber-widget-iframe {
+    background-color: #fff;
+    position: absolute;
+    width: 420px;
+    box-sizing: border-box;
+    transform: translateX(-50%) translateY(-50%);
+    left: 50%;
+    top: 50%;
+    height: 80%;
+    min-height: 660px;
+    border: 0;
+}

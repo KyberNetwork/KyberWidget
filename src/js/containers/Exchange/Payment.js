@@ -485,7 +485,7 @@ export default class Payment extends React.Component {
                 <div>
                   <span>{this.props.translate("transaction.address") || "Address"}:</span>
                   <span>
-                    {this.props.exchange.receiveAddr.slice(0, 8)} ... {this.props.exchange.receiveAddr.slice(-6)}
+                    {this.props.exchange.receiveAddr.toLowerCase().slice(0, 8)} ... {this.props.exchange.receiveAddr.toLowerCase().slice(-6)}
                   </span>
                 </div>
                 {this.props.exchange.isHaveDestAmount && (
@@ -510,13 +510,13 @@ export default class Payment extends React.Component {
             <div>
               <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
               {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
-                <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.destTokenSymbol}</span>
+                <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
               )}
               {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol && (
                 <span>{(''+this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</span>
               )}
               {!this.props.exchange.isHaveDestAmount && (
-                <span>{(''+this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.sourceAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</span>
+                <span>{(''+this.props.exchange.sourceAmount).length > 8 ? converter.roundingNumber(this.props.exchange.sourceAmount) : this.props.exchange.sourceAmount} {this.props.exchange.sourceTokenSymbol}</span>
               )}
             </div>
             <div>

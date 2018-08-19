@@ -6,7 +6,8 @@ import BLOCKCHAIN_INFO from "../../../../../env"
 export default class CachedServerProvider extends React.Component {
     constructor(props) {
         super(props)
-        this.rpcUrl = props.url        
+        this.rpcUrl = props.url   
+        this.network = props.network     
     }
 
     getGasPrice() {
@@ -229,7 +230,7 @@ export default class CachedServerProvider extends React.Component {
     }
 
     tokenIsSupported(address) {
-        let tokens = BLOCKCHAIN_INFO.tokens
+        let tokens = BLOCKCHAIN_INFO[this.network].tokens
         for (let token in tokens) {
             if (tokens[token].address.toLowerCase() == address.toLowerCase()) {
                 return true
@@ -331,7 +332,7 @@ export default class CachedServerProvider extends React.Component {
 
     getVolumnChart(){
         return new Promise((resolve, rejected) => {
-            fetch(BLOCKCHAIN_INFO.tracker + '/api/tokens/rates', {
+            fetch(BLOCKCHAIN_INFO[this.network].tracker + '/api/tokens/rates', {
             }).then((response) => {
                 return response.json()
             })

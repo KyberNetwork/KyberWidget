@@ -65,15 +65,13 @@
   box-sizing: border-box;
   border: 1px solid #eee;
 
-  .exchange-pading-top{
-    padding-top: 30px;
-  }
-
   .exchange-pading{
     //padding: 0 1rem;
-    padding: 0  25px;
+    padding: 0 20px;
+    &.exchange-pading-top{
+      padding-top: 20px;
+    }
     @include screen-max-width(medium) {
-      padding: 0 20px;
       &.exchange-pading-top {
         padding-top: 15px;
       }
@@ -105,13 +103,17 @@
     display: flex;
     input {
       margin-left: 0;
+      margin-right: 10px;
+      margin-bottom: 0;
       &:hover {
         cursor: pointer;
       }
     }
     label {
-      color: #999;
+      color: #999999;
       font-size: 13px;
+      font-weight: 100;
+      margin-bottom: -2px;
       &:hover {
         cursor: pointer;
       }
@@ -142,7 +144,7 @@
   }
 
   .advance-title-mobile {
-    font-size: 14px;
+    font-size: 13px;
     // font-weight: 600;
   }
 
