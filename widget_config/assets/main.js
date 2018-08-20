@@ -151,9 +151,9 @@
 
         var url_source = window.location.href.split('?')[0];
         if(isPopup){
-          url_source+="/assets/popup.js";
+          url_source+="assets/popup.js";
         }else if (isFrame){
-          url_source+="/assets/iframe.js";
+          url_source+="assets/iframe.js";
         }
         tagHtml +="<script src="+url_source+"></script>"
         document.getElementById("widget").innerHTML = tagHtml;
