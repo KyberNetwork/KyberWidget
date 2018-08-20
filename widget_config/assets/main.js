@@ -144,12 +144,14 @@
 
         var widgetBaseUrl = getWidgetUrl();
         var url = widgetBaseUrl + "?" + formData.data;
-        var tagHtml = "<link rel='stylesheet' href='/Users/smith.pham/Documents/Kyber/KyberWidget/widget_config/assets/widget.css'> \n"+
+        var url_source = window.location.href.split('?')[0];
+        var url_source_css = url_source + 'assets/widget.css';
+        var tagHtml = "<link rel='stylesheet' href="+url_source_css+"> \n"+
           "<a href='" + url + "' class='kyber-widget-button'\n";
         tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay by tokens'\n";
         tagHtml += "target='_blank'>Pay by tokens</a>";
 
-        var url_source = window.location.href.split('?')[0];
+
         if(isPopup){
           url_source+="assets/popup.js";
         }else if (isFrame){
