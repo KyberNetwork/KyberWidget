@@ -193,18 +193,18 @@
             <div class="source-tabs">
                 <div class="tabrow">
                     <button class="tablink active" data-tab="#sourceHtmlItem" id="defaultOpen">HTML</button>
-                    <button class="tablink" data-tab="#sourceCssItem">CSS</button>
-                    <button class="tablink" data-tab="#sourceJsItem">Javascript</button>
+                    <!--<button class="tablink" data-tab="#sourceCssItem">CSS</button>-->
+                    <!--<button class="tablink" data-tab="#sourceJsItem">Javascript</button>-->
                     <button class="btn-copy">Copy</button>
                 </div>
 
-                <div id="sourceJsItem" class="tabcontent">
-                    <pre><code id="sourceJs" class="language-javascript"></code></pre>
-                </div>
+                <!--<div id="sourceJsItem" class="tabcontent">-->
+                    <!--<pre><code id="sourceJs" class="language-javascript"></code></pre>-->
+                <!--</div>-->
 
-                <div id="sourceCssItem" class="tabcontent">
-                    <pre><code id="sourceCss" class="language-css"></code></pre>
-                </div>
+                <!--<div id="sourceCssItem" class="tabcontent">-->
+                    <!--<pre><code id="sourceCss" class="language-css"></code></pre>-->
+                <!--</div>-->
 
                 <div id="sourceHtmlItem" class="tabcontent">
                     <pre><code id="sourceHtml" class="language-markup"></code></pre>
@@ -276,7 +276,7 @@
                     global.kyberWidgetOptions.onClose();
                 }
             });
-            
+
             // create the widget container
             var popup = document.createElement("DIV");
             popup.id = "kyber-widget";
@@ -327,7 +327,7 @@
                     closeWidget();
                 }
             });
-            
+
             // create the iframe
             var iframe = document.createElement("IFRAME");
             iframe.id = "kyber-widget-iframe";
