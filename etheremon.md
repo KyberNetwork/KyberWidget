@@ -9,19 +9,17 @@ A simple demo is available at https://widget.knstats.com/shop/. If you specify `
 
 ### Include widget's CSS and javascript
 
-Add link tag to `head` section of your HTML. This is just standard CSS and could be tweaked if desired.
+Add following `link` tag to `head` section of your HTML. This is just standard CSS and could be tweaked if desired.
 
 ```
 <link rel="stylesheet" href="https://widget-etheremon.knstats.com/v1.0/widget.css">
 ```
-Add script tag to the end of `body` tag. Skip this tag if you opt to use `new tab` mode.
+Add following `script` tag to the end of `body` tag. Skip this tag if you opt to use `new tab` mode.
 ```
 <script src="https://widget-etheremon.knstats.com/v1.0/widget.js"></script>
 ```
 
-### Add the button with proper url
-
-You could add multiple buttons into a page.
+### Add the buttons with proper URLs
 
 Eg.
 ```
@@ -29,7 +27,7 @@ Eg.
  href="https://widget-etheremon.knstats.com/?mode=dom&etheremonAddr=0x11f9f4ce02f3a4e2ae37f8dedf23e882fd67b2c0&monsterId=106&monsterName=Ikopi&monsterAvatar=https%3A%2F%2Fwww.etheremon.com%2F325db34365c36c186fd2217ace32591c.png"
  name="KyberWidget - Powered by KyberNetwork" title="Buy with tokens">Buy</a>
 ```
-Button's title and text can be changed if desired.
+Button's title and text can be changed if desired. You could add multiple buttons into a page.
 
 The widget supports 3 modes, which you specify by setting `mode` param of the button's `href`.
 - New tab (default): The widget will open in new browser tab.
