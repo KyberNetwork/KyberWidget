@@ -160,17 +160,19 @@
         document.getElementById("sourceHtml").textContent = tagHtml;
         // document.getElementById("sourceCss").textContent = document.getElementById("widget_button_style").innerHTML.trim();
 
-        // if (isPopup) {
-        //     // document.getElementById("sourceJs").textContent = runTemplateJS(widgetBaseUrl, "widget_popup_js");
+        if (isPopup) {
+        //     // document.getElementById("sourceJs").textContent =
+        runTemplateJS(widgetBaseUrl, "widget_popup_js");
         //     // document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_common_style").innerHTML.trim();
         //     // document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_popup_style").innerHTML.trim();
-        // } else if (isFrame) {
-        //     // document.getElementById("sourceJs").textContent = runTemplateJS(widgetBaseUrl, "widget_iframe_js");
+        } else if (isFrame) {
+        //     // document.getElementById("sourceJs").textContent =
+        runTemplateJS(widgetBaseUrl, "widget_iframe_js");
         //     // document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_common_style").innerHTML.trim();
         //     // document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_iframe_style").innerHTML.trim();
-        // } else {
+        } else {
         //     // document.getElementById("sourceJs").textContent = "";
-        // }
+        }
 
         Prism.highlightElement(document.getElementById("sourceHtml"));
         // Prism.highlightElement(document.getElementById("sourceJs"));

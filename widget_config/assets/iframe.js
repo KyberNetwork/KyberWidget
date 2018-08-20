@@ -1,3 +1,8 @@
+function getWidgetUrl() {
+  var url = new URLSearchParams(location.search).get("widget_url");
+  return url || "https://developer.kyber.network/widget/payment";
+
+}
 (function (global, baseUrl) {
   function closeWidget() {
     var overlay = document.getElementById("kyber-widget-overlay");
@@ -38,4 +43,4 @@
       global.kyberWidgetInstance && global.kyberWidgetInstance.render();
     })
   });
-})(this, "https://widget.knstats.com");
+})(this, getWidgetUrl());
