@@ -193,8 +193,19 @@
             <div class="source-tabs">
                 <div class="tabrow">
                     <button class="tablink active" data-tab="#sourceHtmlItem" id="defaultOpen">HTML</button>
+                    <!--<button class="tablink" data-tab="#sourceCssItem">CSS</button>-->
+                    <!--<button class="tablink" data-tab="#sourceJsItem">Javascript</button>-->
                     <button class="btn-copy">Copy</button>
                 </div>
+
+                <!--<div id="sourceJsItem" class="tabcontent">-->
+                    <!--<pre><code id="sourceJs" class="language-javascript"></code></pre>-->
+                <!--</div>-->
+
+                <!--<div id="sourceCssItem" class="tabcontent">-->
+                    <!--<pre><code id="sourceCss" class="language-css"></code></pre>-->
+                <!--</div>-->
+
                 <div id="sourceHtmlItem" class="tabcontent">
                     <pre><code id="sourceHtml" class="language-markup"></code></pre>
                 </div>
@@ -203,6 +214,139 @@
     </div>
     <script data-manual src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
     <script src="assets/main.js?v=25"></script>
+    <script id="widget_popup_js" type="text/template">
+(function(global, baseUrl){
+    if (!global.kyberWidgetOptions) {
+        global.kyberWidgetOptions = {};
+        global.kyberWidgetOptions.onClose = function() {
+            var overlay = document.getElementById("kyber-widget-overlay");
+            if (overlay) {
+                document.body.style.overflow = null;
+                overlay.remove();
+            }
+        }
+    }
+
+    // add script tag
+    if (!document.getElementById("kyber-widget-script")) {
+        var script = document.createElement("script");
+        script.id = "kyber-widget-script";
+        script.async = true;
+        script.onerror = function() {
+            global.kyberWidgetOptions.jsLoadError = true;
+            console.log("Error loading KyberWidget.");
+            global.kyberWidgetOptions.onClose();
+        };
+        script.onload = function() {
+            document.getElementById("kyber-widget") && global.kyberWidgetInstance.render();
+        };
+        script.src = baseUrl + "/app.min.js?t=" + Date.now();
+        document.body.appendChild(script);
+    }
+
+    // add CSS tag
+    if (!document.getElementById("kyber-widget-css")) {
+        var css = document.createElement("link");
+        css.id = "kyber-widget-css";
+        css.setAttribute("rel", "stylesheet")
+        css.setAttribute("href", baseUrl + "/app.bundle.css?t=" + Date.now());
+        document.head.appendChild(css);
+    }
+
+    document.querySelectorAll(".kyber-widget-button").forEach(function(tag){
+        tag.addEventListener("click", function(e){
+
+            // error loadding js, just fallback to new tab mode
+            if (global.kyberWidgetOptions.jsLoadError) return;
+
+            // js loading ok, disable new tab mode
+            e.preventDefault();
+
+            // remove old overlay, just to ensure
+            var oldOverlay = document.getElementById("kyber-widget-overlay");
+            if (oldOverlay) {
+                oldOverlay.remove();
+            }
+
+            // create a new overlay
+            var overlay = document.createElement("DIV");
+            overlay.id = "kyber-widget-overlay";
+            overlay.addEventListener("click", function(e){
+                if (e.target === this) {
+                    global.kyberWidgetOptions.onClose();
+                }
+            });
+
+            // create the widget container
+            var popup = document.createElement("DIV");
+            popup.id = "kyber-widget";
+            popup.classList.add("kyber-widget");
+
+            // set widget attributes
+            popup.setAttribute("data-widget-attribute", "true");
+            var params = new URL(tag.href).searchParams.entries();
+            for (var pair of params) {
+                popup.setAttribute("data-widget-" + pair[0].replace(/([a-z])([A-Z])/g, '$1-$2'), decodeURIComponent(pair[1]));
+            }
+
+            // add the tags to body
+            overlay.appendChild(popup);
+            document.body.appendChild(overlay);
+            document.body.style.overflow = "hidden";
+
+            // render the widget
+            global.kyberWidgetInstance && global.kyberWidgetInstance.render();
+        })
+    });
+})(this, "${baseUrl}");
+    </script>
+    <script id="widget_iframe_js" type="text/template">
+(function(global, baseUrl){
+    function closeWidget() {
+        var overlay = document.getElementById("kyber-widget-overlay");
+        if (overlay) {
+            document.body.style.overflow = null;
+            overlay.remove();
+        }
+    }
+    document.querySelectorAll(".kyber-widget-button").forEach(function(tag){
+        tag.addEventListener("click", function(e){
+            e.preventDefault();
+
+            // remove old overlay, just to ensure
+            var oldOverlay = document.getElementById("kyber-widget-overlay");
+            if (oldOverlay) {
+                oldOverlay.remove();
+            }
+
+            // create a new overlay
+            var overlay = document.createElement("DIV");
+            overlay.id = "kyber-widget-overlay";
+            overlay.addEventListener("click", function(e){
+                if (e.target === this) {
+                    closeWidget();
+                }
+            });
+
+            // create the iframe
+            var iframe = document.createElement("IFRAME");
+            iframe.id = "kyber-widget-iframe";
+            iframe.onload = function() {
+                iframe.contentWindow.kyberWidgetOptions = {onClose: closeWidget};
+            }
+            iframe.src = tag.href;
+
+            // add the tags to body
+            overlay.appendChild(iframe);
+            document.body.appendChild(overlay);
+            document.body.style.overflow = "hidden";
+
+            // render the widget
+            global.kyberWidgetInstance && global.kyberWidgetInstance.render();
+        })
+    });
+})(this, "${baseUrl}");
+    </script>
 </body>
 
 </html>
