@@ -12,13 +12,28 @@ export default class Web3Service {
     }
     return false
   }
-  getNetworkId = ()=> {
-    return new Promise((resolve, reject)=>{
-      this.web3.version.getNetwork((error, result) => { 
+  // getNetworkId = ()=> {
+  //   return new Promise((resolve, reject)=>{
+  //     this.web3.version.getNetwork((error, result) => { 
+  //       if (error || !result) {
+  //         var error = new Error("Cannot get network id")
+  //         reject(error)
+  //       }else{
+  //         resolve(result)
+  //       }
+  //     })
+  //   })
+  // }
+
+  getNetworkId = () => {
+    return new Promise((resolve, reject) => {
+      this.web3.eth.net.getId((error, result) => {
+        // alert(error)
+        // alert(result)
         if (error || !result) {
           var error = new Error("Cannot get network id")
           reject(error)
-        }else{
+        } else {
           resolve(result)
         }
       })

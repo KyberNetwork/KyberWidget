@@ -2,7 +2,8 @@ const extension = require('extensionizer')
 const height = 620
 const width = 360
 
-import Web3 from '../web3-metamask';
+// import Web3 from '../web3-metamask';
+import Web3 from 'web3'
 
 import MetamaskInpageProvider from 'metamask-crx/app/scripts/lib/inpage-provider.js';
 import PortStream from 'metamask-crx/app/scripts/lib/port-stream.js';
