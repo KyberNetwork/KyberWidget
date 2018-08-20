@@ -154,10 +154,11 @@
 
         if(isPopup){
           url_source+="assets/popup.js";
+          tagHtml +="<script src="+url_source+"></script>"
         }else if (isFrame){
           url_source+="assets/iframe.js";
+          tagHtml +="<script src="+url_source+"></script>"
         }
-        tagHtml +="<script src="+url_source+"></script>"
         document.getElementById("widget").innerHTML = tagHtml;
         document.getElementById("sourceHtml").textContent = tagHtml;
         // document.getElementById("sourceCss").textContent = document.getElementById("widget_button_style").innerHTML.trim();
