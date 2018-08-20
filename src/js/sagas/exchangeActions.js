@@ -1623,7 +1623,7 @@ export function* initParamsExchange(action) {
 
 
   if (typeof web3 === "undefined") {
-    yield put(globalActions.throwErrorMematamask(translate("error.metamask_not_installed") || "Metamask is not installed"))
+    yield put(globalActions.throwErrorMematamask("Metamask is not installed"))
   } else {
     const web3Service = new Web3Service(web3)
     const watchMetamask = yield fork(watchMetamaskAccount, ethereum, web3Service, network)
