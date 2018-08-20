@@ -90,9 +90,6 @@ The widget supports following params:
 - ***commissionId*** - Ethereum address - your Ethereum wallet to get commission of the fees for the transaction. Your wallet must be whitelisted by KyberNetwork (the permissionless registration will be available soon) in order to get the commission, otherwise it will be ignored.
 
 ## Supported tokens
-<<<<<<< HEAD
-See all supported tokens [here](https://tracker.kyber.network/#/tokens)
-=======
 - OMG
 - KNC
 - SNT
@@ -144,4 +141,3 @@ See all supported tokens [here](https://tracker.kyber.network/#/tokens)
 - MTL
 - WABI
 - ETH
->>>>>>> 4dced8779da5f6e0a56f73f78465f2a91910b6be
