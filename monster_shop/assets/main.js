@@ -26,6 +26,14 @@
     })
   }
 
+  function closeWidget() {
+    var overlay = document.getElementById("kyber-widget-overlay");
+    if (overlay) {
+      document.body.style.overflow = null;
+      overlay.remove();
+    }
+  }
+
   function wireEvents() {
     document.querySelectorAll(".action").forEach(function (tag) {
       tag.addEventListener("click", function (e) {
@@ -51,7 +59,7 @@
         overlay.id = "kyber-widget-overlay";
         overlay.addEventListener("click", function (e) {
           if (e.target === this) {
-            window.kyberWidgetOptions.onClose();
+            closeWidget();
           }
         });
 
@@ -73,7 +81,7 @@
           var iframe = document.createElement("IFRAME");
           iframe.id = "kyber-widget-iframe";
           iframe.onload = function () {
-            iframe.contentWindow.kyberWidgetOptions = { onClose: window.kyberWidgetOptions.onClose };
+            iframe.contentWindow.kyberWidgetOptions = { onClose: closeWidget };
           }
           iframe.src = tag.href;
           overlay.appendChild(iframe);
@@ -129,13 +137,7 @@
 
   (function init() {
     window.kyberWidgetOptions = {};
-    window.kyberWidgetOptions.onClose = function () {
-      var overlay = document.getElementById("kyber-widget-overlay");
-      if (overlay) {
-        document.body.style.overflow = null;
-        overlay.remove();
-      }
-    }
+    window.kyberWidgetOptions.onClose = closeWidget;
 
     // add script tag
     if (!document.getElementById("kyber-widget-script")) {
