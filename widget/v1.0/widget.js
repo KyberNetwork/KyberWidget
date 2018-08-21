@@ -1,16 +1,49 @@
+(function (global, editionTag) {
 
-(function (global, baseUrl) {
+  var BASE_URL = (function(editionTag) {
+    var editions = {
+      standard: "https://widget.knstats.com",
+      etheremon: "https://widget-etheremon.knstats.com"
+    }
+    var path = null;
+
+    var current = !editionTag ? null : 
+      (editionTag.getAttribute("data-kyber-widget-edition") || editionTag.getAttribute("data-edition"));
+
+    if (!editionTag || !current) {
+      var button = document.querySelector(".kyber-widget-button");
+      if (button && button.href) {
+        path = button.href.split("?")[0];
+        if (path.substr(-1) === "/") {
+          path = path.substr(0, path.length - 1);
+        }
+        for (var prop in editions) {
+          if (path === editions[prop]) {
+            current = prop;
+            break;
+          }
+        }
+      }
+
+    }
+
+    if (!current || !editions[current]) current = "standard";
+    document.documentElement.setAttribute("data-kyber-widget-edition", current);
+    return path || editions[current];
+  })(editionTag);
 
   function closeWidget () {
     var overlay = document.getElementById("kyber-widget-overlay");
-
     if (overlay) {
-      document.body.style.overflow = null;
+      var body = document.body,
+        oldValue = body.getAttribute("data-overflow") || null;
+      body.style.overflow = oldValue;
+      body.removeAttribute("data-overflow");
       overlay.remove();
     }
   }
 
-  function insertTags() {
+  function insertTags(baseUrl) {
     if (!document.getElementById("kyber-widget-script")) {
       var script = document.createElement("script");
       script.id = "kyber-widget-script";
@@ -44,7 +77,7 @@
 
       var params = new URL(tag.href).searchParams;
       var mode = params.get("mode") || "tab";
-      hasDomMode = true;
+      if (mode === "dom") hasDomMode = true;
       
       if (mode !== "dom" && mode !== "iframe") return;
 
@@ -59,10 +92,7 @@
         e.preventDefault();
         
         // remove old overlay, just to ensure
-        var oldOverlay = document.getElementById("kyber-widget-overlay");
-        if (oldOverlay) {
-          oldOverlay.remove();
-        }
+        closeWidget();
 
         // create a new overlay
         var overlay = document.createElement("DIV");
@@ -102,6 +132,9 @@
         // add the tags to body
         overlay.appendChild(element);
         document.body.appendChild(overlay);
+        if (document.body.style.overflow) {
+          document.body.setAttribute("data-overflow", document.body.style.overflow);
+        }
         document.body.style.overflow = "hidden";
 
         // render the widget
@@ -109,7 +142,7 @@
       })
     });
 
-    if (hasDomMode) insertTags();
+    if (hasDomMode) insertTags(BASE_URL);
   }
 
   global.kyberWidgetOptions = {
@@ -119,4 +152,4 @@
 
   register();
 
-})(this, "https://widget.knstats.com");
+})(this, document.currentScript || document.getElementById("kyber-widget-edition") || document.documentElement);
