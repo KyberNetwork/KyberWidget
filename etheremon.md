@@ -12,11 +12,11 @@ A simple demo is available at https://widget.knstats.com/shop/. If you specify `
 Add following `link` tag to `head` section of your HTML. This is just standard CSS and could be tweaked if desired.
 
 ```
-<link rel="stylesheet" href="https://widget-etheremon.knstats.com/v1.0/widget.css">
+<link rel="stylesheet" href="https://widget.knstats.com/etheremon/v1.0/widget.css">
 ```
 Add following `script` tag to the end of `body` tag. Skip this tag if you opt to use `new tab` mode.
 ```
-<script src="https://widget-etheremon.knstats.com/v1.0/widget.js"></script>
+<script src="https://widget.knstats.com/etheremon/v1.0/widget.js"></script>
 ```
 
 ### Add the buttons with proper URLs
