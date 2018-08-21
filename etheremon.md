@@ -12,11 +12,11 @@ A simple demo is available at https://widget.knstats.com/etheremon/. If you spec
 Add following `link` tag to `head` section of your HTML. This is just standard CSS and could be tweaked if desired.
 
 ```
-<link rel="stylesheet" href="https://widget.knstats.com/etheremon/v1.0/widget.css">
+<link rel="stylesheet" href="https://widget.knstats.com/v1.0/widget.css">
 ```
 Add following `script` tag to the end of `body` tag.
 ```
-<script async src="https://widget.knstats.com/etheremon/v1.0/widget.js"></script>
+<script data-edition="etheremon" async src="https://widget.knstats.com/v1.0/widget.js"></script>
 ```
 
 ### Add the buttons with proper URLs
