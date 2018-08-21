@@ -3,7 +3,7 @@ KyberWidget for Etheremon allow users to pay for catchable monsters from any of 
 
 ## Demo
 
-A simple demo is available at https://widget.knstats.com/shop/. If you specify `https://kyberpay-sample.knstats.com/callback` as `callback URL`, you could go to https://kyberpay-sample.knstats.com/list to see postback transaction list.
+A simple demo is available at https://widget.knstats.com/etheremon/. If you specify `https://kyberpay-sample.knstats.com/callback` as `callback URL`, you could go to https://kyberpay-sample.knstats.com/list to see postback transaction list.
 
 ## How to use the widget
 
