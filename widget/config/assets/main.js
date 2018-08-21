@@ -76,24 +76,6 @@
         return result;
     }
 
-    function openTab(tabLink) {
-        var i, tabcontent, tablinks;
-        var tabSelector = tabLink.getAttribute("data-tab");
-
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-          tabcontent[i].style.visibility = "hidden";
-        }
-        document.querySelector(tabSelector).style.visibility = "visible";
-
-        tablinks = document.getElementsByClassName("tablink");
-        for (i = 0; i < tablinks.length; i++) {
-          tablinks[i].classList.remove("active");
-        }
-
-        tabLink.classList.add("active");
-    }
-
     function wireEvents() {
         var form = document.querySelector("form");
         form.querySelectorAll("input, select").forEach(function (node) {
@@ -101,12 +83,6 @@
             node.addEventListener('keyup', generateTag);
             node.addEventListener('paste', function () {
                 setTimeout(generateTag, 0);
-            });
-        });
-
-        document.querySelectorAll(".tablink").forEach(function (link) {
-            link.addEventListener('click', function () {
-                openTab(link);
             });
         });
 
@@ -118,24 +94,12 @@
         });
     }
 
-    function runTemplateJS(baseUrl, scriptID) {
-        var js = document.getElementById(scriptID).innerHTML.trim().replace("${baseUrl}", baseUrl);
-
-        var script = document.createElement("script");
-        script.innerHTML = js;
-        document.getElementsByTagName('body')[0].appendChild(script);
-
-        return js;
-    }
-
     var generateTag = debounce(function () {
         var formData = grabForm();
         if (formData.error && formData.error.length) {
             document.getElementById("widget").innerHTML = "<p class='error'>" +
                 formData.error.join("<br>") + "</p>";
             document.getElementById("sourceHtml").textContent = "";
-            // document.getElementById("sourceCss").textContent = "";
-            // document.getElementById("sourceJs").textContent = "";
             return;
         }
 
@@ -144,36 +108,24 @@
 
         var widgetBaseUrl = getWidgetUrl();
         var url = widgetBaseUrl + "?" + formData.data;
-        var url_source = window.location.href.split('?')[0];
-        var url_source_css = url_source + 'assets/widget.css';
-        var url_source_js = url_source + 'assets/widget.js';
-        var tagHtml = "<!-- Add this to the <head> tag -->\n<link rel='stylesheet' href='"+url_source_css+"'> \n\n"+
-          "<a href='" + url + "' class='kyber-widget-button'\n";
+        var cssUrl = widgetBaseUrl + '/widget/v1.0/widget.css';
+        var jsUrl = widgetBaseUrl + '/widget/v1.0/widget.js';
+        var tagHtml = "<a href='" + url + "'\nclass='kyber-widget-button' ";
         tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay by tokens'\n";
         tagHtml += "target='_blank'>Pay by tokens</a>";
-        tagHtml +="\n\n<!-- Add this to the end of <body> tag -->\n<script src='"+url_source_js+"'></script>"
+
+        var fullHtml = "<!-- Add this to the <head> tag -->\n<link rel='stylesheet' href='" + cssUrl + "'> \n\n";
+        fullHtml += tagHtml;
+        fullHtml += "\n\n<!-- Add this to the end of <body> tag -->\n<script async src='" + jsUrl + "'></script>"
 
         document.getElementById("widget").innerHTML = tagHtml;
-        document.getElementById("sourceHtml").textContent = tagHtml;
-        // document.getElementById("sourceCss").textContent = document.getElementById("widget_button_style").innerHTML.trim();
+        document.getElementById("sourceHtml").textContent = fullHtml;
+        Prism.highlightElement(document.getElementById("sourceHtml"));
 
-        if (isPopup) {
-        //     // document.getElementById("sourceJs").textContent =
-        runTemplateJS(widgetBaseUrl, "widget_popup_js");
-        //     // document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_common_style").innerHTML.trim();
-        //     // document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_popup_style").innerHTML.trim();
-        } else if (isFrame) {
-        //     // document.getElementById("sourceJs").textContent =
-        runTemplateJS(widgetBaseUrl, "widget_iframe_js");
-        //     // document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_common_style").innerHTML.trim();
-        //     // document.getElementById("sourceCss").textContent += "\n" + document.getElementById("widget_iframe_style").innerHTML.trim();
-        } else {
-        //     // document.getElementById("sourceJs").textContent = "";
+        if (window.kyberWidgetOptions && window.kyberWidgetOptions.register) {
+            window.kyberWidgetOptions.register();
         }
 
-        Prism.highlightElement(document.getElementById("sourceHtml"));
-        // Prism.highlightElement(document.getElementById("sourceJs"));
-        // Prism.highlightElement(document.getElementById("sourceCss"));
     }, 50, false);
 
 
