@@ -131,7 +131,7 @@ const ExchangeBodyLayout = (props) => {
                       <div>{(''+props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount} {props.exchange.destTokenSymbol}</div>
                     </div>
                     { haveProductName && <div className="info-2__content">
-                      <div>{props.translate("transaction.product_name") || "Product name"}:</div>
+                      <div>{props.translate("transaction.product_name") || "Name"}:</div>
                       <div>{props.exchange.productName}</div>
                     </div>}
                   </div>

@@ -503,7 +503,7 @@ export default class Payment extends React.Component {
                   </div>
                 )}
                 { haveProductName && <div>
-                  <span>{this.props.translate("transaction.product_name") || "Product name"}:</span>
+                  <span>{this.props.translate("transaction.product_name") || "Name"}:</span>
                   <span>{this.props.exchange.productName}</span>
                 </div>}
               </div>
