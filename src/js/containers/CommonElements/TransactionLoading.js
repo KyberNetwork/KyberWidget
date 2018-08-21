@@ -40,7 +40,7 @@ import { Modal } from "../../components/CommonElement"
          //   isOpen: props.isOpen,
         }
     }
-    return { ...returnProps, translate: getTranslate(store.locale) }
+    return { ...returnProps, translate: getTranslate(store.locale), network: store.exchange.network }
 })
 
 export default class TransactionLoading extends React.Component {
@@ -84,6 +84,7 @@ export default class TransactionLoading extends React.Component {
         isCopied={this.state.isCopied}
         handleCopy={this.handleCopy.bind(this)}
         resetCopy={this.resetCopy.bind(this)}
+        network = {this.props.network}
       />
     }
 }

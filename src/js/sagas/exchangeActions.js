@@ -1,10 +1,19 @@
-import { take, put, call, fork, select, takeEvery, all, apply } from 'redux-saga/effects'
+import { take, put, call, fork, select, takeEvery, all, apply, cancel } from 'redux-saga/effects'
+import { delay } from 'redux-saga'
+
 import * as actions from '../actions/exchangeActions'
 import * as globalActions from "../actions/globalActions"
+
+import { setConnection } from "../actions/connectionActions"
+
+import EthereumService from "../services/ethereum/ethereum"
+import NotiService from "../services/noti_service/noti_service"
+import Web3Service from "../services/web3"
 
 import * as common from "./common"
 import * as validators from "../utils/validators"
 import * as analytics from "../utils/analytics"
+import * as commonFunc from "../utils/common"
 
 import { updateAccount, incManualNonceAccount } from '../actions/accountActions'
 import { addTx } from '../actions/txActions'
@@ -221,12 +230,14 @@ function* getInfo(hash) {
 // }
 
 function* doTxFail(ethereum, account, e) {
+  var state = store.getState()
+  var exchange = state.exchange
   yield put(actions.goToStep(4));
 
   var error = e
   if (!error) {
     var translate = getTranslate(store.getState().locale)
-    var link = BLOCKCHAIN_INFO.ethScanUrl + "address/" + account.address
+    var link = BLOCKCHAIN_INFO[exchange.network].ethScanUrl + "address/" + account.address
     error = translate("error.broadcast_tx", { link: link }) || "Potentially Failed! We likely couldn't broadcast the transaction to the blockchain. Please check on Etherscan to verify."
   }
   yield put(actions.setBroadcastError(error))
@@ -292,11 +303,14 @@ function* processApprove(action) {
 export function* processApproveByColdWallet(action) {
   const { ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
     keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload
+  
+  var networkId = common.getNetworkId()
+  var kyberAddress = common.getKyberAddress()
   //try {
   let rawApprove
   try {
     rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-      keystring, password, accountType, account.address)
+      keystring, password, accountType, account.address, networkId, kyberAddress)
   } catch (e) {
     console.log(e)
     let msg = ''
@@ -325,10 +339,12 @@ export function* processApproveByColdWallet(action) {
 export function* processApproveByMetamask(action) {
   const { ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
     keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload;
-
+  
+    var networkId = common.getNetworkId()
+    var kyberAddress = common.getKyberAddress()
   try {
     const hashApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-      keystring, password, accountType, account.address);
+      keystring, password, accountType, account.address, networkId, kyberAddress);
 
     yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol));
     yield put(incManualNonceAccount(account.address));
@@ -390,13 +406,16 @@ export function* exchangeETHtoTokenKeystore(action) {
     maxDestAmount, minConversionRate,
     throwOnFailure, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
+  
+  var networkId = common.getNetworkId()
+  var kyberAddress = common.getKyberAddress()
   var txRaw
   try {
     txRaw = yield call(keyService.callSignTransaction, "etherToOthersFromAccount", formId, ethereum, address, sourceToken,
       sourceAmount, destToken, destAddress,
       maxDestAmount, minConversionRate,
       blockNo, nonce, gas,
-      gasPrice, keystring, type, password)
+      gasPrice, keystring, type, password, networkId, kyberAddress)
   } catch (e) {
     console.log(e)
     yield put(actions.throwPassphraseError(e.message))
@@ -419,6 +438,10 @@ export function* exchangeETHtoTokenPrivateKey(action) {
     maxDestAmount, minConversionRate,
     throwOnFailure, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
+  
+    var networkId = common.getNetworkId()
+    var kyberAddress = common.getKyberAddress()
+
   try {
     var txRaw
     try {
@@ -426,7 +449,7 @@ export function* exchangeETHtoTokenPrivateKey(action) {
         sourceAmount, destToken, destAddress,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
-        gasPrice, keystring, type, password)
+        gasPrice, keystring, type, password, networkId, kyberAddress)
     } catch (e) {
       console.log(e)
       yield put(actions.setSignError(e.message))
@@ -449,6 +472,9 @@ export function* exchangeETHtoTokenColdWallet(action) {
     maxDestAmount, minConversionRate,
     throwOnFailure, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
+  
+    var networkId = common.getNetworkId()
+    var kyberAddress = common.getKyberAddress()
   try {
     var txRaw
     try {
@@ -456,7 +482,7 @@ export function* exchangeETHtoTokenColdWallet(action) {
         sourceAmount, destToken, destAddress,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
-        gasPrice, keystring, type, password)
+        gasPrice, keystring, type, password, networkId, kyberAddress)
     } catch (e) {
       console.log(e)
       let msg = ''
@@ -484,6 +510,9 @@ function* exchangeETHtoTokenMetamask(action) {
     maxDestAmount, minConversionRate,
     throwOnFailure, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
+  
+    var networkId = common.getNetworkId()
+    var kyberAddress = common.getKyberAddress()
   try {
     var hash
     try {
@@ -491,7 +520,7 @@ function* exchangeETHtoTokenMetamask(action) {
         sourceAmount, destToken, destAddress,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
-        gasPrice, keystring, type, password)
+        gasPrice, keystring, type, password, networkId, kyberAddress)
     } catch (e) {
       yield put(actions.setSignError(e))
       return
@@ -513,6 +542,10 @@ function* exchangeTokentoETHKeystore(action) {
     maxDestAmount, minConversionRate,
     throwOnFailure, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
+
+    var networkId = common.getNetworkId()
+    var kyberAddress = common.getKyberAddress()
+
   var remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address)
   console.log("remain: " + remainStr)
   var remain = converter.hexToBigNumber(remainStr)
@@ -521,7 +554,7 @@ function* exchangeTokentoETHKeystore(action) {
     var rawApprove
     try {
       rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-        keystring, password, type, address)
+        keystring, password, type, address, networkId, kyberAddress)
     } catch (e) {
       console.log(e)
       yield put(actions.throwPassphraseError(e.message))
@@ -542,7 +575,7 @@ function* exchangeTokentoETHKeystore(action) {
           sourceAmount, destToken, destAddress,
           maxDestAmount, minConversionRate,
           blockNo, nonce, gas,
-          gasPrice, keystring, type, password)
+          gasPrice, keystring, type, password, networkId, kyberAddress)
         yield put(actions.prePareBroadcast(balanceData))
       } catch (e) {
         console.log(e)
@@ -563,7 +596,7 @@ function* exchangeTokentoETHKeystore(action) {
         sourceAmount, destToken, destAddress,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
-        gasPrice, keystring, type, password)
+        gasPrice, keystring, type, password, networkId, kyberAddress)
     } catch (e) {
       console.log(e)
       yield put(actions.throwPassphraseError(e.message))
@@ -586,6 +619,10 @@ export function* exchangeTokentoETHPrivateKey(action) {
     maxDestAmount, minConversionRate,
     throwOnFailure, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
+
+    var networkId = common.getNetworkId()
+    var kyberAddress = common.getKyberAddress()
+
   try {
     var remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address)
     var remain = converter.hexToBigNumber(remainStr)
@@ -594,7 +631,7 @@ export function* exchangeTokentoETHPrivateKey(action) {
       let rawApprove
       try {
         rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-          keystring, password, type, address)
+          keystring, password, type, address, networkId, kyberAddress)
       } catch (e) {
         yield put(actions.setSignError(e.message))
         return
@@ -622,7 +659,7 @@ export function* exchangeTokentoETHPrivateKey(action) {
         sourceAmount, destToken, destAddress,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
-        gasPrice, keystring, type, password)
+        gasPrice, keystring, type, password, networkId, kyberAddress)
     } catch (e) {
       yield put(actions.setSignError(e.message))
       return
@@ -643,6 +680,10 @@ function* exchangeTokentoETHColdWallet(action) {
     maxDestAmount, minConversionRate,
     throwOnFailure, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
+  
+    var networkId = common.getNetworkId()
+    var kyberAddress = common.getKyberAddress()
+
   try {
     let txRaw
     try {
@@ -650,7 +691,7 @@ function* exchangeTokentoETHColdWallet(action) {
         sourceAmount, destToken, destAddress,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
-        gasPrice, keystring, type, password)
+        gasPrice, keystring, type, password, networkId, kyberAddress)
     } catch (e) {
       console.log(e)
       let msg = ''
@@ -678,6 +719,10 @@ export function* exchangeTokentoETHMetamask(action) {
     maxDestAmount, minConversionRate,
     throwOnFailure, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
+
+    var networkId = common.getNetworkId()
+    var kyberAddress = common.getKyberAddress()
+
   try {
     var hash
     try {
@@ -685,7 +730,7 @@ export function* exchangeTokentoETHMetamask(action) {
         sourceAmount, destToken, destAddress,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
-        gasPrice, keystring, type, password)
+        gasPrice, keystring, type, password, networkId, kyberAddress)
     } catch (e) {
       yield put(actions.setSignError(e))
       return
@@ -1200,7 +1245,7 @@ function* getGasUsed() {
   var state = store.getState()
   const ethereum = state.connection.ethereum
   const exchange = state.exchange
-  const kyber_address = BLOCKCHAIN_INFO.network
+  const kyber_address = BLOCKCHAIN_INFO[exchange.network].network
 
 
   const maxGas = yield call(getMaxGasExchange)
@@ -1487,6 +1532,7 @@ export function* fetchExchangeEnable() {
 
 export function* getExchangeEnable() {
   var state = store.getState()
+  
   const ethereum = state.connection.ethereum
 
   var account = state.account.account
@@ -1501,13 +1547,18 @@ export function* getExchangeEnable() {
   }
 }
 
-export function* initParamsToken(action) {
+export function* initParamsExchange(action) {
   var state = store.getState()
   var tokens = state.tokens.tokens
   var exchange = state.exchange
-  var ethereum = state.connection.ethereum
 
-  const { receiveAddr, receiveToken, tokenAddr, receiveAmount } = action.payload
+  
+
+  const { receiveAddr, receiveToken, tokenAddr, receiveAmount, network } = action.payload
+
+  //var ethereum = state.connection.ethereum
+  var ethereum = new EthereumService({network})
+  yield put.sync(setConnection(ethereum))
 
   var sourceTokenSymbol = exchange.sourceTokenSymbol
 
@@ -1568,11 +1619,75 @@ export function* initParamsToken(action) {
     yield put(actions.updateRateExchange(source, dest, 0, sourceTokenSymbol, true))
   }
 
-  ethereum.subcribe()
+   ethereum.subcribe()
+
+
+  if (typeof web3 === "undefined") {
+    yield put(globalActions.throwErrorMematamask("Metamask is not installed"))
+  } else {
+    const web3Service = new Web3Service(web3)
+    const watchMetamask = yield fork(watchMetamaskAccount, ethereum, web3Service, network)
+
+    yield take('GLOBAL.INIT_SESSION')
+    yield cancel(watchMetamask)
+  }
+
+
+  var notiService = new NotiService({ type: "session" })
+  yield put(globalActions.setNotiHandler(notiService))
+  
   //store.dispatch(updateRateExchange(source, dest, sourceAmount, sourceTokenSymbol, isManual))
 
   //estimate gas
 
+}
+
+
+function* watchMetamaskAccount(ethereum, web3Service, network) {
+  // var state = store.getState()
+  // var exchange = state.exchange
+  //check 
+  var translate = getTranslate(store.getState().locale)
+  while (true) {
+    try {
+      var state = store.getState()
+      const account = state.account.account
+      if (account === false){
+
+      // if (state.router && state.router.location) {
+      //   var pathname = state.router.location.pathname
+      //   if (pathname === constants.BASE_HOST) {
+
+          //test network id
+          const currentId = yield call([web3Service, web3Service.getNetworkId])
+          const networkId = BLOCKCHAIN_INFO[network].networkId
+          if (parseInt(currentId, 10) !== networkId) {
+            const currentName = commonFunc.findNetworkName(parseInt(currentId, 10))
+            const expectedName = commonFunc.findNetworkName(networkId)
+            yield put(globalActions.throwErrorMematamask(translate("error.network_not_match", {expectedName: expectedName, currentName: currentName}) || `Metamask should be on ${expectedName}. Currently on ${currentName}`))
+            return
+          }
+
+          //test address
+          try {
+            const coinbase = yield call([web3Service, web3Service.getCoinbase])
+            const balanceBig = yield call([ethereum, ethereum.call], "getBalanceAtLatestBlock", coinbase)
+            const balance = converter.roundingNumber(converter.toEther(balanceBig))
+            yield put(globalActions.updateMetamaskAccount(coinbase, balance))
+          } catch (e) {
+            console.log(e)
+            yield put(globalActions.throwErrorMematamask(translate("error.cannot_connect_metamask") || `Cannot get metamask account. You probably did not login in Metamask`))
+          }
+
+        
+      }
+    } catch (e) {
+      console.log(e)
+      yield put(globalActions.throwErrorMematamask(e.message))
+    }
+
+    yield call(delay, 5000)
+  }
 }
 
 
@@ -1598,5 +1713,5 @@ export function* watchExchange() {
 
   yield takeEvery("EXCHANGE.FETCH_EXCHANGE_ENABLE", fetchExchangeEnable)
 
-  yield takeEvery("EXCHANGE.INIT_PARAMS_EXCHANGE", initParamsToken)
+  yield takeEvery("EXCHANGE.INIT_PARAMS_EXCHANGE", initParamsExchange)
 }

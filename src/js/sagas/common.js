@@ -36,7 +36,17 @@ export function* handleRequest(sendRequest, ...args) {
 	// }
 }
 
+export function getNetworkId(){
+  var state = store.getState()
+  var exchange = state.exchange
+  return BLOCKCHAIN_INFO[exchange.network].networkId
+}
 
+export function getKyberAddress(){
+  var state = store.getState()
+  var exchange = state.exchange
+  return BLOCKCHAIN_INFO[exchange.network].network
+}
 
 export function* submitCallback(hash){
     console.log("submit_hash: " + hash)
@@ -59,7 +69,7 @@ export function* submitCallback(hash){
               
       try{
         if (!params.network){
-          params.network = BLOCKCHAIN_INFO.networkName;
+          params.network = BLOCKCHAIN_INFO[exchange.network].networkName;
         }
         const response = yield call(fetch, submitUrl, {
             method: 'POST',

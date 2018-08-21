@@ -3,7 +3,7 @@ import constants from "../services/constants"
 //import { calculateDest, caculateDestAmount, caculateSourceAmount } from "../utils/converter"
 import * as converter from "../utils/converter"
 //import { randomToken, randomForExchange } from "../utils/random"
-import BLOCKCHAIN_INFO from "../../../env"
+//import BLOCKCHAIN_INFO from "../../../env"
 
 
 var initState = constants.INIT_EXCHANGE_FORM_STATE

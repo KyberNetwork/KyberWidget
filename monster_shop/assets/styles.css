@@ -124,7 +124,6 @@ h1 {
 .mode label {
     padding-right: 2rem;
     display: inline-block;
-    width: 30%;
 }
 #kyber-widget-overlay {
     background-color: rgba(0, 0, 0, .7);
