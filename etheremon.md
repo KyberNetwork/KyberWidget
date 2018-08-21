@@ -14,9 +14,9 @@ Add following `link` tag to `head` section of your HTML. This is just standard C
 ```
 <link rel="stylesheet" href="https://widget.knstats.com/etheremon/v1.0/widget.css">
 ```
-Add following `script` tag to the end of `body` tag. Skip this tag if you opt to use `new tab` mode.
+Add following `script` tag to the end of `body` tag.
 ```
-<script src="https://widget.knstats.com/etheremon/v1.0/widget.js"></script>
+<script async src="https://widget.knstats.com/etheremon/v1.0/widget.js"></script>
 ```
 
 ### Add the buttons with proper URLs
