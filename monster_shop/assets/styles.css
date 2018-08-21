@@ -81,7 +81,7 @@ h1 {
 .action {
     color: #fff;
     background-color: #5488ed;
-    padding: 6px 16px;
+    padding: 6px 16px 6px 36px;
     border-radius: 100px;
     border-bottom: 3px solid #1d5ccc;
     font-weight: 700;

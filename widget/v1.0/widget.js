@@ -117,4 +117,6 @@
     register: register
   }
 
+  register();
+
 })(this, "https://widget.knstats.com");
