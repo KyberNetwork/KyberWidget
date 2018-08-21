@@ -11,12 +11,6 @@ function getParams(url) {
   return params;
 };
 
-function getMode() {
-  var kyber_widget_button = document.getElementsByClassName("kyber-widget-button")[0];
-  var queryParams = getParams(kyber_widget_button.href);
-  return queryParams;
-}
-
 function closeWidget(mode) {
   var overlay = document.getElementById("kyber-widget-overlay");
 
@@ -24,19 +18,17 @@ function closeWidget(mode) {
     document.body.style.overflow = null;
     overlay.remove();
   }
-  if(mode ==='dom'){
+  if (mode === 'dom') {
     var js = document.getElementById("kyber-widget-script");
-    if(js){
+    if (js) {
       js.remove();
     }
   }
 }
-(function (global, baseUrl) {
-  var queryParams = getMode();
 
+function widget(global, baseUrl, queryParams) {
   if ('mode' in queryParams & (queryParams.mode === 'dom' || queryParams.mode === 'iframe')) {
-    if (queryParams.mode === 'dom' ) {
-
+    if (queryParams.mode === 'dom') {
       if (!global.kyberWidgetOptions) {
         global.kyberWidgetOptions = {};
       } // add script tag
@@ -66,13 +58,13 @@ function closeWidget(mode) {
       }
     }
     document.querySelectorAll(".kyber-widget-button").forEach(function (tag) {
-      tag.addEventListener("click", function (e) {
-        if(queryParams.mode === 'dom' && global.kyberWidgetOptions.jsLoadError){
+      // tag.addEventListener("click", function (e) {
+        if (queryParams.mode === 'dom' && global.kyberWidgetOptions.jsLoadError) {
           // error loadding js, just fallback to new tab mode
           return;
           // js loading ok, disable new tab mode
         }
-        e.preventDefault(); // remove old overlay, just to ensure
+        // e.preventDefault(); // remove old overlay, just to ensure
         var oldOverlay = document.getElementById("kyber-widget-overlay");
         if (oldOverlay) {
           oldOverlay.remove();
@@ -82,11 +74,11 @@ function closeWidget(mode) {
         overlay.id = "kyber-widget-overlay";
         overlay.addEventListener("click", function (e) {
           if (e.target === this) {
-              closeWidget(queryParams.mode);
+            closeWidget(queryParams.mode);
           }
         });
         var element = '';
-        if(queryParams.mode === 'dom'){
+        if (queryParams.mode === 'dom') {
           // create the widget container
           element = document.createElement("DIV");
           element.id = "kyber-widget";
@@ -98,7 +90,7 @@ function closeWidget(mode) {
             element.setAttribute("data-widget-" + pair[0].replace(/([a-z])([A-Z])/g,
               '$1-$2'), decodeURIComponent(pair[1]));
           }
-        }else if(queryParams.mode === 'iframe'){
+        } else if (queryParams.mode === 'iframe') {
           element = document.createElement("IFRAME");
           element.id = "kyber-widget-iframe";
           element.onload = function () {
@@ -114,8 +106,17 @@ function closeWidget(mode) {
         document.body.style.overflow = "hidden";
         // render the widget
         global.kyberWidgetInstance && global.kyberWidgetInstance.render();
-      })
+      // })
     });
   }
+}
 
-})(this, "https://widget.knstats.com");
+function addEventButton(global) {
+  document.querySelectorAll(".kyber-widget-button").forEach(function (tag) {
+    var queryParams = getParams(tag.href);
+    if (queryParams.mode === 'tab')return;
+      tag.addEventListener("click",function(e){e.preventDefault(); widget(global, "https://widget.knstats.com", queryParams)});
+  });
+}
+
+addEventButton(this);
