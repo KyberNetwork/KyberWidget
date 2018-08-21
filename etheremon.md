@@ -23,7 +23,7 @@ Add following `script` tag to the end of `body` tag.
 
 Eg.
 ```
-<a target='_blank"
+<a class="kyber-widget-button" target="_blank"
  href="https://widget-etheremon.knstats.com/?mode=dom&etheremonAddr=0x11f9f4ce02f3a4e2ae37f8dedf23e882fd67b2c0&monsterId=106&monsterName=Ikopi&monsterAvatar=https%3A%2F%2Fwww.etheremon.com%2F325db34365c36c186fd2217ace32591c.png"
  name="KyberWidget - Powered by KyberNetwork" title="Buy with tokens">Buy</a>
 ```
