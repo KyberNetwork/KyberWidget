@@ -1651,6 +1651,9 @@ function* watchMetamaskAccount(ethereum, web3Service, network) {
   while (true) {
     try {
       var state = store.getState()
+      if (!commonFunc.checkComponentExist(state.global.params.appId)){
+        return
+      }    
       const account = state.account.account
       if (account === false){
 

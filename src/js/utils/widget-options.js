@@ -7,4 +7,8 @@ export function onClose(){
     }else{
         window.close()
     }
+    if (window.parent && (typeof window.parent.postMessage !== "undefined")){
+        window.parent.postMessage("CloseWidget", "*")
+    }
 }
+

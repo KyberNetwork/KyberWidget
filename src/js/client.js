@@ -59,7 +59,7 @@ function initParams(appId){
     var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
 
     
-    var query = {}
+    var query = {appId: appId}
     var receiveAddr
     var receiveToken
     var receiveAmount

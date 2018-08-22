@@ -22,6 +22,9 @@ import * as converter from "../../utils/converter"
 
 import * as providers from "./nodeProviders"
 
+import * as common from "../../utils/common"
+
+
 export default class EthereumService extends React.Component {
   constructor(props) {
     super(props)
@@ -156,6 +159,10 @@ export default class EthereumService extends React.Component {
   // }
 
   fetchData() {
+    var state = store.getState()
+    if (!common.checkComponentExist(state.global.params.appId)){
+      return
+    }
     this.checkKyberEnable()
 
     //this.fetchTxsData()
