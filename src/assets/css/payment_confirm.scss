@@ -78,6 +78,20 @@
                     }
                 }
             }
+            &.kyber-product-avatar {
+                padding: 25px 20px 15px 20px;
+                border-radius: 3px;
+                background-color: #f8f8f8;
+                margin-top: 15px;
+                .kyber-pAvatar {
+                    text-align: center;
+                    margin-bottom: 15px;
+                    img {
+                        max-height: 180px;
+                        max-width: 100%;
+                    }
+                }
+            }
         }
     }
 

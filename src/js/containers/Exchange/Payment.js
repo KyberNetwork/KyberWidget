@@ -469,6 +469,9 @@ export default class Payment extends React.Component {
     var broadcastExchangeError = this.props.exchange.broadcastError ? this.props.exchange.broadcastError: ""
     var txError = signExchangeError + broadcastExchangeError
 
+    var haveProductName = this.props.exchange.productName && this.props.exchange.productName !== "" ? true : false
+    var haveProductAvatar = this.props.exchange.productAvatar && this.props.exchange.productAvatar !== "" ? true : false
+
     return (
       <div id="exchange" className={"frame payment_confirm" + classError}>        
 

@@ -36,8 +36,13 @@ The widget supports following params:
 - ***monsterAvatar*** (string) - this param is optional. Link of monster's avatar.
 =======
 - ***commissionId*** - Ethereum address - your Ethereum wallet to get commission of the fees for the transaction. Your wallet must be whitelisted by KyberNetwork (the permissionless registration will be available soon) in order to get the commission, otherwise it will be ignored.
+<<<<<<< HEAD
 >>>>>>> c15de8fd33e79d26287810879e9b94a40495f8f4
 
+=======
+- ***productName*** - String - Name of product
+- ***productAvatar*** - String - Avatar of product
+>>>>>>> ed2b09a537399fc8a2801193d7c57e9f7177996e
 ## Supported tokens
 - OMG
 - KNC

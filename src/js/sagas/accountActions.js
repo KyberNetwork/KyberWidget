@@ -488,6 +488,10 @@ export function* importMetamask(action) {
 
 function* watchCoinbase(web3Service, address, networkId) {
   while (true) {
+    var state = store.getState()
+    if (!commonFunc.checkComponentExist(state.global.params.appId)){
+      return
+    }    
     try {
       yield call(delay, 500)
       const coinbase = yield call([web3Service, web3Service.getCoinbase])

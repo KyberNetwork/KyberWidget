@@ -26,69 +26,6 @@
     })
   }
 
-  function wireEvents() {
-    document.querySelectorAll(".action").forEach(function (tag) {
-      tag.addEventListener("click", function (e) {
-
-        var isPopup = document.getElementById("modePopup").checked;
-        var isFrame = document.getElementById("modeFrame").checked;
-        if (!isPopup && !isFrame) return;
-
-        // error loading js, just fallback to new tab mode
-        if (isPopup && window.kyberWidgetOptions.jsLoadError) return;
-
-        // js loading ok, disable new tab mode
-        e.preventDefault();
-
-        // remove old overlay, just to ensure
-        var oldOverlay = document.getElementById("kyber-widget-overlay");
-        if (oldOverlay) {
-          oldOverlay.remove();
-        }
-
-        // create a new overlay
-        var overlay = document.createElement("DIV");
-        overlay.id = "kyber-widget-overlay";
-        overlay.addEventListener("click", function (e) {
-          if (e.target === this) {
-            window.kyberWidgetOptions.onClose();
-          }
-        });
-
-        if (isPopup) {
-          // create the widget container
-          var popup = document.createElement("DIV");
-          popup.id = "kyber-widget";
-          popup.classList.add("kyber-widget");
-
-          // set widget attributes
-          popup.setAttribute("data-widget-attribute", "true");
-          var params = new URL(tag.href).searchParams.entries();
-          for (var pair of params) {
-            popup.setAttribute("data-widget-" + pair[0].replace(/([a-z])([A-Z])/g, '$1-$2'), decodeURIComponent(pair[1]));
-          }
-          overlay.appendChild(popup);
-        } else {
-          // create the iframe
-          var iframe = document.createElement("IFRAME");
-          iframe.id = "kyber-widget-iframe";
-          iframe.onload = function () {
-            iframe.contentWindow.kyberWidgetOptions = { onClose: window.kyberWidgetOptions.onClose };
-          }
-          iframe.src = tag.href;
-          overlay.appendChild(iframe);
-        }
-
-        // add the tags to body
-        document.body.appendChild(overlay);
-        document.body.style.overflow = "hidden";
-
-        // render the widget
-        isPopup && window.kyberWidgetInstance && window.kyberWidgetInstance.render();
-      })
-    });
-  };
-
   (function geneteHtml(monsters) {
 
     var web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io"));
@@ -113,55 +50,37 @@
       tag.setAttribute("data-href", tag.href);
     })
 
-    document.querySelector(".options input").addEventListener("blur", function () {
-      var callbackUrl = this.value || "";
+    var clearEvents = function(tag) {
+      var newTag = tag.cloneNode(true);
+      tag.parentNode.replaceChild(newTag, tag);
+    }
+
+    var reflectHref = function () {
+      var isPopup = document.getElementById("modePopup").checked;
+      var isFrame = document.getElementById("modeFrame").checked;
+      var mode = "tab";
+      if (isFrame) mode = "iframe";
+      if (isPopup) mode = "dom";
+      var callbackUrl = document.getElementById("callbackUrl").value || "";
 
       document.querySelectorAll(".action").forEach(function (tag) {
         var href = tag.getAttribute("data-href");
+        href = href += "&mode=" + mode;
         href = href + "&callback=" + encodeURIComponent(callbackUrl);
         tag.href = href;
+        
+        clearEvents(tag);
+        if (window.kyberWidgetOptions && window.kyberWidgetOptions.register) {
+          window.kyberWidgetOptions.register();
+        }
       })
-    })
+    }
 
-    wireEvents();
+    document.getElementById("callbackUrl").addEventListener("blur", reflectHref);
+    document.querySelectorAll(".mode input[type='radio']").forEach(function (tag) {
+      tag.addEventListener("change", reflectHref);
+    });
 
   })(monsters);
-
-  (function init() {
-    window.kyberWidgetOptions = {};
-    window.kyberWidgetOptions.onClose = function () {
-      var overlay = document.getElementById("kyber-widget-overlay");
-      if (overlay) {
-        document.body.style.overflow = null;
-        overlay.remove();
-      }
-    }
-
-    // add script tag
-    if (!document.getElementById("kyber-widget-script")) {
-      var script = document.createElement("script");
-      script.id = "kyber-widget-script";
-      script.async = true;
-      script.onerror = function () {
-        window.kyberWidgetOptions.jsLoadError = true;
-        console.log("Error loading KyberWidget.");
-        window.kyberWidgetOptions.onClose();
-      };
-      script.onload = function () {
-        document.getElementById("kyber-widget") && global.kyberWidgetInstance.render();
-      };
-      script.src = "https://widget-etheremon.knstats.com/app.min.js?t=" + Date.now();
-      document.body.appendChild(script);
-    }
-
-    // add CSS tag
-    if (!document.getElementById("kyber-widget-css")) {
-      var css = document.createElement("link");
-      css.id = "kyber-widget-css";
-      css.setAttribute("rel", "stylesheet")
-      css.setAttribute("href", "https://widget-etheremon.knstats.com/app.bundle.css?t=" + Date.now());
-      document.head.appendChild(css);
-    }
-  })();
 
 })(this);

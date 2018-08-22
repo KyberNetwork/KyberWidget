@@ -52,6 +52,9 @@ const INIT_EXCHANGE_FORM_STATE = {
   destTokenSymbol: 'ETH',
   receiveAddr: "",
 
+  productName: "",
+  productAvatar: "",
+
   isNeedApprove: false,
   destAddress: "",
   inputFocus: "source",

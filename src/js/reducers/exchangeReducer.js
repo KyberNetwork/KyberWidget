@@ -595,6 +595,9 @@ const exchange = (state = initState, action) => {
       // newState.destToken = tokenAddr
       // newState.receiveAddr = receiveAddr
 
+      // newState.productName = productName
+      // newState.productAvatar = productAvatar
+
       newState.callback = callback
       newState.network = network
       newState.paramForwarding = paramForwarding

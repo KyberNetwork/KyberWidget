@@ -82,3 +82,12 @@ export function lineToCamel(str){
 }
 
 
+
+
+export function checkComponentExist(componentId){
+  if(document.getElementById(componentId)){
+    return true
+  }else{
+    return false
+  }
+}

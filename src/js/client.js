@@ -70,7 +70,7 @@ function initParams(appId){
     var network
     var paramForwarding
     var signer
-    var commissionID
+    var commissionID    
 
     if (attributeWidget === true || attributeWidget === 'true'){
       for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++){
@@ -95,7 +95,7 @@ function initParams(appId){
       network = widgetParent.getAttribute('data-widget-network')
       paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
       signer = widgetParent.getAttribute('data-widget-signer')
-      commissionID = widgetParent.getAttribute('data-widget-commission-id')
+      commissionID = widgetParent.getAttribute('data-widget-commission-id')      
 
     }else{
       query  = common.getQueryParams(window.location.search)
@@ -109,7 +109,7 @@ function initParams(appId){
       network = common.getParameterByName("network")
       paramForwarding = common.getParameterByName("paramForwarding")
       signer = common.getParameterByName("signer")
-      commissionID = common.getParameterByName("commissionId")
+      commissionID = common.getParameterByName("commissionId")      
     }
 
 
@@ -124,7 +124,7 @@ function initParams(appId){
         break
     }
     
-
+    query.appId = appId
     store.dispatch(initParamsGlobal(query))
     
 

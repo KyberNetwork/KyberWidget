@@ -7,8 +7,8 @@ export function onClose(){
     }else{
         window.close()
     }
-    //check if iframe
-    if (window.parent && typeof window.parent.postMessage === "function"){
-        window.parent.postMessage("CloseWidget")
+    if (window.parent && (typeof window.parent.postMessage !== "undefined")){
+        window.parent.postMessage("CloseWidget", "*")
     }
 }
+
