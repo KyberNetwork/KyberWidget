@@ -187,6 +187,11 @@ export default class ExchangeBody extends React.Component {
         return 
       }
     }
+
+    //update rate
+    if (this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol){
+      return
+    }
     //var minRate = 0
     var tokens = this.props.tokens
     if (tokens[sourceTokenSymbol]) {
