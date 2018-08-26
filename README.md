@@ -26,7 +26,7 @@ that helps users to pay `1.2 DAI` equivalent amount of supported tokens (list of
 In this version, we only support the widget via a new browser windows thus we can pass params via its url as url query params.
 The widget supports following params:
 - ***receiveAddr*** (ethereum address with 0x prefix) - **required** - vendor's Ethereum wallet, user's payment will be sent there. *Must double check this param very carefully*.
-- ***receiveToken*** (string) - token that you (vendor) want to receive, it can be one of supported tokens (such as ETH, DAI, KNC...).
+- ***receiveToken*** (string) - token that you (vendor) want to receive, it can be one of supported tokens (such as ETH, DAI, KNC...). If you leave it blank or missing, the users can specify it in the widget interface
 - ***receiveAmount*** (float) - the amount of `receiveToken` you (vendor) want your user to pay. If you leave it blank or missing, the users can specify it in the widget interface. It could be useful for undetermined payment or pay-as-you-go payment like a charity, ICO or anything else.
 - ***callback*** (string) - missing or blank value will prevent the widget to call the callback, the information will not be informed anywhere.
 - ***network*** (string) - default: `ropsten`, ethereum network that the widget will run. Possible value: `test, ropsten, production, mainnet`.
