@@ -278,6 +278,13 @@ export default class ExchangeBody extends React.Component {
         chooseToken={this.chooseToken}
       />
     )
+    var tokenDestSelect = this.props.global.params.receiveToken ? "": (
+      <TokenSelector type="des"
+        focusItem={this.props.exchange.destTokenSymbol}
+        listItem={this.props.tokens}
+        chooseToken={this.chooseToken}
+      />
+    )
     //--------End
 
     var errors = {
@@ -342,6 +349,7 @@ export default class ExchangeBody extends React.Component {
     return (
       <ExchangeBodyLayout step={this.props.exchange.step}
         tokenSourceSelect={tokenSourceSelect}
+        tokenDestSelect = {tokenDestSelect}
         errors={errors}
         input={input}
         sourceTokenSymbol={this.props.exchange.sourceTokenSymbol}

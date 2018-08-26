@@ -147,6 +147,7 @@ const ExchangeBodyLayout = (props) => {
                     <div className={errorExchange ? "error select-token-panel" : "select-token-panel"}>
                       {props.tokenSourceSelect}
 
+      
                       <div className="amount-pay">
                         <div>{props.translate("transaction.estimate_value_should_pay") || "Estimate value you should pay"}</div>
 
@@ -162,6 +163,8 @@ const ExchangeBodyLayout = (props) => {
                       {errorShow}
                     </div>
                   </div>
+                
+                  
                 </div>
               </div>
             )}
@@ -217,7 +220,18 @@ const ExchangeBodyLayout = (props) => {
                     <div className={errorExchange ? "error" : ""}>
                       {errorShow}
                     </div>
-                  </div>
+                  </div> 
+                   {!props.global.params.receiveToken && (
+                    <div className="choose-payment">
+                         <span className="transaction-label">
+                      {props.translate("transaction.exchange_receive_token") || "RECEIVE TOKEN"}
+                    </span>
+                    <div className={"select-token-panel"}>
+                      {props.tokenDestSelect}
+                    </div>
+                        </div>
+                  )}
+
                 </div>
                 {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (props.global.params && props.global.params.receiveAddr && props.global.params.receiveAddr === 'self') && (
                   <div className="estimate-dest-value">

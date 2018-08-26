@@ -59,7 +59,7 @@ function initParams(appId){
     var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
 
     
-    var query = {appId: appId}
+    var query = {}
     var receiveAddr
     var receiveToken
     var receiveAmount
@@ -123,7 +123,7 @@ function initParams(appId){
         break
     }
     
-
+    query.appId = appId
     store.dispatch(initParamsGlobal(query))
     
 
@@ -142,9 +142,15 @@ function initParams(appId){
           || "Receive token is not supported by kyber"
       }
     }else{
-      errors["receiveToken"] = translate('error.receive_token_must_be_required') 
-        || "Receive token must be required"
+      if (receiveAmount && receiveAmount !== ""){
+            errors["receiveToken"] = translate('error.receive_token_not_have_amount_have') 
+        || "Cannot set receive amount of unknown token"
+      }
     }
+    // else{
+    //   errors["receiveToken"] = translate('error.receive_token_must_be_required') 
+    //     || "Receive token must be required"
+    // }
     
 
     if (receiveAmount && receiveAmount !== ""){
@@ -198,6 +204,7 @@ function initParams(appId){
     if (validator.anyErrors(errors)){
       store.dispatch(haltPayment(errors))
     }else{
+      receiveToken = receiveToken ? receiveToken: "ETH"
       var tokenAddr =  BLOCKCHAIN_INFO[network].tokens[receiveToken].address
       store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID));
     }

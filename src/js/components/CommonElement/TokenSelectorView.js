@@ -38,7 +38,8 @@ const TokenSelectorView = (props) => {
         <div
           key={key}
           onClick={(e) => props.selectItem(e, item.symbol, item.address)}
-          className={"token-item-container " + (rate == 0 ? "token-item-container--inactive" : "payment-gateway__hover-color")}>
+          // className={"token-item-container " + (rate == 0 ? "token-item-container--inactive" : "payment-gateway__hover-color")}>
+          className={"token-item-container payment-gateway__hover-color"}>
           <div className="token-item-content">
             <div className="token-item">
               <img className="token-item__icon" src={require("../../../assets/img/tokens/" + item.icon)}/>
@@ -47,13 +48,14 @@ const TokenSelectorView = (props) => {
 
             <div className="token-item">
               <div className="token-item__rate">
-                {rate != 0 &&
+              <div>1 {item.symbol} = {rate} {props.exchange.destTokenSymbol}</div>
+                {/* {rate != 0 &&
                   <div>1 {item.symbol} = {rate} {props.exchange.destTokenSymbol}</div>
                 }
 
                 {rate == 0 &&
                   <div>{props.translate('error.maintenance') || 'Maintenance'}</div>
-                }
+                } */}
               </div>
             </div>
           </div>
