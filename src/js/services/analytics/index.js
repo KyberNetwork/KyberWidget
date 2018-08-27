@@ -5,8 +5,11 @@ import Mixpanel from "./mixpanel"
 export default class AnalyticFactory extends React.Component{
     constructor(props) {
         super(props)
+        this.network = props.network
+        
         var listWorker = props.listWorker
         this.initWorker(listWorker)
+        
     }    
     initWorker (listWorker){
         this.workers = []
@@ -14,12 +17,12 @@ export default class AnalyticFactory extends React.Component{
             switch(worker){
                 case "mix":
                     var instanceWorker = new Mixpanel()   
-                    instanceWorker.initService()
+                    instanceWorker.initService(this.network)
                     this.workers.push(instanceWorker)
                     break
                 default:
                     var instanceWorker = new Mixpanel()   
-                    instanceWorker.initService()
+                    instanceWorker.initService(this.network)
                     this.workers.push(instanceWorker)
                     break
             }

@@ -5,8 +5,12 @@
 //   }
 // }
 .swap-layout{
+  border: 1px solid #eee;
   >div{
-    margin-bottom: 30px;
+    padding: 10px;
+    &:first-child{
+      border-bottom: 1px solid #eee;
+    }
   }
   .transaction-label{
     font-size: 14px;
@@ -14,20 +18,50 @@
     color: #474d5f;
   }
   .amount-input{
-    border:none;
-    border-bottom: 1px solid #454E5F;
+    width: 50%;
+    border: none;
+    display: block;
+    margin-top: 0;
+    // border-bottom: 1px solid #454E5F;
     input{
       font-size: 25px;
       margin-bottom: 0px;
       padding: 0;
-      padding-right: 15px;
       color: #454E5F;
       border: none;
       box-shadow: none;
+      text-align: right;
+    }
+  }
+  .dest-amount{
+    text-align: right;
+    >div{
+      &:first-child{
+        font-size: 14px;
+      }
+      &:last-child{
+        font-size: 20px;
+      }
     }
   }
   .swap-info{
     margin-top: 15px;
+  }
+  .select-token-panel{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0;
+  }
+  .select-item{
+    width: 361px;
+    left: -10px;
+  }
+  .token-chooser{
+    width: 120px;
+    .focus-item{
+      border: none;
+    }
   }
 }
 

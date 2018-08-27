@@ -110,7 +110,7 @@ const ExchangeBodyLayout = (props) => {
                 {props.exchange.isSwap && (
                   <div className='swap-layout'>
                     <div>
-                      <span class="transaction-label">FROM</span>
+                      {/* <span class="transaction-label">FROM</span> */}
                       <div className={"select-token-panel"}>
                         {props.tokenSourceSelect}
                         {!props.exchange.isHaveDestAmount && (
@@ -125,9 +125,9 @@ const ExchangeBodyLayout = (props) => {
                                 onChange={handleChangeSource}
                               />
                             </div>
-                            <div>
+                            {/* <div>
                               <span>{props.sourceTokenSymbol}</span>
-                            </div>
+                            </div> */}
                           </div>
                         )}
                         {props.exchange.isHaveDestAmount && (
@@ -141,22 +141,25 @@ const ExchangeBodyLayout = (props) => {
                     </div>
                     {!props.exchange.isHaveDestAmount && (
                       <div>
-                        <span class="transaction-label">TO</span>
+                        {/* <span class="transaction-label">TO</span> */}
                         <div className="select-token-panel">
 
                           {props.tokenDestSelect}
 
-                          <div className={props.focus === "dest" ? "amount-input focus" : "amount-input"}>
+                          <div className={'dest-amount amount-input'}>
                             <div>
-                              <input className="des-input" step="0.000001" placeholder="0" min="0"
+                              {/* <input className="des-input" step="0.000001" placeholder="0" min="0"
                                 type="text" maxLength="50" autoComplete="off"
                                 value={props.input.destAmount.value || ''}
                                 onFocus={props.input.destAmount.onFocus}
                                 onBlur={props.input.destAmount.onBlur}
-                                onChange={handleChangeDest} />
+                                onChange={handleChangeDest} /> */}
+                                Estimate dest amount:
                             </div>
                             <div>
-                              <span>{props.destTokenSymbol}</span>
+                              <strong>
+                                {props.exchange.destAmount} {props.destTokenSymbol}
+                              </strong>                              
                             </div>
                           </div>
                         </div>
