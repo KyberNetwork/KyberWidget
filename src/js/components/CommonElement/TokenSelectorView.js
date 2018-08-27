@@ -121,7 +121,7 @@ const TokenSelectorView = (props) => {
               })}
             </div>
             <div className="search-item">
-              <input value={props.searchWord} placeholder='Try "DAI"' onChange={(e) => props.changeWord(e)} type="text" onFocus={props.analytics.callTrack("searchToken", props.type)}/>
+              <input value={props.searchWord} placeholder='Try "DAI"' onChange={(e) => props.changeWord(e)} type="text" onFocus={(e) => props.analytics.callTrack("searchToken", props.type)}/>
             </div>
             <div className="list-item">
               <div className="list-item__content">

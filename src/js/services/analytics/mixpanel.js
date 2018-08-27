@@ -71,10 +71,10 @@ export default class Mixpanel {
         }
     }
 
-    chooseToken(token){
+    chooseToken(token, type){
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
             try{
-                mixpanel.track("Widget_Choose_Token", {token: token, type})
+                mixpanel.track("Widget_Choose_Token", {token: token, type: type})
             }catch(e){
                 console.log(e)
             }
@@ -212,6 +212,7 @@ export default class Mixpanel {
     }
 
     customNewGas() {
+        console.log("input new gas")
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
             try{
                 mixpanel.track("Widget_Click_To_Custom_Gas")
