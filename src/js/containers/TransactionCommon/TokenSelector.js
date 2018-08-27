@@ -12,7 +12,8 @@ import { getTranslate } from 'react-localize-redux';
     chooseToken: props.chooseToken,
     translate: getTranslate(store.locale),
     exchange: store.exchange,
-    tokens: store.tokens.tokens
+    tokens: store.tokens.tokens,
+    analytics: store.global.analytics
   }
 })
 
@@ -38,9 +39,14 @@ export default class TokenSelector extends React.Component {
     this.setState({ open: false })
   }
 
-  selectItem = (event, symbol, address) => {
+  selectItem = (event, symbol, address, suggest) => {
     this.props.chooseToken(symbol, address, this.props.type);
     this.hideTokens(event);
+    if (suggest === "suggest") {
+      this.props.analytics.callTrack("chooseSuggestToken", symbol, this.props.type)
+    } else {
+      this.props.analytics.callTrack("chooseToken", symbol, this.props.type)
+    }
   }
 
   render() {
@@ -60,6 +66,7 @@ export default class TokenSelector extends React.Component {
         exchange = {this.props.exchange}
         type= {this.props.type}
         tokens = {this.props.tokens}
+        analytics = {this.props.analytics}
       />
     )
   }

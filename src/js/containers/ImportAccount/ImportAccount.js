@@ -25,7 +25,8 @@ import { goToStep } from "../../actions/exchangeActions"
     tokens: supportTokens,
     exchange: store.exchange,
     screen: props.screen,
-    network: store.exchange.network
+    network: store.exchange.network,
+    analytics: store.global.analytics
   }
 })
 
@@ -67,6 +68,7 @@ export default class ImportAccount extends React.Component {
 
   backToFirstStep() {
     this.props.dispatch(goToStep(1));
+    this.props.analytics.callTrack("clickToBack", 1)
   }
 
   render() {

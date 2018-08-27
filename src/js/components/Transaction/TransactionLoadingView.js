@@ -77,7 +77,7 @@ const TransactionLoadingView = (props) => {
               <div className="tx-title-text">{props.translate("transaction.transaction") || "Transaction hash"}</div>
               <div className="tx-hash">
                 <a class="text-light" href={BLOCKCHAIN_INFO[props.network].ethScanUrl + 'tx/' + props.txHash} target="_blank"
-                   title={props.translate("modal.view_on_etherscan") || "View on Etherscan"} >
+                   title={props.translate("modal.view_on_etherscan") || "View on Etherscan"} onClick={(e) => props.analytics.callTrack("viewTxOnEtherscan")}>
                   {props.txHash}
                 </a>
                 <a className="copy-tx" data-for='copy-tx-tip' data-tip=""
@@ -94,7 +94,7 @@ const TransactionLoadingView = (props) => {
         </div>
 
         <div className="container transaction-loading__button-container">
-          <div className={"payment-gateway__hollow-button"} onClick={widgetOptions.onClose}>
+          <div className={"payment-gateway__hollow-button"} onClick={(e) => widgetOptions.onClose(props.analytics)}>
           {props.translate("transaction.back_to_website") || "Back to Website"}
         </div>
         </div>

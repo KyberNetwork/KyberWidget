@@ -9,9 +9,11 @@ const AdvanceConfigLayout = (props) => {
     if (advanceContent.className === "show-advance") {
         advanceContent.className = "";
         advanceArrow.className = "";
+        props.analytics.callTrack("clickToAdvance", "hide")
     } else {
         advanceContent.className = "show-advance";
         advanceArrow.className = "advance-arrow-up";
+        props.analytics.callTrack("clickToAdvance", "show")
     }
   }
   return (

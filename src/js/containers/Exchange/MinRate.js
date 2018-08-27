@@ -10,7 +10,8 @@ import 'rc-slider/assets/index.css';
 @connect((store) => {
   return { 
     exchange: store.exchange,
-    translate: getTranslate(store.locale)
+    translate: getTranslate(store.locale),
+    analytics: store.global.analytics
   }
 })
 
@@ -35,6 +36,10 @@ export default class MinRate extends React.Component {
     // this.setState({
     //   value,
     // });
+  }
+
+  onAfterChange = (value) => {
+    this.props.analytics.callTrack("setNewMinRate", value)
   }
   // onAfterChange = (value) => {
   //   // const {offeredRate}  = this.props.exchange
@@ -81,7 +86,8 @@ export default class MinRate extends React.Component {
           <Slider value={percent} 
                   defaultValue={percent}
                   min={0} max={100}
-                  onChange={this.onSliderChange}                   
+                  onChange={this.onSliderChange}
+                  onAfterChange={this.onAfterChange}               
                   trackStyle={{ backgroundColor: '#666666', height: 2 }}
                   disabled={disable}
                   handleStyle={{

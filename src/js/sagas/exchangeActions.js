@@ -161,8 +161,12 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   }
 
   //track complete trade
-  analytics.trackCoinExchange(data)
-  analytics.completeTrade(hash, "kyber", "exchange")
+  var state = store.getState()
+  var exchange = state.exchange
+  var analytics = state.global.analytics
+
+  analytics.callTrack("completeTransaction", exchange.sourceTokenSymbol, exchange.destTokenSymbol)
+  // analytics.completeTrade(hash, "kyber", "exchange")
 
   //submit callback
   yield fork(common.submitCallback, hash)

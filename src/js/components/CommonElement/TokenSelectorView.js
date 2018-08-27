@@ -113,7 +113,7 @@ const TokenSelectorView = (props) => {
             <div className="suggest-item">
               {priorityTokens.map((token, i) => {
                 return (
-                  <div className="suggest-item__content" key={i} onClick={(e) => props.selectItem(e, token.symbol, token.address)}>
+                  <div className="suggest-item__content" key={i} onClick={(e) => props.selectItem(e, token.symbol, token.address, "suggest")}>
                     <img className="suggest-item__icon" src={require(`../../../assets/img/tokens/${token.icon}`)} />
                     <div className="suggest-item__symbol">{token.symbol}</div>
                   </div>
@@ -121,7 +121,7 @@ const TokenSelectorView = (props) => {
               })}
             </div>
             <div className="search-item">
-              <input value={props.searchWord} placeholder='Try "DAI"' onChange={(e) => props.changeWord(e)} type="text"/>
+              <input value={props.searchWord} placeholder='Try "DAI"' onChange={(e) => props.changeWord(e)} type="text" onFocus={(e) => props.analytics.callTrack("searchToken", props.type)}/>
             </div>
             <div className="list-item">
               <div className="list-item__content">

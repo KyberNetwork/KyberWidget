@@ -16,7 +16,8 @@ import { getTranslate } from 'react-localize-redux'
     account: store.account,
     ethereum: store.connection.ethereum,
     tokens: supportTokens,
-    translate: getTranslate(store.locale)
+    translate: getTranslate(store.locale),
+    analytics: store.global.analytics
   }
 })
 
@@ -37,9 +38,11 @@ export default class ImportByPrivateKey extends React.Component {
     if (input.classList.contains('security')) {
       input.classList.remove('security')
       input.parentElement.classList.add('unlock')
+      this.props.analytics.callTrack("clickShowPassword", "show")
     } else if (input.type == 'text') {
       input.classList.add('security')
       input.parentElement.classList.remove('unlock')
+      this.props.analytics.callTrack("clickShowPassword", "hide")
     }
   }
 
