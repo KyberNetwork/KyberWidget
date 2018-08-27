@@ -131,12 +131,18 @@ function initParams(appId){
     
 
     var errors = {}
-    if(receiveAddr !== 'self'){
-      if (validator.verifyAccount(receiveAddr)){
-        errors["receiveAddr"] = translate('error.receive_address_must_be_ethereum_addr') 
-          || "Receive address must be a valid ethereum address"
+    var isSwap = true
+    if (receiveAddr){
+      if(receiveAddr !== 'self'){
+        if (validator.verifyAccount(receiveAddr)){
+          errors["receiveAddr"] = translate('error.receive_address_must_be_ethereum_addr') 
+            || "Receive address must be a valid ethereum address"
+        }else{
+          isSwap = false
+        }
       }
     }
+    
     
     if (receiveToken){
       receiveToken = receiveToken.toUpperCase()
@@ -207,9 +213,9 @@ function initParams(appId){
     if (validator.anyErrors(errors)){
       store.dispatch(haltPayment(errors))
     }else{
-      receiveToken = receiveToken ? receiveToken: "ETH"
+      receiveToken = receiveToken ? receiveToken: "KNC"
       var tokenAddr =  BLOCKCHAIN_INFO[network].tokens[receiveToken].address
-      store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID));
+      store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, isSwap));
 
       //init analytic
       var analytic = new AnalyticFactory({listWorker: ['mix']})

@@ -4,6 +4,33 @@
 //     padding-top: 40px !important;
 //   }
 // }
+.swap-layout{
+  >div{
+    margin-bottom: 30px;
+  }
+  .transaction-label{
+    font-size: 14px;
+    font-weight: 600;
+    color: #474d5f;
+  }
+  .amount-input{
+    border:none;
+    border-bottom: 1px solid #454E5F;
+    input{
+      font-size: 25px;
+      margin-bottom: 0px;
+      padding: 0;
+      padding-right: 15px;
+      color: #454E5F;
+      border: none;
+      box-shadow: none;
+    }
+  }
+  .swap-info{
+    margin-top: 15px;
+  }
+}
+
 
 .main-title{
   display: flex;

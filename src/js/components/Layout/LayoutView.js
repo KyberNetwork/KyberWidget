@@ -5,7 +5,7 @@ import { Processing, InfoModal } from "../../containers/CommonElements/"
 import constansts from "../../services/constants"
 import * as common from "../../utils/common"
 //import BLOCKCHAIN_INFO from "../../../../env"
-import PaymentHeader from "../Header/PaymentHeader";
+
 
 
 // function getAllPathToken(network){
@@ -55,11 +55,7 @@ const LayoutView = (props) => {
       <div>
         <Route component={props.Header} />
         <section id="content">
-          <PaymentHeader 
-            translate={props.translate}
-            step={props.step}
-            haltPayment={props.haltPayment}
-          />
+          {props.paymentHeader}
 
           <Switch>
             {/* <Route exact path={constansts.BASE_HOST} component={props.ImportAccount} /> */}

@@ -74,9 +74,9 @@ function* selectToken(action) {
   }
   
 
-  console.log("exchange_token")
-  console.log(exchange.sourceTokenSymbol)
-  console.log(exchange.destTokenSymbol)
+  // console.log("exchange_token")
+  // console.log(exchange.sourceTokenSymbol)
+  // console.log(exchange.destTokenSymbol)
   if (exchange.sourceTokenSymbol === exchange.destTokenSymbol) {
     yield put(actions.selectTokenComplete())
     return
