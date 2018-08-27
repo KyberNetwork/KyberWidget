@@ -38,8 +38,11 @@ const TokenSelectorView = (props) => {
       var sourceSymbol = props.type === 'source'?item.symbol:props.exchange.sourceTokenSymbol
       var destSymbol = props.type === 'source'?props.exchange.destTokenSymbol: item.symbol
 
-      const sourceRate = sourceSymbol === "ETH" ? 1 : converter.toT(listShow[sourceSymbol].rate, 18);
-      const destRate = destSymbol === "ETH" ? 1 : converter.toT(listShow[destSymbol].rateEth, 18);
+
+      console.log({sourceSymbol, listShow}, destSymbol)
+
+      const sourceRate = sourceSymbol === "ETH" ? 1 : converter.toT(props.tokens[sourceSymbol].rate, 18);
+      const destRate = destSymbol === "ETH" ? 1 : converter.toT(props.tokens[destSymbol].rateEth, 18);
 
 
       const rate = sourceSymbol === destSymbol ? 1 : converter.roundingNumber(sourceRate * destRate);
