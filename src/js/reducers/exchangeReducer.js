@@ -227,6 +227,20 @@ const exchange = (state = initState, action) => {
       if (newState.sourceAmount !== "") {
         newState.minDestAmount = converter.calculateDest(newState.sourceAmount, expectedRate).toString(10)
       }
+      //calcuale dest amoutn/ source amount
+      if (newState.isSwap){
+        if (newState.isHaveDestAmount){
+          newState.sourceAmount = expectedPrice === "0"?"0": converter.caculateSourceAmount(newState.destAmount, expectedRate, 6)
+        }else{
+          if (newState.inputFocus === 'dest'){
+            newState.sourceAmount = expectedPrice === "0"?"0": converter.caculateSourceAmount(newState.destAmount, expectedRate, 6)
+          }else{
+            newState.destAmount = expectedPrice === "0"?"0": converter.calculateDest(newState.sourceAmount, expectedRate, 6)
+          }
+        }
+        
+      }
+
       //newState.offeredRateBalance = action.payload.reserveBalance
       // newState.offeredRateExpiryBlock = action.payload.expirationBlock
       if (!newState.isEditRate) {
@@ -586,7 +600,7 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.INIT_PARAMS_EXCHANGE":{
-      const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, network, paramForwarding, signer, commissionID} = action.payload
+      const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, network, paramForwarding, signer, commissionID, isSwap} = action.payload
       newState.destTokenSymbol = receiveToken
       newState.destAmount = receiveAmount
       if (receiveAmount === null){
@@ -605,6 +619,7 @@ const exchange = (state = initState, action) => {
       newState.paramForwarding = paramForwarding
       newState.signer = signer
       newState.commissionID = commissionID
+      newState.isSwap = isSwap
       
       return newState
     }

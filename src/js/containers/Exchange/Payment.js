@@ -75,11 +75,11 @@ function getKeyService(type) {
 
 
 export default class Payment extends React.Component {
-  constructor(){
+  constructor() {
     super()
     this.state = {
       showPassword: false,
-    //  passwordError: ""
+      //  passwordError: ""
     }
   }
 
@@ -132,12 +132,12 @@ export default class Payment extends React.Component {
       var tokenName = this.props.tokens[token].tokenName
 
       var amount
-      if (this.props.exchange.isHaveDestAmount){
+      if (this.props.exchange.isHaveDestAmount) {
         amount = converter.stringToHex(this.props.exchange.destAmount, tokenDecimal)
-      }else{
+      } else {
         amount = converter.stringToHex(this.props.exchange.sourceAmount, tokenDecimal)
       }
-      
+
 
       var destAddress = this.props.exchange.receiveAddr
       var gas = converter.numberToHex(this.props.exchange.gas)
@@ -158,7 +158,7 @@ export default class Payment extends React.Component {
     } catch (e) {
       console.log(e)
       //this.props.dispatch(transferActions.throwPassphraseError(this.props.translate("error.passphrase_error")))
-     // this.setState({passwordError : this.props.translate("error.passphrase_error") || "Key derivation failed - possibly wrong password" })
+      // this.setState({passwordError : this.props.translate("error.passphrase_error") || "Key derivation failed - possibly wrong password" })
     }
   }
 
@@ -313,9 +313,9 @@ export default class Payment extends React.Component {
 
     } catch (e) {
       console.log(e)
-   //   this.setState({passwordError : this.props.translate("error.passphrase_error") || "Key derivation failed - possibly wrong password" })
+      //   this.setState({passwordError : this.props.translate("error.passphrase_error") || "Key derivation failed - possibly wrong password" })
 
-    //  this.props.dispatch(exchangeActions.throwPassphraseError(this.props.translate("error.passphrase_error")))
+      //  this.props.dispatch(exchangeActions.throwPassphraseError(this.props.translate("error.passphrase_error")))
     }
   }
 
@@ -334,7 +334,7 @@ export default class Payment extends React.Component {
   getError = () => {
     var errors = this.props.exchange.errors
     var errorItem = Object.keys(errors).map(key => {
-      if (errors[key] && errors[key] !== ""){
+      if (errors[key] && errors[key] !== "") {
         return <li key={key}>{this.props.translate(errors[key]) || errors[key]}</li>
       }
       return ""
@@ -385,7 +385,7 @@ export default class Payment extends React.Component {
 
     return <div className="import-account-content__info import-account-content__info--center">
       <div className="import-account-content__info-type">
-        <img className="import-account-content__info-type-image" src={require(`../../../assets/img/landing/${icon}`)}/>
+        <img className="import-account-content__info-type-image" src={require(`../../../assets/img/landing/${icon}`)} />
         <div className="import-account-content__info-type-text">{method}</div>
       </div>
       <div className="import-account-content__info-text">
@@ -418,16 +418,16 @@ export default class Payment extends React.Component {
   }
 
   // getSourcePay = () => {
-    
+
   // }
 
   getDestPay = () => {
-    if (this.props.exchange.isHaveDestAmount){
+    if (this.props.exchange.isHaveDestAmount) {
       return this.props.exchange.destAmount
-    }else{
-      if (this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol){
+    } else {
+      if (this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol) {
         return this.props.exchange.sourceAmount
-      }else{
+      } else {
         return converter.calculateDest(this.props.exchange.sourceAmount, this.props.exchange.offeredRate, 6)
       }
     }
@@ -435,37 +435,37 @@ export default class Payment extends React.Component {
   render() {
     var gasUsed;
 
-    if (this.props.exchange.isFetchingGas){
+    if (this.props.exchange.isFetchingGas) {
       gasUsed = <img src={require('../../../assets/img/waiting.svg')} />
-    }else{
+    } else {
       gasUsed = this.props.exchange.gas
       if (this.props.exchange.isNeedApprove) {
         gasUsed += this.props.exchange.gas_approve
       }
     }
-    
+
 
     var classError = ""
     var isHaveError = false
-    if (validators.anyErrors(this.props.exchange.errors)){
+    if (validators.anyErrors(this.props.exchange.errors)) {
       classError += " error"
       isHaveError = true
     }
-    
+
     var classDisable = ""
-    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming || this.props.exchange.isFetchingGas){
+    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming || this.props.exchange.isFetchingGas) {
       classDisable += " disable"
     }
 
     var signExchangeError = this.props.exchange.signError ? this.props.exchange.signError : ""
-    var broadcastExchangeError = this.props.exchange.broadcastError ? this.props.exchange.broadcastError: ""
+    var broadcastExchangeError = this.props.exchange.broadcastError ? this.props.exchange.broadcastError : ""
     var txError = signExchangeError + broadcastExchangeError
 
     var haveProductName = this.props.exchange.productName && this.props.exchange.productName !== "" ? true : false
     var haveProductAvatar = this.props.exchange.productAvatar && this.props.exchange.productAvatar !== "" ? true : false
 
     return (
-      <div id="exchange" className={"frame payment_confirm" + classError}>        
+      <div id="exchange" className={"frame payment_confirm" + classError}>
 
         {/* <div className="payment-gateway__step-title payment-gateway__step-title--3">
           {this.props.translate("transaction.confirm_transaction") || "Confirm Transaction"}
@@ -477,130 +477,168 @@ export default class Payment extends React.Component {
           {this.getError()}
         </div>
 
-        <div className="payment-info">
-          {this.props.global.params.receiveAddr === 'self' && (
-            <div>
-              You are about to buy {this.getDestPay()} {this.props.exchange.destTokenSymbol}
-            </div>
-          )}
-          {this.props.global.params.receiveAddr !== 'self' && (
-            <div>
-               <div className="title">
-                {this.props.translate("transaction.you_about_to_pay") || "YOU ARE ABOUT TO PAY"}
+        {this.props.exchange.isSwap && (
+          <div>
+            <div className="payment-info">
+              <div>
+                You are about to swap <strong>{this.props.exchange.snapshot.sourceAmount} {this.props.exchange.sourceTokenSymbol}</strong> for <strong>{this.getDestPay()} {this.props.exchange.destTokenSymbol}</strong>
               </div>
-              <div className="content" className={`${haveProductAvatar ? "kyber-product-avatar" : ""} ${haveProductName ? "content kyber-product-name" : "content"}`}>
-                {haveProductAvatar && <div className="kyber-pAvatar">
-                    <img src={this.props.exchange.productAvatar}/>
-                </div>}
+            </div>
+            <div className="payment-info">
+              <div className="title">
+                {this.props.translate("transaction.tx_fee") || "Fee"}
+              </div>
+              <div className="content">
                 <div>
-                  <span>{this.props.translate("transaction.address") || "Address"}:</span>
+                  <span>{this.props.translate("transaction.gas_price") || "Gas price"}:</span>
                   <span>
-                    {this.props.exchange.receiveAddr.toLowerCase().slice(0, 8)} ... {this.props.exchange.receiveAddr.toLowerCase().slice(-6)}
+                    {this.props.exchange.gasPrice} Gwei
                   </span>
                 </div>
-                {this.props.exchange.isHaveDestAmount && (
-                  <div>
-                    <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
+                <div>
+                  <span>{this.props.translate("transaction.gas_limit") || "Gas limit"}:</span>
+                  <span>
+                    {gasUsed}
+                  </span>
+                </div>
+                <div>
+                  <span>{this.props.translate("transaction.transaction_fee") || "Trasaction fee"}:</span>
+                  {!this.props.exchange.isFetchingGas && (
                     <span>
-                      {(''+this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}
+                      {converter.calculateGasFee(this.props.exchange.gasPrice, gasUsed)}
                     </span>
-                  </div>
-                )}
-                { haveProductName && <div>
-                  <span>{this.props.translate("transaction.product_name") || "Name"}:</span>
-                  <span>{this.props.exchange.productName}</span>
-                </div>}
+                  )}
+
+                </div>
               </div>
             </div>
-          )}
-         
-        </div>
+          </div>
+        )}
+        {!this.props.exchange.isSwap && (
+          <div>
+            <div className="payment-info">
 
-        <div className="payment-info">
-          <div className="title">
-            {this.props.translate("transaction.exchange_paywith") || "PAY WITH"}
-          </div>
-          <div className="content">
-            <div>
-              <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
-              {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
-                <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
-              )}
-              {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol && (
-                <span>{(''+this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</span>
-              )}
-              {!this.props.exchange.isHaveDestAmount && (
-                <span>{(''+this.props.exchange.sourceAmount).length > 8 ? converter.roundingNumber(this.props.exchange.sourceAmount) : this.props.exchange.sourceAmount} {this.props.exchange.sourceTokenSymbol}</span>
-              )}
+              <div>
+                <div className="title">
+                  {this.props.translate("transaction.you_about_to_pay") || "YOU ARE ABOUT TO PAY"}
+                </div>
+                <div className="content" className={`${haveProductAvatar ? "kyber-product-avatar" : ""} ${haveProductName ? "content kyber-product-name" : "content"}`}>
+                  {haveProductAvatar && <div className="kyber-pAvatar">
+                    <img src={this.props.exchange.productAvatar} />
+                  </div>}
+                  <div>
+                    <span>{this.props.translate("transaction.address") || "Address"}:</span>
+                    <span>
+                      {this.props.exchange.receiveAddr.toLowerCase().slice(0, 8)} ... {this.props.exchange.receiveAddr.toLowerCase().slice(-6)}
+                    </span>
+                  </div>
+                  {this.props.exchange.isHaveDestAmount && (
+                    <div>
+                      <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
+                      <span>
+                        {('' + this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}
+                      </span>
+                    </div>
+                  )}
+                  {haveProductName && <div>
+                    <span>{this.props.translate("transaction.product_name") || "Name"}:</span>
+                    <span>{this.props.exchange.productName}</span>
+                  </div>}
+                </div>
+              </div>
+
             </div>
-            <div>
-              <span>{this.props.translate("transaction.gas_price") || "Gas price"}:</span>
-              <span>
-                {this.props.exchange.gasPrice} Gwei
+
+            <div className="payment-info">
+              <div className="title">
+                {this.props.translate("transaction.exchange_paywith") || "PAY WITH"}
+              </div>
+              <div className="content">
+                <div>
+                  <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
+                  {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
+                    <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
+                  )}
+                  {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol && (
+                    <span>{('' + this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</span>
+                  )}
+                  {!this.props.exchange.isHaveDestAmount && (
+                    <span>{('' + this.props.exchange.sourceAmount).length > 8 ? converter.roundingNumber(this.props.exchange.sourceAmount) : this.props.exchange.sourceAmount} {this.props.exchange.sourceTokenSymbol}</span>
+                  )}
+                </div>
+                <div>
+                  <span>{this.props.translate("transaction.gas_price") || "Gas price"}:</span>
+                  <span>
+                    {this.props.exchange.gasPrice} Gwei
               </span>
-            </div>
-            <div>
-              <span>{this.props.translate("transaction.gas_limit") || "Gas limit"}:</span>
-              <span>
-                {gasUsed}
-              </span>
-            </div>
-            <div>
-              <span>{this.props.translate("transaction.transaction_fee") || "Trasaction fee"}:</span>
-              {!this.props.exchange.isFetchingGas && (
-                <span>
-                  { converter.calculateGasFee(this.props.exchange.gasPrice, gasUsed)}
-                </span>
-              )}
-              
+                </div>
+                <div>
+                  <span>{this.props.translate("transaction.gas_limit") || "Gas limit"}:</span>
+                  <span>
+                    {gasUsed}
+                  </span>
+                </div>
+                <div>
+                  <span>{this.props.translate("transaction.transaction_fee") || "Trasaction fee"}:</span>
+                  {!this.props.exchange.isFetchingGas && (
+                    <span>
+                      {converter.calculateGasFee(this.props.exchange.gasPrice, gasUsed)}
+                    </span>
+                  )}
+
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
+
+
+
 
         <div className="payment-bottom">
           {txError !== "" && (
-              <div className="error-message">                 
-                {txError}
+            <div className="error-message">
+              {txError}
             </div>
           )}
           {this.props.exchange.isNeedApprove && (
-              <div className="approve-intro">                 
-                  {this.props.translate("modal.approve_exchange", {token: this.props.exchange.sourceTokenSymbol}) 
-                    || `You need to grant permission for Kyber Payment to interact with ${this.props.exchange.sourceTokenSymbol} with this address`}
-              </div>
-            )}
+            <div className="approve-intro">
+              {this.props.translate("modal.approve_exchange", { token: this.props.exchange.sourceTokenSymbol })
+                || `You need to grant permission for Kyber Payment to interact with ${this.props.exchange.sourceTokenSymbol} with this address`}
+            </div>
+          )}
           {this.props.account.type === "keystore" && (
             <div id="import-account">
               {/* <div className="password">
                 <input id="passphrase" type="password" placeholder="password"/>                  
               </div> */}
-               <div className={"import-account-content__private-key" + (this.state.showPassword ? ' unlock' : '')}>
-               <input
-                   className={this.state.showPassword ?"import-account-content__private-key-input": "import-account-content__private-key-input security"} 
-                   id="passphrase"
-                   type="text"                                  
-                   autoFocus
-                   autoComplete="off"
-                   spellCheck="false"
-                   onKeyPress={this.resetPasswordError}
-                    />
-                   <div className="import-account-content__private-key-toggle" onClick={this.toogleShowPassword}></div>
-                  <div className="import-account-content__private-key-icon"></div>
-               </div>
-               {(this.props.exchange.passwordError) && (
-                 <div className="error-password">
-                   {this.props.exchange.passwordError}
-                 </div>
-               )}
-               </div>
+              <div className={"import-account-content__private-key" + (this.state.showPassword ? ' unlock' : '')}>
+                <input
+                  className={this.state.showPassword ? "import-account-content__private-key-input" : "import-account-content__private-key-input security"}
+                  id="passphrase"
+                  type="text"
+                  autoFocus
+                  autoComplete="off"
+                  spellCheck="false"
+                  onKeyPress={this.resetPasswordError}
+                />
+                <div className="import-account-content__private-key-toggle" onClick={this.toogleShowPassword}></div>
+                <div className="import-account-content__private-key-icon"></div>
+              </div>
+              {(this.props.exchange.passwordError) && (
+                <div className="error-password">
+                  {this.props.exchange.passwordError}
+                </div>
+              )}
+            </div>
 
-            )}
-            {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
-              <div className="confirm-message">{this.props.account.type !== "keystore"? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}</div>
-            )}
+          )}
+          {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
+            <div className="confirm-message">{this.props.account.type !== "keystore" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}</div>
+          )}
           <div className="control-btn">
-            
-            <a className={"back-btn" + (this.props.exchange.isConfirming || this.props.transfer.isConfirming?" disable":"")} onClick={this.reImportAccount}>{this.props.translate("transaction.back") || "Back"}</a>
+
+            <a className={"back-btn" + (this.props.exchange.isConfirming || this.props.transfer.isConfirming ? " disable" : "")} onClick={this.reImportAccount}>{this.props.translate("transaction.back") || "Back"}</a>
 
             {this.props.exchange.isNeedApprove && (
               <a className={"confirm-btn" + classDisable} onClick={this.approveToken}>
