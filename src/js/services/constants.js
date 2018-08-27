@@ -144,7 +144,8 @@ const INIT_EXCHANGE_FORM_STATE = {
   isAnalizeComplete: false,
   analizeError : {},
   snapshot: {},
-  network: 'ropsten'
+  network: 'ropsten',
+  isSwap:true
 }
 
 const INIT_TRANSFER_FORM_STATE = {

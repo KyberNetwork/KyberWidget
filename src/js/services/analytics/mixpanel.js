@@ -3,6 +3,7 @@ import * as common from "../../utils/common"
 
 export default class Mixpanel {
     initService() {
+        if (typeof mixpanel !== "undefined") return
         (function (e, a) {
             if (!a.__SV) {
                 var b = window; try { var c, l, i, j = b.location, g = j.hash; c = function (a, b) { return (l = a.match(RegExp(b + "=([^&]*)"))) ? l[1] : null }; g && c(g, "state") && (i = JSON.parse(decodeURIComponent(c(g, "state"))), "mpeditor" === i.action && (b.sessionStorage.setItem("_mpcehash", g), history.replaceState(i.desiredHash || "", e.title, j.pathname + j.search))) } catch (m) { } var k, h; window.mixpanel = a; a._i = []; a.init = function (b, c, f) {
