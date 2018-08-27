@@ -1,38 +1,52 @@
 (function (global, editionTag) {
 
-  var BASE_URL = (function(editionTag) {
+  global.kyberWidgetOptions = (function(editionTag) {
     var editions = {
       standard: "https://widget.knstats.com",
       etheremon: "https://widget-etheremon.knstats.com"
     }
-    var path = null;
+ 
+    var params = new URLSearchParams(location.search);
+    var path = params.get("widget_url");
+    var current = params.get("widget_edition") || 
+      editionTag.getAttribute("data-kyber-widget-edition") ||
+      editionTag.getAttribute("data-edition");
+    var currentValid = !!current && !!editions[current];
 
-    var current = !editionTag ? null : 
-      (editionTag.getAttribute("data-kyber-widget-edition") || editionTag.getAttribute("data-edition"));
-
-    if (!editionTag || !current) {
+    if (!path && !currentValid) {
       var button = document.querySelector(".kyber-widget-button");
       if (button && button.href) {
         path = button.href.split("?")[0];
-        if (path.substr(-1) === "/") {
-          path = path.substr(0, path.length - 1);
-        }
-        for (var prop in editions) {
-          if (path === editions[prop]) {
-            current = prop;
-            break;
-          }
-        }
       }
-
     }
 
-    if (!current || !editions[current]) current = "standard";
+    if (path) {
+      path = path.toLowerCase();
+      if (path.substr(-1) === "/") {
+        path = path.substr(0, path.length - 1);
+      }
+      for (var prop in editions) {
+        if (path === editions[prop]) {
+          current = prop;
+          currentValid = true;
+          break;
+        }
+      }
+    }
+
+    if (!currentValid) current = "standard";
+
     document.documentElement.setAttribute("data-kyber-widget-edition", current);
-    return path || editions[current];
+    path = path || editions[current];
+
+    return {
+      edition: current,
+      path: path
+    }
+
   })(editionTag);
 
-  function closeWidget () {
+  var closeWidget = global.kyberWidgetOptions.onClose = function() {
     var overlay = document.getElementById("kyber-widget-overlay");
     if (overlay) {
       var body = document.body,
@@ -69,13 +83,16 @@
     }
   }
 
-  function register(selector) {
+  (global.kyberWidgetOptions.register = function(selector) {
     selector = selector || ".kyber-widget-button";
     var hasDomMode = false;
+    var isStandardEdition = (global.kyberWidgetOptions.edition === "standard");
+    var extensionInstalled = !!global.kyberwidget && !!global.kyberwidget.performPay;
+    var shouldDelegate = false && extensionInstalled && isStandardEdition;
 
     document.querySelectorAll(selector).forEach(function (tag) {
 
-      var params = new URL(tag.href).searchParams;
+      var params = tag.searchParams || (new URLSearchParams(new URL(tag.href).search));
       var mode = params.get("mode") || "tab";
       if (mode === "dom") hasDomMode = true;
       
@@ -94,6 +111,16 @@
         // remove old overlay, just to ensure
         closeWidget();
 
+        // Delegate to KyberWidget extension if installed
+        var paramObj = {};
+        if (shouldDelegate) {
+          for (var pair of params) {
+            paramObj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+          }
+          global.kyberwidget.performPay(paramObj);
+          return;
+        }
+
         // create a new overlay
         var overlay = document.createElement("DIV");
         overlay.id = "kyber-widget-overlay";
@@ -111,9 +138,9 @@
           element.classList.add("kyber-widget");
           // set widget attributes
           element.setAttribute("data-widget-attribute", "true");
-          var entries = params.entries();
-          for (var pair of entries) {
-            element.setAttribute("data-widget-" + pair[0].replace(/([a-z])([A-Z])/g,
+          for (var pair of params) {
+            element.setAttribute("data-widget-" +
+              decodeURIComponent(pair[0]).replace(/([a-z])([A-Z])/g,
               '$1-$2'), decodeURIComponent(pair[1]));
           }
         } else {
@@ -142,14 +169,8 @@
       })
     });
 
-    if (hasDomMode) insertTags(BASE_URL);
-  }
+    if (hasDomMode & !shouldDelegate) insertTags(global.kyberWidgetOptions.path);
 
-  global.kyberWidgetOptions = {
-    onClose: closeWidget,
-    register: register
-  }
+  })();
 
-  register();
-
-})(this, document.currentScript || document.getElementById("kyber-widget-edition") || document.documentElement);
+})(this, document.getElementById("kyber-widget-edition") || document.currentScript || document.documentElement);
