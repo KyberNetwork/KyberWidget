@@ -48,5 +48,185 @@ export default class Mixpanel {
             }
         }
     }
+
+    loginWallet(wallet){
+        if (wallet === "keystore") wallet = "json"
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Login_Wallet", {wallet:wallet})
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    typeMount(){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Click_Input_Amount")
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    chooseToken(token){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Choose_Token", {token: token, type})
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    chooseSuggestToken(token, type){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Choose_Suggest_Token", {token: token, type: type})
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
     
+    searchToken(type){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Click_Search_Token", {type: type})
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    clickToAdvance(status){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Click_To_Advance", {status: status})
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    clickToNext(step){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Click_Next", {step: step})
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    clickToBack(step){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Click_Back", {step: step})
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    clickToConfirm(sourceToken, destToken){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Click_Confirm_Transaction", {sourceToken: sourceToken, destToken: destToken})
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    clickToApprove(token){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Click_Approve_Token", {token: token})
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    clickShowPassword(status){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Click_Show_Password", {status, status})
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    completeTransaction(sourceToken, destToken){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Complete_Transaction", {sourceToken: sourceToken, destToken: destToken})
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    viewTxOnEtherscan(){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Click_View_Transaction_On_Etherscan")
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    copyTx(){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Click_Copy_Tx")
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    backToWebsite(){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Click_Back_To_Website")
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    setNewMinRate(minRate){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Set_New_MinRate", {minRate: minRate})
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    customNewGas() {
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Click_To_Custom_Gas")
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+
+    chooseGas(type, gasPrice) {
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Widget_Click_To_Choose_Gas", {type: type, gasPrice: gasPrice})
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
 }

@@ -381,7 +381,8 @@ export function* importNewAccount(action) {
     yield put(exchangeActions.goToStep(3))
 
     //track login wallet
-    analytics.loginWallet(type)
+    // analytics.loginWallet(type)
+    state.global.analytics.callTrack("loginWallet", type)
 
 
     // if (screen === "exchange"){

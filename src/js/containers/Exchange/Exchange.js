@@ -137,6 +137,7 @@ export default class Exchange extends React.Component {
           gasPriceSuggest={this.props.exchange.gasPriceSuggest}
           selectedGas={this.props.exchange.selectedGas}
           page={page}
+          analytics={this.props.global.analytics}
         />
       )
 
@@ -145,7 +146,7 @@ export default class Exchange extends React.Component {
         minRate = <MinRate />
       }
 
-      var advanceConfig = <AdvanceConfigLayout totalGas={totalGas.toString()} minRate={minRate} gasConfig={gasConfig} translate={this.props.translate} />
+      var advanceConfig = <AdvanceConfigLayout totalGas={totalGas.toString()} minRate={minRate} gasConfig={gasConfig} translate={this.props.translate} analytics={this.props.global.analytics}/>
       var exchangeBody = <ExchangeBody advanceLayout={advanceConfig} />
 
       // var headerTransaction = <HeaderTransaction page="exchange" />

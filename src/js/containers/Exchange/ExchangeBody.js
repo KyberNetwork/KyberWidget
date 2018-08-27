@@ -162,6 +162,7 @@ export default class ExchangeBody extends React.Component {
     }
 
     this.props.dispatch(exchangeActions.goToStep(2))
+    this.props.global.analytics.callTrack("clickToNext", 2)
 
     //set snapshot
     this.props.dispatch(exchangeActions.setSnapshot(this.props.exchange))
@@ -236,6 +237,7 @@ export default class ExchangeBody extends React.Component {
   focusSource = () => {
     this.props.dispatch(exchangeActions.focusInput('source'));
     this.setState({focus:"source"})
+    this.props.global.analytics.callTrack("typeMount")
   }
 
   blurSource = () => {

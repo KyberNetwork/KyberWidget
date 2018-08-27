@@ -7,12 +7,18 @@ import GasOption from './GasOption';
 const GasConfig = (props) => {
   let gas_option = {"f":props.translate("fast") || 'Fast',"l":props.translate("low") || 'Slow',"s":props.translate("standard") || 'Standard'}
   function specifyGasPrice(value) {
-    if(value==="f")
+    if(value==="f") {
       props.selectedGasHandler(gasPriceSuggest.fastGas, value)
-    else if(value==="l")
+      props.analytics.callTrack("chooseGas", "Fast", gasPriceSuggest.fastGas)
+    }
+    else if(value==="l") {
       props.selectedGasHandler(gasPriceSuggest.safeLowGas, value)
-    else if(value==="s")
+      props.analytics.callTrack("chooseGas", "Slow", gasPriceSuggest.safeLowGas)
+    }
+    else if(value==="s") {
       props.selectedGasHandler(gasPriceSuggest.standardGas, value)
+      props.analytics.callTrack("chooseGas", "Standard", gasPriceSuggest.standardGas)
+    }
   }
   function handleChangeGasPrice(e) {
     filterInputNumber(e, e.target.value)

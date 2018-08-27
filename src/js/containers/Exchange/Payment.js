@@ -85,6 +85,7 @@ export default class Payment extends React.Component {
 
   reImportAccount = () => {
     this.props.dispatch(exchangeActions.goToStep(2, 3))
+    this.props.global.analytics.callTrack("clickToBack", 2)
 
     this.props.dispatch(accountActions.clearWatchMetamask())
   }
@@ -103,6 +104,7 @@ export default class Payment extends React.Component {
     const ethereum = this.props.ethereum
     this.props.dispatch(exchangeActions.doApprove(ethereum, params.sourceToken, params.sourceAmount, params.nonce, params.gas_approve, params.gasPrice,
       account.keystring, account.password, account.type, account, this.props.keyService, params.sourceTokenSymbol))
+    this.props.global.analytics.callTrack("clickToApprove", params.sourceTokenSymbol)
   }
 
   processTransferTx = () => {
@@ -326,6 +328,7 @@ export default class Payment extends React.Component {
     } else {
       this.processExchangeTx()
     }
+    this.props.global.analytics.callTrack("clickToConfirm", sourceTokenSymbol, destTokenSymbol)
   }
 
   getError = () => {
@@ -406,6 +409,7 @@ export default class Payment extends React.Component {
 
   toogleShowPassword = () => {
     this.setState({showPassword : !this.state.showPassword})
+    this.props.global.analytics.callTrack("clickShowPassword", this.state.showPassword ? "show" : "hide")
   }
 
   resetPasswordError = () => {
