@@ -19,6 +19,8 @@ Add following `script` tag to the end of `body` tag.
 <script data-edition="etheremon" async src="https://widget.knstats.com/v1.0/widget.js"></script>
 ```
 
+Make sure to include `data-edition="etheremon"` attribute as above.
+
 ### Add the buttons with proper URLs
 
 Eg.
@@ -39,7 +41,7 @@ The widget supports 3 modes, which you specify by setting `mode` param of the bu
 - ***monsterId*** (int) - **required** - The monster ID. E.g. `106`.
 - ***monsterName*** (string) - The monster name. E.g. `Ikopi`
 - ***monsterAvatar*** (string) - The monster avatar. E.g. `https://www.etheremon.com/325db34365c36c186fd2217ace32591c.png`
-- ***callback*** (string) - One transaction is broadcasted successfuly, the widget will make a `POST` request to the callback with content type of `text/plain`. The content is in JSON format, e.g.
+- ***callback*** (string) - Once transaction is broadcasted successfuly, the widget will make a `POST` request to the callback with content type of `text/plain`. The content is in JSON format, e.g.
 ```
 {
   tx: '0x28542e96c40930f052b3750f15b53703af126974e2b14b52377b25f503bad515',
