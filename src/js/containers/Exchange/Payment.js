@@ -190,7 +190,14 @@ export default class Payment extends React.Component {
       blockNo = converter.numberToHexAddress(this.props.snapshot.blockNo)
     }
 
-    var destAddress = this.props.exchange.receiveAddr
+    var destAddress
+    if (this.props.exchange.isSwap){
+      destAddress = this.props.account.address
+    }else{
+      destAddress = this.props.exchange.receiveAddr
+    }
+    
+
     var maxDestAmount = converter.biggestNumber()
 
     var throwOnFailure = this.props.snapshot.throwOnFailure
@@ -242,7 +249,14 @@ export default class Payment extends React.Component {
       blockNo = converter.numberToHexAddress(this.props.snapshot.blockNo)
     }
 
-    var destAddress = this.props.exchange.receiveAddr
+
+    var destAddress
+    if (this.props.exchange.isSwap){
+      destAddress = this.props.account.address
+    }else{
+      destAddress = this.props.exchange.receiveAddr
+    }
+
     var maxDestAmount = converter.stringToHex(this.props.snapshot.destAmount, this.props.snapshot.destDecimal)
 
     var throwOnFailure = this.props.snapshot.throwOnFailure
