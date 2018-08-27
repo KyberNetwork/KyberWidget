@@ -91,10 +91,11 @@ export default class ExchangeBody extends React.Component {
     // console.log(checked)console.log("term_value")
     // console.log(checked)
     if (checked){
-      this.setState({acceptedTerm: true})
+      this.setState({acceptedTerm: true})      
     }else{
       this.setState({acceptedTerm: false})
     }
+    this.props.global.analytics.callTrack("acceptTerm", checked)
     
   }
 

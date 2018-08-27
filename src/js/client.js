@@ -11,7 +11,7 @@ import constanst from "./services/constants"
 //import NotSupportPage from "./components/NotSupportPage"
 //import platform from 'platform'
 //import { blackList } from './blacklist'
-import {initSession, initParamsGlobal,haltPayment } from "./actions/globalActions"
+import {initSession, initParamsGlobal,haltPayment, initAnalytics } from "./actions/globalActions"
 import {initParamsExchange } from "./actions/exchangeActions"
 
 import { PersistGate } from 'redux-persist/lib/integration/react'
@@ -23,6 +23,8 @@ import { getTranslate } from 'react-localize-redux'
 import * as common from "./utils/common"
 import * as validator  from "./utils/validators"
 
+import AnalyticFactory from "./services/analytics"
+
 //console.log(platform)
 //check browser compatible
 // var clientPlatform = {
@@ -33,7 +35,8 @@ import * as validator  from "./utils/validators"
 
 //  console.log("client: ", clientPlatform)
 
-var illegal = false
+
+//var illegal = false
 // for (var i = 0; i < blackList.length; i++) {
 //   if ((clientPlatform.name === blackList[i].name) && (clientPlatform.os === blackList[i].os)) {
 //     illegal = true
@@ -207,6 +210,10 @@ function initParams(appId){
       receiveToken = receiveToken ? receiveToken: "ETH"
       var tokenAddr =  BLOCKCHAIN_INFO[network].tokens[receiveToken].address
       store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID));
+
+      //init analytic
+      var analytic = new AnalyticFactory({listWorker: ['mix']})
+      store.dispatch(initAnalytics(analytic))
     }
 }
 

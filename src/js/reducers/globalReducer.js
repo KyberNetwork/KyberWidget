@@ -149,6 +149,12 @@ const global = (state = initState, action) => {
       newState.errorsPayment = {...errors}
       return newState
     }
+    case "GLOBAL.INIT_ANALYTICS":{
+      const {analytics} = action.payload
+      var newState = {...state}
+      newState.analytics = analytics
+      return newState
+    }
   }
   return state
 }

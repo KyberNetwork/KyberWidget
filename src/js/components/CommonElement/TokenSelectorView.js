@@ -22,17 +22,27 @@ const TokenSelectorView = (props) => {
   });
 
   var getListToken = () => {
-    const destRateEth = props.listItem[props.exchange.destTokenSymbol].rateEth;
+
+    
+
+
+    //const destRateEth = props.listItem[props.exchange.destTokenSymbol].rateEth;
 
     return Object.keys(listShow).map((key) => {
       if (key === props.focusItem) {
         return;
       }
-
+      
       var item = listShow[key];
-      const sourceRate = item.symbol === "ETH" ? 1 : converter.toT(item.rate, 18);
-      const destRate = converter.toT(destRateEth, 18);
-      const rate = item.symbol === props.exchange.destTokenSymbol ? 1 : converter.roundingNumber(sourceRate * destRate);
+
+      var sourceSymbol = props.type === 'source'?item.symbol:props.exchange.sourceTokenSymbol
+      var destSymbol = props.type === 'source'?props.exchange.destTokenSymbol: item.symbol
+
+      const sourceRate = sourceSymbol === "ETH" ? 1 : converter.toT(listShow[sourceSymbol].rate, 18);
+      const destRate = destSymbol === "ETH" ? 1 : converter.toT(listShow[destSymbol].rateEth, 18);
+
+
+      const rate = sourceSymbol === destSymbol ? 1 : converter.roundingNumber(sourceRate * destRate);
 
       return (
         <div
@@ -48,7 +58,10 @@ const TokenSelectorView = (props) => {
 
             <div className="token-item">
               <div className="token-item__rate">
-              <div>1 {item.symbol} = {rate} {props.exchange.destTokenSymbol}</div>
+              {sourceSymbol !== destSymbol && (
+                <div>1 {sourceSymbol} = {rate} {destSymbol}</div>
+              )}
+              
                 {/* {rate != 0 &&
                   <div>1 {item.symbol} = {rate} {props.exchange.destTokenSymbol}</div>
                 }

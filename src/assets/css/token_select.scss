@@ -204,6 +204,10 @@
     .rate-token{
       color: #555;
       font-size: 13px;
+      display: flex;
+      img{
+        margin: 0 3px;
+      }
     }
     &.d-flex{
       justify-content: space-between;
@@ -431,6 +435,10 @@
     .rate-token{
       color: #555;
       font-size: 13px;
+      display: flex;
+      img{
+        margin: 0 3px;
+      }
     }
     &.d-flex{
       justify-content: space-between;
