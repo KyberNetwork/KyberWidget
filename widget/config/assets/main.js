@@ -139,8 +139,8 @@
 
         var widgetBaseUrl = getWidgetUrl();
         var url = widgetBaseUrl + "?" + formData.data;
-        var cssUrl = widgetBaseUrl + '/v1.0/widget.css';
-        var jsUrl = widgetBaseUrl + '/v1.0/widget.js';
+        var cssUrl = widgetBaseUrl + '/v0.1.0/widget.css';
+        var jsUrl = widgetBaseUrl + '/v0.1.0/widget.js';
         var tagHtml = "<a href='" + url + "'\nclass='kyber-widget-button' ";
         tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay by tokens'\n";
         tagHtml += "target='_blank'>Pay by tokens</a>";
