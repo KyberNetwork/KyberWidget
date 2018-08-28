@@ -161,6 +161,7 @@ export default class EthereumService extends React.Component {
   fetchData() {
     var state = store.getState()
     if (!common.checkComponentExist(state.global.params.appId)){
+      this.clearSubcription()
       return
     }
     this.checkKyberEnable()

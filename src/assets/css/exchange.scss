@@ -101,6 +101,10 @@
     left: -18px;
     padding: 10px;
     cursor: pointer;
+    img{
+      position: relative;
+      top: 3px;
+    }
   }
   .token-dest{
     cursor: initial;
