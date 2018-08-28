@@ -73,6 +73,7 @@ function initParams(appId){
     var commissionID
     var productName
     var productAvatar
+    var type
 
     if (attributeWidget === true || attributeWidget === 'true'){
       for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++){
@@ -98,7 +99,7 @@ function initParams(appId){
       commissionID = widgetParent.getAttribute('data-widget-commission-id')
       productName   = widgetParent.getAttribute('data-widget-product-name')
       productAvatar = widgetParent.getAttribute('data-widget-product-avatar')
-
+      type = widgetParent.getAttribute('data-widget-type')
     }else{
       query  = common.getQueryParams(window.location.search)
 
@@ -112,6 +113,7 @@ function initParams(appId){
       commissionID = common.getParameterByName("commissionId")
       productName   = common.getParameterByName("productName")
       productAvatar = common.getParameterByName("productAvatar")
+      type = common.getParameterByName("type")
     }
 
 
@@ -132,16 +134,30 @@ function initParams(appId){
 
     var errors = {}
     var isSwap = true
-    if (receiveAddr){
-      if(receiveAddr !== 'self'){
-        if (validator.verifyAccount(receiveAddr)){
-          errors["receiveAddr"] = translate('error.receive_address_must_be_ethereum_addr') 
+
+    if (type !== "swap"){
+      isSwap = false
+    }
+
+    if (isSwap){
+      if (receiveAddr && receiveAddr !== 'self'){
+        errors["receiveAddr"] = "Swap layout cannot include receiveAddr"
+      }
+    }else{
+      if (!receiveAddr || receiveAddr === 'self' || validator.verifyAccount(receiveAddr)){
+        errors["receiveAddr"] = translate('error.receive_address_must_be_ethereum_addr') 
             || "Receive address must be a valid ethereum address"
-        }else{
-          isSwap = false
-        }
       }
     }
+
+    // if (receiveAddr){
+    //   if(receiveAddr !== 'self'){
+    //     if (validator.verifyAccount(receiveAddr)){
+    //       errors["receiveAddr"] = translate('error.receive_address_must_be_ethereum_addr') 
+    //         || "Receive address must be a valid ethereum address"
+    //     }
+    //   }
+    // }
     
     
     if (receiveToken){
