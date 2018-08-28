@@ -28,12 +28,16 @@
     function grabForm() {
         var form = document.querySelector("form");
         var type = form.type.value || "payment";
+        var receiveAddr = form.receiveAddr,
+            receiveToken = form.receiveToken,
+            receiveAmount = form.receiveAmount
         var data = [], error = [], msg, name, value;
         form.querySelectorAll("input, select").forEach(function (node) {
 
             if (node.type && node.type === 'radio' && !node.checked) return;
 
             node.classList.remove("invalid");
+            node.removeAttribute("title");
 
             // do simple validation
             name = node.getAttribute("name");
@@ -42,8 +46,6 @@
                 node.setAttribute("title", msg);
                 error.push(msg);
                 return;
-            } else {
-                node.removeAttribute("title");
             }
 
             // set name - value
@@ -66,20 +68,26 @@
         // some integration checks
 
         if (type === "payment") {
-            if (!form.receiveAddr.value) {
-                form.receiveAddr.classList.add("invalid");
-                error.push("Recipient Address is required for widget type Payment.");
+            if (!receiveAddr.value) {
+                receiveAddr.classList.add("invalid");
+                msg = "Recipient Address is required for widget type Payment.";
+                receiveAddr.setAttribute("title", msg);
+                error.push(msg);
             }
-            if (!form.receiveToken.value) {
-                form.receiveToken.classList.add("invalid");
-                error.push("Receiving Token Symbol is required for widget type Payment.");
+            if (!receiveToken.value) {
+                receiveToken.classList.add("invalid");
+                msg = "Receiving Token Symbol is required for widget type Payment.";
+                receiveToken.setAttribute("title", msg);
+                error.push(msg);
             }
         }
 
         if (type === "swap") {
-            if (!form.receiveToken.value && !!form.receiveAmount.value) {
-                form.receiveAmount.classList.add("invalid");
-                error.push("Receiving Amount must be blank when Receiving Token Symbol is blank.");
+            if (!receiveToken.value && !!receiveAmount.value) {
+                receiveAmount.classList.add("invalid");
+                msg = "Receiving Amount must be blank when Receiving Token Symbol is blank.";
+                receiveAmount.setAttribute("title", msg);
+                error.push(msg);
             }
         }
 
