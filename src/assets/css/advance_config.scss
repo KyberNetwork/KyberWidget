@@ -6,19 +6,11 @@ $radio-color: #5D9E7A;
   padding-left: 2rem;
 }
 
-.advance-config{
-  padding: 0 20px;
+.advance-config-wrapper {
   margin-top: 15px;
-  background-color: rgba(245, 245, 245, 0.39);
-  // box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.2);
-
-  @include screen-max-width(medium) {
-    padding: 0 20px;
-  }
-
   .advance-title-mobile{
     &.title {
-      padding: 8px 0;
+      padding: 8px 0 0;
     }
     border-radius: 5px;
     // text-align: right;
@@ -28,6 +20,10 @@ $radio-color: #5D9E7A;
       // justify-content: flex-end;
       color: #222;
       align-items: center;
+      &.show-content {
+        background: linear-gradient(to top, #f5f5f5 50%, white 50%);
+      }
+      padding: 0 20px;
       img {
         width: 13px;
         transition: 0.2s;
@@ -37,10 +33,27 @@ $radio-color: #5D9E7A;
           transition: 0.2s;
         }
       }
+      .border-advance {
+        height: 2px;
+        width: 100%;
+        margin-left: 10px;
+        background-color: #ebebeb;
+      }
     }
     // @media screen and (min-width: $break-point-large){
     //   display: none  
     // }
+  }
+}
+
+.advance-config{
+  padding: 0 20px;
+  // margin-top: 15px;
+  background-color: #f5f5f5;
+  // box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+
+  @include screen-max-width(medium) {
+    padding: 0 20px;
   }
 
   #advance-content {
