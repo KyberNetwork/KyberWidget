@@ -93,15 +93,6 @@
             }
         }
 
-        if (type === "swap") {
-            if (!receiveToken.value && !!receiveAmount.value) {
-                receiveAmount.classList.add("invalid");
-                msg = "Receiving Amount must be blank when Receiving Token Symbol is blank.";
-                receiveAmount.setAttribute("title", msg);
-                error.push(msg);
-            }
-        }
-
         return {
             error: error,
             data: data.join("&")
