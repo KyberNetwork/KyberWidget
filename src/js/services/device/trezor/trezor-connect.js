@@ -51,7 +51,7 @@ var TrezorConnect = (function () {
      * Public API.
      */
     function TrezorConnect() {
-
+        
         var manager = new PopupManager();
 
         /**
@@ -893,6 +893,6 @@ var TrezorConnect = (function () {
 
     return exports;
 
-}());
+});
 
 module.exports = TrezorConnect;

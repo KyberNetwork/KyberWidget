@@ -1,3 +1,6 @@
+
+import React from 'react';
+
 import * as keyService from "./baseKey"
 import TrezorConnect from "../device/trezor/trezor-connect";
 import EthereumTx from "ethereumjs-tx"
@@ -8,15 +11,21 @@ import { store } from "../../store"
 
 const defaultDPath = "m/44'/60'/0'/0";
 
-export default class Trezor {
+export default class Trezor extends React.Component {
+  constructor(){
+    super()
+    this.trezor = TrezorConnect()
+    this.trezor.close()
+  }
   getPublicKey = (path = defaultDPath) => {
-    var translate = getTranslate(store.getState().locale)
+    var translate = getTranslate(store.getState().locale)    
     return new Promise((resolve, reject) => {
-      TrezorConnect.getXPubKey(path, (result) => {
+      this.trezor.getXPubKey(path, (result) => {
           if (result.success) {
             result.dPath = path;
             resolve(result);
           } else {
+            console.log(result)
             var err = translate("error.cannot_connect_trezor") || 'Cannot connect to trezor'
             if (result.toString() == 'Error: Not a valid path.') {
               err = translate("error.path_not_support_by_trezor") || 'This path not supported by Trezor'
@@ -70,9 +79,9 @@ export default class Trezor {
       }
     }
 
-    var chain_id = params.chainId; // 1 for ETH, 61 for ETC
+    var chain_id = params.chainId; // 1 for ETH, 61 for ETC    
     return new Promise((resolve, reject) => {
-      TrezorConnect.signEthereumTx(
+      this.trezor.signEthereumTx(
         address_n,
         nonce,
         gasPrice,
