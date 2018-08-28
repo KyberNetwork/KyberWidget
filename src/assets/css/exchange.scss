@@ -114,6 +114,7 @@
   margin: 0 auto;
   box-sizing: border-box;
   border: 1px solid #eee;
+  border-top: none;
 
   .exchange-pading{
     //padding: 0 1rem;
@@ -202,14 +203,14 @@
     text-align: right;
     .accent {
       line-height: 40px;
-      padding: 3px 35px;
+      padding: 0px 43px;
       background: #31CB9E;
       text-transform: unset;
       border-radius: 4px;
       margin: 20px 0 20px;
       // float: right;
-      font-size: 15px;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 400;
   
       &.disable {
         opacity: 0.4;
