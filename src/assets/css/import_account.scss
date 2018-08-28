@@ -4,12 +4,12 @@ $animation-time: 0.5s;
   .container {
     position: relative;
     // box-shadow: 0 2px 8px 0 rgba(184, 184, 184, 0.5);
-    padding-bottom: 30px;
+    // padding-bottom: 30px;
     background-color: white;
     //transform: translateY(70px);
     //animation: moving-up $animation-time forwards;
     transition: all .3s;
-    padding: 30px 20px 50px;
+    padding: 10px 20px 50px;
     box-sizing: border-box;
     border: 1px solid #eee;
     border-top: none;
