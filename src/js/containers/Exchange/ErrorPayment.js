@@ -36,7 +36,7 @@ export default class ErrorPayment extends React.Component {
                   || "Please contact your merchant for wrong params"}
               </div>
               <div className={"error-payment__content-button"}>
-                <div className={"payment-gateway__hollow-button"} onClick={widgetOptions.onClose}>
+                <div className={"payment-gateway__hollow-button"} onClick={(e) => widgetOptions.onClose(this.props.global.analytics)}>
                 {this.props.translate("transaction.back_to_website") || "Back to Website"}
                 </div>
               </div>
