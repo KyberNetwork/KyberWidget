@@ -328,7 +328,7 @@ const ExchangeBodyLayout = (props) => {
                 <div class="checkbox">
                   <input id="term-agree" type="checkbox" onChange={props.acceptedTerm} />
                   <label for="term-agree">
-                    {props.translate("transaction.i_agree_to") || "I agree to"} <a href="https://files.kyber.network/tac.html" target="_blank">{props.translate("transaction.term_and_condition") || "Terms &amp; Conditions"}</a>
+                    {props.translate("transaction.i_agree_to") || "Agree to"} <a href="https://files.kyber.network/tac.html" target="_blank">{props.translate("transaction.term_and_condition") || "Terms &amp; Conditions"}</a>
                   </label>
                 </div>
                 <div className="button-payment">

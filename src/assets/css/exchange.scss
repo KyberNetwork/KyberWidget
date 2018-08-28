@@ -237,7 +237,7 @@
     }
   }
   .checkbox {
-    margin-top: 15px;
+    margin-top: 35px;
     display: flex;
     input {
       margin-left: 0;
@@ -258,6 +258,9 @@
       a {
         color: inherit;
         text-decoration: underline;
+      }
+      span {
+        font-weight: 100;
       }
     }
   }
@@ -294,7 +297,7 @@
       background: #31CB9E;
       text-transform: unset;
       border-radius: 4px;
-      margin: 20px 0 20px;
+      margin: 20px 0 40px;
       // float: right;
       font-size: 14px;
       font-weight: 400;
