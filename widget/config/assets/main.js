@@ -27,7 +27,7 @@
 
     function grabForm() {
         var form = document.querySelector("form");
-        var type = form.type.value || "payment";
+        var type = form.type.value || "pay";
         var receiveAddr = form.receiveAddr,
             receiveToken = form.receiveToken,
             receiveAmount = form.receiveAmount
@@ -51,8 +51,10 @@
             // set name - value
             if (node.type && node.type === 'checkbox') {
                 value = node.checked.toString();
+            } else if (node.hasAttribute("data-type-" + type)) {
+                value = node.getAttribute("data-type-" + type);
             } else {
-                value = node.getAttribute("data-type-" + type) || node.value;
+                value = node.value;
             }
 
             if (name && value) {
@@ -67,22 +69,31 @@
 
         // some integration checks
 
-        if (type === "payment") {
+        if (type === "pay") {
             if (!receiveAddr.value) {
                 receiveAddr.classList.add("invalid");
-                msg = "Recipient Address is required for widget type Payment.";
+                msg = "Recipient Address is required for widget type of 'Pay'.";
                 receiveAddr.setAttribute("title", msg);
                 error.push(msg);
             }
             if (!receiveToken.value) {
                 receiveToken.classList.add("invalid");
-                msg = "Receiving Token Symbol is required for widget type Payment.";
+                msg = "Receiving Token Symbol is required for widget type of 'Pay'.";
                 receiveToken.setAttribute("title", msg);
                 error.push(msg);
             }
         }
 
-        if (type === "swap") {
+        if (type === "buy") {
+            if (!receiveToken.value) {
+                receiveToken.classList.add("invalid");
+                msg = "Receiving Token Symbol is required for widget type of 'Buy'.";
+                receiveToken.setAttribute("title", msg);
+                error.push(msg);
+            }
+        }
+
+        if (type !== "pay") {
             if (!receiveToken.value && !!receiveAmount.value) {
                 receiveAmount.classList.add("invalid");
                 msg = "Receiving Amount must be blank when Receiving Token Symbol is blank.";

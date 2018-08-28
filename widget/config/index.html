@@ -7,11 +7,11 @@
     <title>KyberWidget Configuration</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css">
     <link rel='stylesheet' href='https://widget.knstats.com/v0.1.0/widget.css'> 
-    <link rel="stylesheet" href="assets/styles.css?v=16">
+    <link rel="stylesheet" href="assets/styles.css?v=17">
 </head>
 <body>
     <div id="wrapper">
-        <h1 class="center">Kyber Payment Widget Configuration</h1>
+        <h1 class="center">Kyber Widget Configuration</h1>
         <form>
             <section class="section appearance">
                 <h3 class="section-title">Appearance</h3>
@@ -19,10 +19,13 @@
                     <label class="item-name">Widget Type:</label>
                     <div class="item-value w30">
                         <label class="pointer">
-                            <input type="radio" name="type" value="payment" checked> Payment
+                            <input type="radio" name="type" value="pay" checked> Pay
                         </label>
                         <label class="pointer">
                             <input type="radio" name="type" value="swap"> Swap
+                        </label>
+                        <label class="pointer">
+                            <input type="radio" name="type" value="buy"> Buy
                         </label>
                     </div>
                 </div>
@@ -55,15 +58,15 @@
 
             <section class="section">
                 <h3 class="section-title">Parameters</h3>
-                <div class="item" data-hidden-type="swap">
-                    <label class="item-name required-type-payment">Recipient Address:</label>
+                <div class="item hidden-type-swap hidden-type-buy">
+                    <label class="item-name required-type-pay">Recipient Address:</label>
                     <div class="item-value">
-                        <input name="receiveAddr" class="full-length" type="text" data-type-swap="self" spellcheck="false" value="0x63B42a7662538A1dA732488c252433313396eade"
+                        <input name="receiveAddr" class="full-length" type="text" data-type-swap="" data-type-buy="" spellcheck="false" value="0x63B42a7662538A1dA732488c252433313396eade"
                             placeholder="blank, self or 0x..." pattern="^(self)|(0x[a-fA-F0-9]{40})$" message="Recipient Address must be blank, 'self', or a valid Ethereum address.">
                     </div>
                 </div>
                 <div class="item">
-                    <label class="item-name required-type-payment">Receiving Token Symbol:</label>
+                    <label class="item-name required-type-pay required-type-buy">Receiving Token Symbol:</label>
                     <div class="item-value">
                         <input name="receiveToken" class="uppercase" type="text" spellcheck="false" maxlength="6" value="ETH">
                     </div>
@@ -132,7 +135,7 @@
         </section>
     </div>
     <script data-manual src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
-    <script src="assets/main.js?v=40"></script>
+    <script src="assets/main.js?v=41"></script>
     <script src='https://widget.knstats.com/v0.1.0/widget.js'></script>
 </body>
 

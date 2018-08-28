@@ -46,10 +46,10 @@ body, form {
     padding-right: 2rem;
     display: inline-block;
 }
-label.required, [data-widget-type='payment'] label.required-type-payment {
+label.required, [data-widget-type='pay'] label.required-type-pay, [data-widget-type='buy'] label.required-type-buy {
     position: relative;
 }
-label.required::after, [data-widget-type='payment'] label.required-type-payment::after {
+label.required::after, [data-widget-type='pay'] label.required-type-pay::after, [data-widget-type='buy'] label.required-type-buy::after {
     content: '*';
     color: #d45a58;
     position: absolute;
@@ -161,10 +161,13 @@ label input, select, .pointer {
     cursor: pointer;
 }
 
-[data-widget-type='payment'] [data-hidden-type='payment'] {
+[data-widget-type='pay'] .hidden-type-pay {
     display: none;
 }
-[data-widget-type='swap'] [data-hidden-type='swap'] {
+[data-widget-type='swap'] .hidden-type-swap {
+    display: none;
+}
+[data-widget-type='buy'] .hidden-type-buy {
     display: none;
 }
 
@@ -182,14 +185,14 @@ label input, select, .pointer {
     .item-name:empty {
         height: 0;
     }
-    label.required::after, [data-widget-type='payment'] label.required-type-payment::after {
+    label.required::after, [data-widget-type='pay'] label.required-type-pay::after, [data-widget-type='buy'] label.required-type-buy::after {
         right: -1rem;
     }
     .item-value {
         display: block;
         padding-bottom: 0.4rem;
     }
-    label.required, [data-widget-type='payment'] label.required-type-payment {
+    label.required, [data-widget-type='pay'] label.required-type-pay, [data-widget-type='buy'] label.required-type-buy {
         width: auto;
     }
 }
