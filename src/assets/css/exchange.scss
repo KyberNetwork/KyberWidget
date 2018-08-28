@@ -139,7 +139,7 @@
   .info-1 {
     font-size: 14px;
     font-weight: 600;
-    margin: 12px 0 5px;
+    margin: 0 0 5px;
     letter-spacing: -0.2px;
     color: #222222;
     text-transform: uppercase;
@@ -233,7 +233,7 @@
     }
   }
   .checkbox {
-    margin-top: 15px;
+    margin-top: 35px;
     display: flex;
     input {
       margin-left: 0;
@@ -254,6 +254,9 @@
       a {
         color: inherit;
         text-decoration: underline;
+      }
+      span {
+        font-weight: 100;
       }
     }
   }
@@ -290,7 +293,7 @@
       background: #31CB9E;
       text-transform: unset;
       border-radius: 4px;
-      margin: 20px 0 20px;
+      margin: 20px 0 40px;
       // float: right;
       font-size: 14px;
       font-weight: 400;
