@@ -118,3 +118,45 @@ export function getCookie(cname) {
   }
   return "";
 }
+
+export function postForm(path, params, method) {
+  method = method || "post"; // Set method to post by default if not specified.
+
+  // The rest of this code assumes you are not using a library.
+  // It can be made less wordy if you use one.
+  var form = document.createElement("form");
+  form.setAttribute("method", method);
+  form.setAttribute("action", path);
+
+  for(var key in params) {
+      if(params.hasOwnProperty(key)) {
+          var hiddenField = document.createElement("input");
+          hiddenField.setAttribute("type", "hidden");
+          hiddenField.setAttribute("name", key);
+          hiddenField.setAttribute("value", params[key]);
+
+          form.appendChild(hiddenField);
+      }
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+export function postUrlEncoded(path, params, method) {
+  var formBody = [];
+  for (var property in params) {
+    var encodedKey = encodeURIComponent(property);
+    var encodedValue = encodeURIComponent(params[property]);
+    formBody.push(encodedKey + "=" + encodedValue);
+  }
+  formBody = formBody.join("&");
+
+  fetch(path, {
+    method: method,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+    },
+    body: formBody
+  })
+}
