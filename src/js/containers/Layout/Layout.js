@@ -251,7 +251,7 @@ export default class Layout extends React.Component {
     translate={this.props.translate}
     step={this.props.exchange.step}
     haltPayment={this.props.haltPayment}
-    isSwap = {this.props.exchange.isSwap}
+    type = {this.props.exchange.type}
   />
     return (
       <LayoutView
