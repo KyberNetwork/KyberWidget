@@ -1,7 +1,6 @@
 
 
-export function onClose(analytics){
-    if (analytics) analytics.callTrack("backToWebsite")
+export function onClose(){
     console.log("close")
     if (window.kyberWidgetOptions && window.kyberWidgetOptions.onClose){
         window.kyberWidgetOptions.onClose()
