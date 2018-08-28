@@ -252,4 +252,24 @@ export default class Mixpanel {
             }
         }
     }
+
+    clickToImportAccount(walletType) {
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+            try {
+                mixpanel.track("Widget_Click_To_Import_Account", { walletType: walletType })
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    }
+
+    clickFocusToInputPrivateKey() {
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+            try {
+                mixpanel.track("Widget_Click_To_Input_PrivateKey")
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    }
 }

@@ -60,6 +60,7 @@ export default class ImportAccount extends React.Component {
 
   openImportAccount(type) {
     this.props.dispatch(openImportAccount(type));
+    this.props.analytics.callTrack("clickToImportAccount", type)
   }
 
   closeImportAccount() {
