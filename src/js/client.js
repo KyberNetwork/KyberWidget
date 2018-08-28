@@ -218,7 +218,7 @@ function initParams(appId){
       store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, isSwap));
 
       //init analytic
-      var analytic = new AnalyticFactory({listWorker: ['mix']})
+      var analytic = new AnalyticFactory({listWorker: ['mix'], network})
       store.dispatch(initAnalytics(analytic))
     }
 }

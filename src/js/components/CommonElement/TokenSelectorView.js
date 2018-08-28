@@ -93,18 +93,18 @@ const TokenSelectorView = (props) => {
               </div>
               <div>
                 <div className="focus-balance">
-                  {props.account !== false && (
+                  {/* {props.account !== false && (
                     <span className="token-balance" title = {converter.toT(focusItem.balance)}>{converter.roundingNumber(converter.toT(focusItem.balance, focusItem.decimal))}</span>
-                  )}
+                  )} */}
                   <span className="token-symbol">{focusItem.symbol}</span>
                 </div>
               </div>
             </div>
-            {focusItem.symbol !== props.exchange.destTokenSymbol && (
+            {/* {focusItem.symbol !== props.exchange.destTokenSymbol && (
               <div className="rate-token">
                 1 {focusItem.symbol} = {rateFocusItem} {props.exchange.destTokenSymbol}
               </div>
-            )}
+            )} */}
             <div><i className={'k k-angle ' + (props.open ? 'up' : 'down')}></i></div>
           </div>
         </DropdownTrigger>
