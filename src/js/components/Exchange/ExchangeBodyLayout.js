@@ -108,13 +108,13 @@ const ExchangeBodyLayout = (props) => {
               {props.translate("transaction.choose_your_payment") || "Choose your payment method"}
             </div> */}
                 {props.exchange.isSwap && (
-                  <div className='swap-layout'>
-                    <div>
+                  <div className={'swap-layout'+(errorExchange ? " error" : "")}>
+                    <div className='swap-item swap-item-first'>
                       {/* <span class="transaction-label">FROM</span> */}
                       <div className={"select-token-panel"}>
                         {props.tokenSourceSelect}
                         {!props.exchange.isHaveDestAmount && (
-                          <div className={classSource + (errorExchange ? " error" : "")}>
+                          <div className={classSource}>
                             <div>
                               <input id="inputSource" className="source-input" min="0" step="0.000001"
                                 placeholder="0" autoFocus
@@ -125,13 +125,17 @@ const ExchangeBodyLayout = (props) => {
                                 onChange={handleChangeSource}
                               />
                             </div>
-                            {/* <div>
-                              <span>{props.sourceTokenSymbol}</span>
-                            </div> */}
                           </div>
                         )}
                         {props.exchange.isHaveDestAmount && (
-                          <div className="swap-info">You are about to swap <strong>{props.exchange.sourceAmount} {props.exchange.sourceTokenSymbol}</strong> for <strong>{props.exchange.destAmount} {props.exchange.destTokenSymbol}</strong></div>
+                            <div class='dest-amount amount-input'>
+                              <div>Estimate source amount:</div>
+                              <div>
+                                <strong>{props.exchange.sourceAmount} {props.exchange.sourceTokenSymbol}</strong>
+                              </div>
+                            </div>
+                          
+                          // <div className="swap-info">You are about to swap <strong>{props.exchange.sourceAmount} {props.exchange.sourceTokenSymbol}</strong> for <strong>{props.exchange.destAmount} {props.exchange.destTokenSymbol}</strong></div>
                         )}
 
                       </div>
@@ -139,23 +143,32 @@ const ExchangeBodyLayout = (props) => {
                         {errorShow}
                       </div>
                     </div>
-                    {!props.exchange.isHaveDestAmount && (
-                      <div>
-                        {/* <span class="transaction-label">TO</span> */}
+                    {!props.global.params.receiveToken && (
+                      <div class="cell large-2 exchange-icon">
+                        <span data-tip={props.translate('transaction.click_to_swap') || 'Click to swap'} data-for="swap" currentitem="false">
+                          <img src={require("../../../assets/img/arrow_swap.svg")} onClick={(e) => props.swapToken(e)}/>
+                          {/* <i className="k k-exchange k-3x cur-pointer" onClick={(e) => props.swapToken(e)}></i> */}
+                        </span>
+                        {/* <ReactTooltip place="bottom" id="swap" type="light" /> */}
+                      </div>
+                    )}
+                    
+                      <div className='swap-item'>
                         <div className="select-token-panel">
 
                           {props.tokenDestSelect}
 
                           <div className={'dest-amount amount-input'}>
-                            <div>
-                              {/* <input className="des-input" step="0.000001" placeholder="0" min="0"
-                                type="text" maxLength="50" autoComplete="off"
-                                value={props.input.destAmount.value || ''}
-                                onFocus={props.input.destAmount.onFocus}
-                                onBlur={props.input.destAmount.onBlur}
-                                onChange={handleChangeDest} /> */}
+                            {props.exchange.isHaveDestAmount && (
+                              <div>
+                                Receive Amount:
+                              </div>  
+                            )}
+                            {!props.exchange.isHaveDestAmount && (
+                              <div>
                                 Estimate dest amount:
-                            </div>
+                              </div>  
+                            )}
                             <div>
                               <strong>
                                 {props.exchange.destAmount} {props.destTokenSymbol}
@@ -164,7 +177,6 @@ const ExchangeBodyLayout = (props) => {
                           </div>
                         </div>
                       </div>
-                    )}
                   </div>
                 )}
 

@@ -6,10 +6,20 @@
 // }
 .swap-layout{
   border: 1px solid #eee;
+  position: relative;
+  &.error{
+    .swap-item-first{
+      border-bottom: 2px solid #EE344E;
+    }
+  }
   >div{
-    padding: 10px;
+    
     &:first-child{
       border-bottom: 1px solid #eee;
+      padding: 10px 0 35px 0;      
+    }
+    &:last-child{
+      padding: 35px 0 10px 0;
     }
   }
   .transaction-label{
@@ -18,10 +28,13 @@
     color: #474d5f;
   }
   .amount-input{
-    width: 50%;
+    width: 60%;
     border: none;
     display: block;
     margin-top: 0;
+    &.error{
+      border-bottom: none;
+    }
     // border-bottom: 1px solid #454E5F;
     input{
       font-size: 25px;
@@ -31,16 +44,23 @@
       border: none;
       box-shadow: none;
       text-align: right;
+      color: #EF8102;
     }
+    
+  }
+  .error-text{
+    padding: 0 10px;
   }
   .dest-amount{
     text-align: right;
     >div{
       &:first-child{
-        font-size: 14px;
+        font-size: 13px;
+        color: #666;
       }
       &:last-child{
         font-size: 20px;
+        color: #222222;
       }
     }
   }
@@ -55,12 +75,41 @@
   }
   .select-item{
     width: 361px;
-    left: -10px;
+    
   }
   .token-chooser{
     width: 120px;
     .focus-item{
       border: none;
+    }
+  }
+  .exchange-icon{
+    position: absolute;
+    z-index: 10;
+    margin-top: -23px;
+    margin: 0 auto;
+    border: 1px solid #ebebeb;
+    border-radius: 30px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    margin-left: 50%;
+    margin-top: -25px;
+    left: -18px;
+    padding: 10px;
+    cursor: pointer;
+  }
+  .token-dest{
+    cursor: initial;
+    .focus-item{
+      display: flex;
+      align-items: center;
+      img{
+        margin-right: 10px;
+      }
     }
   }
 }
