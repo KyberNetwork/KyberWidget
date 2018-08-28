@@ -19,10 +19,10 @@ const PaymentHeader = (props) => {
         </div>
       </div>
       <div className="step-breadcrumb container">
-        {!props.isSwap && (
+        {props.isSwap && (
           <div className={getClass(1)}>1. {props.translate("payment_header.step_swap") || "Swap"}</div>
         )}
-        {props.isSwap && (
+        {!props.isSwap && (
           <div className={getClass(1)}>1. {props.translate("payment_header.step_method") || "Payment method"}</div>
         )}
         <div className="arrow-right"></div>

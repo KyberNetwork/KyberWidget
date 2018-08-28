@@ -1,7 +1,7 @@
 
 
 .payment_confirm{
-    padding: 30px 25px 3rem;
+    padding: 10px 25px 3rem;
     @include screen-max-width(medium) {
         padding-top: 15px;
         padding-left: 20px;
@@ -108,10 +108,15 @@
             a{
                 display: block;
                 text-align: center;
-                padding: 12px 0;
-                font-size: 18px;
-                width: 140px;
-                border-radius: 5px;
+                line-height: 40px;
+                // padding: 12px 0;
+                font-size: 14px;
+                // width: 140px;
+                border-radius: 4px;
+                width: 120px;
+                height: 40px;
+                transition: all .3s;
+                background-color: #666666;
                 &:hover {
                     cursor: pointer;
                 }
@@ -121,9 +126,9 @@
                     opacity: 0.8;
                 }
                 &.back-btn{
-                    border: 2px solid #999999;
+                    // border: 2px solid #999999;
                     
-                    color: #666;
+                    color: white;
                 }
                 &.confirm-btn{
                     background: #31CB9E;

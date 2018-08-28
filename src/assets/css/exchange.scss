@@ -143,7 +143,7 @@
   .info-1 {
     font-size: 14px;
     font-weight: 600;
-    margin: 12px 0 5px;
+    margin: 0 0 5px;
     letter-spacing: -0.2px;
     color: #222222;
     text-transform: uppercase;
@@ -290,7 +290,7 @@
     text-align: right;
     .accent {
       line-height: 40px;
-      padding: 0px 43px;
+      padding: 0px;
       background: #31CB9E;
       text-transform: unset;
       border-radius: 4px;
@@ -298,6 +298,9 @@
       // float: right;
       font-size: 14px;
       font-weight: 400;
+      width: 120px;
+      height: 40px;
+      text-align: center;
   
       &.disable {
         opacity: 0.4;
