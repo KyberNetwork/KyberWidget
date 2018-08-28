@@ -7,7 +7,7 @@
     <title>KyberWidget Configuration</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css">
     <link rel='stylesheet' href='https://widget.knstats.com/v1.0/widget.css'> 
-    <link rel="stylesheet" href="assets/styles.css?v=15">
+    <link rel="stylesheet" href="assets/styles.css?v=16">
 </head>
 <body>
     <div id="wrapper">
@@ -16,16 +16,27 @@
             <section class="section appearance">
                 <h3 class="section-title">Appearance</h3>
                 <div class="item">
-                    <label class="item-name">Widget Mode:</label>
+                    <label class="item-name">Widget Type:</label>
                     <div class="item-value w30">
                         <label class="pointer">
-                            <input id="modePopup" type="radio" name="mode" value="dom" checked> Popup
+                            <input type="radio" name="type" value="payment" checked> Payment
+                        </label>
+                        <label class="pointer">
+                            <input type="radio" name="type" value="swap"> Swap
+                        </label>
+                    </div>
+                </div>
+                <div class="item">
+                    <label class="item-name">Mode:</label>
+                    <div class="item-value w30">
+                        <label class="pointer">
+                            <input type="radio" name="mode" value="popup" checked> Popup
                         </label>
                         <label class="pointer">
                             <input type="radio" name="mode" value="tab"> New Tab
                         </label>
                         <label class="pointer">
-                            <input id="modeFrame" type="radio" name="mode" value="iframe"> iFrame
+                            <input type="radio" name="mode" value="iframe"> iFrame
                         </label>
                     </div>
                 </div>
@@ -44,15 +55,15 @@
 
             <section class="section">
                 <h3 class="section-title">Parameters</h3>
-                <div class="item">
-                    <label class="item-name">Recipient Address:</label>
+                <div class="item" data-hidden-type="swap">
+                    <label class="item-name required-type-payment">Recipient Address:</label>
                     <div class="item-value">
-                        <input name="receiveAddr" class="full-length" type="text" spellcheck="false" value="0x63B42a7662538A1dA732488c252433313396eade"
-                            placeholder="blank, self or 0x..." pattern="^(self)|(0x[a-fA-F0-9]{40})$">
+                        <input name="receiveAddr" class="full-length" type="text" data-type-swap="self" spellcheck="false" value="0x63B42a7662538A1dA732488c252433313396eade"
+                            placeholder="blank, self or 0x..." pattern="^(self)|(0x[a-fA-F0-9]{40})$" message="Recipient Address must be blank, 'self', or a valid Ethereum address.">
                     </div>
                 </div>
                 <div class="item">
-                    <label class="item-name">Receiving Token Symbol:</label>
+                    <label class="item-name required-type-payment">Receiving Token Symbol:</label>
                     <div class="item-value">
                         <input name="receiveToken" class="uppercase" type="text" spellcheck="false" maxlength="6" value="ETH">
                     </div>
@@ -121,8 +132,8 @@
         </section>
     </div>
     <script data-manual src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
-    <script src="assets/main.js?v=37"></script>
-    <script src='https://widget.knstats.com/v1.0/widget.js?v=4'></script>
+    <script src="assets/main.js?v=39"></script>
+    <script src='https://widget.knstats.com/v1.0/widget.js'></script>
 </body>
 
 </html>

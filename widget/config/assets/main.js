@@ -2,7 +2,7 @@
 
     function getWidgetUrl() {
         var url = new URLSearchParams(location.search).get("widget_url");
-        return url || "https://developer.kyber.network/widget/payment";
+        return url || "https://widget.kyber.network";
 
     }
 
@@ -27,10 +27,13 @@
 
     function grabForm() {
         var form = document.querySelector("form");
+        var type = form.type.value || "payment";
         var data = [], error = [], msg, name, value;
         form.querySelectorAll("input, select").forEach(function (node) {
 
             if (node.type && node.type === 'radio' && !node.checked) return;
+
+            node.classList.remove("invalid");
 
             // do simple validation
             name = node.getAttribute("name");
@@ -47,17 +50,38 @@
             if (node.type && node.type === 'checkbox') {
                 value = node.checked.toString();
             } else {
-                value = node.value;
+                value = node.getAttribute("data-type-" + type) || node.value;
             }
 
             if (name && value) {
                 if (name != "extraParams") {
+                    form.setAttribute("data-widget-" + name, value);
                     data.push(name + "=" + encodeURIComponent(value));
                 } else {
                     data.push(value);
                 }
             }
         });
+
+        // some integration checks
+
+        if (type === "payment") {
+            if (!form.receiveAddr.value) {
+                form.receiveAddr.classList.add("invalid");
+                error.push("Recipient Address is required for widget type Payment.");
+            }
+            if (!form.receiveToken.value) {
+                form.receiveToken.classList.add("invalid");
+                error.push("Receiving Token Symbol is required for widget type Payment.");
+            }
+        }
+
+        if (type === "swap") {
+            if (!form.receiveToken.value && !!form.receiveAmount.value) {
+                form.receiveAmount.classList.add("invalid");
+                error.push("Receiving Amount must be blank when Receiving Token Symbol is blank.");
+            }
+        }
 
         return {
             error: error,
@@ -103,20 +127,21 @@
             return;
         }
 
-        var isPopup = document.getElementById("modePopup").checked;
-        var isFrame = document.getElementById("modeFrame").checked;
+        var mode = document.querySelector("form").mode.value || "tab";
 
         var widgetBaseUrl = getWidgetUrl();
         var url = widgetBaseUrl + "?" + formData.data;
-        var cssUrl = widgetBaseUrl + '/widget/v1.0/widget.css';
-        var jsUrl = widgetBaseUrl + '/widget/v1.0/widget.js';
+        var cssUrl = widgetBaseUrl + '/v1.0/widget.css';
+        var jsUrl = widgetBaseUrl + '/v1.0/widget.js';
         var tagHtml = "<a href='" + url + "'\nclass='kyber-widget-button' ";
         tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay by tokens'\n";
         tagHtml += "target='_blank'>Pay by tokens</a>";
 
         var fullHtml = "<!-- Add this to the <head> tag -->\n<link rel='stylesheet' href='" + cssUrl + "'> \n\n";
         fullHtml += tagHtml;
-        fullHtml += "\n\n<!-- Add this to the end of <body> tag -->\n<script async src='" + jsUrl + "'></script>"
+        if (mode !== "tab") {
+            fullHtml += "\n\n<!-- Add this to the end of <body> tag -->\n<script async src='" + jsUrl + "'></script>"
+        }
 
         document.getElementById("widget").innerHTML = tagHtml;
         document.getElementById("sourceHtml").textContent = fullHtml;
