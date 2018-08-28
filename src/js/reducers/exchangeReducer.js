@@ -600,7 +600,7 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.INIT_PARAMS_EXCHANGE":{
-      const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, network, paramForwarding, signer, commissionID, isSwap} = action.payload
+      const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, network, paramForwarding, signer, commissionID, isSwap, type} = action.payload
       newState.destTokenSymbol = receiveToken
       newState.destAmount = receiveAmount
       if (receiveAmount === null){
@@ -620,6 +620,7 @@ const exchange = (state = initState, action) => {
       newState.signer = signer
       newState.commissionID = commissionID
       newState.isSwap = isSwap
+      newState.type = type
       
       return newState
     }
