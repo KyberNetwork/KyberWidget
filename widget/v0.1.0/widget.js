@@ -2,7 +2,7 @@
 
   global.kyberWidgetOptions = (function(editionTag) {
     var editions = {
-      standard: "https://widget.knstats.com",
+      standard: "https://widget.kyber.network",
       etheremon: "https://widget-etheremon.knstats.com"
     }
  
@@ -70,7 +70,7 @@
       script.onload = function () {
         document.getElementById("kyber-widget") && global.kyberWidgetInstance.render();
       };
-      script.src = baseUrl + "/app.min.js?t=" + Date.now();
+      script.src = baseUrl + "/v0.1.0/app.min.js?t=" + Date.now();
       document.body.appendChild(script);
     }
     // add CSS tag
@@ -78,7 +78,7 @@
       var css = document.createElement("link");
       css.id = "kyber-widget-css";
       css.setAttribute("rel", "stylesheet")
-      css.setAttribute("href", baseUrl + "/app.bundle.css?t=" + Date.now());
+      css.setAttribute("href", baseUrl + "/v0.1.0/app.bundle.css?t=" + Date.now());
       document.head.appendChild(css);
     }
   }
@@ -94,13 +94,13 @@
 
       var params = tag.searchParams || (new URLSearchParams(new URL(tag.href).search));
       var mode = params.get("mode") || "tab";
-      if (mode === "dom") hasDomMode = true;
+      if (mode === "popup") hasDomMode = true;
       
-      if (mode !== "dom" && mode !== "iframe") return;
+      if (mode !== "popup" && mode !== "iframe") return;
 
       tag.addEventListener("click", function (e) {
 
-        if (mode === 'dom' && global.kyberWidgetOptions.jsLoadError) {
+        if (mode === 'popup' && global.kyberWidgetOptions.jsLoadError) {
           // error loadding js, just fallback to new tab mode
           return;
         }
@@ -131,7 +131,7 @@
         });
 
         var element = '';
-        if (mode === 'dom') {
+        if (mode === 'popup') {
           // create the widget container
           element = document.createElement("DIV");
           element.id = "kyber-widget";

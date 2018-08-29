@@ -46,10 +46,10 @@ body, form {
     padding-right: 2rem;
     display: inline-block;
 }
-label.required {
+label.required, [data-widget-type='pay'] label.required-type-pay, [data-widget-type='buy'] label.required-type-buy {
     position: relative;
 }
-label.required::after {
+label.required::after, [data-widget-type='pay'] label.required-type-pay::after, [data-widget-type='buy'] label.required-type-buy::after {
     content: '*';
     color: #d45a58;
     position: absolute;
@@ -59,7 +59,7 @@ label.required::after {
 input[type='text'], input[type='number'], input[type='url'] {
     padding: 0.5rem 0.5rem;
 }
-input:invalid {
+input:invalid, input.invalid {
     background-color: #ffd8b8;
 }
 select {
@@ -160,6 +160,17 @@ pre[class*="language-"] {
 label input, select, .pointer {
     cursor: pointer;
 }
+
+[data-widget-type='pay'] .hidden-type-pay {
+    display: none;
+}
+[data-widget-type='swap'] .hidden-type-swap {
+    display: none;
+}
+[data-widget-type='buy'] .hidden-type-buy {
+    display: none;
+}
+
 @media (max-width: 839px) {
     #wrapper {
         width: 600px;
@@ -174,14 +185,14 @@ label input, select, .pointer {
     .item-name:empty {
         height: 0;
     }
-    label.required::after {
+    label.required::after, [data-widget-type='pay'] label.required-type-pay::after, [data-widget-type='buy'] label.required-type-buy::after {
         right: -1rem;
     }
     .item-value {
         display: block;
         padding-bottom: 0.4rem;
     }
-    label.required {
+    label.required, [data-widget-type='pay'] label.required-type-pay, [data-widget-type='buy'] label.required-type-buy {
         width: auto;
     }
 }

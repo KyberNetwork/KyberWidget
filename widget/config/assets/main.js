@@ -2,7 +2,7 @@
 
     function getWidgetUrl() {
         var url = new URLSearchParams(location.search).get("widget_url");
-        return url || "https://developer.kyber.network/widget/payment";
+        return url || "https://widget.kyber.network";
 
     }
 
@@ -27,10 +27,17 @@
 
     function grabForm() {
         var form = document.querySelector("form");
+        var type = form.type.value || "pay";
+        var receiveAddr = form.receiveAddr,
+            receiveToken = form.receiveToken,
+            receiveAmount = form.receiveAmount
         var data = [], error = [], msg, name, value;
         form.querySelectorAll("input, select").forEach(function (node) {
 
             if (node.type && node.type === 'radio' && !node.checked) return;
+
+            node.classList.remove("invalid");
+            node.removeAttribute("title");
 
             // do simple validation
             name = node.getAttribute("name");
@@ -39,25 +46,52 @@
                 node.setAttribute("title", msg);
                 error.push(msg);
                 return;
-            } else {
-                node.removeAttribute("title");
             }
 
             // set name - value
             if (node.type && node.type === 'checkbox') {
                 value = node.checked.toString();
+            } else if (node.hasAttribute("data-type-" + type)) {
+                value = node.getAttribute("data-type-" + type);
             } else {
                 value = node.value;
             }
 
             if (name && value) {
                 if (name != "extraParams") {
+                    form.setAttribute("data-widget-" + name, value);
                     data.push(name + "=" + encodeURIComponent(value));
                 } else {
                     data.push(value);
                 }
             }
         });
+
+        // some integration checks
+
+        if (type === "pay") {
+            if (!receiveAddr.value) {
+                receiveAddr.classList.add("invalid");
+                msg = "Recipient Address is required for widget type of 'Pay'.";
+                receiveAddr.setAttribute("title", msg);
+                error.push(msg);
+            }
+            if (!receiveToken.value) {
+                receiveToken.classList.add("invalid");
+                msg = "Receiving Token Symbol is required for widget type of 'Pay'.";
+                receiveToken.setAttribute("title", msg);
+                error.push(msg);
+            }
+        }
+
+        if (type === "buy") {
+            if (!receiveToken.value) {
+                receiveToken.classList.add("invalid");
+                msg = "Receiving Token Symbol is required for widget type of 'Buy'.";
+                receiveToken.setAttribute("title", msg);
+                error.push(msg);
+            }
+        }
 
         return {
             error: error,
@@ -103,20 +137,21 @@
             return;
         }
 
-        var isPopup = document.getElementById("modePopup").checked;
-        var isFrame = document.getElementById("modeFrame").checked;
+        var mode = document.querySelector("form").mode.value || "tab";
 
         var widgetBaseUrl = getWidgetUrl();
-        var url = widgetBaseUrl + "?" + formData.data;
-        var cssUrl = widgetBaseUrl + '/widget/v1.0/widget.css';
-        var jsUrl = widgetBaseUrl + '/widget/v1.0/widget.js';
+        var url = widgetBaseUrl + "/v0.1.0/?" + formData.data;
+        var cssUrl = widgetBaseUrl + '/v0.1.0/widget.css';
+        var jsUrl = widgetBaseUrl + '/v0.1.0/widget.js';
         var tagHtml = "<a href='" + url + "'\nclass='kyber-widget-button' ";
         tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay by tokens'\n";
         tagHtml += "target='_blank'>Pay by tokens</a>";
 
         var fullHtml = "<!-- Add this to the <head> tag -->\n<link rel='stylesheet' href='" + cssUrl + "'> \n\n";
         fullHtml += tagHtml;
-        fullHtml += "\n\n<!-- Add this to the end of <body> tag -->\n<script async src='" + jsUrl + "'></script>"
+        if (mode !== "tab") {
+            fullHtml += "\n\n<!-- Add this to the end of <body> tag -->\n<script async src='" + jsUrl + "'></script>"
+        }
 
         document.getElementById("widget").innerHTML = tagHtml;
         document.getElementById("sourceHtml").textContent = fullHtml;

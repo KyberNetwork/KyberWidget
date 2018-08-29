@@ -491,7 +491,7 @@ export default class Payment extends React.Component {
           {this.getError()}
         </div>
 
-        {this.props.exchange.isSwap && (
+        {this.props.exchange.type === 'swap' && (
           <div>
             <div className="payment-info">
               <div>
@@ -528,7 +528,75 @@ export default class Payment extends React.Component {
             </div>
           </div>
         )}
-        {!this.props.exchange.isSwap && (
+
+{this.props.exchange.type === 'buy' && (
+          <div>
+            <div className="payment-info">
+
+              <div>
+                <div className="title">
+                  {this.props.translate("transaction.you_about_to_buy") || "YOU ARE ABOUT TO BUY"}
+                </div>
+                <div className="content">
+                                    
+                  
+                    <div>
+                      <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
+                      <span>
+                        {('' + this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}
+                      </span>
+                    </div>
+                  
+                  
+                </div>
+              </div>
+
+            </div>
+
+            <div className="payment-info">
+              <div className="title">
+                {this.props.translate("transaction.exchange_paywith") || "PAY WITH"}
+              </div>
+              <div className="content">
+                <div>
+                  <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
+                  {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
+                    <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
+                  )}
+                  {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol && (
+                    <span>{('' + this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</span>
+                  )}
+                  {!this.props.exchange.isHaveDestAmount && (
+                    <span>{('' + this.props.exchange.sourceAmount).length > 8 ? converter.roundingNumber(this.props.exchange.sourceAmount) : this.props.exchange.sourceAmount} {this.props.exchange.sourceTokenSymbol}</span>
+                  )}
+                </div>
+                <div>
+                  <span>{this.props.translate("transaction.gas_price") || "Gas price"}:</span>
+                  <span>
+                    {this.props.exchange.gasPrice} Gwei
+              </span>
+                </div>
+                <div>
+                  <span>{this.props.translate("transaction.gas_limit") || "Gas limit"}:</span>
+                  <span>
+                    {gasUsed}
+                  </span>
+                </div>
+                <div>
+                  <span>{this.props.translate("transaction.transaction_fee") || "Trasaction fee"}:</span>
+                  {!this.props.exchange.isFetchingGas && (
+                    <span>
+                      {converter.calculateGasFee(this.props.exchange.gasPrice, gasUsed)}
+                    </span>
+                  )}
+
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {this.props.exchange.type === 'pay' && (
           <div>
             <div className="payment-info">
 

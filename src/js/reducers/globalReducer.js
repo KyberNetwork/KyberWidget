@@ -26,7 +26,10 @@ var initState = {
   },
   params:{},
   haltPayment: false,
-  errorsPayment:{}
+  errorsPayment:{},
+  analytics: {
+    callTrack : () => {return}
+  }
 }
 
 const global = (state = initState, action) => {

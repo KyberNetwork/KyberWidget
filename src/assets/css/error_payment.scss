@@ -52,7 +52,10 @@
       div {
         padding: 15px 28px;
         font-size: 18px;
-        font-weight: 600;
+        // font-weight: 600;
+        height: unset;
+        width: unset;
+        line-height: unset;
       }
     }
   }
