@@ -91,6 +91,7 @@ html[data-kyber-widget-edition='etheremon'] .kyber-widget-button {
     left: 50%;
     top: 50%;
     height: 80%;
-    min-height: 660px;
+    min-height: 605px;
+    max-height: 1070px;
     border: 0;
 }
