@@ -170,6 +170,14 @@ function initParams(appId) {
       } else {
         errors["receiveAddr"] = "Payment layout must include receiveAddr"
       }
+      
+      if (receiveToken) {
+        receiveToken = receiveToken.toUpperCase()
+        if (!BLOCKCHAIN_INFO[network].tokens[receiveToken]) {
+          errors["receiveToken"] = translate('error.receive_token_is_not_support')
+            || "Receive token is not supported by kyber"
+        }
+      } 
       break
   }
   
