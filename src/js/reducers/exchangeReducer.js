@@ -48,6 +48,7 @@ const exchange = (state = initState, action) => {
         newState.sourceTokenSymbol = action.payload.symbol
         newState.sourceToken = action.payload.address
 
+        
         // if (newState.sourceTokenSymbol === 'ETH') {
         //   if (newState.destTokenSymbol === 'ETH') {
         //     newState.destTokenSymbol = 'KNC'
@@ -76,6 +77,8 @@ const exchange = (state = initState, action) => {
       for (var key in newState.errors) {
         newState.errors[key] = ""
       }
+
+      
       
       //newState.sourceAmount = ""
       //newState.destAmount = 0
@@ -96,9 +99,18 @@ const exchange = (state = initState, action) => {
       //   newState.errors.selectTokenToken = "error.select_token_token"
       //   return newState
       // }
-      newState.errors.selectSameToken = ''
+      //newState.errors.selectSameToken = ''
       newState.errors.selectTokenToken = ''
       newState.errors.sourceAmountError = ''
+
+      if (newState.isSwap){
+        if(newState.destTokenSymbol === newState.sourceTokenSymbol){
+          newState.errors.selectSameToken = "error.select_same_token"
+        }else{
+          newState.errors.selectSameToken = ""
+        }
+      }
+
       return newState
     }
     case "EXCHANGE.THROW_SOURCE_AMOUNT_ERROR": {
@@ -608,6 +620,7 @@ const exchange = (state = initState, action) => {
       }else{
         newState.isHaveDestAmount = true
       }
+      
       newState.destToken = tokenAddr
       newState.receiveAddr = receiveAddr
 
@@ -682,6 +695,12 @@ const exchange = (state = initState, action) => {
     }
     case "EXCHANGE.UNSET_CONFIRMING": {
       newState.isConfirming = false;
+      return newState
+    }
+    case "EXCHANGE.UPDATE_SOURCE_TOKEN":{
+      var {sourceTokenSymbol, source} = action.payload
+      newState.sourceTokenSymbol =sourceTokenSymbol
+      newState.sourceToken =source
       return newState
     }
   }

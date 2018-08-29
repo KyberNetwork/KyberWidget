@@ -77,6 +77,7 @@ export default class ImportByPrivateKey extends React.Component {
         onToggleShowPw={this.toggleShowPw}
         pKeyError={this.props.account.pKey.error}
         translate={this.props.translate}
+        analytics={this.props.analytics}
       />
     )
   }
