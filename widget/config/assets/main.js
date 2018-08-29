@@ -140,7 +140,7 @@
         var mode = document.querySelector("form").mode.value || "tab";
 
         var widgetBaseUrl = getWidgetUrl();
-        var url = widgetBaseUrl + "?" + formData.data;
+        var url = widgetBaseUrl + "/v0.1.0/?" + formData.data;
         var cssUrl = widgetBaseUrl + '/v0.1.0/widget.css';
         var jsUrl = widgetBaseUrl + '/v0.1.0/widget.js';
         var tagHtml = "<a href='" + url + "'\nclass='kyber-widget-button' ";
