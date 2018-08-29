@@ -64,7 +64,7 @@ export default class Mixpanel {
     acceptTerm(value) {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_AcceptTerm", { value: value })
+                mixpanel.track("Widget_1_1_Click_AcceptTerm", { value: value })
             } catch (e) {
                 console.log(e)
             }
@@ -85,7 +85,7 @@ export default class Mixpanel {
     typeMount() {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_Input_Amount")
+                mixpanel.track("Widget_1_1_Click_Input_Amount")
             } catch (e) {
                 console.log(e)
             }
@@ -95,7 +95,7 @@ export default class Mixpanel {
     chooseToken(token, type) {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Choose_Token", { token: token, type: type })
+                mixpanel.track("Widget_1_2_Click_Choose_Token", { token: token, type: type })
             } catch (e) {
                 console.log(e)
             }
@@ -105,7 +105,7 @@ export default class Mixpanel {
     chooseSuggestToken(token, type) {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Choose_Suggest_Token", { token: token, type: type })
+                mixpanel.track("Widget_1_2_Click_Choose_Suggest_Token", { token: token, type: type })
             } catch (e) {
                 console.log(e)
             }
@@ -115,7 +115,7 @@ export default class Mixpanel {
     searchToken(type) {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_Search_Token", { type: type })
+                mixpanel.track("Widget_1_2_Click_Search_Token", { type: type })
             } catch (e) {
                 console.log(e)
             }
@@ -125,7 +125,7 @@ export default class Mixpanel {
     clickToAdvance(status) {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_To_Advance", { status: status })
+                mixpanel.track("Widget_1_1_Click_To_Advance", { status: status })
             } catch (e) {
                 console.log(e)
             }
@@ -135,7 +135,7 @@ export default class Mixpanel {
     clickToNext(step) {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_Next", { step: step })
+                mixpanel.track("Widget_1_2_Click_Next")
             } catch (e) {
                 console.log(e)
             }
@@ -145,7 +145,7 @@ export default class Mixpanel {
     clickToBack(step) {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_Back", { step: step })
+                mixpanel.track("Widget_*_1_Click_Back", { step: step })
             } catch (e) {
                 console.log(e)
             }
@@ -155,7 +155,7 @@ export default class Mixpanel {
     clickToConfirm(sourceToken, destToken) {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_Confirm_Transaction", { sourceToken: sourceToken, destToken: destToken })
+                mixpanel.track("Widget_3_1_Click_Confirm_Transaction", { sourceToken: sourceToken, destToken: destToken })
             } catch (e) {
                 console.log(e)
             }
@@ -165,7 +165,7 @@ export default class Mixpanel {
     clickToApprove(token) {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_Approve_Token", { token: token })
+                mixpanel.track("Widget_3_1_Click_Approve_Token", { token: token })
             } catch (e) {
                 console.log(e)
             }
@@ -175,7 +175,7 @@ export default class Mixpanel {
     clickShowPassword(status) {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_Show_Password", { status, status })
+                mixpanel.track("Widget_2_2_Click_Show_Password", { status, status })
             } catch (e) {
                 console.log(e)
             }
@@ -195,7 +195,7 @@ export default class Mixpanel {
     viewTxOnEtherscan() {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_View_Transaction_On_Etherscan")
+                mixpanel.track("Widget_4_1_Click_View_Transaction_On_Etherscan")
             } catch (e) {
                 console.log(e)
             }
@@ -205,7 +205,7 @@ export default class Mixpanel {
     copyTx() {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_Copy_Tx")
+                mixpanel.track("Widget_4_1_Click_Copy_Tx")
             } catch (e) {
                 console.log(e)
             }
@@ -215,7 +215,7 @@ export default class Mixpanel {
     backToWebsite() {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_Back_To_Website")
+                mixpanel.track("Widget_*_1_Click_Back_To_Website")
             } catch (e) {
                 console.log(e)
             }
@@ -225,7 +225,7 @@ export default class Mixpanel {
     setNewMinRate(minRate) {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Set_New_MinRate", { minRate: minRate })
+                mixpanel.track("Widget_1_2_Click_Set_New_MinRate", { minRate: minRate })
             } catch (e) {
                 console.log(e)
             }
@@ -236,7 +236,7 @@ export default class Mixpanel {
         console.log("input new gas")
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_To_Custom_Gas")
+                mixpanel.track("Widget_1_2_Click_To_Custom_Gas")
             } catch (e) {
                 console.log(e)
             }
@@ -246,7 +246,7 @@ export default class Mixpanel {
     chooseGas(type, gasPrice) {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_To_Choose_Gas", { type: type, gasPrice: gasPrice })
+                mixpanel.track("Widget_1_3_Click_To_Choose_Gas", { type: type, gasPrice: gasPrice })
             } catch (e) {
                 console.log(e)
             }
@@ -256,7 +256,7 @@ export default class Mixpanel {
     clickToImportAccount(walletType) {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_To_Import_Account", { walletType: walletType })
+                mixpanel.track("Widget_2_1_Click_To_Import_Account", { walletType: walletType })
             } catch (e) {
                 console.log(e)
             }
@@ -266,7 +266,7 @@ export default class Mixpanel {
     clickFocusToInputPrivateKey() {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_Click_To_Input_PrivateKey")
+                mixpanel.track("Widget_2_3_Click_To_Input_PrivateKey")
             } catch (e) {
                 console.log(e)
             }
