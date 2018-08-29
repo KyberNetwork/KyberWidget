@@ -2,7 +2,7 @@
 
   global.kyberWidgetOptions = (function(editionTag) {
     var editions = {
-      standard: "https://widget.kyber.network",
+      standard: "https://widget.kyber.network/v0.1.0",
       etheremon: "https://widget-etheremon.knstats.com"
     }
  
@@ -70,7 +70,7 @@
       script.onload = function () {
         document.getElementById("kyber-widget") && global.kyberWidgetInstance.render();
       };
-      script.src = baseUrl + "/v0.1.0/app.min.js?t=" + Date.now();
+      script.src = baseUrl + "/app.min.js?t=" + Date.now();
       document.body.appendChild(script);
     }
     // add CSS tag
@@ -78,7 +78,7 @@
       var css = document.createElement("link");
       css.id = "kyber-widget-css";
       css.setAttribute("rel", "stylesheet")
-      css.setAttribute("href", baseUrl + "/v0.1.0/app.bundle.css?t=" + Date.now());
+      css.setAttribute("href", baseUrl + "/app.bundle.css?t=" + Date.now());
       document.head.appendChild(css);
     }
   }
