@@ -31,7 +31,7 @@ const TokenSelectorView = (props) => {
       if (key === props.focusItem) {
         return;
       }
-
+      
       var item = listShow[key];
       const sourceRate = item.symbol === "ETH" ? 1 : converter.toT(item.rate, 18);
       //const destRate = converter.toT(destRateEth, 18);
@@ -41,7 +41,8 @@ const TokenSelectorView = (props) => {
         <div
           key={key}
           onClick={(e) => props.selectItem(e, item.symbol, item.address)}
-          className={"token-item-container " + (rate == 0 ? "token-item-container--inactive" : "payment-gateway__hover-color")}>
+          // className={"token-item-container " + (rate == 0 ? "token-item-container--inactive" : "payment-gateway__hover-color")}>
+          className={"token-item-container payment-gateway__hover-color"}>
           <div className="token-item-content">
             <div className="token-item">
               <img className="token-item__icon" src={require("../../../assets/img/tokens/" + item.icon)}/>
@@ -81,9 +82,9 @@ const TokenSelectorView = (props) => {
               </div>
               <div>
                 <div className="focus-balance">
-                  {props.account !== false && (
+                  {/* {props.account !== false && (
                     <span className="token-balance" title = {converter.toT(focusItem.balance)}>{converter.roundingNumber(converter.toT(focusItem.balance, focusItem.decimal))}</span>
-                  )}
+                  )} */}
                   <span className="token-symbol">{focusItem.symbol}</span>
                 </div>
               </div>
@@ -92,7 +93,7 @@ const TokenSelectorView = (props) => {
               <div className="rate-token">
                 1 {focusItem.symbol} = {rateFocusItem} ETH
               </div>
-            )}
+            )} 
             <div><i className={'k k-angle ' + (props.open ? 'up' : 'down')}></i></div>
           </div>
         </DropdownTrigger>
@@ -101,7 +102,7 @@ const TokenSelectorView = (props) => {
             <div className="suggest-item">
               {priorityTokens.map((token, i) => {
                 return (
-                  <div className="suggest-item__content" key={i} onClick={(e) => props.selectItem(e, token.symbol, token.address)}>
+                  <div className="suggest-item__content" key={i} onClick={(e) => props.selectItem(e, token.symbol, token.address, "suggest")}>
                     <img className="suggest-item__icon" src={require(`../../../assets/img/tokens/${token.icon}`)} />
                     <div className="suggest-item__symbol">{token.symbol}</div>
                   </div>
@@ -109,7 +110,7 @@ const TokenSelectorView = (props) => {
               })}
             </div>
             <div className="search-item">
-              <input value={props.searchWord} placeholder='Try "DAI"' onChange={(e) => props.changeWord(e)} type="text"/>
+              <input value={props.searchWord} placeholder='Try "DAI"' onChange={(e) => props.changeWord(e)} type="text" onFocus={(e) => props.analytics.callTrack("searchToken", props.type)}/>
             </div>
             <div className="list-item">
               <div className="list-item__content">

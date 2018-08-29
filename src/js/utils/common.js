@@ -91,3 +91,72 @@ export function checkComponentExist(componentId){
     return false
   }
 }
+
+
+export function setCookie(cname, cvalue, exdays) {
+  if (!exdays){
+    exdays = 5*365
+  }
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+export function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+      }
+  }
+  return "";
+}
+
+export function postForm(path, params, method) {
+  method = method || "post"; // Set method to post by default if not specified.
+
+  // The rest of this code assumes you are not using a library.
+  // It can be made less wordy if you use one.
+  var form = document.createElement("form");
+  form.setAttribute("method", method);
+  form.setAttribute("action", path);
+
+  for(var key in params) {
+      if(params.hasOwnProperty(key)) {
+          var hiddenField = document.createElement("input");
+          hiddenField.setAttribute("type", "hidden");
+          hiddenField.setAttribute("name", key);
+          hiddenField.setAttribute("value", params[key]);
+
+          form.appendChild(hiddenField);
+      }
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+export function postUrlEncoded(path, params, method) {
+  var formBody = [];
+  for (var property in params) {
+    var encodedKey = encodeURIComponent(property);
+    var encodedValue = encodeURIComponent(params[property]);
+    formBody.push(encodedKey + "=" + encodedValue);
+  }
+  formBody = formBody.join("&");
+
+  fetch(path, {
+    method: method,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+    },
+    body: formBody
+  })
+}

@@ -10,6 +10,7 @@ import { ImportAccount } from "../ImportAccount"
 //import { Footer } from "../Layout"
 
 import { Processing, ExchangeHistory } from "../../containers/CommonElements/"
+import {PaymentHeader} from "../../components/Header";
 
 import constanst from "../../services/constants"
 // import { createNewConnection } from "../../services/ethereum/connection"
@@ -259,6 +260,13 @@ export default class Layout extends React.Component {
     //var market = <Market />
     //var footer = <Footer />
    // var rate = <Rate />
+
+    var paymentHeader =  <PaymentHeader 
+    translate={this.props.translate}
+    step={this.props.exchange.step}
+    haltPayment={this.props.haltPayment}
+    type = {this.props.exchange.type}
+  />
     return (
       <LayoutView
         history={history}
@@ -268,8 +276,8 @@ export default class Layout extends React.Component {
         setActiveLanguage={this.setActiveLanguage}      
         currentLanguage = {currentLanguage}  
         translate={this.props.translate}
-        step={this.props.exchange.step}
-        haltPayment={this.props.haltPayment}
+                
+        paymentHeader = {paymentHeader}
       />
     )
   }

@@ -2,6 +2,7 @@ import { fork, call, put, join, race, cancel } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 import { store } from '../store'
 import BLOCKCHAIN_INFO from "../../../env";
+import * as commonFunc from "../utils/common"
 
 
 export function* handleRequest(sendRequest, ...args) {
@@ -72,17 +73,19 @@ export function* submitCallback(hash){
         if (!params.network){
           params.network = BLOCKCHAIN_INFO[exchange.network].networkName;
         }
-        const response = yield call(fetch, submitUrl, {
-            method: 'POST',
-            // headers: {
-            //   'Accept': 'application/json',
-            //   'Content-Type': 'application/json'
-            // },
-            body: JSON.stringify(params)
-        })   
-        const responseBody = response.json()
-        console.log("status_submit")
-        console.log(responseBody)  
+        commonFunc.postUrlEncoded(submitUrl, params, 'POST')
+
+        // const response = yield call(fetch, submitUrl, {
+        //     method: 'POST',
+        //     // headers: {
+        //     //   'Accept': 'application/json',
+        //     //   'Content-Type': 'application/json'
+        //     // },
+        //     body: JSON.stringify(params)
+        // })   
+        // const responseBody = response.json()
+        // console.log("status_submit")
+        // console.log(responseBody)  
       }catch(e){
         console.log(e)
       }

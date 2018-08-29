@@ -45,18 +45,29 @@
 
   &__hollow-button {
     display: inline-block;
-    padding: 10px 38px;
+    // padding: 10px 45px;
     border-radius: 4px;
-    border: solid 2px #999999;
-    font-size: 18px;
-    color: #666666;
+    // border: solid 2px #999999;
+    font-size: 15px;
+    color: white;
     cursor: pointer;
     transition: all .3s;
+    background-color: #666666;
+    width: 120px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
 
-    &:hover {
-      color: white;
-      background-color: $theme-color-default;
-      border-color: $theme-color-default;
+    // &:hover {
+      // color: white;
+      // background-color: $theme-color-default;
+      // background-color: #222222;
+      // border-color: $theme-color-default;
+    // }
+
+    &.final-step-payment {
+      width: 150px;
+      font-size: 16px;
     }
   }
 

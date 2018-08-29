@@ -26,7 +26,10 @@ var initState = {
   },
   params:{},
   haltPayment: false,
-  errorsPayment:{}
+  errorsPayment:{},
+  analytics: {
+    callTrack : () => {return}
+  }
 }
 
 const global = (state = initState, action) => {
@@ -147,6 +150,12 @@ const global = (state = initState, action) => {
       var newState = {...state}
       newState.haltPayment = true
       newState.errorsPayment = {...errors}
+      return newState
+    }
+    case "GLOBAL.INIT_ANALYTICS":{
+      const {analytics} = action.payload
+      var newState = {...state}
+      newState.analytics = analytics
       return newState
     }
   }

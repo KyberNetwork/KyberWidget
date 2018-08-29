@@ -676,3 +676,4 @@ export function updateRateToken(expectedRate, slippageRate){
     payload: {expectedRate, slippageRate}
   }
 }
+

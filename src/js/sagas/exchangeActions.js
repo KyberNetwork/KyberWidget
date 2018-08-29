@@ -68,6 +68,12 @@ function* selectToken(action) {
   var exchange = state.exchange
   // yield call(estimateGasUsed, symbol, exchange.destTokenSymbol)
 
+  if (type==='source'){
+    yield call(estimateGasUsed, symbol, exchange.destTokenSymbol)
+  }else{
+    yield call(estimateGasUsed, exchange.sourceTokenSymbol, symbol)
+  }
+  
 
   const {expectedRate, slippageRate} = yield call(getMonsterRateInToken, symbol, exchange.monsterInETH)
   yield put(actions.updateRateToken(expectedRate, slippageRate ))
@@ -158,8 +164,12 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   }
 
   //track complete trade
-  analytics.trackCoinExchange(data)
-  analytics.completeTrade(hash, "kyber", "exchange")
+  var state = store.getState()
+  var exchange = state.exchange
+  var analytics = state.global.analytics
+
+  analytics.callTrack("completeTransaction", exchange.sourceTokenSymbol, exchange.destTokenSymbol)
+  // analytics.completeTrade(hash, "kyber", "exchange")
 
   //submit callback
   yield fork(common.submitCallback, hash)
@@ -797,7 +807,7 @@ function* getSourceAmount(sourceTokenSymbol, sourceAmount) {
   if (tokens[sourceTokenSymbol]) {
     var decimal = tokens[sourceTokenSymbol].decimal
     var rateSell = tokens[sourceTokenSymbol].rate
-    console.log({ sourceAmount, decimal, rateSell })
+    //console.log({ sourceAmount, decimal, rateSell })
     sourceAmountHex = converter.calculateMinSource(sourceTokenSymbol, sourceAmount, decimal, rateSell)
   } else {
     sourceAmountHex = converter.stringToHex(sourceAmount, 18)
@@ -1628,7 +1638,7 @@ export function* getMonsterRateInToken(tokenSymbol, monsterInETH){
 
 export function* initParamsExchange(action) {
   var state = store.getState()
-  var tokens = state.tokens.tokens
+  //var tokens = state.tokens.tokens
   var exchange = state.exchange
 
   const {etheremonAddr, monsterId, monsterName, network} = action.payload
@@ -1636,6 +1646,8 @@ export function* initParamsExchange(action) {
    //var ethereum = state.connection.ethereum
    var ethereum = new EthereumService({network})
    yield put.sync(setConnection(ethereum))
+
+  
 
   var sourceTokenSymbol = exchange.sourceTokenSymbol
   var sourceAddr = tokens[sourceTokenSymbol].address

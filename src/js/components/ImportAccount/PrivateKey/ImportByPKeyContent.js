@@ -29,6 +29,7 @@ const ImportByPKeyContent = (props) => {
               autoFocus
               autoComplete="off"
               spellCheck="false"
+              onFocus={(e) => {props.analytics.callTrack("clickFocusToInputPrivateKey")}}
               required />
           <div>{props.privateKeyVisible}</div>
           <div className="import-account-content__private-key-toggle" onClick={props.onToggleShowPw}></div>

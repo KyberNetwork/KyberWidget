@@ -3,14 +3,16 @@ $animation-time: 0.5s;
 #import-account {
   .container {
     position: relative;
-    box-shadow: 0 2px 8px 0 rgba(184, 184, 184, 0.5);
-    padding-bottom: 30px;
+    // box-shadow: 0 2px 8px 0 rgba(184, 184, 184, 0.5);
+    // padding-bottom: 30px;
     background-color: white;
     //transform: translateY(70px);
     //animation: moving-up $animation-time forwards;
     transition: all .3s;
-    padding: 30px 20px 50px;
+    padding: 10px 20px 50px;
     box-sizing: border-box;
+    border: 1px solid #eee;
+    border-top: none;
     @include screen-max-width(medium) {
       padding-left: 20px;
       padding-right: 20px;
@@ -87,11 +89,12 @@ $animation-time: 0.5s;
       text-align: center;
       transition: all .3s;
       width: calc(50% - 10px);
-      margin: 0 10px 20px;
+      margin: 0 8px 20px;
       padding: 20px 0;
       border-radius: 3px;
-      background-color: #fcfcfe;
-      box-shadow: 0 2px 6px 0 rgba(184, 184, 184, 0.5);
+      background-color: #ffffff;
+      border: solid 1px #e5e5e5;
+      // box-shadow: 0 2px 6px 0 rgba(184, 184, 184, 0.5);
       cursor: pointer;
 
       .column-block {
@@ -137,16 +140,16 @@ $animation-time: 0.5s;
         }
 
         &__name {
-          color: #cccccc;
+          color: #666666;
           margin: 0;
           font-weight: 400;
           font-family: $font-cera;
-          transition: 0.5s;
+          transition: 0.1s;
         }
 
         &__balance {
           font-weight: 500;
-          text-shadow: 0 0 16px #e8e8e8;
+          // text-shadow: 0 0 16px #e8e8e8;
         }
 
         .importer__icon{
@@ -160,7 +163,7 @@ $animation-time: 0.5s;
           align-items: center;
           padding: 0 0.9375rem;
           .importer__icon {
-            background-image: url(../img/landing/metamask_disable.png);
+            background-image: url(../img/landing/metamask_active.svg);
           }
           @include screen-max-width(medium) {
             padding: 0;
@@ -168,22 +171,22 @@ $animation-time: 0.5s;
         }
         &.json {
           .importer__icon {
-            background-image: url(../img/landing/keystore_disable.png);
+            background-image: url(../img/landing/keystore_active.svg);
           }
         }
         &.trezor {
           .importer__icon {
-            background-image: url(../img/landing/trezor_disable.png);
+            background-image: url(../img/landing/trezor_active.svg);
           }
         }
         &.pkey {
           .importer__icon {
-            background-image: url(../img/landing/privatekey_disable.png);
+            background-image: url(../img/landing/privatekey_active.svg);
           }
         }
         &.ledger {
           .importer__icon {
-            background-image: url(../img/landing/ledger_disable.png);
+            background-image: url(../img/landing/ledger_active.svg);
           }
         }
 
@@ -266,40 +269,74 @@ $animation-time: 0.5s;
       }
 
       &:hover {
-        box-shadow: 0 3px 10px 0 rgb(184, 184, 184);
+        // box-shadow: 0 3px 10px 0 rgb(184, 184, 184);
+        box-shadow: 0 2px 10px 0 rgba(205, 205, 205, 0.63);
       }
       &:hover {
         .importer {
           .importer__name {
-            color: #666;
+            color: #222222;
+            font-weight: 600;
           }
-          &.metamask {
-            .importer__icon {
-              background-image: url(../img/landing/metamask_active.svg);
-            }
-          }
-          &.json {
-            .importer__icon {
-              background-image: url(../img/landing/keystore_active.svg);
-            }
-          }
-          &.trezor {
-            .importer__icon {
-              background-image: url(../img/landing/trezor_active.svg);
-            }
-          }
-          &.pkey {
-            .importer__icon {
-              background-image: url(../img/landing/privatekey_active.svg);
-            }
-          }
-          &.ledger {
-            .importer__icon {
-              background-image: url(../img/landing/ledger_active.svg);
-            }
-          }
+      //     &.metamask {
+      //       .importer__icon {
+      //         background-image: url(../img/landing/metamask_active.svg);
+      //       }
+      //     }
+      //     &.json {
+      //       .importer__icon {
+      //         background-image: url(../img/landing/keystore_active.svg);
+      //       }
+      //     }
+      //     &.trezor {
+      //       .importer__icon {
+      //         background-image: url(../img/landing/trezor_active.svg);
+      //       }
+      //     }
+      //     &.pkey {
+      //       .importer__icon {
+      //         background-image: url(../img/landing/privatekey_active.svg);
+      //       }
+      //     }
+      //     &.ledger {
+      //       .importer__icon {
+      //         background-image: url(../img/landing/ledger_active.svg);
+      //       }
+      //     }
         }
       }
+      // &:hover {
+      //   .importer {
+      //     .importer__name {
+      //       color: #666;
+      //     }
+      //     &.metamask {
+      //       .importer__icon {
+      //         background-image: url(../img/landing/metamask_active.svg);
+      //       }
+      //     }
+      //     &.json {
+      //       .importer__icon {
+      //         background-image: url(../img/landing/keystore_active.svg);
+      //       }
+      //     }
+      //     &.trezor {
+      //       .importer__icon {
+      //         background-image: url(../img/landing/trezor_active.svg);
+      //       }
+      //     }
+      //     &.pkey {
+      //       .importer__icon {
+      //         background-image: url(../img/landing/privatekey_active.svg);
+      //       }
+      //     }
+      //     &.ledger {
+      //       .importer__icon {
+      //         background-image: url(../img/landing/ledger_active.svg);
+      //       }
+      //     }
+      //   }
+      // }
     }
 
     &-content {
@@ -432,11 +469,12 @@ $animation-time: 0.5s;
 }
 
 .import-account-content__info {
-  padding: 15px;
+  padding: 20px 15px;
   margin: 12px 0 15px;
   border-radius: 5px;
   background-color: #fcfcfe;
-  box-shadow: 0 2px 6px 0 rgba(184, 184, 184, 0.5);
+  // box-shadow: 0 2px 6px 0 rgba(184, 184, 184, 0.5);
+  border: 1px solid #e5e5e5;
   @include screen-max-width(medium) {
     padding: 15px 5px;
   }
@@ -447,14 +485,14 @@ $animation-time: 0.5s;
     top: 2px;
 
     &-image {
-      min-width: 35px;
+      min-width: 33px;
       // margin-bottom: 4px;
     }
 
     &-text {
       color: $base-color;
-      font-size: 13px;
-      font-weight: bold;
+      font-size: 16px;
+      font-weight: 400;
       text-transform: uppercase;
       white-space: nowrap;
     }
@@ -465,6 +503,7 @@ $animation-time: 0.5s;
     margin-bottom: 2px;
     color: $base-color;
     line-height: 1.5;
+    width: calc(100% - 120px);
 
     &-address {
       margin-bottom: 3px;
@@ -472,8 +511,8 @@ $animation-time: 0.5s;
 
     &-balance {
       display: flex;
-      font-weight: 600;
-      text-shadow: 0 0 16px #e8e8e8;
+      font-weight: 500;
+      // text-shadow: 0 0 16px #e8e8e8;
       line-height: 1.5;
 
       > div:first-child {
@@ -491,7 +530,8 @@ $animation-time: 0.5s;
     align-items: center;
 
     .import-account-content__info-type {
-      margin-right: 20px;
+      // margin-right: 20px;
+      width: 120px;
     }
   }
 }

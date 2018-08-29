@@ -7,12 +7,18 @@ import GasOption from './GasOption';
 const GasConfig = (props) => {
   let gas_option = {"f":props.translate("fast") || 'Fast',"l":props.translate("low") || 'Slow',"s":props.translate("standard") || 'Standard'}
   function specifyGasPrice(value) {
-    if(value==="f")
+    if(value==="f") {
       props.selectedGasHandler(gasPriceSuggest.fastGas, value)
-    else if(value==="l")
+      props.analytics.callTrack("chooseGas", "Fast", gasPriceSuggest.fastGas)
+    }
+    else if(value==="l") {
       props.selectedGasHandler(gasPriceSuggest.safeLowGas, value)
-    else if(value==="s")
+      props.analytics.callTrack("chooseGas", "Slow", gasPriceSuggest.safeLowGas)
+    }
+    else if(value==="s") {
       props.selectedGasHandler(gasPriceSuggest.standardGas, value)
+      props.analytics.callTrack("chooseGas", "Standard", gasPriceSuggest.standardGas)
+    }
   }
   function handleChangeGasPrice(e) {
     filterInputNumber(e, e.target.value)
@@ -36,7 +42,7 @@ const GasConfig = (props) => {
       <div className={!props.gasPriceError ? "" : "error"}>
         <div className="gas-change">
           <div className="gas_input">
-            <input type="text" min="0" max="99" className="gas-price-input" step="0.1" value={props.gasPrice} onChange={handleChangeGasPrice} maxLength="20" autoComplete="off" />
+            <input type="text" min="0" max="99" className="gas-price-input" step="0.1" value={props.gasPrice} onChange={handleChangeGasPrice} maxLength="20" autoComplete="off" onFocus={(e) => props.analytics.callTrack("customNewGas")} />
           </div>
           <div className="gas_input-label-container">
             <div className="gas_input-lable">Gwei</div>

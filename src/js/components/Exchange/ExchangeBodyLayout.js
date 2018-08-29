@@ -47,9 +47,10 @@ const ExchangeBodyLayout = (props) => {
                   </div>
                 )}
 
-            {/* <div className="payment-gateway__step-title payment-gateway__step-title--1">
+                {/* <div className="payment-gateway__step-title payment-gateway__step-title--1">
               {props.translate("transaction.choose_your_payment") || "Choose your payment method"}
             </div> */}
+           
 
                 <div>
                   <div className="pay-info">
@@ -120,12 +121,11 @@ const ExchangeBodyLayout = (props) => {
               <div>
                 {props.advanceLayout}
               </div>
-
               <div className="exchange-pading">
                 <div class="checkbox">
                   <input id="term-agree" type="checkbox" onChange={props.acceptedTerm} />
                   <label for="term-agree">
-                    {props.translate("transaction.i_agree_to") || "I agree to"} <a href="https://files.kyber.network/tac.html" target="_blank">{props.translate("transaction.term_and_condition") || "Terms &amp; Conditions"}</a>
+                  {props.translate("transaction.i_agree_to") || "Agree to"} <a href="https://files.kyber.network/tac.html" target="_blank">{props.translate("transaction.term_and_condition") || "Terms &amp; Conditions"}</a>
                   </label>
                 </div>
                 

@@ -240,3 +240,11 @@ export function initSession(){
     type: "GLOBAL.INIT_SESSION"
   }
 }
+
+
+export function initAnalytics(analytics){
+  return {
+    type: "GLOBAL.INIT_ANALYTICS",
+    payload: {analytics}
+  }
+}

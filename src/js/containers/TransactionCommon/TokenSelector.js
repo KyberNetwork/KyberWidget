@@ -8,11 +8,12 @@ import { getTranslate } from 'react-localize-redux';
     account: store.account.account,
     focusItem: props.focusItem,
     listItem: props.listItem,
-    type: props.type,
+    
     chooseToken: props.chooseToken,
     translate: getTranslate(store.locale),
     exchange: store.exchange,
-    tokens: store.tokens.tokens
+    tokens: store.tokens.tokens,
+    analytics: store.global.analytics
   }
 })
 
@@ -38,9 +39,14 @@ export default class TokenSelector extends React.Component {
     this.setState({ open: false })
   }
 
-  selectItem = (event, symbol, address) => {
+  selectItem = (event, symbol, address, suggest) => {
     this.props.chooseToken(symbol, address, this.props.type);
     this.hideTokens(event);
+    if (suggest === "suggest") {
+      this.props.analytics.callTrack("chooseSuggestToken", symbol, this.props.type)
+    } else {
+      this.props.analytics.callTrack("chooseToken", symbol, this.props.type)
+    }
   }
 
   render() {
@@ -58,7 +64,9 @@ export default class TokenSelector extends React.Component {
         hideTokens = {this.hideTokens}
         account = {this.props.account}
         exchange = {this.props.exchange}
+        
         tokens = {this.props.tokens}
+        analytics = {this.props.analytics}
       />
     )
   }

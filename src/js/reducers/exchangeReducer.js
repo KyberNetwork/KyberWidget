@@ -48,6 +48,7 @@ const exchange = (state = initState, action) => {
         newState.sourceTokenSymbol = action.payload.symbol
         newState.sourceToken = action.payload.address
 
+        
         // if (newState.sourceTokenSymbol === 'ETH') {
         //   if (newState.destTokenSymbol === 'ETH') {
         //     newState.destTokenSymbol = 'KNC'
@@ -76,6 +77,8 @@ const exchange = (state = initState, action) => {
       for (var key in newState.errors) {
         newState.errors[key] = ""
       }
+
+      
       
       //newState.sourceAmount = ""
       //newState.destAmount = 0
@@ -96,9 +99,18 @@ const exchange = (state = initState, action) => {
       //   newState.errors.selectTokenToken = "error.select_token_token"
       //   return newState
       // }
-      newState.errors.selectSameToken = ''
+      //newState.errors.selectSameToken = ''
       newState.errors.selectTokenToken = ''
       newState.errors.sourceAmountError = ''
+
+      if (newState.isSwap){
+        if(newState.destTokenSymbol === newState.sourceTokenSymbol){
+          newState.errors.selectSameToken = "error.select_same_token"
+        }else{
+          newState.errors.selectSameToken = ""
+        }
+      }
+
       return newState
     }
     case "EXCHANGE.THROW_SOURCE_AMOUNT_ERROR": {
@@ -227,6 +239,20 @@ const exchange = (state = initState, action) => {
       if (newState.sourceAmount !== "") {
         newState.minDestAmount = converter.calculateDest(newState.sourceAmount, expectedRate).toString(10)
       }
+      //calcuale dest amoutn/ source amount
+      if (newState.isSwap){
+        if (newState.isHaveDestAmount){
+          newState.sourceAmount = expectedPrice === "0"?"0": converter.caculateSourceAmount(newState.destAmount, expectedRate, 6)
+        }else{
+          if (newState.inputFocus === 'dest'){
+            newState.sourceAmount = expectedPrice === "0"?"0": converter.caculateSourceAmount(newState.destAmount, expectedRate, 6)
+          }else{
+            newState.destAmount = expectedPrice === "0"?"0": converter.calculateDest(newState.sourceAmount, expectedRate, 6)
+          }
+        }
+        
+      }
+
       //newState.offeredRateBalance = action.payload.reserveBalance
       // newState.offeredRateExpiryBlock = action.payload.expirationBlock
       if (!newState.isEditRate) {
@@ -372,8 +398,11 @@ const exchange = (state = initState, action) => {
     }
     case "EXCHANGE.CACULATE_AMOUNT_SNAPSHOT": {
       if (newState.snapshot.errors.selectSameToken || state.snapshot.errors.selectTokenToken) return newState
-
-      newState.snapshot.sourceAmount = converter.caculateSourceAmount(state.snapshot.destAmount, state.snapshot.offeredRate, 6)
+      if(newState.isHaveDestAmount){
+        newState.snapshot.sourceAmount = converter.caculateSourceAmount(state.snapshot.destAmount, state.snapshot.offeredRate, 6)
+      }else{
+        newState.snapshot.destAmount = converter.caculateDestAmount(state.snapshot.sourceAmount, state.snapshot.offeredRate, 6)
+      }
 
       // if (newState.snapshot.inputFocus == "dest") {
       //   newState.snapshot.sourceAmount = converter.caculateSourceAmount(state.snapshot.destAmount, state.snapshot.offeredRate, 6)
@@ -700,6 +729,12 @@ const exchange = (state = initState, action) => {
     
     case "EXCHANGE.UNSET_CONFIRMING": {
       newState.isConfirming = false;
+      return newState
+    }
+    case "EXCHANGE.UPDATE_SOURCE_TOKEN":{
+      var {sourceTokenSymbol, source} = action.payload
+      newState.sourceTokenSymbol =sourceTokenSymbol
+      newState.sourceToken =source
       return newState
     }
   }

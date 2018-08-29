@@ -11,8 +11,8 @@ import constanst from "./services/constants"
 //import NotSupportPage from "./components/NotSupportPage"
 //import platform from 'platform'
 //import { blackList } from './blacklist'
-import {initSession, initParamsGlobal,haltPayment } from "./actions/globalActions"
-import {initParamsExchange } from "./actions/exchangeActions"
+import { initSession, initParamsGlobal, haltPayment, initAnalytics } from "./actions/globalActions"
+import { initParamsExchange } from "./actions/exchangeActions"
 
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import { persistor, store } from "./store"
@@ -21,7 +21,9 @@ import Modal from 'react-modal';
 import { getTranslate } from 'react-localize-redux'
 
 import * as common from "./utils/common"
-import * as validator  from "./utils/validators"
+import * as validator from "./utils/validators"
+
+import AnalyticFactory from "./services/analytics"
 
 //console.log(platform)
 //check browser compatible
@@ -33,7 +35,8 @@ import * as validator  from "./utils/validators"
 
 //  console.log("client: ", clientPlatform)
 
-var illegal = false
+
+//var illegal = false
 // for (var i = 0; i < blackList.length; i++) {
 //   if ((clientPlatform.name === blackList[i].name) && (clientPlatform.os === blackList[i].os)) {
 //     illegal = true
@@ -49,7 +52,7 @@ var illegal = false
 //   // break
 // }
 
-function initParams(appId){
+function initParams(appId) {
   //var translate = getTranslate(store.locale)
   var translate = (...args) => {
     return null
@@ -112,6 +115,8 @@ function initParams(appId){
       commissionID = common.getParameterByName("commissionId")      
     }
 
+    //this.props.dispatch(initParamsGlobal(query))
+
 
     paramForwarding = paramForwarding === "true" ||  paramForwarding === true? paramForwarding : "false"
     switch(network){
@@ -145,36 +150,21 @@ function initParams(appId){
     }
 
     
-    if (commissionID){
-      if (validator.verifyAccount(commissionID)){
-        errors["commissionID"] = translate('error.commission_address_must_be_valid') 
-          || "Commission address must be a valid ethereum address"
-      }
-    }
 
-    if (callback){
-      if (!callback.startsWith("https://")){
-        errors["callback"] = translate('error.callback_https') 
-        || "Callback must be a https location"        
-      }
-    }
 
-    if (signer){
-      var invalidAddresses = []
-      var addressArr = signer.split("_")
-      
-      addressArr.map(address => {
-        if (validator.verifyAccount(address)){
-          invalidAddresses.push(address)
-        }
-      })      
-      if (invalidAddresses.length > 0){
-        errors["signer"] = translate('error.signer_include_invalid_address') || "Signer include invalid addresses"
-      }      
-    }
 
-    if (!validator.verifyNetwork(network)) {
-      errors["network"] =  translate('error.invalid_network') || "Current network is not supported"
+
+  if (commissionID) {
+    if (validator.verifyAccount(commissionID)) {
+      errors["commissionID"] = translate('error.commission_address_must_be_valid')
+        || "Commission address must be a valid ethereum address"
+    }
+  }
+
+  if (callback) {
+    if (!callback.startsWith("https://")) {
+      errors["callback"] = translate('error.callback_https')
+        || "Callback must be a https location"
     }
     
     if (validator.anyErrors(errors)){
@@ -182,7 +172,12 @@ function initParams(appId){
     }else{
       //var tokenAddr =  BLOCKCHAIN_INFO[network].tokens[receiveToken].address
       store.dispatch(initParamsExchange(etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID));
+      
+        //init analytic
+      var analytic = new AnalyticFactory({ listWorker: ['mix'], network })
+      store.dispatch(initAnalytics(analytic))
     }
+  }
 }
 
 Modal.setAppElement('body');
@@ -191,9 +186,9 @@ window.kyberWidgetInstance = {}
 
 //console.log(document.getElementById(constanst.APP_NAME))
 window.kyberWidgetInstance.render = (widgetId) => {
-  var appId = widgetId ? widgetId: constanst.APP_NAME
+  var appId = widgetId ? widgetId : constanst.APP_NAME
 
-  if(!document.getElementById(appId)){
+  if (!document.getElementById(appId)) {
     return
   }
   // if (illegal) {
