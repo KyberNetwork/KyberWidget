@@ -4,10 +4,7 @@
 }
 html[data-kyber-widget-edition='standard'] .kyber-widget-button {
     display: inline-block;
-    width: 100%;
-    max-width: 180px;
-    padding: 10px 0;
-    text-indent: 20px;
+    padding: 10px 28px 10px 56px;
     border-radius: 4px;
     text-align: center;
     font-size: 16px;
@@ -52,6 +49,7 @@ html[data-kyber-widget-edition='etheremon'] .kyber-widget-button {
 #kyber-widget-overlay {
     background-color: rgba(0, 0, 0, .7);
     position: fixed;
+    z-index: 99999;
     overflow: auto;
     top: 0;
     left: 0;
