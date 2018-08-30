@@ -79,7 +79,7 @@ module.exports = env => {
         output: {
             path: path.join(__dirname, outputPath),
             filename: `[name].min.js?v=${timestamp}`,
-            publicPath: '/'
+            publicPath: ''
         },
         module: {
             loaders: [{
