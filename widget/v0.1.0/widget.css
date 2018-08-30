@@ -29,7 +29,7 @@ html[data-kyber-widget-edition='etheremon'] .kyber-widget-button {
     background-size: 16px;
 }
 
-html[data-kyber-widget-edition='standard'] .kyber-widget-button.light {
+html[data-kyber-widget-edition='standard'] .kyber-widget-button.kyber-widget-button--light {
     background-color: white;
     color: #222;
     box-shadow: 0 3px 7px 0 #c4c4c4;
