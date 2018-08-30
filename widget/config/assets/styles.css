@@ -258,16 +258,16 @@ label input, select, .pointer {
     display: none;
 }
 
-.container {
+.widget-container {
   display: flex;
   justify-content: space-between;
 }
 
-.container__content:first-child {
+.widget-container__content:first-child {
   width: 65%;
 }
 
-.container__content:last-child {
+.widget-container__content:last-child {
   width: 30%;
 }
 
@@ -294,15 +294,15 @@ label input, select, .pointer {
 }
 
 @media (max-width: 820px) {
-  .container {
+  .widget-container {
     display: block;
   }
 
-  .container__content {
+  .widget-container__content {
     width: 100% !important;
   }
 
-  .container__content:last-child {
+  .widget-container__content:last-child {
     margin-top: 50px;
   }
 }
