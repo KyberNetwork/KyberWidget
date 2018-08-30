@@ -2,7 +2,7 @@
 
   global.kyberWidgetOptions = (function(editionTag) {
     var editions = {
-      standard: "https://widget.kyber.network/v0.1.0",
+      standard: "https://widget.kyber.network/v0.1",
       etheremon: "https://widget-etheremon.knstats.com"
     }
  
