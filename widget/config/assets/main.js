@@ -1,4 +1,5 @@
 (function () {
+    var excludedInput = ["button_theme"];
 
     function getWidgetUrl() {
         var url = new URLSearchParams(location.search).get("widget_url");
@@ -33,14 +34,13 @@
             receiveAmount = form.receiveAmount
         var data = [], error = [], msg, name, value;
         form.querySelectorAll("input, select").forEach(function (node) {
+            name = node.getAttribute("name");
 
-            if (node.type && node.type === 'radio' && !node.checked) return;
+            if ((node.type && node.type === 'radio' && !node.checked) || excludedInput.indexOf(name) > -1) return;
 
             node.classList.remove("invalid");
             node.removeAttribute("title");
 
-            // do simple validation
-            name = node.getAttribute("name");
             if (!node.checkValidity()) {
                 msg = node.getAttribute("message") || ("Invalid input for: " + name);
                 node.setAttribute("title", msg);
@@ -120,12 +120,21 @@
             });
         });
 
-        document.querySelector(".btn-copy").addEventListener('click', function(){
-            var selector = document.querySelector(".tablink.active").getAttribute("data-tab") + " code";
-            if (!copyClipboard(selector)) {
-                alert("Copy failed. Please use browser's copy feature instead.");
-            }
-        });
+      document.querySelector(".btn-copy").addEventListener('click', function(){
+        var selector = document.querySelector(".tablink.active").getAttribute("data-tab") + " code";
+        if (!copyClipboard(selector)) {
+          alert("Copy failed. Please use browser's copy feature instead.");
+          return;
+        }
+
+        var sourceContent = document.getElementById("sourceContent");
+
+        sourceContent.classList.add("active");
+
+        setTimeout(function() {
+          sourceContent.classList.remove("active");
+        }, 3000);
+      });
     }
 
     var generateTag = debounce(function () {
@@ -138,12 +147,13 @@
         }
 
         var mode = document.querySelector("form").mode.value || "tab";
+        var buttonTheme = document.querySelector('input[name=button_theme]:checked').value;
 
         var widgetBaseUrl = getWidgetUrl();
         var url = widgetBaseUrl + "/?" + formData.data;
         var cssUrl = widgetBaseUrl + '/widget.css';
         var jsUrl = widgetBaseUrl + '/widget.js';
-        var tagHtml = "<a href='" + url + "'\nclass='kyber-widget-button' ";
+        var tagHtml = "<a href='" + url + "'\nclass='kyber-widget-button kyber-widget-button--" + buttonTheme + "' ";
         tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay by tokens'\n";
         tagHtml += "target='_blank'>Pay by tokens</a>";
 
