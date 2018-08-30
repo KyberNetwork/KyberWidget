@@ -75,6 +75,9 @@ export default class Layout extends React.Component {
     //this.props.dispatch(createNewConnectionInstance())
     // createNewConnection()
   }
+  componentWillUnmount() {
+    clearInterval(this.intervalIdle)
+  }
 
 
   // componentDidMount1(){
