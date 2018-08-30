@@ -2,7 +2,7 @@
 
     function getWidgetUrl() {
         var url = new URLSearchParams(location.search).get("widget_url");
-        return url || "https://widget.kyber.network";
+        return url || "https://widget.kyber.network/v0.1.0";
 
     }
 
@@ -149,9 +149,9 @@
         var mode = document.querySelector("form").mode.value || "tab";
 
         var widgetBaseUrl = getWidgetUrl();
-        var url = widgetBaseUrl + "/v0.1.0/?" + formData.data;
-        var cssUrl = widgetBaseUrl + '/v0.1.0/widget.css';
-        var jsUrl = widgetBaseUrl + '/v0.1.0/widget.js';
+        var url = widgetBaseUrl + "/?" + formData.data;
+        var cssUrl = widgetBaseUrl + '/widget.css';
+        var jsUrl = widgetBaseUrl + '/widget.js';
         var tagHtml = "<a href='" + url + "'\nclass='kyber-widget-button' ";
         tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay by tokens'\n";
         tagHtml += "target='_blank'>Pay by tokens</a>";

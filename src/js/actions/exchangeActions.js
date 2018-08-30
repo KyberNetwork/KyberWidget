@@ -656,3 +656,11 @@ export function updateReceiveAddress(address){
     payload: {address}
   }
 }
+
+
+export function updateSourceToken(sourceTokenSymbol, source){
+  return {
+    type: "EXCHANGE.UPDATE_SOURCE_TOKEN",
+    payload: {sourceTokenSymbol, source}
+  }
+}

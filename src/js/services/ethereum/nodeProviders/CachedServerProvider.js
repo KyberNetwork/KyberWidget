@@ -362,4 +362,30 @@ export default class CachedServerProvider extends React.Component {
         })
     }
 
+    getUserMaxCap(address) {
+        return new Promise((resolve, rejected) => {
+            fetch(BLOCKCHAIN_INFO[this.network].statEndPoint + '/cap-by-address/' + address, {
+            }).then((response) => {
+                return response.json()
+            })
+                .then((result) => {
+                    if (result.data){
+                        var val = parseFloat(result.data);
+                        if(isNaN(val)){
+                            rejected(new Error("Cannot parse data user cap"))                            
+                        }else{
+                            resolve(result)
+                        }
+                    }else{
+                        rejected(new Error("Cannot parse data user cap"))
+                    }
+                    
+                   // resolve(result)
+                })
+                .catch((err) => {
+                    rejected(err)
+                })
+        })
+    }
+
 }

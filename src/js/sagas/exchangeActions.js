@@ -1561,18 +1561,32 @@ export function* getExchangeEnable() {
 
 export function* initParamsExchange(action) {
   var state = store.getState()
-  var tokens = state.tokens.tokens
+  //var tokens = state.tokens.tokens
   var exchange = state.exchange
 
   
 
-  const { receiveAddr, receiveToken, tokenAddr, receiveAmount, network } = action.payload
+  const { receiveAddr, receiveToken, tokenAddr, receiveAmount, network, type } = action.payload
 
+  var tokens = BLOCKCHAIN_INFO[network].tokens
   //var ethereum = state.connection.ethereum
   var ethereum = new EthereumService({network})
   yield put.sync(setConnection(ethereum))
 
+  
+
   var sourceTokenSymbol = exchange.sourceTokenSymbol
+  var source = exchange.sourceToken
+
+  if (type === 'buy'){
+    if (receiveToken === 'ETH'){
+      sourceTokenSymbol = 'KNC'
+      source = tokens['KNC'].address
+      yield put.sync(actions.updateSourceToken(sourceTokenSymbol, source))
+    }
+  }
+
+  
 
   yield call(estimateGasUsed, sourceTokenSymbol, receiveToken)
 
@@ -1588,7 +1602,7 @@ export function* initParamsExchange(action) {
 
   //fetch rate
 
-  var source = exchange.sourceToken
+  
   var dest = tokenAddr
 
 
