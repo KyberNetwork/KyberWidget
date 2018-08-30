@@ -5,47 +5,96 @@ html {
     font-size: 14px;
 }
 body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #f7f7f7;
+  color: #666666;
 }
 body, form {
     margin: 0;
     padding: 0;
 }
+
+h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #222222;
+}
+
+::placeholder {
+  font-size: 12px;
+  font-style: italic;
+  color: #999999;
+}
+
 #wrapper {
-    width: 840px;
-    max-width: 100%;
-    margin: 5rem auto 280px;
-    line-height: 1.4;
+  max-width: 900px;
+  margin: 5rem auto;
+  line-height: 1.4;
+  padding: 0 1rem;
 }
-.section {
-    padding: 1rem;
-}
+
 .section-title {
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 0.6rem;
+  border-bottom: 1px solid #ccc;
+  padding: 20px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
 }
+
 .item {
-    display: block;
-    padding: 0.5rem 0;
+  padding: 17px 20px 5px;
 }
+
+.border-item {
+  border-bottom: 1px solid #ececec;
+}
+
+.flex-item {
+  display: flex;
+  padding-bottom: 17px;
+}
+
+.single-item {
+  padding: 30px 20px;
+}
+
 .item-name {
-    position: relative;
-    text-align: right;
-    display: inline-block;
-    width: 280px;
-    font-weight: bold;
-    padding-right: 2rem;
+  display: inline-block;
+  position: relative;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
+
 .item-value {
-    display: inline-block;
-    width: 500px;
-    max-width: 100%;
-    position: relative;
+  font-size: 14px;
+  color: #757575;
 }
+
+.flex-item .item-name {
+  width: 25%;
+  padding-right: 10px;
+  margin-bottom: 0;
+}
+
+.flex-item .item-value {
+  width: 75%;
+}
+
+.inline-item .item-name {
+  margin-right: 20px;
+  margin-bottom: 0;
+}
+
+.inline-item .item-value {
+  display: inline-block;
+}
+
 .item-value label {
     padding-right: 2rem;
     display: inline-block;
 }
+
 label.required, [data-widget-type='pay'] label.required-type-pay, [data-widget-type='buy'] label.required-type-buy {
     position: relative;
 }
@@ -54,11 +103,17 @@ label.required::after, [data-widget-type='pay'] label.required-type-pay::after, 
     color: #d45a58;
     position: absolute;
     top: 0;
-    right: 1rem;
+    right: -10px;
 }
+
 input[type='text'], input[type='number'], input[type='url'] {
-    padding: 0.5rem 0.5rem;
+  padding: 15px;
+  border-radius: 4px;
+  border: solid 1px #e5e5e5;
+  outline: none;
+  width: 100%;
 }
+
 input:invalid, input.invalid {
     background-color: #ffd8b8;
 }
@@ -88,14 +143,7 @@ textarea {
 .center {
     text-align: center;
 }
-.btn-copy {
-    display: block;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 6px;
-    cursor: pointer;
-}
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -104,55 +152,84 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
 }
-.source-tabs{
+
+.source-tabs {
     padding: 1.5rem 0;
     position: relative;
 }
+
+.source-tabs.active .tabcontent {
+  border-color: #31cb9e;
+}
+
+.source-tabs.active .copied-text {
+  display: block;
+}
+
 /* Style the tab */
 .tabrow {
-    position: relative;
-    overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* Style the buttons inside the tab */
 .tablink {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 4px 8px;
-    transition: 0.3s;
-    font-size: 14px;
-}
-
-/* Change background color of buttons on hover */
-.tablink:hover {
-    border-bottom: 1px solid #ccc;
-}
-
-/* Create an active/current tablink class */
-.tablink.active {
-    border-bottom: 3px solid #31CB9E;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #222222;
 }
 
 /* Style the tab content */
 .tabcontent {
-    position: absolute;
-    left: 0;
-    right: 0;
+  margin-top: 8px;
+  border-radius: 4px;
+  border: solid 1px #e5e5e5;
+  transition: all .3s;
 }
+
+.btn-copy-container {
+  text-align: right;
+}
+
+.btn-copy {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #31cb9e;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f8f8f8;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  cursor: pointer;
+}
+
+.copied-text {
+  font-size: 13px;
+  font-style: italic;
+  color: #31cb9e;
+  margin-top: 3px;
+  display: none;
+}
+
 #sourceCssItem, #sourceJsItem {
     visibility: hidden;
 }
+
 code[class*="language-"] {
-    font-size: 14px;
-    border: 0;
+  font-size: 14px;
+  border: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
+
 pre[class*="language-"] {
-    padding: 1em;
-    margin: 0;
-    height: 240px;
+  padding: 1em;
+  margin: 0;
+  background-color: transparent;
 }
+
 .disabled, input[disabled] {
     color: #b3b3b3;
     cursor: not-allowed;
@@ -169,6 +246,41 @@ label input, select, .pointer {
 }
 [data-widget-type='buy'] .hidden-type-buy {
     display: none;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container__content:first-child {
+  width: 65%;
+}
+
+.container__content:last-child {
+  width: 30%;
+}
+
+.section-appearance,
+.section-parameter {
+  border-radius: 3px;
+  background-color: #fcfcfe;
+  box-shadow: 0 2px 6px 0 rgba(184, 184, 184, 0.5);
+}
+
+.section-appearance {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+}
+
+.section-parameter {
+  padding-bottom: 40px;
+}
+
+.section-widget {
+  border-radius: 3px;
+  border: solid 1px #e5e5e5;
+  margin-bottom: 15px;
 }
 
 @media (max-width: 839px) {

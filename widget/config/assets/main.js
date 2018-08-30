@@ -120,12 +120,21 @@
             });
         });
 
-        document.querySelector(".btn-copy").addEventListener('click', function(){
-            var selector = document.querySelector(".tablink.active").getAttribute("data-tab") + " code";
-            if (!copyClipboard(selector)) {
-                alert("Copy failed. Please use browser's copy feature instead.");
-            }
-        });
+      document.querySelector(".btn-copy").addEventListener('click', function(){
+        var selector = document.querySelector(".tablink.active").getAttribute("data-tab") + " code";
+        if (!copyClipboard(selector)) {
+          alert("Copy failed. Please use browser's copy feature instead.");
+          return;
+        }
+
+        var sourceContent = document.getElementById("sourceContent");
+
+        sourceContent.classList.add("active");
+
+        setTimeout(function() {
+          sourceContent.classList.remove("active");
+        }, 3000);
+      });
     }
 
     var generateTag = debounce(function () {
