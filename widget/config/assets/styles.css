@@ -211,6 +211,16 @@ input[type="number"] {
   color: #31cb9e;
   margin-top: 3px;
   display: none;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slidein .5s forwards;
+}
+
+@keyframes slidein {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 #sourceCssItem, #sourceJsItem {
