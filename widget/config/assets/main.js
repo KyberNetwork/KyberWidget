@@ -154,8 +154,8 @@
         var cssUrl = widgetBaseUrl + '/widget.css';
         var jsUrl = widgetBaseUrl + '/widget.js';
         var tagHtml = "<a href='" + url + "'\nclass='kyber-widget-button kyber-widget-button--" + buttonTheme + "' ";
-        tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay by tokens'\n";
-        tagHtml += "target='_blank'>Pay by tokens</a>";
+        tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay with tokens'\n";
+        tagHtml += "target='_blank'>Pay with tokens</a>";
 
         var fullHtml = "<!-- Add this to the <head> tag -->\n<link rel='stylesheet' href='" + cssUrl + "'> \n\n";
         fullHtml += tagHtml;
