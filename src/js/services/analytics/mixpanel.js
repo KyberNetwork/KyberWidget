@@ -272,4 +272,24 @@ export default class Mixpanel {
             }
         }
     }
+
+    clickTermAndCondition() {
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+            try {
+                mixpanel.track("Widget_1_1_Click_To_Term_And_Codition")
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    }
+
+    clickFocusToInputJSONPws() {
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+            try {
+                mixpanel.track("Widget_3_1_Click_To_Input_Password")
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    }
 }
