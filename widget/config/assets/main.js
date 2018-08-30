@@ -3,7 +3,7 @@
 
     function getWidgetUrl() {
         var url = new URLSearchParams(location.search).get("widget_url");
-        return url || "https://widget.kyber.network/v0.1.0";
+        return url || "https://widget.kyber.network/v0.1";
 
     }
 
