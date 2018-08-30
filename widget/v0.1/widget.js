@@ -1,8 +1,16 @@
 (function (global, editionTag) {
 
+  function getCurrentScriptDir(defDir) {
+    defDir = defDir || "https://widget.kyber.network/v0.1";
+    if (!document.currentScript || !document.currentScript.src) return defDir;
+
+    var path = document.currentScript.src;
+    return path.substring(0, path.lastIndexOf("/"));
+  }
+
   global.kyberWidgetOptions = (function(editionTag) {
     var editions = {
-      standard: "https://widget.kyber.network/v0.1",
+      standard: getCurrentScriptDir(),
       etheremon: "https://widget-etheremon.knstats.com"
     }
  
