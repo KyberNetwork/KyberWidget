@@ -7,6 +7,14 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+
+var classPrfx = require('postcss-class-prefix');
+var precss = require('precss');    // for scss support
+
+var postcss = () => {
+    return [ precss, classPrfx('kyber-widget-', { ignore: [/some-class-/] }) ];
+  }
+
 module.exports = env => {
 
     //const outputPath = env.chain ? 'dist/' + env.chain : '/src';
@@ -93,7 +101,7 @@ module.exports = env => {
             },
                 {
                     test: /\.css$/,
-                    use: ['style-loader', 'css-loader'],
+                    use: ['style-loader', 'css-loader', 'postcss'],
                 },
                 {
                     test: /\.scss$/,
@@ -102,7 +110,8 @@ module.exports = env => {
                         fallback: 'style-loader',
                         use: [
                             {loader: 'css-loader', options: {minimize: true}},
-                            'sass-loader'
+                            'sass-loader',
+                            'postcss'
                         ]
                     })
                 },
@@ -122,3 +131,5 @@ module.exports = env => {
         plugins: plugins
     }
 };
+
+
