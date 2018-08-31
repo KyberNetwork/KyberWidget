@@ -64,7 +64,9 @@ export default class ImportAccount extends React.Component {
   }
 
   closeImportAccount() {
+    console.log("close import: ", this.props.analytics)
     this.props.dispatch(closeImportAccount());
+    this.props.analytics.callTrack("clickBackToImportScreen")
   }
 
   backToFirstStep() {

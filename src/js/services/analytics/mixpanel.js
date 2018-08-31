@@ -292,4 +292,34 @@ export default class Mixpanel {
             }
         }
     }
+
+    clickBackToImportScreen() {
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+            try {
+                mixpanel.track("Widget_2_2_Click_Back_To_Import_Wallet_Screen")
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    }
+
+    clickChooseNewPathColdWallet(path, walletType) {
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+            try {
+                mixpanel.track("Widget_2_3_Click_Choose_New_Path_Cold_Wallet", {path: path, walletType: walletType})
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    }
+
+    clickFocusToInPutNewPathColdWallet(walletType) {
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+            try {
+                mixpanel.track("Widget_2_3_Click_Input_New_Path_Cold_Wallet", {walletType: walletType})
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    }
 }
