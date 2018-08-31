@@ -1,10 +1,15 @@
 (function () {
-    var excludedInput = ["button_theme"];
+  var excludedInput = ["button_theme", "version"];
+  var versionElement = document.querySelector("select[name=version]");
 
-    function getWidgetUrl() {
-        var url = new URLSearchParams(location.search).get("widget_url");
-        return url || "https://widget.kyber.network/v0.1";
-    }
+  function getUrlParam(name) {
+    return new URLSearchParams(location.search).get(name);
+  }
+
+  function getWidgetUrl() {
+    var url = getUrlParam("widget_url");
+    return url || "https://widget.kyber.network/v" + (getUrlParam("version") || "0.1");
+  }
 
     // Returns a function, that, as long as it continues to be invoked, will not
     // be triggered. The function will be called after it stops being called for
@@ -134,6 +139,16 @@
           sourceContent.classList.remove("active");
         }, 3000);
       });
+
+
+      versionElement.addEventListener("change", function() {
+        var version = versionElement.options[versionElement.selectedIndex].value;
+        var params = new URLSearchParams(location.search);
+
+        params.set("version", version);
+
+        window.location.search = params.toString();
+      });
     }
 
     var generateTag = debounce(function () {
@@ -175,22 +190,33 @@
 
     function insertWidgetFiles() {
       var widgetUrl = getWidgetUrl();
-      var stringByDate = new Date().valueOf();
 
       var head = document.head;
       var link = document.createElement("link");
       link.type = "text/css";
       link.rel = "stylesheet";
-      link.href = widgetUrl + "/widget.css?v=" + stringByDate;
+      link.href = widgetUrl + "/widget.css";
       head.appendChild(link);
 
       var body = document.body;
       var script = document.createElement("script");
-      script.src = widgetUrl + "/widget.js?v=" + stringByDate;
+      script.src = widgetUrl + "/widget.js";
       body.appendChild(script);
     }
 
-    insertWidgetFiles();
-    generateTag();
-    wireEvents();
+    function selectCurrentVersion() {
+      var widgetUrlParam = getUrlParam("widget_url");
+
+      if (widgetUrlParam) {
+        document.getElementById("version-selector").style.display = "none";
+      } else {
+        var version = getUrlParam("version");
+        versionElement.value = version || "0.1";
+      }
+    }
+
+  insertWidgetFiles();
+  generateTag();
+  wireEvents();
+  selectCurrentVersion();
 })();
