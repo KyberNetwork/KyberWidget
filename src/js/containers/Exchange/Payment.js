@@ -703,6 +703,7 @@ export default class Payment extends React.Component {
                   autoComplete="off"
                   spellCheck="false"
                   onKeyPress={this.resetPasswordError}
+                  onFocus={(e) => this.props.global.analytics.callTrack("clickFocusToInputJSONPws")}
                 />
                 <div className="import-account-content__private-key-toggle" onClick={this.toogleShowPassword}></div>
                 <div className="import-account-content__private-key-icon"></div>

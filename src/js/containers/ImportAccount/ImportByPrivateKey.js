@@ -74,7 +74,7 @@ export default class ImportByPrivateKey extends React.Component {
         onHandleSubmit={this.handleSubmit.bind(this)}
         onCloseImportAccount={this.props.onCloseImportAccount}
         onSubmit={this.submit}
-        onToggleShowPw={this.toggleShowPw}
+        onToggleShowPw={this.toggleShowPw.bind(this)}
         pKeyError={this.props.account.pKey.error}
         translate={this.props.translate}
         analytics={this.props.analytics}
