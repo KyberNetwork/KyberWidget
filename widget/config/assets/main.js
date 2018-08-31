@@ -175,17 +175,18 @@
 
     function insertWidgetFiles() {
       var widgetUrl = getWidgetUrl();
+      var stringByDate = new Date().valueOf();
 
       var head = document.head;
       var link = document.createElement("link");
       link.type = "text/css";
       link.rel = "stylesheet";
-      link.href = widgetUrl + "/widget.css";
+      link.href = widgetUrl + "/widget.css?v=" + stringByDate;
       head.appendChild(link);
 
       var body = document.body;
       var script = document.createElement("script");
-      script.src = widgetUrl + "/widget.js";
+      script.src = widgetUrl + "/widget.js?v=" + stringByDate;
       body.appendChild(script);
     }
 
