@@ -20,7 +20,7 @@ h1 {
   color: #222222;
 }
 
-::placeholder {
+.widget-container input::placeholder {
   font-size: 12px;
   font-style: italic;
   color: #999999;

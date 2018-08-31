@@ -4,7 +4,6 @@
     function getWidgetUrl() {
         var url = new URLSearchParams(location.search).get("widget_url");
         return url || "https://widget.kyber.network/v0.1";
-
     }
 
     // Returns a function, that, as long as it continues to be invoked, will not
@@ -174,8 +173,23 @@
 
     }, 50, false);
 
+    function insertWidgetFiles() {
+      var widgetUrl = getWidgetUrl();
 
+      var head = document.head;
+      var link = document.createElement("link");
+      link.type = "text/css";
+      link.rel = "stylesheet";
+      link.href = widgetUrl + "/widget.css";
+      head.appendChild(link);
+
+      var body = document.body;
+      var script = document.createElement("script");
+      script.src = widgetUrl + "/widget.js";
+      body.appendChild(script);
+    }
+
+    insertWidgetFiles();
     generateTag();
     wireEvents();
-
 })();
