@@ -41,7 +41,7 @@
             node.classList.remove("invalid");
             node.removeAttribute("title");
 
-            if (!node.checkValidity()) {
+            if (!node.hasAttribute("data-type-" + type) && !node.checkValidity()) {
                 msg = node.getAttribute("message") || ("Invalid input for: " + name);
                 node.setAttribute("title", msg);
                 error.push(msg);
@@ -140,20 +140,21 @@
     var generateTag = debounce(function () {
         var formData = grabForm();
         if (formData.error && formData.error.length) {
-            document.getElementById("widget").innerHTML = "<p class='error'>" +
-                formData.error.join("<br>") + "</p>";
+            document.getElementById("widget").innerHTML = "<div class='error'>" +
+                formData.error.join("<br>") + "</div>";
             document.getElementById("sourceHtml").textContent = "";
             return;
         }
 
         var mode = document.querySelector("form").mode.value || "tab";
         var buttonTheme = document.querySelector('input[name=button_theme]:checked').value;
+        buttonTheme = buttonTheme != "dark"  ? " kyber-widget-button--" + buttonTheme : '';
 
         var widgetBaseUrl = getWidgetUrl();
         var url = widgetBaseUrl + "/?" + formData.data;
         var cssUrl = widgetBaseUrl + '/widget.css';
         var jsUrl = widgetBaseUrl + '/widget.js';
-        var tagHtml = "<a href='" + url + "'\nclass='kyber-widget-button kyber-widget-button--" + buttonTheme + "' ";
+        var tagHtml = "<a href='" + url + "'\nclass='kyber-widget-button" + buttonTheme + "' ";
         tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay with tokens'\n";
         tagHtml += "target='_blank'>Pay with tokens</a>";
 
