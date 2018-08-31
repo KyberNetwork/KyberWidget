@@ -35,7 +35,7 @@
         var type = form.type.value || "pay";
         var receiveAddr = form.receiveAddr,
             receiveToken = form.receiveToken,
-            receiveAmount = form.receiveAmount
+            buttonText = "Swap tokens";
         var data = [], error = [], msg, name, value;
         form.querySelectorAll("input, select").forEach(function (node) {
             name = node.getAttribute("name");
@@ -74,6 +74,7 @@
         // some integration checks
 
         if (type === "pay") {
+            buttonText = "Pay with tokens";
             if (!receiveAddr.value) {
                 receiveAddr.classList.add("invalid");
                 msg = "Recipient Address is required for widget type of 'Pay'.";
@@ -89,6 +90,7 @@
         }
 
         if (type === "buy") {
+            buttonText = "Buy token";
             if (!receiveToken.value) {
                 receiveToken.classList.add("invalid");
                 msg = "Receiving Token Symbol is required for widget type of 'Buy'.";
@@ -99,7 +101,8 @@
 
         return {
             error: error,
-            data: data.join("&")
+            data: data.join("&"),
+            buttonText: buttonText
         }
     }
 
@@ -170,7 +173,7 @@
         var jsUrl = widgetBaseUrl + '/widget.js';
         var tagHtml = "<a href='" + url + "'\nclass='kyber-widget-button" + buttonTheme + "' ";
         tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay with tokens'\n";
-        tagHtml += "target='_blank'>Pay with tokens</a>";
+        tagHtml += "target='_blank'>" + formData.buttonText + "</a>";
 
         var fullHtml = "<!-- Add this to the <head> tag -->\n<link rel='stylesheet' href='" + cssUrl + "'> \n\n";
         fullHtml += tagHtml;
