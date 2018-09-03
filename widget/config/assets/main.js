@@ -198,12 +198,12 @@
       var link = document.createElement("link");
       link.type = "text/css";
       link.rel = "stylesheet";
-      link.href = widgetUrl + "/widget.css";
+      link.href = widgetUrl + "/widget.css?t=" + Date.now();
       head.appendChild(link);
 
       var body = document.body;
       var script = document.createElement("script");
-      script.src = widgetUrl + "/widget.js";
+      script.src = widgetUrl + "/widget.js?t=" + Date.now();
       body.appendChild(script);
     }
 
