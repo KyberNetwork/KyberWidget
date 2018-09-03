@@ -152,7 +152,7 @@ export default class Exchange extends React.Component {
       // var headerTransaction = <HeaderTransaction page="exchange" />
 
       return (
-        <div class="frame exchange-frame">
+        <div class="k-frame exchange-frame">
           <div className="row">
             {exchangeBody}
           </div>

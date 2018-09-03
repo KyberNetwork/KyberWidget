@@ -30,7 +30,7 @@ const TransferForm = (props) => {
   }
   var render = (
     <div id="transfer-screen">
-      <div class="frame">
+      <div class="k-frame">
         <div className="transfer-detail grid-x">
           <div className="cell small-12 large-9 transfer-col transfer-col-1">
 

@@ -479,7 +479,7 @@ export default class Payment extends React.Component {
     var haveProductAvatar = this.props.exchange.productAvatar && this.props.exchange.productAvatar !== "" ? true : false
 
     return (
-      <div id="exchange" className={"frame payment_confirm" + classError}>
+      <div id="exchange" className={"k-frame payment_confirm" + classError}>
 
         {/* <div className="payment-gateway__step-title payment-gateway__step-title--3">
           {this.props.translate("transaction.confirm_transaction") || "Confirm Transaction"}
@@ -502,7 +502,7 @@ export default class Payment extends React.Component {
               <div className="k-title">
                 {this.props.translate("transaction.tx_fee") || "Fee"}
               </div>
-              <div className="content">
+              <div className="k-content">
                 <div>
                   <span>{this.props.translate("transaction.gas_price") || "Gas price"}:</span>
                   <span>
@@ -537,7 +537,7 @@ export default class Payment extends React.Component {
                 <div className="k-title">
                   {this.props.translate("transaction.you_about_to_buy") || "YOU ARE ABOUT TO BUY"}
                 </div>
-                <div className="content">
+                <div className="k-content">
                                     
                   
                     <div>
@@ -557,7 +557,7 @@ export default class Payment extends React.Component {
               <div className="k-title">
                 {this.props.translate("transaction.exchange_paywith") || "PAY WITH"}
               </div>
-              <div className="content">
+              <div className="k-content">
                 <div>
                   <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
                   {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
@@ -604,7 +604,7 @@ export default class Payment extends React.Component {
                 <div className="k-title">
                   {this.props.translate("transaction.you_about_to_pay") || "YOU ARE ABOUT TO PAY"}
                 </div>
-                <div className="content" className={`${haveProductAvatar ? "kyber-product-avatar" : ""} ${haveProductName ? "content kyber-product-name" : "content"}`}>
+                <div className="k-content" className={`${haveProductAvatar ? "kyber-product-avatar" : ""} ${haveProductName ? "k-content kyber-product-name" : "k-content"}`}>
                   {haveProductAvatar && <div className="kyber-pAvatar">
                     <img src={this.props.exchange.productAvatar} />
                   </div>}
