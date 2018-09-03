@@ -45,9 +45,9 @@ class ApproveModal extends React.Component {
     //var haveError = this.props.errors ? true : false
     return (
       <div className="approve-modal">
-        <div className="title">{ this.props.translate("modal.approve_token") || "Approve token"}</div>
+        <div className="k-title">{ this.props.translate("modal.approve_token") || "Approve token"}</div>
         <a className="x" onClick={(e) => this.props.onCancel(e)}>&times;</a>
-        <div className="content with-overlap">
+        <div className="k-content with-overlap">
           <div className="row">
             <div>
               <div>

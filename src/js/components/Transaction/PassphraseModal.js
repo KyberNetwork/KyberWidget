@@ -32,7 +32,7 @@ const PassphraseModal = (props) => {
     <div >
       <a className="x" onClick={() => props.onCancel()}>&times;</a>
       <div className="content with-overlap">
-        <div className="title">{props.title}</div>
+        <div className="k-title">{props.title}</div>
         <div className="row">
           <div>
             <div>

@@ -663,7 +663,7 @@ $divider-color: darken($title-background-color, 5);
   margin: 0 auto;
   @include screen-max-width(medium) {
     display: block;
-    .container {
+    .k-container {
       padding: 10px 20px 30px;
     }
   }

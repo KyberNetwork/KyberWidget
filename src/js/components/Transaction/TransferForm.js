@@ -48,7 +48,7 @@ const TransferForm = (props) => {
               </div>
   )}
 
-            <div className="title main-title">{props.translate("transaction.transfer") || "Transfer"}</div>
+            <div className="k-title main-title">{props.translate("transaction.transfer") || "Transfer"}</div>
             <div className="grid-x">
               <div className="cell small-12 medium-7">
                 <div className={props.errors.destAddress !== '' ? "error" : ""}>

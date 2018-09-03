@@ -499,7 +499,7 @@ export default class Payment extends React.Component {
               </div>
             </div>
             <div className="payment-info">
-              <div className="title">
+              <div className="k-title">
                 {this.props.translate("transaction.tx_fee") || "Fee"}
               </div>
               <div className="content">
@@ -534,7 +534,7 @@ export default class Payment extends React.Component {
             <div className="payment-info">
 
               <div>
-                <div className="title">
+                <div className="k-title">
                   {this.props.translate("transaction.you_about_to_buy") || "YOU ARE ABOUT TO BUY"}
                 </div>
                 <div className="content">
@@ -554,7 +554,7 @@ export default class Payment extends React.Component {
             </div>
 
             <div className="payment-info">
-              <div className="title">
+              <div className="k-title">
                 {this.props.translate("transaction.exchange_paywith") || "PAY WITH"}
               </div>
               <div className="content">
@@ -601,7 +601,7 @@ export default class Payment extends React.Component {
             <div className="payment-info">
 
               <div>
-                <div className="title">
+                <div className="k-title">
                   {this.props.translate("transaction.you_about_to_pay") || "YOU ARE ABOUT TO PAY"}
                 </div>
                 <div className="content" className={`${haveProductAvatar ? "kyber-product-avatar" : ""} ${haveProductName ? "content kyber-product-name" : "content"}`}>
@@ -632,10 +632,10 @@ export default class Payment extends React.Component {
             </div>
 
             <div className="payment-info">
-              <div className="title">
+              <div className="k-title">
                 {this.props.translate("transaction.exchange_paywith") || "PAY WITH"}
               </div>
-              <div className="content">
+              <div className="k-content">
                 <div>
                   <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
                   {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
