@@ -72,7 +72,9 @@ export function* submitCallback(hash){
         if (!params.network){
           params.network = BLOCKCHAIN_INFO[exchange.network].networkName;
         }
-        commonFunc.postUrlEncoded(submitUrl, params, 'POST')
+
+        yield call(submitData, submitUrl, params, 'POST', 3000)
+      //  commonFunc.postUrlEncoded(submitUrl, params, 'POST')
 
         // const response = yield call(fetch, submitUrl, {
         //     method: 'POST',
@@ -91,3 +93,50 @@ export function* submitCallback(hash){
       
     }
 }
+
+
+export function* submitData(path, params, method, timeout){
+  var maxTry = 3
+  console.log("retry_callback")
+  for (var i = 0; i < maxTry; i++){
+    console.log("callback_times: " + i)
+    try{
+       var response = yield call(commonFunc.submitUrlEncoded, path, params, method, timeout)
+       if (response.success){
+         return true
+       }
+    }catch(e){
+      console.log(e)    
+    }
+    
+    try{
+      var response = yield call(commonFunc.submitForm, path, params, method, timeout)
+      if (response.success){
+        return true
+      }
+    }catch(e){
+      console.log(e)    
+    }
+
+    try{
+      var response = yield call(commonFunc.submitPayloadOption, path, params, method, timeout)
+      if (response.success){
+        return true
+      }
+    }catch(e){
+      console.log(e)    
+    }
+
+    try{
+      var response = yield call(commonFunc.submitPayload, path, params, method, timeout)
+      if (response.success){
+        return true
+      }
+    }catch(e){
+      console.log(e)    
+    }
+
+  }
+  return false
+}
+

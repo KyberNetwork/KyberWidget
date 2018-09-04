@@ -119,7 +119,7 @@ export function getCookie(cname) {
   return "";
 }
 
-export function postForm(path, params, method) {
+export function submitForm(path, params, method, maxTimeout) {
   method = method || "post"; // Set method to post by default if not specified.
 
   // The rest of this code assumes you are not using a library.
@@ -139,11 +139,39 @@ export function postForm(path, params, method) {
       }
   }
 
-  document.body.appendChild(form);
-  form.submit();
+  //document.body.appendChild(form);
+
+
+  var xhr = new XMLHttpRequest();
+  xhr.open(method, path); 
+
+  var isTimeout = false;
+  return new Promise((resolve, rejected)=>{
+    xhr.onload = function(event){ 
+      if (isTimeout){
+        rejected(new Error("Timeout error"))
+      }
+      if (this.readyState == 4 && this.status == 200) {
+        resolve(xhr.responseText)
+      }else{
+        rejected(new Error("Server is not response"))
+      }
+      ///alert("The server responded with: " + event.target.response); 
+    }
+
+    xhr.ontimeout = function () { isTimeout = true; }
+  })
+  
+  xhr.timeout = maxTimeout
+  var formData = new FormData(form); 
+  xhr.send(formData);
+
+  
+
+  //form.submit();
 }
 
-export function postUrlEncoded(path, params, method) {
+export function submitUrlEncoded(path, params, method, maxTimeout) {
   var formBody = [];
   for (var property in params) {
     var encodedKey = encodeURIComponent(property);
@@ -152,11 +180,42 @@ export function postUrlEncoded(path, params, method) {
   }
   formBody = formBody.join("&");
 
-  fetch(path, {
+  return timeout(maxTimeout, fetch(path, {
     method: method,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     },
     body: formBody
+  }).then(response => response.json()))
+}
+
+export function  submitPayloadOption(path, params, method, maxTimeout){
+  return timeout(maxTimeout, fetch(path, {
+        method: method,
+        // headers: {
+        //   'Accept': 'application/json',
+        //   'Content-Type': 'application/json'
+        // },
+        body: JSON.stringify(params)
+    }).then(response => response.json()))   
+}
+
+export function  submitPayload(path, params, method, maxTimeout){
+  return timeout(maxTimeout, fetch(path, {
+        method: method,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(params)
+    }).then(response => response.json()))   
+}
+
+export function timeout(ms, promise) {
+  return new Promise(function (resolve, reject) {
+      setTimeout(function () {
+          reject(new Error("timeout"))
+      }, ms)
+      promise.then(resolve, reject)
   })
 }
