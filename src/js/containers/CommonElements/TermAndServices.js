@@ -18,7 +18,7 @@ export default class TermAndServices extends React.Component {
 
   content = () => {
     return (<div>
-      <div class="title text-center">{this.props.translate("terms.title") || "KyberWallet - Terms of Use"}</div>
+      <div class="k-title text-center">{this.props.translate("terms.title") || "KyberWallet - Terms of Use"}</div>
       <a class="x" onClick={this.onRequestClose}>&times;</a>
       <div class="content">
         <div class="row">

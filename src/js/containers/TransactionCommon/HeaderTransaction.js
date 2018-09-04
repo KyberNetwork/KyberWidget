@@ -102,7 +102,7 @@ export default class HeaderTransaction extends React.Component {
                         <a>{this.props.page === "exchange" ? swap : transfer}</a>
                     </div>
                 </div>
-                <h1 class="title frame-tab">
+                <h1 class="k-title frame-tab">
                     <div className="back-home" onClick={(e) => this.handleEndSession(e)}>
                         <img src={require("../../../assets/img/arrow_left.svg")} className="back-arrow" />
                         <span>{this.props.translate("transaction.back") || "Back"}</span>
