@@ -61,7 +61,7 @@ const AccountBalanceLayout = (props) => {
   return (
     <div id="balance-account">
       <div className="balance-header">
-        <div className="title">
+        <div className="k-title">
           {props.translate("address.my_balance") || "My balance"}
         </div>
         {props.showBalance && (
