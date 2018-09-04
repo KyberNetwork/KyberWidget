@@ -18,7 +18,7 @@ const PaymentHeader = (props) => {
           {/* KyberWidget */}
         </div>
       </div>
-      <div className="step-breadcrumb container">
+      <div className="step-breadcrumb k-container">
         {props.type === 'swap' && (
           <div className={getClass(1)}>1. {props.translate("payment_header.step_swap") || "Swap"}</div>
         )}

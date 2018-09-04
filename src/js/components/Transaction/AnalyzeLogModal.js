@@ -26,8 +26,8 @@ const AnalyzelogModal = (props) => {
 
     const content = (
         <div>
-            <div class="title text-center">{props.title ? props.title : props.translate("transaction.analyze_error") || "Failed reasons"}</div><a class="x" onClick={props.onRequestClose}>&times;</a>
-            <div class="content">
+            <div class="k-title text-center">{props.title ? props.title : props.translate("transaction.analyze_error") || "Failed reasons"}</div><a class="x" onClick={props.onRequestClose}>&times;</a>
+            <div class="k-content">
                 <div class="row">
                     <div class="column">
                         <div class="reason-analyze">{listErrors || loading}</div>

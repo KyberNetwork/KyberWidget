@@ -49,7 +49,7 @@ class ConfirmTransferModal extends React.Component {
           <div className="row">
             <div>
               <div>
-                <div className="title">{this.props.title}</div>
+                <div className="k-title">{this.props.title}</div>
                 {this.props.recap}
                 <div className="gas-configed">
                 <div>{this.props.translate("transaction.included") || 'Included'}</div>
