@@ -105,23 +105,28 @@ function* checkMaxCap(address) {
   var exchange = state.exchange
   var tokens = state.tokens.tokens
   var ethereum = state.connection.ethereum
+  var global = state.global
   const translate = getTranslate(state.locale)
-  var sourceTokenSymbol = exchange.sourceTokenSymbol
 
-  if (exchange.sourceTokenSymbol === exchange.destTokenSymbol) {
+  if (global.params.mode === 'popup') {
+    yield put(exchangeActions.throwErrorExchange("exceed_cap", ""))
     return
   }
-
-  var maxCapOneExchange = yield call([ethereum, ethereum.call], "getMaxCapAtLatestBlock", address)
-  yield put(exchangeActions.setCapExchange(maxCapOneExchange))
-
-  if (+maxCapOneExchange == 0) {
-    var linkReg = 'https://kybernetwork.zendesk.com'
-    yield put(exchangeActions.thowErrorNotPossessKGt(translate("error.not_possess_kgt", { link: linkReg }) || "There seems to be a problem with your address, please contact us for more details"))
+  
+  var sourceTokenSymbol = exchange.sourceTokenSymbol
+  if (exchange.sourceTokenSymbol === exchange.destTokenSymbol) {
+    yield put(exchangeActions.throwErrorExchange("exceed_cap", ""))
     return
   } else {
     yield put(exchangeActions.thowErrorNotPossessKGt(""))
   }
+  
+  try {
+    var result = yield call([ethereum, ethereum.call], "getUserMaxCap", address)
+    if (!result.success || (result.kyc !== "false" && result.kyc !== false)) {
+      yield put(exchangeActions.throwErrorExchange("exceed_cap", ""))
+      return
+    }
 
   var destAmount = converter.toEther(exchange.monsterInETH)
   var minConversionRate = exchange.minConversionRate
@@ -162,6 +167,10 @@ function* checkMaxCap(address) {
     yield put(exchangeActions.throwErrorExchange("exceed_cap", ""))
   }
 
+}
+catch(e){
+  console.log(e)
+}
 }
 
 
@@ -414,7 +423,7 @@ export function* importNewAccount(action) {
     //check whether user need approve
     yield call(checkApproveAccount, address, type)
 
-    yield call(checkMaxCap, address)
+    //yield call(checkMaxCap, address)
 
     yield call(checkBalance, address)
 
@@ -490,9 +499,9 @@ export function* importMetamask(action) {
 function* watchCoinbase(web3Service, address, networkId) {
   while (true) {
     var state = store.getState()
-    if (!commonFunc.checkComponentExist(state.global.params.appId)){
+    if (!commonFunc.checkComponentExist(state.global.params.appId)) {
       return
-    }    
+    }
     try {
       yield call(delay, 500)
       const coinbase = yield call([web3Service, web3Service.getCoinbase])

@@ -60,7 +60,7 @@
       var isFrame = document.getElementById("modeFrame").checked;
       var mode = "tab";
       if (isFrame) mode = "iframe";
-      if (isPopup) mode = "dom";
+      if (isPopup) mode = "popup";
       var callbackUrl = document.getElementById("callbackUrl").value || "";
 
       document.querySelectorAll(".action").forEach(function (tag) {

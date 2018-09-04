@@ -79,6 +79,13 @@
     &:hover {
       background-color: $theme-color-default-light;
     }
+    &--back {
+      color: white;
+      background-color: #666666;
+      &:hover {
+        background-color: #666666;
+      }
+    }
   }
 
   &__background {

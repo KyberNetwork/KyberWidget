@@ -1,6 +1,13 @@
 import React from "react"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
+import { connect } from "react-redux"
 import { getTranslate } from 'react-localize-redux';
+
+@connect((store, props) => {
+  return {
+    analytics: store.global.analytics
+  }
+})
 
 export default class PathSelector extends React.Component {
   constructor(props) {
@@ -24,6 +31,7 @@ export default class PathSelector extends React.Component {
   selectItem = (e, index) => {
     var path = this.state.list[index].path
     var desc = this.state.list[index].desc
+    this.props.analytics.callTrack("clickChooseNewPathColdWallet", path, this.state.walletType)
     this.setState({
       focus: { name: path },
       open: false,
@@ -69,7 +77,7 @@ export default class PathSelector extends React.Component {
               ) : (
                 <div className="input-custom-path">
                   <div>
-                    <input id="form-input-custom-path" type="text" name="customPath" defaultValue={dPath.defaultP}  placeholder="Your Custom Path" />
+                    <input id="form-input-custom-path" type="text" name="customPath" defaultValue={dPath.defaultP}  placeholder="Your Custom Path" onFocus={(e) => this.props.analytics.callTrack("clickFocusToInPutNewPathColdWallet", this.state.walletType)} />
                     <img src={require('../../../assets/img/angle-right.svg')} onClick={(e) => {
                       if (dPath.path === this.props.currentDPath) {
                         this.setState({

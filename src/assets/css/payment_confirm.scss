@@ -38,7 +38,7 @@
         margin-top: 30px;
         font-size: 14px;
         color: #666666;
-        .title{
+        .k-title{
             color: #222;
             text-transform: uppercase;
             font-size: 14px;
@@ -58,7 +58,7 @@
                     width: unset;
                 }
             }
-            .content>div {
+            .k-content>div {
                 >span:first-child {
                     width: 115px;
                 }
@@ -67,7 +67,7 @@
                 }
             }
         }
-        .content{
+        .k-content{
             color: #666;
             >div{
                 margin-top: 7px;

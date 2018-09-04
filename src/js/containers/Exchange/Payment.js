@@ -483,7 +483,7 @@ export default class Payment extends React.Component {
     var haveProductAvatar = this.props.exchange.productAvatar && this.props.exchange.productAvatar !== "" ? true : false
 
     return (
-      <div id="exchange" className={"frame payment_confirm" + classError}>
+      <div id="exchange" className={"k-frame payment_confirm" + classError}>
 
         {/* <div className="payment-gateway__step-title payment-gateway__step-title--3">
           {this.props.translate("transaction.confirm_transaction") || "Confirm Transaction"}
@@ -496,14 +496,14 @@ export default class Payment extends React.Component {
         </div>
 
         <div className="payment-info">
-          <div className="title">
+          <div className="k-title">
             {this.props.translate("transaction.you_about_to_pay") || "YOU ARE ABOUT TO PAY"}
           </div>
           <div className={this.props.exchange.monsterAvatar && this.props.exchange.monsterAvatar != "" ? "monster-avatar" : "" }>
             {this.props.exchange.monsterAvatar &&  this.props.exchange.monsterAvatar != "" ?
               <div className="kyber-avatar"><img src={this.props.exchange.monsterAvatar} /></div> : ""
             }
-            <div className="content">
+            <div className="k-content">
               <div>
                 <span>{this.props.translate("transaction.monster_id") || "Monster Id"}:</span>
                 <span>
@@ -530,23 +530,25 @@ export default class Payment extends React.Component {
         </div>
 
         <div className="payment-info">
-          <div className="title">
+          {/* <div className="title">
             {this.props.translate("transaction.exchange_paywith") || "PAY WITH"}
-          </div>
-          <div className="content">
-            <div>
+          </div> */}
+          <div className="k-content">
+            {/* <div>
               <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
                 <span>{converter.caculateSourceAmount( converter.toEther(this.props.exchange.monsterInETH), this.props.exchange.expectedRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
-            </div>
+            </div> */}
 
             <div className="payment-info">
-              <div className="title">
+              <div className="k-title">
                 {this.props.translate("transaction.exchange_paywith") || "PAY WITH"}
               </div>
-              <div className="content">
+              <div className="k-content">
                 <div>
                   <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
-                  {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
+                  <span>{converter.caculateSourceAmount( converter.toEther(this.props.exchange.monsterInETH), this.props.exchange.expectedRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
+
+                  {/* {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
                     <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
                   )}
                   {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol && (
@@ -554,7 +556,8 @@ export default class Payment extends React.Component {
                   )}
                   {!this.props.exchange.isHaveDestAmount && (
                     <span>{('' + this.props.exchange.sourceAmount).length > 8 ? converter.roundingNumber(this.props.exchange.sourceAmount) : this.props.exchange.sourceAmount} {this.props.exchange.sourceTokenSymbol}</span>
-                  )}
+                  )} */}
+
                 </div>
                 <div>
                   <span>{this.props.translate("transaction.gas_price") || "Gas price"}:</span>
@@ -612,6 +615,7 @@ export default class Payment extends React.Component {
                   autoComplete="off"
                   spellCheck="false"
                   onKeyPress={this.resetPasswordError}
+                  onFocus={(e) => this.props.global.analytics.callTrack("clickFocusToInputJSONPws")}
                 />
                 <div className="import-account-content__private-key-toggle" onClick={this.toogleShowPassword}></div>
                 <div className="import-account-content__private-key-icon"></div>

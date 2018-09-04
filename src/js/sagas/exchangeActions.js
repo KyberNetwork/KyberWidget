@@ -1650,7 +1650,7 @@ export function* initParamsExchange(action) {
   
 
   var sourceTokenSymbol = exchange.sourceTokenSymbol
-  var sourceAddr = tokens[sourceTokenSymbol].address
+  //var sourceAddr = tokens[sourceTokenSymbol].address
 
 
   //get ethremon price 

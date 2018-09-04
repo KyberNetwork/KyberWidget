@@ -130,6 +130,7 @@ function initParams(appId) {
     }
     
     query.appId = appId
+    query.network = network
     store.dispatch(initParamsGlobal(query))
     
 
@@ -166,6 +167,7 @@ function initParams(appId) {
       errors["callback"] = translate('error.callback_https')
         || "Callback must be a https location"
     }
+  }
     
     if (validator.anyErrors(errors)){
       store.dispatch(haltPayment(errors))
@@ -177,7 +179,7 @@ function initParams(appId) {
       var analytic = new AnalyticFactory({ listWorker: ['mix'], network })
       store.dispatch(initAnalytics(analytic))
     }
-  }
+  
 }
 
 Modal.setAppElement('body');

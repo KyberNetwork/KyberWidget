@@ -48,7 +48,7 @@ $divider-color: darken($title-background-color, 5);
       }
     }
   }
-  .title {
+  .k-title {
     font-size: 1.8rem;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -71,7 +71,7 @@ $divider-color: darken($title-background-color, 5);
       margin: 0;
     }
   }
-  .content {
+  .k-content {
     // padding: 0 50px;
     // padding: 20px 10px;
     // @include breakpoint(medium) {
@@ -259,7 +259,7 @@ $divider-color: darken($title-background-color, 5);
   padding-right: 0 !important;
   padding-bottom: 0 !important;
   
-  .title {
+  .k-title {
     font-weight: 600;
     line-height: 0.8;
     letter-spacing: -0.2px;
@@ -592,7 +592,7 @@ $divider-color: darken($title-background-color, 5);
     }
   }
   .approve-modal{
-    .title{
+    .k-title{
       padding-left: 50px;
       text-align: left;
       @include screen-max-width(medium) {
@@ -663,12 +663,12 @@ $divider-color: darken($title-background-color, 5);
   margin: 0 auto;
   @include screen-max-width(medium) {
     display: block;
-    .container {
+    .k-container {
       padding: 10px 20px 30px;
     }
   }
 
-  .title {
+  .k-title {
     font-weight: 600;
     line-height: 0.8;
     letter-spacing: -0.2px;
@@ -696,7 +696,7 @@ $divider-color: darken($title-background-color, 5);
       }
     }
 
-    .title {
+    .k-title {
       margin: 0;
     }
   }
