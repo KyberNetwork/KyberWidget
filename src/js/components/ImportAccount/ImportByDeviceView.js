@@ -92,7 +92,7 @@ const ImportByDeviceView = (props) => {
       }
 
       <div className={"import-account-content__button-container"}>
-        <div className={"import-account-content__button payment-gateway__button"} onClick={props.onCloseImportAccount}>
+        <div className={"import-account-content__button payment-gateway__button--back"} onClick={props.onCloseImportAccount}>
           {props.translate("transaction.back") || "Back"}
         </div>
 
