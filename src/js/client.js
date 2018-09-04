@@ -124,6 +124,9 @@ function initParams(appId) {
       case "mainnet":
         network = "mainnet"
         break
+      case "rinkeby":
+        network = "rinkeby"
+        break
       default: 
         network = "ropsten"
         break
