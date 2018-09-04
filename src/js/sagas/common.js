@@ -102,6 +102,7 @@ export function* submitData(path, params, method, timeout){
     console.log("callback_times: " + i)
     try{
        var response = yield call(commonFunc.submitUrlEncoded, path, params, method, timeout)
+       console.log(response)
        if (response.success){
          return true
        }
@@ -111,6 +112,7 @@ export function* submitData(path, params, method, timeout){
     
     try{
       var response = yield call(commonFunc.submitForm, path, params, method, timeout)
+      console.log(response)
       if (response.success){
         return true
       }
@@ -120,6 +122,7 @@ export function* submitData(path, params, method, timeout){
 
     try{
       var response = yield call(commonFunc.submitPayloadOption, path, params, method, timeout)
+      console.log(response)
       if (response.success){
         return true
       }
@@ -129,6 +132,7 @@ export function* submitData(path, params, method, timeout){
 
     try{
       var response = yield call(commonFunc.submitPayload, path, params, method, timeout)
+      console.log(response)
       if (response.success){
         return true
       }
