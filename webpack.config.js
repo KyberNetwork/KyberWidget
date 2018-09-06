@@ -8,12 +8,12 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 
-var classPrfx = require('postcss-class-prefix');
-var precss = require('precss');    // for scss support
+// var classPrfx = require('postcss-class-prefix');
+// //var precss = require('precss');    // for scss support
 
-var postcss = () => {
-    return [ precss, classPrfx('kyber-widget-', { ignore: [/some-class-/] }) ];
-  }
+// var postcss = () => {
+//     return [ classPrfx('kyber-widget-', { ignore: [/some-class-/] }) ];
+//   }
 
 module.exports = env => {
 
@@ -101,7 +101,7 @@ module.exports = env => {
             },
                 {
                     test: /\.css$/,
-                    use: ['style-loader', 'css-loader', 'postcss'],
+                    use: ['style-loader', 'css-loader'],
                 },
                 {
                     test: /\.scss$/,
@@ -110,8 +110,7 @@ module.exports = env => {
                         fallback: 'style-loader',
                         use: [
                             {loader: 'css-loader', options: {minimize: true}},
-                            'sass-loader',
-                            'postcss'
+                            'sass-loader'
                         ]
                     })
                 },
