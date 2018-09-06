@@ -5,8 +5,8 @@ import {Modal} from '../CommonElement'
 const InfoModal = (props) => {
   var content = (
     <div>
-      <div class="title text-center">{props.title}</div><a class="x" onClick={props.closeModal}>&times;</a>
-      <div class="content">
+      <div class="k-title text-center">{props.title}</div><a class="x" onClick={props.closeModal}>&times;</a>
+      <div class="k-content">
           <div class="row">
               <div class="column">
                   <center>

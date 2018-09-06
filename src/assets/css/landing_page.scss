@@ -31,7 +31,7 @@
     }
   }
 
-  .frame {
+  .k-frame {
     position: relative;
     z-index: 3;
   }
@@ -236,7 +236,7 @@
     }
   }
 
-  .frame {
+  .k-frame {
     padding: 0;
     z-index: 2;
     position: relative;
@@ -258,7 +258,7 @@
       }
     }
   }
-  .title{
+  .k-title{
     margin-top: 70px;
     font-size: 44px;
     @include breakpoint(small only){

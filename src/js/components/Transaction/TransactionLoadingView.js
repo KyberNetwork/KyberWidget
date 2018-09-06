@@ -18,8 +18,8 @@ const TransactionLoadingView = (props) => {
     return (
       <div className="transaction-loading-container">
         <div className="transaction-loading">
-          <div className="container">
-            <div className="title">
+          <div className="k-container">
+            <div className="k-title">
               {broadcastError  &&
               <div>
                 <div className="icon icon--failed"></div>
@@ -51,7 +51,7 @@ const TransactionLoadingView = (props) => {
             </div>
           </div>
 
-          <div className="container transaction-loading__button-container">
+          <div className="k-container transaction-loading__button-container">
             <div className={"payment-gateway__hollow-button final-step-payment"} onClick={(e) => closeWidget()}>
               {props.translate("transaction.back_to_website") || "Back to Website"}
             </div>
@@ -70,11 +70,11 @@ const TransactionLoadingView = (props) => {
   return (
     <div className="transaction-loading-container">
       <div className="transaction-loading">
-        <div className="container">
-          <div className="title">
+        <div className="k-container">
+          <div className="k-title">
             <div>
               <div className="icon icon--broadcasted"></div>
-              <div className="title">{ props.translate('transaction.broadcasted') || "Broadcasted!" }</div>
+              <div className="k-title">{ props.translate('transaction.broadcasted') || "Broadcasted!" }</div>
             </div>
           </div>
           <div className="content with-overlap">
@@ -98,7 +98,7 @@ const TransactionLoadingView = (props) => {
           </div>
         </div>
 
-        <div className="container transaction-loading__button-container">
+        <div className="k-container transaction-loading__button-container">
           <div className={"payment-gateway__hollow-button final-step-payment"} onClick={(e) => closeWidget()}>
           {props.translate("transaction.back_to_website") || "Back to Website"}
         </div>

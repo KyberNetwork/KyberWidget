@@ -30,7 +30,7 @@ const TransferForm = (props) => {
   }
   var render = (
     <div id="transfer-screen">
-      <div class="frame">
+      <div class="k-frame">
         <div className="transfer-detail grid-x">
           <div className="cell small-12 large-9 transfer-col transfer-col-1">
 
@@ -48,7 +48,7 @@ const TransferForm = (props) => {
               </div>
   )}
 
-            <div className="title main-title">{props.translate("transaction.transfer") || "Transfer"}</div>
+            <div className="k-title main-title">{props.translate("transaction.transfer") || "Transfer"}</div>
             <div className="grid-x">
               <div className="cell small-12 medium-7">
                 <div className={props.errors.destAddress !== '' ? "error" : ""}>
