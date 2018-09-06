@@ -298,7 +298,7 @@ export default class ExchangeBody extends React.Component {
         chooseToken={this.chooseToken}
       />
     )
-    var tokenDestSelect = this.props.global.params.receiveToken ? (
+    var tokenDestSelect = this.props.global.params.receiveToken && this.props.tokens[this.props.global.params.receiveToken] ? (
       <div className='token-chooser token-dest'>
         <div className="focus-item">
           <img src={require("../../../assets/img/tokens/" + this.props.tokens[this.props.global.params.receiveToken].icon)} />
