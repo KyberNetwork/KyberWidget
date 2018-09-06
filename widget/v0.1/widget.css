@@ -26,7 +26,7 @@ html:not([data-kyber-widget-edition='etheremon']) .kyber-widget-button:hover {
 html:not([data-kyber-widget-edition='etheremon']) .kyber-widget-button.kyber-widget-button--light {
     background-color: white;
     color: #222;
-    box-shadow: 0 3px 7px 0 #c4c4c4;
+    box-shadow: 0 3px 5px 0 #dbdbdb;
 }
 
 html[data-kyber-widget-edition='etheremon'] .kyber-widget-button {
