@@ -222,12 +222,6 @@
   }
 
   function setupVersion() {
-    var versionLength = document.getElementById("widget-config-version").length;
-
-    if (versionLength <= 1) {
-      document.getElementById("version-selector").style.display = "none";
-    }
-
     var widgetUrlParam = getUrlParam("widget_url");
 
     if (widgetUrlParam) {
