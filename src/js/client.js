@@ -68,6 +68,7 @@ function initParams(appId) {
     var monsterId
     var monsterName
     var monsterAvatar
+    var payPrice
 
     var callback
     var network
@@ -98,7 +99,8 @@ function initParams(appId) {
       network = widgetParent.getAttribute('data-widget-network')
       paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
       signer = widgetParent.getAttribute('data-widget-signer')
-      commissionID = widgetParent.getAttribute('data-widget-commission-id')      
+      commissionID = widgetParent.getAttribute('data-widget-commission-id')   
+      payPrice = widgetParent.getAttribute('data-widget-pay-price')   
 
     }else{
       query  = common.getQueryParams(window.location.search)
@@ -113,6 +115,7 @@ function initParams(appId) {
       paramForwarding = common.getParameterByName("paramForwarding")
       signer = common.getParameterByName("signer")
       commissionID = common.getParameterByName("commissionId")      
+      payPrice = common.getParameterByName("payPrice")      
     }
 
     //this.props.dispatch(initParamsGlobal(query))
@@ -153,8 +156,16 @@ function initParams(appId) {
         || "monsterId must be required"
     }
 
-    
-
+    if (payPrice){
+      payPrice = parseFloat(payPrice);
+      if(isNaN(payPrice)){
+        errors["payPrice"] = translate('error.pay_price_must_be_a_number') 
+        || "payPrice must be number"
+      }
+    }else{
+      payPrice = 0
+    }
+   
 
 
 
@@ -176,7 +187,7 @@ function initParams(appId) {
       store.dispatch(haltPayment(errors))
     }else{
       //var tokenAddr =  BLOCKCHAIN_INFO[network].tokens[receiveToken].address
-      store.dispatch(initParamsExchange(etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID));
+      store.dispatch(initParamsExchange(etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID, payPrice));
       
         //init analytic
       var analytic = new AnalyticFactory({ listWorker: ['mix'], network })

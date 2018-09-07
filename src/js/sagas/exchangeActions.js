@@ -557,7 +557,8 @@ function* getDataCatchMonster(){
   var monsterId = exchange.monsterId
   var monsterName = exchange.monsterName?exchange.monsterName: ""
   var etheremonAddr = exchange.etheremonAddr
-  return {monsterId, monsterName, etheremonAddr}
+  var payPrice = converter.numberToHex(exchange.monsterInETH)
+  return {monsterId, monsterName, etheremonAddr, payPrice}
 }
 
 function* exchangeTokentoETHKeystore(action) {
@@ -598,7 +599,7 @@ function* exchangeTokentoETHKeystore(action) {
         yield put(incManualNonceAccount(account.address))
         nonce++
         txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-          sourceAmount, params.etheremonAddr, params.monsterId, params.monsterName,
+          sourceAmount, params.etheremonAddr, params.monsterId, params.monsterName, params.payPrice,
           maxDestAmount, minConversionRate,
           blockNo, nonce, gas,
           gasPrice, keystring, type, password, networkId, kyberAddress)
@@ -619,7 +620,7 @@ function* exchangeTokentoETHKeystore(action) {
     var txRaw
     try {
       txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-        sourceAmount,params.etheremonAddr, params.monsterId, params.monsterName,
+        sourceAmount,params.etheremonAddr, params.monsterId, params.monsterName, params.payPrice,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
         gasPrice, keystring, type, password, networkId, kyberAddress)
@@ -684,7 +685,7 @@ export function* exchangeTokentoETHPrivateKey(action) {
     var txRaw
     try {
       txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-        sourceAmount,params.etheremonAddr, params.monsterId, params.monsterName,
+        sourceAmount,params.etheremonAddr, params.monsterId, params.monsterName, params.payPrice,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
         gasPrice, keystring, type, password, networkId, kyberAddress)
@@ -718,7 +719,7 @@ function* exchangeTokentoETHColdWallet(action) {
     let txRaw
     try {
       txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-        sourceAmount,params.etheremonAddr, params.monsterId, params.monsterName,
+        sourceAmount,params.etheremonAddr, params.monsterId, params.monsterName, params.payPrice,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
         gasPrice, keystring, type, password, networkId, kyberAddress)
@@ -759,7 +760,7 @@ export function* exchangeTokentoETHMetamask(action) {
     var hash
     try {
       hash = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
-        sourceAmount,params.etheremonAddr, params.monsterId, params.monsterName,
+        sourceAmount,params.etheremonAddr, params.monsterId, params.monsterName, params.payPrice,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
         gasPrice, keystring, type, password, networkId, kyberAddress)
@@ -1641,8 +1642,10 @@ export function* initParamsExchange(action) {
   //var tokens = state.tokens.tokens
   var exchange = state.exchange
 
-  const {etheremonAddr, monsterId, monsterName, network} = action.payload
+  const {etheremonAddr, monsterId, monsterName, network, payPrice} = action.payload
 
+
+  var payPriceInEth = converter.toTWei(payPrice)
    //var ethereum = state.connection.ethereum
    var ethereum = new EthereumService({network})
    yield put.sync(setConnection(ethereum))
@@ -1655,7 +1658,10 @@ export function* initParamsExchange(action) {
 
   //get ethremon price 
   try{
-    const {monsterInETH, catchable} = yield call([ethereum, ethereum.call], "getMonsterPriceInETH", etheremonAddr, monsterId)
+    var {monsterInETH, catchable} = yield call([ethereum, ethereum.call], "getMonsterPriceInETH", etheremonAddr, monsterId)
+    if (converter.compareTwoNumber(monsterInETH, payPriceInEth) === -1){
+      monsterInETH = payPriceInEth
+    }
     yield put.sync(actions.updateMonsterInfo(monsterInETH, catchable, etheremonAddr, monsterId, monsterName))
 
   //calculate rate in token
