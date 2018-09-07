@@ -252,6 +252,10 @@ label input, select, .pointer {
   height: 42px;
 }
 
+.full-width {
+  width: 100%;
+}
+
 .widget-config__code-btn {
   display: inline-block;
   border-radius: 4px;
