@@ -234,14 +234,15 @@
 
   function openModal() {
     var modalId = this.getAttribute("data-modal-id");
-
     document.querySelector(".kyber-overlay").classList.add("kyber-overlay--active");
     document.getElementById(modalId).classList.add("kyber-modal--active");
+    document.body.classList.add("no-scroll");
   }
 
   function closeModal() {
     document.querySelector(".kyber-overlay").classList.remove("kyber-overlay--active");
     document.querySelector(".kyber-modal").classList.remove("kyber-modal--active");
+    document.body.classList.remove("no-scroll");
   }
 
   insertWidgetFiles();
