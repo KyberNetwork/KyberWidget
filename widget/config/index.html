@@ -6,7 +6,7 @@
     <link rel="icon" href="https://kyber.network/favicon.ico">
     <title>KyberWidget Configuration</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css">
-    <link rel="stylesheet" href="assets/styles.css?v=22">
+    <link rel="stylesheet" href="assets/styles.css?v=23">
 </head>
 <body class="body">
 <div id="wrapper">
@@ -20,6 +20,13 @@
       </div>
 
       <div class="widget-config__button">
+        <div class="tablink">Version</div>
+        <select name="version" class="widget-config__select" id="widget-config-version">
+          <option value="0.1" selected>0.1</option>
+        </select>
+      </div>
+
+      <div class="widget-config__button">
         <div class="tablink">HTML Source</div>
         <div class="widget-config__code-btn" data-modal-id="code-modal">Get Code</div>
       </div>
@@ -29,14 +36,6 @@
       <form class="widget-config__form">
         <section class="widget-config__form-section">
           <h3 class="section-title">Appearance</h3>
-          <div id="version-selector" class="item border-item">
-            <label class="item-name">Version</label>
-            <div class="item-value">
-              <select name="version" id="widget-config-version">
-                <option value="0.1" selected>0.1</option>
-              </select>
-            </div>
-          </div>
           <div class="item border-item">
             <label class="item-name">Widget Type</label>
             <div class="item-value w30">
@@ -174,7 +173,7 @@
   </div>
 </div>
 <script data-manual src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
-<script src="assets/main.js?v=49"></script>
+<script src="assets/main.js?v=50"></script>
 </body>
 
 </html>

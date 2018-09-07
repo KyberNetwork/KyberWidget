@@ -20,6 +20,10 @@ h1 {
   color: #222222;
 }
 
+.no-scroll {
+  overflow: hidden;
+}
+
 #wrapper {
   max-width: 900px;
   margin: 5rem auto;
@@ -230,8 +234,22 @@ label input, select, .pointer {
   width: 50%;
 }
 
+.widget-config__button:nth-child(2) {
+  text-align: center;
+}
+
 .widget-config__button:last-child {
   text-align: right;
+}
+
+.widget-config__select {
+  width: 100px;
+  border-radius: 4px;
+  background-color: #ffffff;
+  border: solid 1px #e5e5e5;
+  outline: none;
+  font-size: 14px;
+  height: 42px;
 }
 
 .widget-config__code-btn {
@@ -376,6 +394,7 @@ label input, select, .pointer {
     width: 100%;
   }
 
+  .widget-config__button:nth-child(2),
   .widget-config__button:last-child {
     margin-top: 20px;
     text-align: left;
