@@ -657,10 +657,14 @@ $divider-color: darken($title-background-color, 5);
   }
 }
 .transaction-loading {
-  background-color: #ffffff;
-  box-shadow: 0 2px 8px 0 rgba(184, 184, 184, 0.5);
+  background-color: #fff;
   display: inline-block;
   margin: 0 auto;
+  width: 100%;
+  max-width: 405px;
+  border: 1px solid #eee;
+  box-sizing: border-box;
+  border-top: none;
   @include screen-max-width(medium) {
     display: block;
     .k-container {
