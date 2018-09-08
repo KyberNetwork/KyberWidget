@@ -63,7 +63,11 @@
           oldValue = body.getAttribute("data-overflow") || null;
         body.style.overflow = oldValue;
         body.removeAttribute("data-overflow");
-        overlay.remove();
+        overlay.classList.add("hidden-overlay");
+
+        setTimeout(function () {
+          overlay.remove();
+        }, 300);
       }
     }
 
