@@ -2,7 +2,7 @@
 
   var monsters = [
     {
-      id: 106,
+      id: 105,
       name: "Ikopi",
       slug: "325db34365c36c186fd2217ace32591c"
     },
@@ -28,8 +28,8 @@
 
   (function geneteHtml(monsters) {
 
-    var web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io"));
-    var instance = web3.eth.contract(abi).at("0x11f9f4ce02f3a4e2ae37f8dedf23e882fd67b2c0");
+    var web3 = new Web3(new Web3.providers.HttpProvider("https://rinkeby.infura.io"));
+    var instance = web3.eth.contract(abi).at("0x966f00aad48a182dbaa0c040f267d62713ecb699");
 
     var sampleHtml = document.getElementById("sampleItem").innerHTML;
     var allHtml = "";
