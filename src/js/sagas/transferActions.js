@@ -36,7 +36,9 @@ import BLOCKCHAIN_INFO from "../../../env";
 
 export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
 
-  yield put (exchangeActions.goToStep(4))
+  if(account.type === 'metamask'){
+    yield put (exchangeActions.goToStep(4))
+ }
   //track complete trade
 
   var state = store.getState()
@@ -47,7 +49,9 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   // analytics.trackCoinTransfer(data.tokenSymbol)
   // analytics.completeTrade(hash, "kyber", "transfer")
 
-   yield fork(common.submitCallback, hash)
+  if(account.type === 'metamask'){
+    yield fork(common.submitCallback, hash)
+  }
 
   const tx = new Tx(
     hash, account.address, ethUtil.bufferToInt(txRaw.gas),
@@ -112,6 +116,20 @@ export function* processTransfer(action) {
   }
 }
 
+function* doBeforeMakeTransaction(txRaw) {
+
+  yield put(exchangeActions.goToStep(4))
+  
+  var state = store.getState()
+  var ethereum = state.connection.ethereum
+  var hash = yield call([ethereum, ethereum.call], "getTxHash", txRaw)
+
+//  console.log(hash)
+  var response = yield call(common.submitCallback, hash)
+//  console.log("submit hash success")
+  return response
+}
+
 function* transferKeystore(action, callService) {
   const { formId, ethereum, address,
     token, amount,
@@ -131,6 +149,10 @@ function* transferKeystore(action, callService) {
   }
   try {
     yield put(actions.prePareBroadcast(balanceData))
+
+    var response = yield call(doBeforeMakeTransaction, rawTx)
+    console.log(response)
+
     const hash = yield call([ethereum, ethereum.callMultiNode],"sendRawTransaction", rawTx)
     yield call(runAfterBroadcastTx, ethereum, rawTx, hash, account, data)
   } catch (e) {
@@ -164,6 +186,10 @@ function* transferColdWallet(action, callService) {
     }
     
     yield put(exchangeActions.prePareBroadcast(balanceData))
+
+    var response = yield call(doBeforeMakeTransaction, rawTx)
+    console.log(response)
+
     const hash = yield call([ethereum, ethereum.callMultiNode],"sendRawTransaction", rawTx)
     yield call(runAfterBroadcastTx, ethereum, rawTx, hash, account, data)
   } catch (e) {

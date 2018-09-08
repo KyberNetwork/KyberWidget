@@ -64,7 +64,17 @@ html[data-kyber-widget-edition='etheremon'] .kyber-widget-button {
     left: 0;
     right: 0;
     bottom: 0;
-    animation: fadein .5s;
+    animation: fadein .3s;
+}
+
+.hidden-overlay {
+    animation: fadeout .3s forwards !important;
+}
+
+@keyframes fadeout {
+    to {
+        opacity: 0;
+    }
 }
 
 @keyframes fadein {
