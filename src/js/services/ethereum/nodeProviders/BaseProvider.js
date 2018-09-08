@@ -4,6 +4,7 @@ import * as ethUtil from 'ethereumjs-util'
 
 import BLOCKCHAIN_INFO from "../../../../../env"
 import abiDecoder from "abi-decoder"
+import EthereumTx from "ethereumjs-tx"
 
 export default class BaseProvider {
     // constructor(props) {
@@ -335,6 +336,16 @@ export default class BaseProvider {
                     reject(err)
                 })
         })
+    }
+
+    getTxHash(tx) {
+        return new Promise((resolve, rejected) => {
+            // var hex = tx.serialize()
+            // console.log(hex)
+            var hash = new EthereumTx(tx.serialize()).hash()
+            resolve(ethUtil.bufferToHex(hash))
+        })
+               //return ethUtil.bufferToHex(tx.serialize())
     }
 
     sendRawTransaction(tx) {
