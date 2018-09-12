@@ -10,7 +10,7 @@
 
   function getWidgetUrl() {
     var url = getUrlParam("widget_url");
-    return url || "https://widget.kyber.network/v" + (getUrlParam("version") || defaultVersion);
+    return url || "https://widget.kyber.network/";
   }
 
   // Returns a function, that, as long as it continues to be invoked, will not
