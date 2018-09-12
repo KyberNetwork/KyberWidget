@@ -7,6 +7,7 @@ import ReactTooltip from 'react-tooltip'
 import { filterInputNumber } from "../../utils/validators";
 
 import * as converter from "../../utils/converter"
+import {addPrefixClass} from "../../utils/className"
 
 const ExchangeBodyLayout = (props) => {
 
@@ -71,7 +72,7 @@ const ExchangeBodyLayout = (props) => {
   // }
 
   var errorShow = errorSource.map((value, index) => {
-    return <span class="error-text" key={index}>{value}</span>
+    return <span className={addPrefixClass("error-text")} key={index}>{value}</span>
   })
 
   var classSource = "amount-input"
@@ -87,14 +88,14 @@ const ExchangeBodyLayout = (props) => {
 
   return (
     <div id="exchange">
-      <div className="grid-x">
-        <div className="cell medium-12 large-12 swap-wrapper">
-          <div className="grid-x exchange-col">
-            <div className="cell exchange-col-1">
+      <div>
+        <div className={addPrefixClass("swap-wrapper")}>
+          <div className={addPrefixClass("exchange-col")}>
+            <div className={addPrefixClass("exchange-col-1")}>
 
-              <div className="exchange-pading exchange-pading-top">
+              <div className={addPrefixClass("exchange-pading exchange-pading-top")}>
                 {props.networkError !== "" && (
-                  <div className="network_error">
+                  <div className={addPrefixClass("network_error")}>
                     <span>
                       <img src={require("../../../assets/img/warning.svg")} />
                     </span>
