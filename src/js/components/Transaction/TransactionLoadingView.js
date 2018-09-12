@@ -3,6 +3,8 @@ import BLOCKCHAIN_INFO from "../../../../env"
 import ReactTooltip from 'react-tooltip'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
+import {addPrefixClass} from "../../utils/className"
+
 import * as widgetOptions from "../../utils/widget-options"
 
 const TransactionLoadingView = (props) => {
@@ -16,43 +18,43 @@ const TransactionLoadingView = (props) => {
 
   if (isBroadcasting) {
     return (
-      <div className="transaction-loading-container">
-        <div className="transaction-loading">
-          <div className="k-container">
-            <div className="k-title">
+      <div className={addPrefixClass("transaction-loading-container")}>
+        <div className={addPrefixClass("transaction-loading")}>
+          <div className={addPrefixClass("k-container")}>
+            <div className={addPrefixClass("k-title")}>
               {broadcastError  &&
               <div>
-                <div className="icon icon--failed"></div>
-                <div className="title-status">{ props.translate('transaction.failed') || "Failed!" }</div>
+                <div className={addPrefixClass("icon icon--failed")}></div>
+                <div className={addPrefixClass("title-status")}>{ props.translate('transaction.failed') || "Failed!" }</div>
               </div>
               }
               {!broadcastError &&
               <div>
-                <div className="icon icon--broadcasted"></div>
-                <div className="title-status">{ props.translate('transaction.broadcasting') || "Broadcasting!" }</div>
+                <div className={addPrefixClass("icon icon--broadcasted")}></div>
+                <div className={addPrefixClass("title-status")}>{ props.translate('transaction.broadcasting') || "Broadcasting!" }</div>
               </div>
               }
             </div>
-            <div className="content with-overlap tx-loading">
-              <ul class="broadcast-steps">
+            <div className={addPrefixClass("content with-overlap tx-loading")}>
+              <ul className={addPrefixClass("broadcast-steps")}>
                 {!broadcastError &&
-                <li class="pending">
-                  <h4 class="font-w-b">{props.translate("transaction.broadcasting_blockchain") || "Broadcasting the transaction to the blockchain"}
+                <li className={addPrefixClass("pending")}>
+                  <h4 className={addPrefixClass("font-w-b")}>{props.translate("transaction.broadcasting_blockchain") || "Broadcasting the transaction to the blockchain"}
                   </h4>
                 </li>
                 }
                 {broadcastError &&
-                <li class="failed">
-                  <h4 class="font-w-b">{props.translate("transaction.cound_not_broadcast") || "Couldn't broadcast your transaction to the blockchain"}</h4>
-                  <div class="reason">{broadcastError}</div>
+                <li className={addPrefixClass("failed")}>
+                  <h4 className={addPrefixClass("font-w-b")}>{props.translate("transaction.cound_not_broadcast") || "Couldn't broadcast your transaction to the blockchain"}</h4>
+                  <div className={addPrefixClass("reason")}>{broadcastError}</div>
                 </li>
                 }
               </ul>
             </div>
           </div>
 
-          <div className="k-container transaction-loading__button-container">
-            <div className={"payment-gateway__hollow-button final-step-payment"} onClick={(e) => closeWidget()}>
+          <div className={addPrefixClass("k-container transaction-loading__button-container")}>
+            <div className={addPrefixClass("payment-gateway__hollow-button final-step-payment")} onClick={(e) => closeWidget()}>
               {props.translate("transaction.back_to_website") || "Back to Website"}
             </div>
           </div>
@@ -68,24 +70,24 @@ const TransactionLoadingView = (props) => {
   }
 
   return (
-    <div className="transaction-loading-container">
-      <div className="transaction-loading">
-        <div className="k-container">
-          <div className="k-title">
+    <div className={addPrefixClass("transaction-loading-container")}>
+      <div className={addPrefixClass("transaction-loading")}>
+        <div className={addPrefixClass("k-container")}>
+          <div className={addPrefixClass("k-title")}>
             <div>
-              <div className="icon icon--broadcasted"></div>
-              <div className="k-title">{ props.translate('transaction.broadcasted') || "Broadcasted!" }</div>
+              <div className={addPrefixClass("icon icon--broadcasted")}></div>
+              <div className={addPrefixClass("k-title")}>{ props.translate('transaction.broadcasted') || "Broadcasted!" }</div>
             </div>
           </div>
-          <div className="content with-overlap">
-            <div class="info tx-title">
-              <div className="tx-title-text">{props.translate("transaction.transaction") || "Transaction hash"}</div>
-              <div className="tx-hash">
-                <a class="text-light" href={BLOCKCHAIN_INFO[props.network].ethScanUrl + 'tx/' + props.txHash} target="_blank"
+          <div className={addPrefixClass("content with-overlap")}>
+            <div className={addPrefixClass("info tx-title")}>
+              <div className={addPrefixClass("tx-title-text")}>{props.translate("transaction.transaction") || "Transaction hash"}</div>
+              <div className={addPrefixClass("tx-hash")}>
+                <a className={addPrefixClass("text-light")} href={BLOCKCHAIN_INFO[props.network].ethScanUrl + 'tx/' + props.txHash} target="_blank"
                    title={props.translate("modal.view_on_etherscan") || "View on Etherscan"} onClick={(e) => props.analytics.callTrack("viewTxOnEtherscan")}>
                   {props.txHash}
                 </a>
-                <a className="copy-tx" data-for='copy-tx-tip' data-tip=""
+                <a className={addPrefixClass("copy-tx")} data-for='copy-tx-tip' data-tip=""
                    onClick={props.handleCopy}
                    onMouseLeave={props.resetCopy} >
                   <CopyToClipboard text={props.txHash}>
@@ -98,8 +100,8 @@ const TransactionLoadingView = (props) => {
           </div>
         </div>
 
-        <div className="k-container transaction-loading__button-container">
-          <div className={"payment-gateway__hollow-button final-step-payment"} onClick={(e) => closeWidget()}>
+        <div className={addPrefixClass("k-container transaction-loading__button-container")}>
+          <div className={addPrefixClass("payment-gateway__hollow-button final-step-payment")} onClick={(e) => closeWidget()}>
           {props.translate("transaction.back_to_website") || "Back to Website"}
         </div>
         </div>
