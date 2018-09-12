@@ -29,6 +29,7 @@ import constansts from "../../services/constants"
 //import { randomForExchange } from "../../utils/random"
 import { getTranslate } from 'react-localize-redux'
 import { default as _ } from 'underscore'
+import {addPrefixClass} from "../../utils/className"
 
 @connect((store, props) => {
 
@@ -299,11 +300,11 @@ export default class ExchangeBody extends React.Component {
       />
     )
     var tokenDestSelect = this.props.global.params.receiveToken && this.props.tokens[this.props.global.params.receiveToken] ? (
-      <div className='token-chooser token-dest'>
-        <div className="focus-item">
+      <div className={addPrefixClass("token-chooser token-dest")}>
+        <div className={addPrefixClass("focus-item")}>
           <img src={require("../../../assets/img/tokens/" + this.props.tokens[this.props.global.params.receiveToken].icon)} />
-          <div class="focus-balance">
-            <span class="token-symbol">{this.props.global.params.receiveToken}</span>
+          <div className={addPrefixClass("focus-balance")}>
+            <span className={addPrefixClass("token-symbol")}>{this.props.global.params.receiveToken}</span>
           </div>
         </div>
       </div>

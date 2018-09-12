@@ -1,6 +1,6 @@
 import React from "react"
 import Dropzone from 'react-dropzone'
-import {addPrefixClass} from "../../utils/className"
+import {addPrefixClass} from "../../../utils/className"
 
 const DropFile = (props) => {
   var keystring

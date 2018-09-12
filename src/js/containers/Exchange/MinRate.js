@@ -6,6 +6,7 @@ import * as actions from "../../actions/exchangeActions"
 import { getTranslate } from 'react-localize-redux'
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import {addPrefixClass} from "../../utils/className"
 
 @connect((store) => {
   return { 
@@ -80,9 +81,9 @@ export default class MinRate extends React.Component {
     percent = Math.round(parseFloat(percent))
     if (isNaN(percent)) percent = 0
     return (
-      <div className="min-rate">
-        <div className = {!this.props.exchange.errors.rateError? "":"error"}>
-          <span  className="sub_title">{this.props.translate("transaction.min_acceptable_rate") || "MIN ACCEPTABLE RATE"}</span>
+      <div className={addPrefixClass("min-rate")}>
+        <div className = {!this.props.exchange.errors.rateError? "": addPrefixClass("error")}>
+          <span  className={addPrefixClass("sub_title")}>{this.props.translate("transaction.min_acceptable_rate") || "MIN ACCEPTABLE RATE"}</span>
           <Slider value={percent} 
                   defaultValue={percent}
                   min={0} max={100}
@@ -101,16 +102,16 @@ export default class MinRate extends React.Component {
                     width: 30
                   }}
           />
-          <div className="show-rate">
-          <div className="rate-percent">
-            <div className=""><label className="des-down">0%</label></div>
-            <div className=""><label className="des-down">{percent}%</label></div>
+          <div className={addPrefixClass("show-rate")}>
+          <div className={addPrefixClass("rate-percent")}>
+            <div className=""><label className={addPrefixClass("des-down")}>0%</label></div>
+            <div className=""><label className={addPrefixClass("des-down")}>{percent}%</label></div>
           </div>
-          <div className="min-convention-rate"><span>{displayMinRate} {" " + desToken}</span></div>
+          <div className={addPrefixClass("min-convention-rate")}><span>{displayMinRate} {" " + desToken}</span></div>
           </div>
-          {this.props.exchange.errors.rateError && <div className="error-text">{this.props.exchange.errors.rateError}</div>}
+          {this.props.exchange.errors.rateError && <div className={addPrefixClass("error-text")}>{this.props.exchange.errors.rateError}</div>}
         </div>
-        <div className="des-up">
+        <div className={addPrefixClass("des-up")}>
           {this.props.translate("transaction.higher_min_acceptable_rate", {displaySlippageRate: displaySlippageRate}) 
             || `Guard yourself during volatile times by setting the lowest conversion rate you would accept for this transaction. Setting a high value may result in a failed transaction and you would be charged gas fees. Our recommended Min Acceptable Rate is ${displaySlippageRate}`}
         </div>
