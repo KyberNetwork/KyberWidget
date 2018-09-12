@@ -109,7 +109,7 @@ const ExchangeBodyLayout = (props) => {
               {props.translate("transaction.choose_your_payment") || "Choose your payment method"}
             </div> */}
                 {props.exchange.type === 'swap' && (
-                  <div className={'swap-layout'+(errorExchange ? " error" : "")}>
+                  <div className={addPrefixClass('swap-layout'+(errorExchange ? " error" : ""))}>
                     <div className='swap-item swap-item-first'>
                       {/* <span class="transaction-label">FROM</span> */}
                       <div className={"select-token-panel"}>

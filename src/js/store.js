@@ -26,6 +26,9 @@ if(process.env && process.env.logger){
   middlewareArray.push(logger)
 }
 
+// if (process.env.build){
+//   window.KyberWidgetBuild = true
+// }
 const middleware = applyMiddleware(
   ...middlewareArray
 )
