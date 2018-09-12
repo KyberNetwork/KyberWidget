@@ -1,6 +1,7 @@
 import React from "react"
 import * as converter from "../../utils/converter"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
+import {addPrefixClass} from "../../utils/className"
 
 const TokenSelectorView = (props) => {
   var focusItem = props.listItem[props.focusItem]
@@ -52,15 +53,15 @@ const TokenSelectorView = (props) => {
           key={key}
           onClick={(e) => props.selectItem(e, item.symbol, item.address)}
           // className={"token-item-container " + (rate == 0 ? "token-item-container--inactive" : "payment-gateway__hover-color")}>
-          className={"token-item-container payment-gateway__hover-color"}>
-          <div className="token-item-content">
-            <div className="token-item">
-              <img className="token-item__icon" src={require("../../../assets/img/tokens/" + item.icon)}/>
-              <span className="token-item__symbol">{item.symbol}</span>
+          className={addPrefixClass("token-item-container payment-gateway__hover-color")}>
+          <div className={addPrefixClass("token-item-content")}>
+            <div className={addPrefixClass("token-item")}>
+              <img className={addPrefixClass("token-item__icon")} src={require("../../../assets/img/tokens/" + item.icon)}/>
+              <span className={addPrefixClass("token-item__symbol")}>{item.symbol}</span>
             </div>
 
-            <div className="token-item">
-              <div className="token-item__rate">
+            <div className={addPrefixClass("token-item")}>
+              <div className={addPrefixClass("token-item__rate")}>
               {sourceSymbol !== destSymbol && (
                 <div>1 {sourceSymbol} = {rate} {destSymbol}</div>
               )}
@@ -83,20 +84,20 @@ const TokenSelectorView = (props) => {
   var rateFocusItem = props.exchange.isSelectToken ? <img src={require('../../../assets/img/waiting.svg')} /> : converter.roundingNumber(converter.toT(props.exchange.offeredRate,18))
 
   return (
-    <div className="token-chooser">
+    <div className={addPrefixClass("token-chooser")}>
       <Dropdown onShow = {(e) => props.showTokens(e)} onHide = {(e) => props.hideTokens(e)} active={props.open}>
-        <DropdownTrigger className="notifications-toggle">
-          <div className="focus-item d-flex">
-            <div className="d-flex">
-              <div className="icon">
+        <DropdownTrigger className={addPrefixClass("notifications-toggle")}>
+          <div className={addPrefixClass("focus-item d-flex")}>
+            <div className={addPrefixClass("d-flex")}>
+              <div className={addPrefixClass("icon")}>
                 <img src={require("../../../assets/img/tokens/" + focusItem.icon)} />
               </div>
               <div>
-                <div className="focus-balance">
+                <div className={addPrefixClass("focus-balance")}>
                   {/* {props.account !== false && (
                     <span className="token-balance" title = {converter.toT(focusItem.balance)}>{converter.roundingNumber(converter.toT(focusItem.balance, focusItem.decimal))}</span>
                   )} */}
-                  <span className="token-symbol">{focusItem.symbol}</span>
+                  <span className={addPrefixClass("token-symbol")}>{focusItem.symbol}</span>
                 </div>
               </div>
             </div>
@@ -105,26 +106,26 @@ const TokenSelectorView = (props) => {
                 1 {focusItem.symbol} = {rateFocusItem} {props.exchange.destTokenSymbol}
               </div>
             )} */}
-            <div><i className={'k k-angle ' + (props.open ? 'up' : 'down')}></i></div>
+            <div><i className={addPrefixClass('k k-angle ' + (props.open ? 'up' : 'down'))}></i></div>
           </div>
         </DropdownTrigger>
         <DropdownContent>
-          <div className="select-item">
-            <div className="suggest-item">
+          <div className={addPrefixClass("select-item")}>
+            <div className={addPrefixClass("suggest-item")}>
               {priorityTokens.map((token, i) => {
                 return (
-                  <div className="suggest-item__content" key={i} onClick={(e) => props.selectItem(e, token.symbol, token.address, "suggest")}>
-                    <img className="suggest-item__icon" src={require(`../../../assets/img/tokens/${token.icon}`)} />
-                    <div className="suggest-item__symbol">{token.symbol}</div>
+                  <div className={addPrefixClass("suggest-item__content")} key={i} onClick={(e) => props.selectItem(e, token.symbol, token.address, "suggest")}>
+                    <img className={addPrefixClass("suggest-item__icon")} src={require(`../../../assets/img/tokens/${token.icon}`)} />
+                    <div className={addPrefixClass("suggest-item__symbol")}>{token.symbol}</div>
                   </div>
                 )
               })}
             </div>
-            <div className="search-item">
+            <div className={addPrefixClass("search-item")}>
               <input value={props.searchWord} placeholder='Try "DAI"' onChange={(e) => props.changeWord(e)} type="text" onFocus={(e) => props.analytics.callTrack("searchToken", props.type)}/>
             </div>
-            <div className="list-item">
-              <div className="list-item__content">
+            <div className={addPrefixClass("list-item")}>
+              <div className={addPrefixClass("list-item__content")}>
                 {getListToken()}
               </div>
             </div>
