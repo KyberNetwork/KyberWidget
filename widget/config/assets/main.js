@@ -2,6 +2,7 @@
   var excludedInput = ["button_theme", "version"];
   var versionElement = document.querySelector("select[name=version]");
   var defaultVersion = document.getElementById("widget-config-version").value;
+  var NO_VERSION = "no";
 
   function getUrlParam(name) {
     return new URLSearchParams(location.search).get(name);
@@ -207,27 +208,34 @@
 
   function insertWidgetFiles() {
     var widgetUrl = getWidgetUrl();
+    var version = getUrlParam("version");
+
+    if (version !== NO_VERSION) {
+      version = "/v" + (version || defaultVersion);
+    } else {
+      version = "";
+    }
 
     var head = document.head;
     var link = document.createElement("link");
     link.type = "text/css";
     link.rel = "stylesheet";
-    link.href = widgetUrl + "/widget.css?t=" + Date.now();
+    link.href = widgetUrl + version + "/widget.css?t=" + Date.now();
     head.appendChild(link);
 
     var body = document.body;
     var script = document.createElement("script");
-    script.src = widgetUrl + "/widget.js?t=" + Date.now();
+    script.src = widgetUrl + version + "/widget.js?t=" + Date.now();
     body.appendChild(script);
   }
 
   function setupVersion() {
     var widgetUrlParam = getUrlParam("widget_url");
+    var version = getUrlParam("version");
 
-    if (widgetUrlParam) {
+    if (widgetUrlParam && version === NO_VERSION) {
       document.getElementById("version-selector").style.display = "none";
     } else {
-      var version = getUrlParam("version");
       versionElement.value = version || defaultVersion;
     }
   }
