@@ -74,6 +74,7 @@ function initParams(appId) {
   var productName
   var productAvatar
   var type
+  var pinTokens
 
   if (attributeWidget === true || attributeWidget === 'true') {
     for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++) {
@@ -100,6 +101,7 @@ function initParams(appId) {
     productName = widgetParent.getAttribute('data-widget-product-name')
     productAvatar = widgetParent.getAttribute('data-widget-product-avatar')
     type = widgetParent.getAttribute('data-widget-type')
+    pinTokens = widgetParent.getAttribute('data-widget-pinned-tokens')
   } else {
     query = common.getQueryParams(window.location.search)
 
@@ -114,6 +116,7 @@ function initParams(appId) {
     productName = common.getParameterByName("productName")
     productAvatar = common.getParameterByName("productAvatar")
     type = common.getParameterByName("type")
+    pinTokens = common.getParameterByName("pinnedTokens")
   }
 
 
@@ -280,12 +283,27 @@ function initParams(appId) {
     errors["network"] = translate('error.invalid_network') || "Current network is not supported"
   }
 
+  if (pinTokens){
+    var listTokens = pinTokens.split("_")
+    var listPinTokens = []
+    //validate tokens
+    var symbol
+    for (var i = 0; i<listTokens.length; i++){
+      symbol = listTokens[i].toUpperCase()
+      if (!BLOCKCHAIN_INFO[network].tokens[symbol]){
+        errors["pinTokens"] = translate('error.invalid_pinTokens') || "Pinned tokens include invalid tokens"
+        break
+      }
+      listPinTokens.push(symbol)
+    }
+  }
+
   if (validator.anyErrors(errors)) {
     store.dispatch(haltPayment(errors))
   } else {
     receiveToken = receiveToken ? receiveToken : "KNC"
     var tokenAddr = BLOCKCHAIN_INFO[network].tokens[receiveToken].address
-    store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, isSwap, type));
+    store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, isSwap, type, listPinTokens));
 
     //init analytic
     var analytic = new AnalyticFactory({ listWorker: ['mix'], network })

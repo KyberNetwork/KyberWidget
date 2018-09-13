@@ -19,6 +19,7 @@ const PaymentHeader = (props) => {
           {/* <img src={require("../../../assets/img/widget/pure-logo.svg")}/> */}
           {/* KyberWidget */}
         </div>
+        <div className='k-version'>v0.2</div>
       </div>
       <div className={addPrefixClass("step-breadcrumb k-container")}>
         {props.type === 'swap' && (

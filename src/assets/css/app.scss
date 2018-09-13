@@ -532,7 +532,16 @@ $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
       }
     }
   }
-  
+  .kyber-payment-logo-container{
+    display: flex;
+    align-items: center;
+    .k-version{
+      background-color: #eee;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+  }
   .kyber-payment-logo {
     width: 161px;
     height: 49px;

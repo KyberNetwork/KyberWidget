@@ -6,7 +6,7 @@
     <link rel="icon" href="https://kyber.network/favicon.ico">
     <title>KyberWidget Configuration</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css">
-    <link rel="stylesheet" href="assets/styles.css?v=23">
+    <link rel="stylesheet" href="assets/styles.css?v=25">
 </head>
 <body class="body">
 <div id="wrapper">
@@ -19,10 +19,11 @@
         <div id="widget" class="item-value"></div>
       </div>
 
-      <div class="widget-config__button">
+      <div class="widget-config__button" id="version-selector">
         <div class="tablink">Version</div>
         <select name="version" class="widget-config__select" id="widget-config-version">
           <option value="0.1" selected>0.1</option>
+          <option value="0.2">0.2 beta</option>
         </select>
       </div>
 
@@ -136,6 +137,14 @@
             </div>
           </div>
           <div class="item">
+            <label class="item-name">Pinned Tokens</label>
+            <div class="item-value">
+              <input name="pinnedTokens" class="full-length" type="text"
+                     pattern="^[A-Za-z0-9]+(_[A-Za-z0-9]+){0,2}$"
+                     placeholder="ETH_KNC_DAI" message="Pinned Tokens must be in TOKEN_TOKEN_TOKEN format.">
+            </div>
+          </div>
+          <div class="item">
             <label class="item-name">Commision-receiving Address</label>
             <div class="item-value">
               <input name="commissionId" class="full-length" spellcheck="false" type="text" pattern="^0x[a-fA-F0-9]{40}$" placeholder="0x..." message="Commision-receiving Address must be a valid Ethereum address.">
@@ -173,7 +182,7 @@
   </div>
 </div>
 <script data-manual src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
-<script src="assets/main.js?v=50"></script>
+<script src="assets/main.js?v=56"></script>
 </body>
 
 </html>

@@ -2,14 +2,24 @@
   var excludedInput = ["button_theme", "version"];
   var versionElement = document.querySelector("select[name=version]");
   var defaultVersion = document.getElementById("widget-config-version").value;
+  var NO_VERSION = "no";
 
   function getUrlParam(name) {
     return new URLSearchParams(location.search).get(name);
   }
 
   function getWidgetUrl() {
-    var url = getUrlParam("widget_url");
-    return url || "https://widget.kyber.network/v" + (getUrlParam("version") || defaultVersion);
+    var url = getUrlParam("widget_url")  || "https://widget.kyber.network";
+
+    var version = getUrlParam("version");
+
+    if (version !== NO_VERSION) {
+      version = "/v" + (version || defaultVersion);
+    } else {
+      version = "";
+    }
+
+    return url + version;
   }
 
   // Returns a function, that, as long as it continues to be invoked, will not
@@ -223,11 +233,11 @@
 
   function setupVersion() {
     var widgetUrlParam = getUrlParam("widget_url");
+    var version = getUrlParam("version");
 
-    if (widgetUrlParam) {
+    if (widgetUrlParam && version === NO_VERSION) {
       document.getElementById("version-selector").style.display = "none";
     } else {
-      var version = getUrlParam("version");
       versionElement.value = version || defaultVersion;
     }
   }

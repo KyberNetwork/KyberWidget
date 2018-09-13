@@ -17,7 +17,7 @@
       }
 
       var params = new URLSearchParams(location.search);
-      var path = params.get("widget_url");
+      var path = getCurrentScriptDir(); //params.get("widget_url");
       var current = params.get("widget_edition") ||
         editionTag.getAttribute("data-kyber-widget-edition") ||
         editionTag.getAttribute("data-edition");
