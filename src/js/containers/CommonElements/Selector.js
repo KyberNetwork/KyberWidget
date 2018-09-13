@@ -1,6 +1,7 @@
 import React from "react"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import { getTranslate } from 'react-localize-redux';
+import {addPrefixClass} from "../../utils/className"
 
 
 export default class Selector extends React.Component {
@@ -43,7 +44,7 @@ export default class Selector extends React.Component {
     getListItem = () => {
         return Object.keys(this.state.list).map((key, i) => {
             return (
-                <div key={key} onClick={(e) => this.selectItem(e, key)} className="token-item">
+                <div key={key} onClick={(e) => this.selectItem(e, key)} className={addPrefixClass("token-item")}>
                     {this.state.list[key]}
                 </div>
             )
@@ -52,10 +53,10 @@ export default class Selector extends React.Component {
 
     render() {
         return (
-            <div className="token-selector">
+            <div className={addPrefixClass("token-selector")}>
                 <Dropdown onShow={(e) => this.showSelector(e)} onHide={(e) => this.hideSelector(e)} active={this.state.open}>
-                    <DropdownTrigger className="notifications-toggle">
-                        <div className="focus-item d-flex">
+                    <DropdownTrigger className={addPrefixClass("notifications-toggle")}>
+                        <div className={addPrefixClass("focus-item d-flex")}>
                             <div>
                                 {this.state.focus.name}
                             </div>
@@ -66,8 +67,8 @@ export default class Selector extends React.Component {
                         </div>
                     </DropdownTrigger>
                     <DropdownContent>
-                        <div className="select-item">
-                            <div className="list-item custom-scroll">
+                        <div className={addPrefixClass("select-item")}>
+                            <div className={addPrefixClass("list-item custom-scroll")}>
                                 {this.getListItem()}
                             </div>
                         </div>
