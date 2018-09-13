@@ -1,6 +1,7 @@
 import React from "react"
 import * as converter from "../../utils/converter"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
+import { default as _ } from "underscore";
 
 const TokenSelectorView = (props) => {
   var focusItem = props.listItem[props.focusItem]
@@ -21,10 +22,9 @@ const TokenSelectorView = (props) => {
     }
   });
 
+  priorityTokens = _.sortBy(priorityTokens, function(token) { return token.index; });
+
   var getListToken = () => {
-
-    
-
 
     //const destRateEth = props.listItem[props.exchange.destTokenSymbol].rateEth;
 
