@@ -68,7 +68,7 @@
     },
     "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
     "tracker":"https://tracker.kyber.network",
-    "ethermon_wrapper":"0x00a70f233fc1e72d630b68975140c84f1c40531f",
+    "ethermon_wrapper":"0xf1f149ee80118c909d970b5cd39a11b2d5498c6e",
     "networkName": "rinkeby",
     "statEndPoint": "https://mainnet-data.kyber.network"
   }

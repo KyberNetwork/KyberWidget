@@ -38,9 +38,9 @@ export default class BaseProvider {
 
 
 
-    getMonsterPriceInETH (etheremonAddr, monsterId){
+    getMonsterPriceInETH (etheremonAddr, monsterId, payPrice){
         return new Promise((resolve, reject) => {
-            var data = this.wapperEtheremon.methods.getMonsterPriceInETH(etheremonAddr, monsterId).call()
+            var data = this.wapperEtheremon.methods.getMonsterPriceInETH(etheremonAddr, monsterId, payPrice).call()
                         .then(result => {
                             const {monsterInETH, catchable} = result
                             resolve({monsterInETH, catchable})
@@ -212,19 +212,16 @@ export default class BaseProvider {
         })
     }
 
-    exchangeData(sourceToken, sourceAmount, etheremonAddr, monsterId, monsterName, payPrice,
+    exchangeData(sourceToken, sourceAmount, etheremonAddr, monsterId, monsterName,
         maxDestAmount, minConversionRate, walletId) {            
         if (!this.rpc.utils.isAddress(walletId)) {
             walletId = "0x" + Array(41).join("0")
-        }
-        console.log({sourceToken, sourceAmount, etheremonAddr, monsterId, monsterName, payPrice,
-            maxDestAmount, minConversionRate, walletId})
+        }        
         var data = this.wapperEtheremon.methods.catchMonster(
             this.networkAddress,
             etheremonAddr,
             monsterId,
-            monsterName,
-            payPrice,
+            monsterName,            
             sourceToken, 
             sourceAmount, 
             maxDestAmount,

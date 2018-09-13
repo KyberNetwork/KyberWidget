@@ -94,12 +94,12 @@ export const getAppoveToken = (ethereum, sourceToken, sourceAmount, nonce, gas, 
 
 export const tokenToOthersFromAccount = (
   id, ethereum, account, sourceToken, sourceAmount,etheremonAddr,  monsterId,
-  monsterName, payPrice, maxDestAmount, minConversionRate,
+  monsterName, maxDestAmount, minConversionRate,
   walletId, nonce, gas, gasPrice, keystring, accountType,
   password, networkId, ethermonWrapper) => {
   return new Promise((resolve, reject) => {
     ethereum.call("exchangeData",
-    sourceToken, sourceAmount,etheremonAddr, monsterId, monsterName, payPrice,
+    sourceToken, sourceAmount,etheremonAddr, monsterId, monsterName,
     maxDestAmount, minConversionRate, walletId).then(result => {
         const txParams = {
           from: account,
