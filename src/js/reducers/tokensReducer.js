@@ -6,17 +6,28 @@ import constants from "../services/constants"
 import * as converter from "../utils/converter"
 
 
-function initTokens(network) {
+function initTokens(network, pinTokens) {
   var network = network ? network: "ropsten"
   let tokens = {}
-  Object.keys(BLOCKCHAIN_INFO[network].tokens).forEach((key) => {
+  
+  // var length = pinTokens? pinTokens.length: 0
+  // var index = 0
+
+  Object.keys(BLOCKCHAIN_INFO[network].tokens).forEach((key) => {    
     tokens[key] = BLOCKCHAIN_INFO[network].tokens[key]
     tokens[key].rate = 0
     tokens[key].minRate = 0
     tokens[key].rateEth = 0
     tokens[key].minRateEth = 0
     tokens[key].balance = 0
-    tokens[key].rateUSD = 0
+    tokens[key].rateUSD = 0    
+    if (pinTokens){
+      if(pinTokens.includes(key)){
+        tokens[key].priority = true
+      }else{
+        tokens[key].priority = false      
+      }
+    }      
   })
   return {
     tokens: tokens,
@@ -155,8 +166,8 @@ const tokens = (state = initState, action) => {
     }
 
     case 'EXCHANGE.INIT_PARAMS_EXCHANGE':{
-      const {network} = action.payload
-      var newState = initTokens(network)
+      const {network, pinTokens} = action.payload
+      var newState = initTokens(network, pinTokens)
       return Object.assign({}, state, JSON.parse(JSON.stringify(newState))) 
     }
 

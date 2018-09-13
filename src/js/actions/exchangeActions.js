@@ -601,10 +601,10 @@ export function closeImportAccountExchange(){
     type: "EXCHANGE.CLOSE_IMPORT_ACCOUNT"
   }
 }
-export function initParamsExchange(etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID, payPrice){
+export function initParamsExchange(etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID, payPrice, pinTokens){
   return {
     type: "EXCHANGE.INIT_PARAMS_EXCHANGE",
-    payload: {etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID, payPrice}
+    payload: {etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID, payPrice,pinTokens}
   }
 }
 

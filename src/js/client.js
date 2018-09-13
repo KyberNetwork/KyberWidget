@@ -75,6 +75,7 @@ function initParams(appId) {
     var paramForwarding
     var signer
     var commissionID    
+    var pinTokens
 
     if (attributeWidget === true || attributeWidget === 'true'){
       for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++){
@@ -101,7 +102,7 @@ function initParams(appId) {
       signer = widgetParent.getAttribute('data-widget-signer')
       commissionID = widgetParent.getAttribute('data-widget-commission-id')   
       payPrice = widgetParent.getAttribute('data-widget-pay-price')   
-
+      pinTokens = widgetParent.getAttribute("data-widget-pinned-tokens")
     }else{
       query  = common.getQueryParams(window.location.search)
 
@@ -116,6 +117,7 @@ function initParams(appId) {
       signer = common.getParameterByName("signer")
       commissionID = common.getParameterByName("commissionId")      
       payPrice = common.getParameterByName("payPrice")      
+      pinTokens = common.getParameterByName("pinnedTokens")
     }
 
     //this.props.dispatch(initParamsGlobal(query))
@@ -182,12 +184,27 @@ function initParams(appId) {
         || "Callback must be a https location"
     }
   }
+
+  if (pinTokens){
+    var listTokens = pinTokens.split("_")
+    var listPinTokens = []
+    //validate tokens
+    var symbol
+    for (var i = 0; i<listTokens.length; i++){
+      symbol = listTokens[i].toUpperCase()
+      if (!BLOCKCHAIN_INFO[network].tokens[symbol]){
+        errors["pinTokens"] = translate('error.invalid_pinTokens') || "Pinned tokens include invalid tokens"
+        break
+      }
+      listPinTokens.push(symbol)
+    }
+  }
     
     if (validator.anyErrors(errors)){
       store.dispatch(haltPayment(errors))
     }else{
       //var tokenAddr =  BLOCKCHAIN_INFO[network].tokens[receiveToken].address
-      store.dispatch(initParamsExchange(etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID, payPrice));
+      store.dispatch(initParamsExchange(etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID, payPrice, listPinTokens));
       
         //init analytic
       var analytic = new AnalyticFactory({ listWorker: ['mix'], network })
