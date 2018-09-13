@@ -9,8 +9,17 @@
   }
 
   function getWidgetUrl() {
-    var url = getUrlParam("widget_url");
-    return url || "https://widget.kyber.network";
+    var url = getUrlParam("widget_url")  || "https://widget.kyber.network";
+
+    var version = getUrlParam("version");
+
+    if (version !== NO_VERSION) {
+      version = "/v" + (version || defaultVersion);
+    } else {
+      version = "";
+    }
+
+    return url + version;
   }
 
   // Returns a function, that, as long as it continues to be invoked, will not
@@ -208,24 +217,17 @@
 
   function insertWidgetFiles() {
     var widgetUrl = getWidgetUrl();
-    var version = getUrlParam("version");
-
-    if (version !== NO_VERSION) {
-      version = "/v" + (version || defaultVersion);
-    } else {
-      version = "";
-    }
 
     var head = document.head;
     var link = document.createElement("link");
     link.type = "text/css";
     link.rel = "stylesheet";
-    link.href = widgetUrl + version + "/widget.css?t=" + Date.now();
+    link.href = widgetUrl + "/widget.css?t=" + Date.now();
     head.appendChild(link);
 
     var body = document.body;
     var script = document.createElement("script");
-    script.src = widgetUrl + version + "/widget.js?t=" + Date.now();
+    script.src = widgetUrl + "/widget.js?t=" + Date.now();
     body.appendChild(script);
   }
 
