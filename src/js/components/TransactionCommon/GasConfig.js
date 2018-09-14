@@ -3,6 +3,7 @@ import React from "react"
 import ReactTooltip from 'react-tooltip'
 import { filterInputNumber } from "../../utils/validators";
 import GasOption from './GasOption';
+import {addPrefixClass} from "../../utils/className"
 
 const GasConfig = (props) => {
   let gas_option = {"f":props.translate("fast") || 'Fast',"l":props.translate("low") || 'Slow',"s":props.translate("standard") || 'Standard'}
@@ -34,31 +35,31 @@ const GasConfig = (props) => {
     props.translate("transaction.transaction_gasprice") || "Higher gas price, faster transaction"
   var gasPriceSuggest = props.gasPriceSuggest
   return (
-    <div className="gas-config">
+    <div className={addPrefixClass("gas-config")}>
       <div>
-        <span className="sub_title">{props.translate("transaction.gas_price") || "GAS PRICE"}</span>
-        {/* <p className="sub_title">(inclusive in the rate)</p> */}
+        <span className={addPrefixClass("sub_title")}>{props.translate("transaction.gas_price") || "GAS PRICE"}</span>
+        {/* <p className={addPrefixClass("sub_title">(inclusive in the rate)</p> */}
       </div>
-      <div className={!props.gasPriceError ? "" : "error"}>
-        <div className="gas-change">
-          <div className="gas_input">
-            <input type="text" min="0" max="99" className="gas-price-input" step="0.1" value={props.gasPrice} onChange={handleChangeGasPrice} maxLength="20" autoComplete="off" onFocus={(e) => props.analytics.callTrack("customNewGas")} />
+      <div className={addPrefixClass(!props.gasPriceError ? "" : "error")}>
+        <div className={addPrefixClass("gas-change")}>
+          <div className={addPrefixClass("gas_input")}>
+            <input type="text" min="0" max="99" className={addPrefixClass("gas-price-input")} step="0.1" value={props.gasPrice} onChange={handleChangeGasPrice} maxLength="20" autoComplete="off" onFocus={(e) => props.analytics.callTrack("customNewGas")} />
           </div>
-          <div className="gas_input-label-container">
-            <div className="gas_input-lable">Gwei</div>
-            <div className="gas_input-option">
+          <div className={addPrefixClass("gas_input-label-container")}>
+            <div className={addPrefixClass("gas_input-lable")}>Gwei</div>
+            <div className={addPrefixClass("gas_input-option")}>
               <GasOption gasOptions={gas_option} focus={props.selectedGas} onChange={specifyGasPrice}/>
             </div>
           </div>
         </div>
         {/* {props.gasPriceError && <div class="error-text mb-1">{props.translate(props.gasPriceError, { maxGas: props.maxGasPrice })}</div>} */}
         {props.page === "exchange" ?
-          <div className="des-down">{props.translate("transaction.transaction_gasprice") 
+          <div className={addPrefixClass("des-down")}>{props.translate("transaction.transaction_gasprice") 
             || "Higher gas price, faster transaction."}
             <br></br>
             {props.translate("transaction.max_gas_price", { maxGas: props.maxGasPrice }) || `Max gas price: ${props.maxGasPrice} Gwei`}
           </div>
-          : <div className="des-down">{props.translate("transaction.transaction_gasprice") 
+          : <div className={addPrefixClass("des-down")}>{props.translate("transaction.transaction_gasprice") 
             || "Higher gas price, faster transaction."}                        
           </div>
         }
