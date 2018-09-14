@@ -68,11 +68,11 @@ function* selectToken(action) {
   var exchange = state.exchange
   // yield call(estimateGasUsed, symbol, exchange.destTokenSymbol)
 
-  if (type === 'source') {
-    yield call(estimateGasUsed, symbol, exchange.destTokenSymbol)
-  } else {
-    yield call(estimateGasUsed, exchange.sourceTokenSymbol, symbol)
-  }
+  // if (type === 'source') {
+  //   yield call(estimateGasUsed, symbol, exchange.destTokenSymbol)
+  // } else {
+  //   yield call(estimateGasUsed, exchange.sourceTokenSymbol, symbol)
+  // }
 
 
   const {expectedRate, slippageRate} = yield call(getMonsterRateInToken, symbol, exchange.monsterInETH)
