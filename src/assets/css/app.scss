@@ -543,9 +543,11 @@ $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
     }
   }
   .kyber-payment-logo {
-    width: 161px;
+    width: 120px;
     height: 49px;
-    background-image: url($image-path + '/widget/kyber-widget.svg');
+    //background-image: url($image-path + '/widget/kyber-widget.svg');
+    background-image: url($image-path + '/kyber-logo.svg');
+    background-size: 95px 49px;
     background-repeat: no-repeat;
     @include screen-max-width(medium) {
       margin-left: 10px;
