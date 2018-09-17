@@ -1,5 +1,5 @@
 .error-payment {
-  box-shadow: 0 2px 8px 0 rgba(184, 184, 184, 0.5);
+  // box-shadow: 0 2px 8px 0 rgba(184, 184, 184, 0.5);
   display: inline-block;
   ul{
     padding-left: 10px;
@@ -17,6 +17,8 @@
     &-container {
       padding: 90px 20px 30px;
       text-align: center;
+      border-left: 1px solid #eee;
+      border-right: 1px solid #eee;
     }
 
     &-text {
@@ -31,6 +33,8 @@
     background-color: #f5f5f5;
     padding-top: 10px;
     text-align: center;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
 
     &-text {
       font-size: 14px;
