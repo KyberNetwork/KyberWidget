@@ -29,7 +29,16 @@
         "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "decimal": 18,
         "usd_id":"ethereum",
-        "priority": true
+        "gasLimit": "0",
+        "priority":true
+      },
+      "WETH": {
+        "name": "Wrapped Ether",
+        "decimal": 18,
+        "symbol" : "WETH",
+        "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "icon": "weth.svg",        
+        "priority":true
       },
       "KNC": {
         "name": "KyberNetwork",
@@ -37,8 +46,7 @@
         "icon": "knc.svg",
         "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
         "decimal": 18,
-        "usd_id":"kyber-network",
-        "priority": true
+        "usd_id":"kyber-network"        
       },
       "DAI": {
         "name" : "DAI",
@@ -47,7 +55,7 @@
         "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
         "decimal": 18,
         "usd_id":"dai",
-        "priority": true
+        "priority":true
       },
       "OMG": {
         "name": "OmiseGO",
@@ -288,7 +296,7 @@
         "name": "Polymath",
         "decimal": 18,
         "address": "0x9992ec3cf6a55b00978cddf2b27bc6882d88d1ec",
-        "symbol":"POLY",
+        "symbol":"POLY", 
         "icon": "poly.svg"
       },
       "LBA": {
@@ -374,6 +382,55 @@
         "address": "0x8b353021189375591723e7384262f45709a3c3dc",
         "symbol":"TOMO", 
         "icon": "tomo.svg"
+      },
+      "MDS": {
+        "name": "MediShares",
+        "decimal": 18,
+        "address": "0x66186008c1050627f979d464eabb258860563dbe",
+        "symbol":"MDS", 
+        "icon": "mds.svg"
+      },
+      "LEND": {
+        "name": "EthLend",
+        "decimal": 18,
+        "address": "0x80fb784b7ed66730e8b1dbd9820afd29931aab03",
+        "symbol":"LEND", 
+        "icon": "lend.svg"
+      },
+      "WINGS": {
+        "name": "WINGS",
+        "decimal": 18,
+        "address": "0x667088b212ce3d06a1b553a7221e1fd19000d9af",
+        "symbol":"WINGS", 
+        "icon": "wings.svg"
+      },
+      "MTL": {
+        "name": "Metal",
+        "decimal": 8,
+        "address": "0xf433089366899d83a9f26a773d59ec7ecf30355e",
+        "symbol":"MTL", 
+        "icon": "mtl.svg"
+      },
+      "WABI": {
+        "name": "WaBi",
+        "decimal": 18,
+        "address": "0x286bda1413a2df81731d4930ce2f862a35a609fe",
+        "symbol":"WABI", 
+        "icon": "wabi.svg"
+      },
+      "COFI":{
+        "name": "CoinFi",
+        "decimal": 18,
+        "address": "0x3136ef851592acf49ca4c825131e364170fa32b3",
+        "symbol":"COFI", 
+        "icon": "cofi.svg"                
+      },
+      "MOC": {
+        "name": "Moss Land",
+        "decimal": 18,
+        "symbol" : "MOC",
+        "address": "0x865ec58b06bf6305b886793aa20a2da31d034e68",
+        "icon": "moc.svg"        
       }
     },
     "ethScanUrl": "https://etherscan.io/",
@@ -382,6 +439,7 @@
     "network": "0x818e6fecd516ecc3849daf6845e3ec868087b755",
     "wrapper": "0x6172afc8c00c46e0d07ce3af203828198194620a",
     "trade_topic":"0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
+    "ethermon_wrapper":"0xffa4bee0b9cd2c2e4eacb8d8f11096baa3e6c55d",
     "endpoint": "wss://mainnet.infura.io/ws",
     "averageBlockTime": 15000,
     "networkId": 1,
