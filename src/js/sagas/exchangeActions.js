@@ -1678,6 +1678,8 @@ export function* getMonsterRateInToken(tokenSymbol, monsterInETH){
       var tokenValue = converter.caculateSourceAmount(ethValue, expectedRateRelative, 6)
       var tokenWei = converter.toTWei(tokenValue, decimal)
       var tokenHex = converter.toHex(tokenWei)
+      consol.log("get_rate_token")
+      console.log({ethValue, tokenValue, tokenWei})
       var realRate = yield call([ethereum, ethereum.call], "getRate", tokenAddr , ethereumAddr, tokenHex)
       const {expectedRate, slippageRate} = realRate
       return {expectedRate, slippageRate}
