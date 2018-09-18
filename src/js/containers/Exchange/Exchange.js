@@ -16,6 +16,7 @@ import { default as _ } from 'underscore'
 import { clearSession } from "../../actions/globalActions"
 
 import { ImportAccount } from "../ImportAccount"
+import {addPrefixClass} from "../../utils/className"
 
 
 //import {HeaderTransaction} from "../TransactionCommon"
@@ -152,8 +153,8 @@ export default class Exchange extends React.Component {
       // var headerTransaction = <HeaderTransaction page="exchange" />
 
       return (
-        <div class="k-frame exchange-frame">
-          <div className="row">
+        <div className={addPrefixClass("k-frame exchange-frame")}>
+          <div className={addPrefixClass("row")}>
             {exchangeBody}
           </div>
         </div>

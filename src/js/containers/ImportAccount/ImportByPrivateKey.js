@@ -3,7 +3,8 @@ import { connect } from "react-redux"
 import ImportByPKeyContent from "../../components/ImportAccount/PrivateKey/ImportByPKeyContent"
 import { importNewAccount, throwError, pKeyChange, throwPKeyError, openImportAccount } from "../../actions/accountActions"
 import { addressFromPrivateKey } from "../../utils/keys"
-import { getTranslate } from 'react-localize-redux'
+import { getTranslate } from 'react-localize-redux';
+import { addPrefixClass } from "../../utils/className";
 
 @connect((store) => {
   var tokens = store.tokens.tokens;
@@ -34,14 +35,17 @@ export default class ImportByPrivateKey extends React.Component {
   }
 
   toggleShowPw() {
-    let input = document.getElementById('private_key')
-    if (input.classList.contains('security')) {
-      input.classList.remove('security')
-      input.parentElement.classList.add('unlock')
+    let input = document.getElementById('private_key');
+    let securityClass = addPrefixClass("security");
+    let unlockClass = addPrefixClass("unlock");
+
+    if (input.classList.contains(securityClass)) {
+      input.classList.remove(securityClass)
+      input.parentElement.classList.add(unlockClass)
       this.props.analytics.callTrack("clickShowPassword", "show")
     } else if (input.type == 'text') {
-      input.classList.add('security')
-      input.parentElement.classList.remove('unlock')
+      input.classList.add(securityClass)
+      input.parentElement.classList.remove(unlockClass)
       this.props.analytics.callTrack("clickShowPassword", "hide")
     }
   }
