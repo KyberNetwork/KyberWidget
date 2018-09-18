@@ -297,7 +297,7 @@ const ExchangeBodyLayout = (props) => {
                                 )}
                               </div>
                             </div>
-                            <div className={errorExchange ? "error" : ""}>
+                            <div className={addPrefixClass(errorExchange ? "error" : "")}>
                               {errorShow}
                             </div>
                           </div>
@@ -355,7 +355,7 @@ const ExchangeBodyLayout = (props) => {
                                 </div>
                               </div>
                             </div>
-                            <div className={errorExchange ? "error" : ""}>
+                            <div className={addPrefixClass(errorExchange ? "error" : "")}>
                               {errorShow}
                             </div>
                           </div>
