@@ -194,7 +194,7 @@
   }
 }
 
-#exchange {
+.widget-exchange {
   max-width: $container-max-width;
   background: white;
   margin: 0 auto;
@@ -301,6 +301,7 @@ label{
     width: 120px;
     height: 45px;
     text-align: center;
+    outline: none;
 
     &.disable {
       opacity: 0.4;
