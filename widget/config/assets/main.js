@@ -189,7 +189,7 @@
 
     var mode = document.querySelector("form").mode.value || "tab";
     var buttonTheme = document.querySelector('input[name=button_theme]:checked').value;
-    buttonTheme = buttonTheme != "dark"  ? " config-kyber-widget-button--" + buttonTheme : '';
+    buttonTheme = buttonTheme != "dark"  ? " kyber-widget-button--" + buttonTheme : '';
 
     var widgetBaseUrl = getWidgetUrl();
     var url = widgetBaseUrl + "/?" + formData.data;
@@ -197,7 +197,7 @@
     var jsUrl = widgetBaseUrl + '/widget.js';
     var tagHtml = "<!-- This is the '" + formData.buttonText + "' button, place it anywhere on your webpage -->\n";
     tagHtml += "<!-- You can add multiple buttons into a same page -->\n";
-    tagHtml += "<a href='" + url + "'\nclass='config-kyber-widget-button" + buttonTheme + "' ";
+    tagHtml += "<a href='" + url + "'\nclass='kyber-widget-button" + buttonTheme + "' ";
     tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay with tokens'\n";
     tagHtml += "target='_blank'>" + formData.buttonText + "</a>";
 
