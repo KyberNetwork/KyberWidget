@@ -57,14 +57,6 @@
         "usd_id":"dai",
         "priority":true
       },
-      "OMG": {
-        "name": "OmiseGO",
-        "symbol": "OMG",
-        "icon": "omg.svg",
-        "address": "0xd26114cd6ee289accf82350c8d8487fedb8a0c07",
-        "decimal": 18,
-        "usd_id":"omisego"
-      },
       "SNT": {
         "name":"Status",
         "address": "0x744d70fdbe2ba4cf95131626614a1763df805b9e",
@@ -161,14 +153,6 @@
         "icon": "bqx.svg",
         "usd_id":"ethos"
       },
-      "ADX": {
-        "name": "AdEx",
-        "address": "0x4470bb87d77b963a013db939be332f927f2b992e",
-        "symbol": "ADX",
-        "decimal": 4,
-        "icon": "adx.svg",
-        "usd_id": "adx-net"
-      },
       "AST": {
         "name": "AirSwap",
         "address": "0x27054b13b1b798b345b591a4d22e6562d47ea75a",
@@ -224,15 +208,6 @@
         "decimal": 18,
         "icon": "mot.svg",
         "usd_id":"olympus-labs"
-      },
-      "DGX": {
-        "name" : "Digix Gold",
-        "address": "0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf",
-        "symbol":"DGX",
-        "decimal": 9,
-        "icon": "dgx.svg",
-        "usd_id":"dgx",
-        "gasLimit": "750000"
       },
       "ABT": {
         "name": "ArcBlock",
@@ -327,26 +302,12 @@
         "symbol":"WAX", 
         "icon": "wax.svg"
       },
-      "SUB": {
-        "name": "Substratum",
-        "decimal": 2,
-        "address": "0x12480e24eb5bec1a9d4369cab6a80cad3c0a377a",
-        "symbol":"SUB", 
-        "icon": "sub.svg"
-      },
       "POE": {
         "name": "Po.et",
         "decimal": 8,
         "address": "0x0e0989b1f9b8a38983c2ba8053269ca62ec9b195",
         "symbol":"POE", 
         "icon": "poe.svg"
-      },
-      "PAY": {
-        "name": "TenX",
-        "decimal": 18,
-        "address": "0xb97048628db6b661d4c2aa833e95dbe1a905b280",
-        "symbol":"PAY", 
-        "icon": "pay.svg"
       },
       "CHAT": {
         "name": "Chatcoin",
@@ -403,13 +364,6 @@
         "address": "0x667088b212ce3d06a1b553a7221e1fd19000d9af",
         "symbol":"WINGS", 
         "icon": "wings.svg"
-      },
-      "MTL": {
-        "name": "Metal",
-        "decimal": 8,
-        "address": "0xf433089366899d83a9f26a773d59ec7ecf30355e",
-        "symbol":"MTL", 
-        "icon": "mtl.svg"
       },
       "WABI": {
         "name": "WaBi",
