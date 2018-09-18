@@ -39,7 +39,7 @@ const ImportByDeviceView = (props) => {
             <div className={addPrefixClass("block-title")}>
               {props.translate("modal.select_address") || "Select the Address you'd' like to use"}
             </div>
-            <div className={addPrefixClass("block-choose-path")}>
+            <div className={addPrefixClass("block-choose-path block-choose-path__select-address")}>
               <AddressSelector
                 isFirstList={props.isFirstList}
                 addresses={props.currentAddresses}

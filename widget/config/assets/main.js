@@ -195,7 +195,9 @@
     var url = widgetBaseUrl + "/?" + formData.data;
     var cssUrl = widgetBaseUrl + '/widget.css';
     var jsUrl = widgetBaseUrl + '/widget.js';
-    var tagHtml = "<a href='" + url + "'\nclass='kyber-widget-button" + buttonTheme + "' ";
+    var tagHtml = "<!-- This is the '" + formData.buttonText + "' button, place it anywhere on your webpage -->\n";
+    tagHtml += "<!-- You can add multiple buttons into a same page -->\n";
+    tagHtml += "<a href='" + url + "'\nclass='kyber-widget-button" + buttonTheme + "' ";
     tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay with tokens'\n";
     tagHtml += "target='_blank'>" + formData.buttonText + "</a>";
 

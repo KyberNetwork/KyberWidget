@@ -13,21 +13,22 @@ function initTokens(network, pinTokens) {
   // var length = pinTokens? pinTokens.length: 0
   // var index = 0
 
-  Object.keys(BLOCKCHAIN_INFO[network].tokens).forEach((key) => {    
+  Object.keys(BLOCKCHAIN_INFO[network].tokens).forEach((key) => {
     tokens[key] = BLOCKCHAIN_INFO[network].tokens[key]
     tokens[key].rate = 0
     tokens[key].minRate = 0
     tokens[key].rateEth = 0
     tokens[key].minRateEth = 0
     tokens[key].balance = 0
-    tokens[key].rateUSD = 0    
+    tokens[key].rateUSD = 0
     if (pinTokens){
       if(pinTokens.includes(key)){
-        tokens[key].priority = true
+        tokens[key].priority = true;
+        tokens[key].index = pinTokens.indexOf(key);
       }else{
-        tokens[key].priority = false      
+        tokens[key].priority = false
       }
-    }      
+    }
   })
   return {
     tokens: tokens,
