@@ -1,11 +1,5 @@
 import React from "react"
-import { NavLink } from 'react-router-dom'
-import { roundingNumber } from "../../utils/converter"
-import { Link } from 'react-router-dom'
-import constants from "../../services/constants"
-import ReactTooltip from 'react-tooltip'
 import { filterInputNumber } from "../../utils/validators";
-
 import * as converter from "../../utils/converter"
 import {addPrefixClass} from "../../utils/className"
 
@@ -21,8 +15,6 @@ const ExchangeBodyLayout = (props) => {
     if (check) props.input.destAmount.onChange(e)
   }
 
-
-
   // var errorSelectSameToken = props.errors.selectSameToken && props.errors.selectSameToken !== '' ? props.translate(props.errors.selectSameToken) : ''
   // var errorSelectTokenToken = props.errors.selectTokenToken && props.errors.selectTokenToken !== '' ? props.translate(props.errors.selectTokenToken) : ''
   // var errorToken = errorSelectSameToken + errorSelectTokenToken
@@ -36,40 +28,6 @@ const ExchangeBodyLayout = (props) => {
       errorExchange = true
     }
   })
-  // console.log("error_exchange")
-  // console.log(errorSource)
-  // console.log(props.errors)
-  //if (errorSource)
-  // if (props.errorNotPossessKgt && props.errorNotPossessKgt !== "") {
-  //   errorSource.push(props.errorNotPossessKgt)
-  //   errorExchange = true
-  // } else {
-  //   if (props.errors.exchange_enable && props.errors.exchange_enable !== "") {
-  //     errorSource.push(props.translate(props.errors.exchange_enable))
-  //     errorExchange = true
-  //   } else {
-  //     if (errorToken !== "") {
-  //       errorSource.push(errorToken)
-  //       errorExchange = true
-  //     }
-  //     if (props.errors.sourceAmount && props.errors.sourceAmount !== "") {
-  //       if (props.errors.sourceAmount === "error.source_amount_too_high_cap") {
-  //         if (props.sourceTokenSymbol === "ETH") {
-  //           errorSource.push(props.translate("error.source_amount_too_high_cap", { cap: maxCap }))
-  //         } else {
-  //           errorSource.push(props.translate("error.dest_amount_too_high_cap", { cap: maxCap * constants.MAX_CAP_PERCENT }))
-  //         }
-  //       } else {
-  //         errorSource.push(props.translate(props.errors.sourceAmount))
-  //       }
-  //       errorExchange = true
-  //     }
-  //     if (props.errors.rateSystem && props.errors.rateSystem !== "") {
-  //       errorSource.push(props.translate(props.errors.rateSystem))
-  //       errorExchange = true
-  //     }
-  //   }
-  // }
 
   var errorShow = errorSource.map((value, index) => {
     return <span className={addPrefixClass("error-text")} key={index}>{value}</span>
@@ -376,12 +334,12 @@ const ExchangeBodyLayout = (props) => {
                             <span className={addPrefixClass("transaction-label")}>
                               {props.translate("transaction.exchange_paywith") || "PAY WITH"}
                             </span>
-                            <div className={errorExchange ? "error select-token-panel" : "select-token-panel"}>
+                            <div className={addPrefixClass(errorExchange ? "error select-token-panel" : "select-token-panel")}>
                               {props.tokenSourceSelect}
                               <span className={addPrefixClass("transaction-label amount-enter-label")}>
                                 {props.translate("transaction.enter_amount") || "ENTER AMOUNT YOU WILL PAY"}
                               </span>
-                              <div className={classSource}>
+                              <div className={addPrefixClass(classSource)}>
                                 <div>
                                   <input id="inputSource" className={addPrefixClass("source-input")} min="0" step="0.000001"
                                     placeholder="0" autoFocus
@@ -423,15 +381,12 @@ const ExchangeBodyLayout = (props) => {
                     )}
                   </div>
                 )}
-
-
-
               </div>
               <div>
                 {props.advanceLayout}
               </div>
               <div className={addPrefixClass("exchange-pading")}>
-                <div class="checkbox">
+                <div className={addPrefixClass("checkbox")}>
                   <input id="term-agree" type="checkbox" onChange={props.acceptedTerm} />
                   <label for="term-agree">
                     {props.translate("transaction.i_agree_to") || "Agree to"} <a href="https://files.kyber.network/tac.html" target="_blank" onClick={(e) => {if (props.global.analytics) props.global.analytics.callTrack("clickTermAndCondition")}}>{props.translate("transaction.term_and_condition") || "Terms &amp; Conditions"}</a>

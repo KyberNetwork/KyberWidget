@@ -23,7 +23,7 @@ const ImportByDeviceView = (props) => {
     return (
       <div id="cold-wallet">
         <div className={addPrefixClass("address-list-path")}>
-          <div className={addPrefixClass("content")}>
+          <div className={addPrefixClass("k-content")}>
             <div className={addPrefixClass("block-title")}>
               {props.translate("modal.select_hd_path") || "Select HD derivation path"}
             </div>

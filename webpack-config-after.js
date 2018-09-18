@@ -11,7 +11,16 @@ console.log(folder)
 var file = `dist/${folder}/app.bundle.css`
 var css = fs.readFileSync(file, 'utf8').toString();
 var out = postcss()
-    .use(classPrfx('kyber-widget-', { ignore: [/ng-/, 'kyber-widget'] }))
+    .use(classPrfx('kyber-widget-', { ignore: [
+        "kyber-widget",
+        "dropdown",
+        "dropdown--active",
+        "dropdown__trigger",
+        "dropdown__content",
+        "rc-slider-handle",
+        "rc-slider-handle:focus",
+        "rc-slider-handle:active"
+     ] }))
     .process(css);
 
 

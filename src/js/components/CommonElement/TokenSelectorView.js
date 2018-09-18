@@ -85,8 +85,8 @@ const TokenSelectorView = (props) => {
 
   return (
     <div className={addPrefixClass("token-chooser")}>
-      <Dropdown onShow = {(e) => props.showTokens(e)} onHide = {(e) => props.hideTokens(e)} active={props.open}>
-        <DropdownTrigger className={addPrefixClass("notifications-toggle")}>
+      <Dropdown className={addPrefixClass("token-dropdown")} onShow = {(e) => props.showTokens(e)} onHide = {(e) => props.hideTokens(e)} active={props.open}>
+        <DropdownTrigger className={addPrefixClass("notifications-toggle token-dropdown__trigger")}>
           <div className={addPrefixClass("focus-item d-flex")}>
             <div className={addPrefixClass("d-flex")}>
               <div className={addPrefixClass("icon")}>
@@ -109,7 +109,7 @@ const TokenSelectorView = (props) => {
             <div><i className={addPrefixClass('k k-angle ' + (props.open ? 'up' : 'down'))}></i></div>
           </div>
         </DropdownTrigger>
-        <DropdownContent>
+        <DropdownContent className={addPrefixClass("token-dropdown__content")}>
           <div className={addPrefixClass("select-item")}>
             <div className={addPrefixClass("suggest-item")}>
               {priorityTokens.map((token, i) => {

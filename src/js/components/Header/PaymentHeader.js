@@ -14,12 +14,9 @@ const PaymentHeader = (props) => {
   
   return (
     <div>
-      <div className="kyber-payment-logo-container">
-        <div className="kyber-payment-logo">
-          {/* <img src={require("../../../assets/img/widget/pure-logo.svg")}/> */}
-          {/* KyberWidget */}
-        </div>
-        <div className='k-version'>v0.2</div>
+      <div className={addPrefixClass("kyber-payment-logo-container")}>
+        <div className={addPrefixClass("kyber-payment-logo")}></div>
+        <div className={addPrefixClass("k-version")}>v0.2</div>
       </div>
       <div className={addPrefixClass("step-breadcrumb k-container")}>
         {props.type === 'swap' && (
