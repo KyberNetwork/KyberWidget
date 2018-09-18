@@ -2,6 +2,7 @@ import React from "react"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import { connect } from "react-redux"
 import { getTranslate } from 'react-localize-redux';
+import {addPrefixClass} from "../../utils/className"
 
 @connect((store, props) => {
   return {
@@ -60,7 +61,7 @@ export default class PathSelector extends React.Component {
         return (
           <div
             key={dPath + index}
-            className={"token-item payment-gateway__checkmark-after " + (this.props.currentDPath === dPath.path ? 'active' : '')}
+            className={addPrefixClass("token-item payment-gateway__checkmark-after " + (this.props.currentDPath === dPath.path ? 'active' : ''))}
             onClick={(e) => {
               if (dPath.path === this.props.currentDPath) {
                 this.setState({
@@ -75,7 +76,7 @@ export default class PathSelector extends React.Component {
                   <div class="note">{dPath.desc}</div>
                 </div>
               ) : (
-                <div className="input-custom-path">
+                <div className={addPrefixClass("input-custom-path")}>
                   <div>
                     <input id="form-input-custom-path" type="text" name="customPath" defaultValue={dPath.defaultP}  placeholder="Your Custom Path" onFocus={(e) => this.props.analytics.callTrack("clickFocusToInPutNewPathColdWallet", this.state.walletType)} />
                     <img src={require('../../../assets/img/angle-right.svg')} onClick={(e) => {
@@ -102,19 +103,19 @@ export default class PathSelector extends React.Component {
 
   render() {
     return (
-      <div className="token-selector">
+      <div className={addPrefixClass("token-selector")}>
         <Dropdown onShow={(e) => this.showSelector(e)} onHide={(e) => this.hideSelector(e)} active={this.state.open}>
-          <DropdownTrigger className="notifications-toggle">
-            <div className="focus-item d-flex">
+          <DropdownTrigger className={addPrefixClass("notifications-toggle")}>
+            <div className={addPrefixClass("focus-item d-flex")}>
               <div>
                 {this.focusItem()}
               </div>
-              <div><div className={"payment-gateway__arrow-down"}></div></div>
+              <div><div className={addPrefixClass("payment-gateway__arrow-down")}></div></div>
             </div>
           </DropdownTrigger>
           <DropdownContent>
-            <div className="select-item">
-              <div className="list-item custom-scroll">
+            <div className={addPrefixClass("select-item")}>
+              <div className={addPrefixClass("list-item custom-scroll")}>
                 {this.getListItem()}
               </div>
             </div>

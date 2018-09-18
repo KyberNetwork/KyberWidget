@@ -1,5 +1,6 @@
 import React from "react"
 import Modal from 'react-modal'
+import {addPrefixClass} from "../../utils/className"
 
 const MyModal = (props) => {
     let customStyles = {
@@ -20,8 +21,8 @@ const MyModal = (props) => {
     return (
         <Modal
             className={{
-                base: props.className.base + " react-modal",
-                afterOpen: props.className.afterOpen + ' modal-open',
+                base: addPrefixClass(props.className.base + " react-modal"),
+                afterOpen: addPrefixClass(props.className.afterOpen + ' modal-open'),
                 beforeClose:""
             }}
             style={customStyles}

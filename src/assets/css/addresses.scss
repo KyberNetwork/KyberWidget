@@ -399,15 +399,15 @@
 
 .dropdown {
   display: inline-block;
-}
 
-.dropdown__content {
-  display: none;
-  position: absolute;
-}
+  &.dropdown--active .dropdown__content {
+    display: block;
+  }
 
-.dropdown--active .dropdown__content {
-  display: block;
+  &__content {
+    display: none;
+    position: absolute;
+  }
 }
 
 .address-selector {
