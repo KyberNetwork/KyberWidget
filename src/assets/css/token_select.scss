@@ -20,6 +20,8 @@
     border-bottom: 2px solid #31CB9E;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    min-height: 40px;
 
     >div {
       &:first-child {
@@ -57,7 +59,6 @@
     }
     span {
       font-size: 15px;
-      padding-top: 12px;
       display: flex;
       align-items: center;
       color: rgba(69, 78, 95, .5);
