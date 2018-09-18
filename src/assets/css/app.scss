@@ -40,24 +40,6 @@ $alert-color: #ff5d00;
   @import 'custom_react_modals';
 }
 
-#kyber-widget {
-  h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6{
-    font-family: $font-cera;
-  }
-
-  * {
-    font-weight: normal;
-  }
-
-  strong {
-    font-weight: bold;
-  }
-
-  input {
-    outline: none;
-  }
-}
-
 .kyber-widget {
   color: $base-color;
   font-family: $font-openSans;

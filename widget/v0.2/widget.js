@@ -29,7 +29,7 @@
       var path = null;
 
       if (!current) {
-        var button = document.querySelector(".kyber-widget-button");
+        var button = document.querySelector(".config-kyber-widget-button");
         if (button && button.href) {
           path = button.href.split("?")[0].toLowerCase();
           if (path.substr(-1) === "/") {
@@ -100,7 +100,7 @@
     }
 
     (global.kyberWidgetOptions.register = function (selector) {
-      selector = selector || ".kyber-widget-button";
+      selector = selector || ".config-kyber-widget-button";
       var hasDomMode = false;
       var isStandardEdition = (global.kyberWidgetOptions.edition === "standard");
       var extensionInstalled = !!global.kyberwidget && !!global.kyberwidget.performPay;
