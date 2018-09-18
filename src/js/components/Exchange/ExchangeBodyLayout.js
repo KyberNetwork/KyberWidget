@@ -45,7 +45,7 @@ const ExchangeBodyLayout = (props) => {
   var haveProductAvatar = props.exchange.productAvatar && props.exchange.productAvatar !== "" ? true : false
 
   return (
-    <div id="exchange">
+    <div id="exchange" className={addPrefixClass("widget-exchange")}>
       <div>
         <div className={addPrefixClass("swap-wrapper")}>
           <div className={addPrefixClass("exchange-col")}>
@@ -314,7 +314,7 @@ const ExchangeBodyLayout = (props) => {
                           <div className={addPrefixClass("info-1")}>
                             {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
                           </div>
-                          <div className={`${haveProductAvatar ? "kyber-product-avatar" : ""} ${haveProductName ? "info-2 kyber-product-name" : "info-2"}`}>
+                          <div className={addPrefixClass(`${haveProductAvatar ? "kyber-product-avatar" : ""} ${haveProductName ? "info-2 kyber-product-name" : "info-2"}`)}>
                             {haveProductAvatar && <div className={addPrefixClass("kyber-pAvatar")}>
                               <img src={props.exchange.productAvatar} />
                             </div>}

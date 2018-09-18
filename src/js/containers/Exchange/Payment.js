@@ -480,7 +480,7 @@ export default class Payment extends React.Component {
     var haveProductAvatar = this.props.exchange.productAvatar && this.props.exchange.productAvatar !== "" ? true : false
 
     return (
-      <div id="exchange" className={addPrefixClass("k-frame payment_confirm" + classError)}>
+      <div id="exchange" className={addPrefixClass("widget-exchange k-frame payment_confirm" + classError)}>
 
         {/* <div className="payment-gateway__step-title payment-gateway__step-title--3">
           {this.props.translate("transaction.confirm_transaction") || "Confirm Transaction"}

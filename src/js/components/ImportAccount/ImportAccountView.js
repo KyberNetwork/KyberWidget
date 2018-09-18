@@ -37,7 +37,7 @@ const ImportAccountView = (props) => {
   }
 
   return (
-    <div id="import-account">
+    <div id="import-account" className={addPrefixClass("widget-import-account")}>
       <div className={addPrefixClass("k-container")}>
         {/* <div className="payment-gateway__step-title payment-gateway__step-title--2">
           {props.translate("address.import_address") || "Import Address"}
