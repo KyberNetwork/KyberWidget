@@ -257,6 +257,13 @@
     document.body.classList.remove("no-scroll");
   }
 
+  function checkStandalone() {
+    if (window === window.parent) {
+      document.documentElement.classList.add("standalone");
+    }
+  }
+  
+  checkStandalone();
   insertWidgetFiles();
   generateTag();
   wireEvents();
