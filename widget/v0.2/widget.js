@@ -151,7 +151,7 @@
             // create the widget container
             element = document.createElement("DIV");
             element.id = "kyber-widget";
-            element.classList.add("kyber-widget");
+            element.classList.add("kyber_widget");
             // set widget attributes
             element.setAttribute("data-widget-attribute", "true");
             for (var pair of params) {
