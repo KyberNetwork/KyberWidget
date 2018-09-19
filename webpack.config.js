@@ -44,7 +44,7 @@ module.exports = env => {
         ])       
 
     ];
-    if (env && env.build !== 'true') {
+    if (env && env.logger === 'true') {
         //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
         plugins.push(new webpack.DefinePlugin({
             //'env': JSON.stringify(env.chain),
@@ -52,6 +52,15 @@ module.exports = env => {
                 'logger': 'true'
             }
         }));
+    } 
+    if (env && env.build !== 'true') {
+        //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
+        // plugins.push(new webpack.DefinePlugin({
+        //     //'env': JSON.stringify(env.chain),
+        //     'process.env': {
+        //         'logger': 'true'
+        //     }
+        // }));
     } else {
         //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
         plugins.push(

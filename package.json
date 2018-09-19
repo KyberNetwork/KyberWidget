@@ -107,7 +107,7 @@
   },
   "scripts": {
     "build-native": "NODE_ENV=production webpack --env.build=true --config webpack.config.js --env.folder=native",
-    "build-dev": "NODE_ENV=production webpack --env.build=true --config webpack.config.dev.js --env.folder=dev --env.logger=true",
+    "build-dev": "NODE_ENV=production webpack --env.build=true --config webpack.config.js --env.folder=dev --env.logger=true",
     "build-bundle": "NODE_ENV=production webpack --env.build=true --config webpack.config.bundle.js --env.folder=bundle",
     "dev": "webpack-dev-server --content-base src --inline --hot --history-api-fallback --host 0.0.0.0 --port 3002 --env.logger=true",
     "devs": "webpack-dev-server --content-base src --https --inline --hot --history-api-fallback --host 0.0.0.0 --port 3002 --env.logger=true"

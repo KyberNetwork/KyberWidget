@@ -163,13 +163,13 @@ $divider-color: darken($title-background-color, 5);
   }
 }
 
-#exchange-from-token-modal,
-#exchange-to-token-modal,
-#transfer-from-token-modal {
-  @include breakpoint(medium) {
-    max-width: 860px;
-  }
-}
+// #exchange-from-token-modal,
+// #exchange-to-token-modal,
+// #transfer-from-token-modal {
+//   @include breakpoint(medium) {
+//     max-width: 860px;
+//   }
+// }
 
 #passphrase-modal {
   @include breakpoint(medium) {
