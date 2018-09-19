@@ -11,8 +11,8 @@ console.log(folder)
 var file = `dist/${folder}/app.bundle.css`
 var css = fs.readFileSync(file, 'utf8').toString();
 var out = postcss()
-    .use(classPrfx('kyber-widget-', { ignore: [
-        "kyber-widget",
+    .use(classPrfx('kyber_widget-', { ignore: [
+        "kyber_widget",
         "dropdown",
         "dropdown--active",
         "dropdown__trigger",
