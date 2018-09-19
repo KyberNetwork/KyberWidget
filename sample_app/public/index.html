@@ -39,7 +39,10 @@
                         var dt = new Date(tx._timestamp);
                         var dtText = dt.toLocaleString("vi-VN");
                         var hash = tx.tx;
-                        var html = `${dtText} - <a href="https://ropsten.etherscan.io/tx/${hash}" target="_blank">${hash}</a>`;
+                        var network = tx.network || "ropsten";
+                        var subDomain = "";
+                        if (network != "mainnet") subDomain = network + ".";
+                        var html = `${dtText} - <a href="https://${subDomain}etherscan.io/tx/${hash}" target="_blank">${hash}</a>`;
                         var li = document.createElement("li");
                         li.innerHTML = html;
                         ul.appendChild(li);

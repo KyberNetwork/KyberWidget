@@ -11,6 +11,7 @@ import {
 } from "../../containers/ImportAccount";
 import SignerAddress from "./SignerAddress";
 import constants from "../../services/constants";
+import {addPrefixClass} from "../../utils/className"
 
 const ImportAccountView = (props) => {
   let importComponent = "";
@@ -36,8 +37,8 @@ const ImportAccountView = (props) => {
   }
 
   return (
-    <div id="import-account">
-      <div className="k-container">
+    <div id="import-account" className={addPrefixClass("widget-import-account")}>
+      <div className={addPrefixClass("k-container")}>
         {/* <div className="payment-gateway__step-title payment-gateway__step-title--2">
           {props.translate("address.import_address") || "Import Address"}
         </div> */}
@@ -46,7 +47,7 @@ const ImportAccountView = (props) => {
           <SignerAddress signerAddresses={props.signerAddresses}/>
         }
 
-        <div className={"import-account"}>
+        <div className={addPrefixClass("import-account")}>
           {props.firstKey}
           <ImportByTrezorView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
           <ImportKeystore onOpenImportAccount={props.onOpenImportAccount} screen={props.screen} translate={props.translate}/>
@@ -54,9 +55,9 @@ const ImportAccountView = (props) => {
           <ImportByLedgerView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
         </div>
 
-        <div className={"payment-gateway__hollow-button"} onClick={props.backToFirstStep}>{props.translate("transaction.back") || "Back"}</div>
+        <div className={addPrefixClass("payment-gateway__hollow-button")} onClick={props.backToFirstStep}>{props.translate("transaction.back") || "Back"}</div>
 
-        <div className={"import-account-content " + (props.chosenImportAccount && props.isLoading === false ? 'import-account-content--active' : '')}>
+        <div className={addPrefixClass("import-account-content " + (props.chosenImportAccount && props.isLoading === false ? 'import-account-content--active' : ''))}>
           {importComponent}
         </div>
       </div>

@@ -1,53 +1,55 @@
 (function (global) {
 
+  var WIDGET_VERSION = "0.1";
+
   function initKyberWidget() {
-    function getCurrentScriptDir(defDir) {
-      defDir = defDir || "https://widget.kyber.network/v0.1";
-      if (!document.currentScript || !document.currentScript.src) return defDir;
+    function getCurrentScriptDir() {
+      if (!document.currentScript || !document.currentScript.src) return null;
 
       var path = document.currentScript.src;
       return path.substring(0, path.lastIndexOf("/"));
     }
 
     global.kyberWidgetOptions = (function () {
+      var params = new URLSearchParams(location.search);
       var editionTag = document.getElementById("kyber-widget-edition") || document.currentScript || document.documentElement;
       var editions = {
-        standard: getCurrentScriptDir(),
-        etheremon: "https://widget-etheremon.knstats.com"
+        standard: getCurrentScriptDir() || ("https://widget.kyber.network/v" + WIDGET_VERSION),
+        etheremon: params.get("widget_url") || "https://etheremon.kyber.network"
       }
 
-      var params = new URLSearchParams(location.search);
-      var path = getCurrentScriptDir(); //params.get("widget_url");
       var current = params.get("widget_edition") ||
         editionTag.getAttribute("data-kyber-widget-edition") ||
         editionTag.getAttribute("data-edition");
-      var currentValid = !!current && !!editions[current];
-
-      if (!path && !currentValid) {
-        var button = document.querySelector(".kyber-widget-button");
-        if (button && button.href) {
-          path = button.href.split("?")[0];
-        }
+      if (!current || !editions[current]) {
+        // invalid edition
+        current = null;
       }
 
-      if (path) {
-        path = path.toLowerCase();
-        if (path.substr(-1) === "/") {
-          path = path.substr(0, path.length - 1);
-        }
-        for (var prop in editions) {
-          if (path === editions[prop]) {
-            current = prop;
-            currentValid = true;
-            break;
+      var path = null;
+
+      if (!current) {
+        var button = document.querySelector(".kyber-widget-button");
+        if (button && button.href) {
+          path = button.href.split("?")[0].toLowerCase();
+          if (path.substr(-1) === "/") {
+            path = path.substr(0, path.length - 1);
+          }
+          for (var prop in editions) {
+            if (path === editions[prop]) {
+              current = prop;
+              break;
+            }
           }
         }
       }
 
-      if (!currentValid) current = "standard";
-
-      document.documentElement.setAttribute("data-kyber-widget-edition", current);
+      // set default version & path
+      if (!current) current = "standard";
       path = path || editions[current];
+
+      // store edition to DOM
+      document.documentElement.setAttribute("data-kyber-widget-edition", current);
 
       return {
         edition: current,

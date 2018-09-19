@@ -24,6 +24,7 @@ import { clearSession } from "../../actions/globalActions"
 
 import { ImportAccount } from "../ImportAccount"
 import { KeyStore, Trezor, Ledger, PrivateKey, Metamask } from "../../services/keys"
+import {addPrefixClass} from "../../utils/className"
 
 //import {HeaderTransaction} from "../TransactionCommon"
 
@@ -395,16 +396,16 @@ export default class Payment extends React.Component {
         return false;
     }
 
-    return <div className="import-account-content__info import-account-content__info--center">
-      <div className="import-account-content__info-type">
-        <img className="import-account-content__info-type-image" src={require(`../../../assets/img/landing/${icon}`)} />
-        <div className="import-account-content__info-type-text">{method}</div>
+    return <div className={addPrefixClass("import-account-content__info import-account-content__info--center")}>
+      <div className={addPrefixClass("import-account-content__info-type")}>
+        <img className={addPrefixClass("import-account-content__info-type-image")} src={require(`../../../assets/img/landing/${icon}`)} />
+        <div className={addPrefixClass("import-account-content__info-type-text")}>{method}</div>
       </div>
-      <div className="import-account-content__info-text">
-        <div className="import-account-content__info-text-address">
+      <div className={addPrefixClass("import-account-content__info-text")}>
+        <div className={addPrefixClass("import-account-content__info-text-address")}>
           {this.props.translate("transaction.address") || "Address"}: {this.props.account.address.slice(0, 8)}...{this.props.account.address.slice(-6)}
         </div>
-        <div className="import-account-content__info-text-balance">
+        <div className={addPrefixClass("import-account-content__info-text-balance")}>
           <div>{this.props.translate("transaction.balance") || "Balance"}:</div>
           <div>
             <div>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</div>
@@ -483,7 +484,7 @@ export default class Payment extends React.Component {
     var haveProductAvatar = this.props.exchange.productAvatar && this.props.exchange.productAvatar !== "" ? true : false
 
     return (
-      <div id="exchange" className={"k-frame payment_confirm" + classError}>
+      <div id="exchange" className={addPrefixClass("widget-exchange k-frame payment_confirm" + classError)}>
 
         {/* <div className="payment-gateway__step-title payment-gateway__step-title--3">
           {this.props.translate("transaction.confirm_transaction") || "Confirm Transaction"}
@@ -491,19 +492,19 @@ export default class Payment extends React.Component {
 
         {this.getAccountBgk()}
 
-        <div className="error-message">
+        <div className={addPrefixClass("error-message")}>
           {this.getError()}
         </div>
 
-        <div className="payment-info">
-          <div className="k-title">
+        <div className={addPrefixClass("payment-info")}>
+          <div className={addPrefixClass("k-title")}>
             {this.props.translate("transaction.you_about_to_pay") || "YOU ARE ABOUT TO PAY"}
           </div>
-          <div className={this.props.exchange.monsterAvatar && this.props.exchange.monsterAvatar != "" ? "monster-avatar" : "" }>
+          <div className={addPrefixClass(this.props.exchange.monsterAvatar && this.props.exchange.monsterAvatar != "" ? "monster-avatar" : "") }>
             {this.props.exchange.monsterAvatar &&  this.props.exchange.monsterAvatar != "" ?
-              <div className="kyber-avatar"><img src={this.props.exchange.monsterAvatar} /></div> : ""
+              <div className={addPrefixClass("kyber-avatar")}><img src={this.props.exchange.monsterAvatar} /></div> : ""
             }
-            <div className="k-content">
+            <div className={addPrefixClass("k-content")}>
               <div>
                 <span>{this.props.translate("transaction.monster_id") || "Monster Id"}:</span>
                 <span>
@@ -529,21 +530,21 @@ export default class Payment extends React.Component {
           </div>
         </div>
 
-        <div className="payment-info">
+        <div className={addPrefixClass("payment-info")}>
           {/* <div className="title">
             {this.props.translate("transaction.exchange_paywith") || "PAY WITH"}
           </div> */}
-          <div className="k-content">
+          <div className={addPrefixClass("k-content")}>
             {/* <div>
               <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
                 <span>{converter.caculateSourceAmount( converter.toEther(this.props.exchange.monsterInETH), this.props.exchange.expectedRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
             </div> */}
 
-            <div className="payment-info">
-              <div className="k-title">
+            <div className={addPrefixClass("payment-info")}>
+              <div className={addPrefixClass("k-title")}>
                 {this.props.translate("transaction.exchange_paywith") || "PAY WITH"}
               </div>
-              <div className="k-content">
+              <div className={addPrefixClass("k-content")}>
                 <div>
                   <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
                   <span>{converter.caculateSourceAmount( converter.toEther(this.props.exchange.monsterInETH), this.props.exchange.expectedRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
@@ -589,14 +590,14 @@ export default class Payment extends React.Component {
 
 
 
-        <div className="payment-bottom">
+        <div className={addPrefixClass("payment-bottom")}>
           {txError !== "" && (
-            <div className="error-message">
+            <div className={addPrefixClass("error-message")}>
               {txError}
             </div>
           )}
           {this.props.exchange.isNeedApprove && (
-            <div className="approve-intro">
+            <div className={addPrefixClass("approve-intro")}>
               {this.props.translate("modal.approve_exchange", { token: this.props.exchange.sourceTokenSymbol })
                 || `You need to grant permission for Kyber Payment to interact with ${this.props.exchange.sourceTokenSymbol} with this address`}
             </div>
@@ -606,9 +607,9 @@ export default class Payment extends React.Component {
               {/* <div className="password">
                 <input id="passphrase" type="password" placeholder="password"/>                  
               </div> */}
-              <div className={"import-account-content__private-key" + (this.state.showPassword ? ' unlock' : '')}>
+              <div className={addPrefixClass("import-account-content__private-key" + (this.state.showPassword ? ' unlock' : ''))}>
                 <input
-                  className={this.state.showPassword ? "import-account-content__private-key-input" : "import-account-content__private-key-input security"}
+                  className={addPrefixClass(this.state.showPassword ? "import-account-content__private-key-input" : "import-account-content__private-key-input security")}
                   id="passphrase"
                   type="text"
                   autoFocus
@@ -617,11 +618,11 @@ export default class Payment extends React.Component {
                   onKeyPress={this.resetPasswordError}
                   onFocus={(e) => this.props.global.analytics.callTrack("clickFocusToInputJSONPws")}
                 />
-                <div className="import-account-content__private-key-toggle" onClick={this.toogleShowPassword}></div>
-                <div className="import-account-content__private-key-icon"></div>
+                <div className={addPrefixClass("import-account-content__private-key-toggle")} onClick={this.toogleShowPassword}></div>
+                <div className={addPrefixClass("import-account-content__private-key-icon")}></div>
               </div>
               {(this.props.exchange.passwordError) && (
-                <div className="error-password">
+                <div className={addPrefixClass("error-password")}>
                   {this.props.exchange.passwordError}
                 </div>
               )}
@@ -629,20 +630,20 @@ export default class Payment extends React.Component {
 
             )}
             {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
-              <div className="confirm-message">{this.props.account.type !== "keystore" && this.props.account.type !== "privateKey" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}</div>
+              <div className={addPrefixClass("confirm-message")}>{this.props.account.type !== "keystore" && this.props.account.type !== "privateKey" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}</div>
             )}
-          <div className="control-btn">
+          <div className={addPrefixClass("control-btn")}>
 
-            <a className={"back-btn" + (this.props.exchange.isConfirming || this.props.transfer.isConfirming ? " disable" : "")} onClick={this.reImportAccount}>{this.props.translate("transaction.back") || "Back"}</a>
+            <a className={addPrefixClass("back-btn" + (this.props.exchange.isConfirming || this.props.transfer.isConfirming ? " disable" : ""))} onClick={this.reImportAccount}>{this.props.translate("transaction.back") || "Back"}</a>
 
             {this.props.exchange.isNeedApprove && (
-              <a className={"confirm-btn" + classDisable} onClick={this.approveToken}>
+              <a className={addPrefixClass("confirm-btn" + classDisable)} onClick={this.approveToken}>
                 {this.props.translate("transaction.approve") || "Approve"}
               </a>
             )}
 
             {!this.props.exchange.isNeedApprove && (
-              <a className={"confirm-btn" + classDisable} onClick={this.payment}>
+              <a className={addPrefixClass("confirm-btn" + classDisable)} onClick={this.payment}>
                 {this.props.translate("transaction.confirm") || "Confirm"}
               </a>
             )}

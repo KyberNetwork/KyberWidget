@@ -1,6 +1,7 @@
 import React from "react"
 import { IDLE_TIME_OUT } from "../../services/constants";
 import {Modal} from '../CommonElement'
+import {addPrefixClass} from "../../utils/className"
 
 const InfoModal = (props) => {
   var content = (
@@ -21,8 +22,8 @@ const InfoModal = (props) => {
     <Modal
       className={
       {
-        base: 'reveal tiny',
-        afterOpen: 'reveal tiny'
+        base: addPrefixClass('reveal tiny'),
+        afterOpen: addPrefixClass('reveal tiny')
       }}
       content={content}
       isOpen={props.isOpen}
