@@ -15,7 +15,7 @@
       var editionTag = document.getElementById("kyber-widget-edition") || document.currentScript || document.documentElement;
       var editions = {
         standard: getCurrentScriptDir() || ("https://widget.kyber.network/v" + WIDGET_VERSION),
-        etheremon: params.get("widget_url") || "https://widget-etheremon.knstats.com"
+        etheremon: params.get("widget_url") || "https://etheremon.kyber.network"
       }
 
       var current = params.get("widget_edition") ||
@@ -151,7 +151,7 @@
             // create the widget container
             element = document.createElement("DIV");
             element.id = "kyber-widget";
-            element.classList.add("kyber-widget");
+            element.classList.add("kyber_widget");
             // set widget attributes
             element.setAttribute("data-widget-attribute", "true");
             for (var pair of params) {
