@@ -1,5 +1,5 @@
-
-import React from "react"
+import React from "react";
+import { addPrefixClass } from "../../utils/className";
 
 const AdvanceConfigLayout = (props) => {
 
@@ -7,31 +7,31 @@ const AdvanceConfigLayout = (props) => {
     var advanceContent = document.getElementById("advance-content");
     var advanceArrow = document.getElementById("advance-arrow");
     var advanceTitle = document.getElementById("title-advanced");
-    if (advanceContent.className === "show-advance") {
+    if (advanceContent.className === addPrefixClass("show-advance")) {
         advanceContent.className = "";
         advanceArrow.className = "";
-        advanceTitle.className = "title-advanced"
+        advanceTitle.className = addPrefixClass("title-advanced")
         props.analytics.callTrack("clickToAdvance", "hide")
     } else {
-        advanceContent.className = "show-advance";
-        advanceArrow.className = "advance-arrow-up";
+        advanceContent.className = addPrefixClass("show-advance");
+        advanceArrow.className = addPrefixClass("advance-arrow-up");
         props.analytics.callTrack("clickToAdvance", "show")
-        advanceTitle.className = "title-advanced show-content"
+        advanceTitle.className = addPrefixClass("title-advanced show-content")
     }
   }
   return (
-    <div className="advance-config-wrapper" id="advance-config-wrapper">
-      <div className="advance-title-mobile title" onClick={(e) => toggleShowAdvance()}>
-        <div className="title-advanced" id="title-advanced">
+    <div className={addPrefixClass("advance-config-wrapper")} id="advance-config-wrapper">
+      <div className={addPrefixClass("advance-title-mobile title")} onClick={(e) => toggleShowAdvance()}>
+        <div className={addPrefixClass("title-advanced")} id="title-advanced">
           <img src={require("../../../assets/img/widget/dropdown-advance.svg")} id="advance-arrow"/>
           {props.translate("transaction.advanced") || "Advanced"}
-          <div className="border-advance"></div>
+          <div className={addPrefixClass("border-advance")}></div>
         </div>
       </div>
-      <div className="advance-config">
+      <div className={addPrefixClass("advance-config")}>
         {/* <div className="title advance-title-desktop">{props.translate("transaction.advanced") || "Advanced"}</div> */}
         <div id="advance-content">
-          <div className="advance-content">
+          <div className={addPrefixClass("advance-content")}>
             <div>
                 {props.gasConfig}
             </div>
@@ -40,8 +40,10 @@ const AdvanceConfigLayout = (props) => {
               {props.minRate}
             </div>
 
-            <div className="transaction-fee">
-              <div className="title-fee">{props.translate("transaction.transaction_fee") || "Transaction Fee"}</div>
+            <div className={addPrefixClass("transaction-fee")}>
+              <div className={addPrefixClass("title-fee")}>
+                {props.translate("transaction.transaction_fee") || "Transaction Fee"}
+              </div>
               <div>{props.totalGas} ETH</div>
             </div>
           </div>

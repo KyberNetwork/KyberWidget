@@ -26,9 +26,13 @@ h1 {
 
 #wrapper {
   max-width: 900px;
-  margin: 5rem auto;
+  margin: 3rem 0;
   line-height: 1.4;
   padding: 0 1rem;
+}
+
+html.standalone #wrapper {
+  margin: 5rem auto;
 }
 
 .item {

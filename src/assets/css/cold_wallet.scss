@@ -145,5 +145,22 @@
         margin-bottom: 20px;
       }
     }
+
+    .block-choose-path {
+      &__select-address {
+        .token-selector {
+          .focus-item {
+            div:first-child {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+            .payment-gateway__arrow-down {
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+    }
   }
 }

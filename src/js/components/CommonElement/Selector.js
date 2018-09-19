@@ -1,6 +1,7 @@
 import React from "react"
 //import { toT, roundingNumber } from "../../utils/converter"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
+import {addPrefixClass} from "../../utils/className"
 
 const Selector = (props) => {
   var focusItem = props.listItem[props.focusItem]
@@ -42,31 +43,31 @@ const Selector = (props) => {
   }
 
   return (
-    <div className="token-selector">
+    <div className={addPrefixClass("token-selector")}>
       <Dropdown onShow = {(e) => props.showTokens(e)} onHide = {(e) => props.hideTokens(e)}>
-        <DropdownTrigger className="notifications-toggle">
-          <div className="focus-item d-flex">
+        <DropdownTrigger className={addPrefixClass("notifications-toggle")}>
+          <div className={addPrefixClass("focus-item d-flex")}>
             <div>
-              <div className="icon">
+              <div className={addPrefixClass("icon")}>
                 <img src={require("../../../assets/img/tokens/" + focusItem.icon)} />
               </div>
               <div>
                 <div>{focusItem.name}</div>
                 <div>
-                  <span className="token-balance" title = {toT(focusItem.balance)}>{roundingNumber(toT(focusItem.balance, focusItem.decimal))}</span>
-                  <span className="token-symbol">{focusItem.symbol}</span>
+                  <span className={addPrefixClass("token-balance")} title = {toT(focusItem.balance)}>{roundingNumber(toT(focusItem.balance, focusItem.decimal))}</span>
+                  <span className={addPrefixClass("token-symbol")}>{focusItem.symbol}</span>
                 </div>
               </div>
             </div>
-            <div><i className={'k k-angle white ' + (props.open ? 'up' : 'down')}></i></div>
+            <div><i className={addPrefixClass('k k-angle white ' + (props.open ? 'up' : 'down'))}></i></div>
           </div>
         </DropdownTrigger>
         <DropdownContent>
-          <div className="select-item">
-            <div className="search-item">
+          <div className={addPrefixClass("select-item")}>
+            <div className={addPrefixClass("search-item")}>
               <input value={props.searchWord} placeholder={props.translate("search") || "Search"} onChange={(e) => props.changeWord(e)} type="text"/>
             </div>
-            <div className="list-item custom-scroll">
+            <div className={addPrefixClass("list-item custom-scroll")}>
               {getListToken()}
             </div>
           </div>

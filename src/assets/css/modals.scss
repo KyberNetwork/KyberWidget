@@ -739,9 +739,9 @@ $divider-color: darken($title-background-color, 5);
   }
 
   &__button-container {
-    padding: 40px;
+    padding: 40px !important;
     text-align: center;
-    background-color: #f5f5f5;
+    background-color: #f5f5f5 !important;
   }
 }
 

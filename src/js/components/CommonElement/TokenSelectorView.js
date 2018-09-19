@@ -1,6 +1,8 @@
 import React from "react"
 import * as converter from "../../utils/converter"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
+import {addPrefixClass} from "../../utils/className"
+import { default as _ } from "underscore";
 
 const TokenSelectorView = (props) => {
   var focusItem = props.listItem[props.focusItem]
@@ -21,8 +23,11 @@ const TokenSelectorView = (props) => {
     }
   });
 
+  priorityTokens = _.sortBy(priorityTokens, function(token) { return token.index; });
+
   var getListToken = () => {
-   // const destRateEth = 1
+
+    //const destRateEth = props.listItem[props.exchange.destTokenSymbol].rateEth;
 
     return Object.keys(listShow).map((key) => {
       if (key === "ETH"){
@@ -42,18 +47,20 @@ const TokenSelectorView = (props) => {
           key={key}
           onClick={(e) => props.selectItem(e, item.symbol, item.address)}
           // className={"token-item-container " + (rate == 0 ? "token-item-container--inactive" : "payment-gateway__hover-color")}>
-          className={"token-item-container payment-gateway__hover-color"}>
-          <div className="token-item-content">
-            <div className="token-item">
-              <img className="token-item__icon" src={require("../../../assets/img/tokens/" + item.icon)}/>
-              <span className="token-item__symbol">{item.symbol}</span>
+          className={addPrefixClass("token-item-container payment-gateway__hover-color")}>
+          <div className={addPrefixClass("token-item-content")}>
+            <div className={addPrefixClass("token-item")}>
+              <img className={addPrefixClass("token-item__icon")} src={require("../../../assets/img/tokens/" + item.icon)}/>
+              <span className={addPrefixClass("token-item__symbol")}>{item.symbol}</span>
             </div>
 
-            <div className="token-item">
-              <div className="token-item__rate">
-                {rate != 0 &&
+            <div className={addPrefixClass("token-item")}>
+              <div className={addPrefixClass("token-item__rate")}>
+              {rate != 0 &&
                   <div>1 {item.symbol} = {rate} ETH</div>
-                }
+              }
+              
+               
 
                 {rate == 0 &&
                   <div>{props.translate('error.maintenance') || 'Maintenance'}</div>
@@ -72,20 +79,20 @@ const TokenSelectorView = (props) => {
   
 
   return (
-    <div className="token-chooser">
-      <Dropdown onShow = {(e) => props.showTokens(e)} onHide = {(e) => props.hideTokens(e)} active={props.open}>
-        <DropdownTrigger className="notifications-toggle">
-          <div className="focus-item d-flex">
-            <div className="d-flex">
-              <div className="icon">
+    <div className={addPrefixClass("token-chooser")}>
+      <Dropdown className={addPrefixClass("token-dropdown")} onShow = {(e) => props.showTokens(e)} onHide = {(e) => props.hideTokens(e)} active={props.open}>
+        <DropdownTrigger className={addPrefixClass("notifications-toggle token-dropdown__trigger")}>
+          <div className={addPrefixClass("focus-item d-flex")}>
+            <div className={addPrefixClass("d-flex")}>
+              <div className={addPrefixClass("icon")}>
                 <img src={require("../../../assets/img/tokens/" + focusItem.icon)} />
               </div>
               <div>
-                <div className="focus-balance">
+                <div className={addPrefixClass("focus-balance")}>
                   {/* {props.account !== false && (
                     <span className="token-balance" title = {converter.toT(focusItem.balance)}>{converter.roundingNumber(converter.toT(focusItem.balance, focusItem.decimal))}</span>
                   )} */}
-                  <span className="token-symbol">{focusItem.symbol}</span>
+                  <span className={addPrefixClass("token-symbol")}>{focusItem.symbol}</span>
                 </div>
               </div>
             </div>
@@ -93,27 +100,27 @@ const TokenSelectorView = (props) => {
               <div className="rate-token">
                 1 {focusItem.symbol} = {rateFocusItem} ETH
               </div>
-            )} 
-            <div><i className={'k k-angle ' + (props.open ? 'up' : 'down')}></i></div>
+            )}
+            <div><i className={addPrefixClass('k k-angle ' + (props.open ? 'up' : 'down'))}></i></div>
           </div>
         </DropdownTrigger>
-        <DropdownContent>
-          <div className="select-item">
-            <div className="suggest-item">
+        <DropdownContent className={addPrefixClass("token-dropdown__content")}>
+          <div className={addPrefixClass("select-item")}>
+            <div className={addPrefixClass("suggest-item")}>
               {priorityTokens.map((token, i) => {
                 return (
-                  <div className="suggest-item__content" key={i} onClick={(e) => props.selectItem(e, token.symbol, token.address, "suggest")}>
-                    <img className="suggest-item__icon" src={require(`../../../assets/img/tokens/${token.icon}`)} />
-                    <div className="suggest-item__symbol">{token.symbol}</div>
+                  <div className={addPrefixClass("suggest-item__content")} key={i} onClick={(e) => props.selectItem(e, token.symbol, token.address, "suggest")}>
+                    <img className={addPrefixClass("suggest-item__icon")} src={require(`../../../assets/img/tokens/${token.icon}`)} />
+                    <div className={addPrefixClass("suggest-item__symbol")}>{token.symbol}</div>
                   </div>
                 )
               })}
             </div>
-            <div className="search-item">
+            <div className={addPrefixClass("search-item")}>
               <input value={props.searchWord} placeholder='Try "DAI"' onChange={(e) => props.changeWord(e)} type="text" onFocus={(e) => props.analytics.callTrack("searchToken", props.type)}/>
             </div>
-            <div className="list-item">
-              <div className="list-item__content">
+            <div className={addPrefixClass("list-item")}>
+              <div className={addPrefixClass("list-item__content")}>
                 {getListToken()}
               </div>
             </div>

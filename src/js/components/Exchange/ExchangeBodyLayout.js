@@ -1,6 +1,6 @@
 import React from "react"
-
 import * as converter from "../../utils/converter"
+import {addPrefixClass} from "../../utils/className"
 
 const ExchangeBodyLayout = (props) => {
 
@@ -29,15 +29,15 @@ const ExchangeBodyLayout = (props) => {
   });
 
   return (
-    <div id="exchange">
-      <div className="grid-x">
-        <div className="cell medium-12 large-12 swap-wrapper">
-          <div className="grid-x exchange-col">
-            <div className="cell exchange-col-1">
+    <div id="exchange" className={addPrefixClass("widget-exchange")}>
+      <div>
+        <div className={addPrefixClass("swap-wrapper")}>
+          <div className={addPrefixClass("exchange-col")}>
+            <div className={addPrefixClass("exchange-col-1")}>
 
-              <div className="exchange-pading exchange-pading-top">
+              <div className={addPrefixClass("exchange-pading exchange-pading-top")}>
                 {props.networkError !== "" && (
-                  <div className="network_error">
+                  <div className={addPrefixClass("network_error")}>
                     <span>
                       <img src={require("../../../assets/img/warning.svg")} />
                     </span>
@@ -53,29 +53,29 @@ const ExchangeBodyLayout = (props) => {
            
 
                 <div>
-                  <div className="pay-info">
-                    <div className="info-1">
+                  <div className={addPrefixClass("pay-info")}>
+                    <div className={addPrefixClass("info-1")}>
                       {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
                     </div>
-                    <div className={props.exchange.monsterAvatar &&  props.exchange.monsterAvatar != "" ? "monster-avatar" : "" }>
+                    <div className={addPrefixClass(props.exchange.monsterAvatar &&  props.exchange.monsterAvatar != "" ? "monster-avatar" : "" )}>
                       {props.exchange.monsterAvatar &&  props.exchange.monsterAvatar != "" ?
-                        <div className="kyber-avatar"><img src={props.exchange.monsterAvatar} /></div> : ""
+                        <div className={addPrefixClass("kyber-avatar")}><img src={props.exchange.monsterAvatar} /></div> : ""
                       }
-                      <div className="info-2">
-                        <div className="info-2__content">
+                      <div className={addPrefixClass("info-2")}>
+                        <div className={addPrefixClass("info-2__content")}>
                           <div>Monster Id:</div>
                           <div>{props.exchange.monsterId}</div>
                         </div>
 
                         {props.exchange.monsterName && props.exchange.monsterName !== "" && (
-                          <div className="info-2__content">
+                          <div className={addPrefixClass("info-2__content")}>
                             <div>Monster Name:</div>
                             <div>{props.exchange.monsterName}</div>
                           </div>
                         )}
 
                         {props.exchange.catchable && (
-                          <div className="info-2__content">
+                          <div className={addPrefixClass("info-2__content")}>
                             <div>Price:</div>
                             <div>{props.exchange.monsterInETH ? converter.toEther(props.exchange.monsterInETH): 0} ETH</div>
                           </div>
@@ -85,33 +85,33 @@ const ExchangeBodyLayout = (props) => {
                   </div>
 
                   <div>
-                    <div className="choose-payment">
-                      <span className="transaction-label">
+                    <div className={addPrefixClass("choose-payment")}>
+                      <span className={addPrefixClass("transaction-label")}>
                         {props.translate("transaction.exchange_paywith") || "PAY WITH"}
                       </span>
-                      <div className={errorExchange ? "error select-token-panel" : "select-token-panel"}>
+                      <div className={addPrefixClass(errorExchange ? "error select-token-panel" : "select-token-panel")}>
                         {props.tokenSourceSelect}
 
                         {props.exchange.catchable === false && (
-                          <div className="payment-error">
+                          <div className={addPrefixClass("payment-error")}>
                             This monster is not catchable
                           </div>
                         )}
 
                         {props.exchange.expectedRate == 0 && props.exchange.expectedRate && (
-                          <div className="payment-error">
+                          <div className={addPrefixClass("payment-error")}>
                             Cannot catch monster with {props.exchange.sourceTokenSymbol} at the momment
                           </div>
                         )}
 
                         {props.exchange.expectedRate != 0 && props.exchange.catchable && (
-                        <div className="amount-pay">
+                        <div className={addPrefixClass("amount-pay")}>
                           <div>{props.translate("transaction.estimate_value_should_pay_in_token") || "Estimate value you should pay"} in {props.exchange.sourceTokenSymbol}</div>
                           <div>{tokenPrice} {props.exchange.sourceTokenSymbol}</div>
                         </div>
                         )}
                       </div>
-                      <div className={errorExchange ? "error" : ""}>
+                      <div className={addPrefixClass(errorExchange ? "error" : "")}>
                         {errorShow}
                       </div>
                     </div>
@@ -121,15 +121,15 @@ const ExchangeBodyLayout = (props) => {
               <div>
                 {props.advanceLayout}
               </div>
-              <div className="exchange-pading">
-                <div class="checkbox">
+              <div className={addPrefixClass("exchange-pading")}>
+                <div className={addPrefixClass("checkbox")}>
                   <input id="term-agree" type="checkbox" onChange={props.acceptedTerm} />
                   <label for="term-agree">
                     {props.translate("transaction.i_agree_to") || "Agree to"} <a href="https://files.kyber.network/tac.html" target="_blank" onClick={(e) => {if (props.global.analytics) props.global.analytics.callTrack("clickTermAndCondition")}}>{props.translate("transaction.term_and_condition") || "Terms &amp; Conditions"}</a>
                   </label>
                 </div>
                 
-                <div className="button-payment">
+                <div className={addPrefixClass("button-payment")}>
                   <button className={props.classNamePaymentbtn} onClick={(e) => props.importAccount(e)}>
                     {props.translate("transaction.next") || "Next"}
                   </button>
