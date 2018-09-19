@@ -5,3 +5,9 @@ scp -r /Users/andrewnguyen/Documents/KyberWidget/dist/native/* ubuntu@13.229.137
 Thang playground:
 scp -r /Users/andrewnguyen/Documents/KyberWidget/dist/* ubuntu@54.169.164.237:/home/ubuntu/kyberwidget
 
+
+
+
+deploy etheremon:
+
+scp -r /Users/andrewnguyen/Documents/KyberWidget/monster_shop/* ubuntu@52.77.238.156:/home/ubuntu/kyberwidget/etheremon && ssh ubuntu@52.77.238.156 "export PATH=$PATH:/home/ubuntu/.nvm/versions/node/v8.10.0/bin && pm2 reload wconfig"
