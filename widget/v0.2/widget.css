@@ -103,12 +103,12 @@ html[data-kyber-widget-edition='etheremon'] .kyber-widget-button {
     background-color: #fff;
     position: absolute;
     width: 405px;
+    height: 605px;
+    max-width: 90%;
+    max-height: 90%;
     box-sizing: border-box;
     transform: translateX(-50%) translateY(-50%);
     left: 50%;
     top: 50%;
-    height: 80%;
-    min-height: 605px;
-    max-height: 1070px;
     border: 0;
 }
