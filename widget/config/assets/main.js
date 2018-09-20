@@ -180,12 +180,17 @@
 
   var generateTag = debounce(function () {
     var formData = grabForm();
+    var codeBtn = document.querySelector(".widget-config__code-btn");
+
     if (formData.error && formData.error.length) {
       document.getElementById("widget").innerHTML = "<div class='error'>" +
         formData.error.join("<br>") + "</div>";
       document.getElementById("sourceHtml").textContent = "";
+      codeBtn.classList.add("widget-config__code-btn--disabled");
       return;
     }
+
+    codeBtn.classList.remove("widget-config__code-btn--disabled");
 
     var mode = document.querySelector("form").mode.value || "tab";
     var buttonTheme = document.querySelector('input[name=button_theme]:checked').value;
