@@ -119,10 +119,10 @@ $alert-color: #ff5d00;
     }
   }
   .kyber-payment-logo {
-    width: 161px;
+    width: 120px;
     height: 49px;
-    background-image: url($image-path + '/widget/kyber-widget.svg');
-    background-repeat: no-repeat;
+    background: url($image-path + '/kyber-logo.svg') left no-repeat;
+    background-size: contain;
     @include screen-max-width(medium) {
       margin-left: 10px;
     }
