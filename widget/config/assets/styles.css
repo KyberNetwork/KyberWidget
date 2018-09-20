@@ -397,7 +397,7 @@ label input, select, .pointer {
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 650px) {
   .widget-config__content--flex {
     flex-direction: row;
     flex-wrap: wrap;
