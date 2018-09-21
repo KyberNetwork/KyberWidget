@@ -8,19 +8,23 @@ node_js:
 script: echo "npm test temporarily disabled"
 
 install:
-  - ls
-  - pwd
-  - ls dist
-  - ls dist/native
 
 deploy:
-  provider: s3
-  access_key_id: $AWS_ACCESS_KEY_ID
-  secret_access_key: $AWS_SECRET_ACCESS_KEY
-  bucket: test-etheremon.knstats.com
-  region: ap-southeast-1
-  acl: public_read
-  local_dir: dist/native
-  on:
-    branch: master_etheremon
-    branch: develop_etheremon
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: test-etheremon.knstats.com
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: dist/native
+    on:
+      branch: develop_etheremon
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: etheremon.kyber.network
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: dist/native
+    on:
+      branch: master_etheremon
