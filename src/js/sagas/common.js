@@ -99,7 +99,7 @@ export function* retrySubmit(path, params, method, timeout){
     }
   }
 
-  throw Error("There is something wrong with the system, please contact the merchant for more information");
+  throw Error("Cannot submit data to callback URL, please contact the merchant for more information");
 }
 
 
