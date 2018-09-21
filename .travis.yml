@@ -5,15 +5,16 @@ language: node_js
 node_js:
   - node
 
-script: echo "npm test temporarily disabled"
-
-install:
+script: 
+  - echo "npm test temporarily disabled"
+  - echo "npm install temporarily disabled"
+install: true
 
 deploy:
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY_ID
     secret_access_key: $AWS_SECRET_ACCESS_KEY
-    bucket: test-etheremon.knstats.com
+    bucket: dev-etheremon.knstats.com
     region: ap-southeast-1
     acl: public_read
     local_dir: dist/native
