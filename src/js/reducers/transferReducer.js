@@ -256,13 +256,14 @@ const transfer = (state = initState, action) => {
 
     case "GLOBAL.CLEAR_SESSION_FULFILLED":{
       var resetState = {...initState}
-      resetState.token = newState.token
 
+      resetState.token = newState.token
       resetState.gasPrice = newState.gasPrice
       resetState.selectedGas = newState.selectedGas
       resetState.isEditGasPrice = newState.isEditGasPrice
-
       resetState.tokenSymbol = newState.tokenSymbol
+      resetState.type = newState.type
+
       return resetState
     }
   }
