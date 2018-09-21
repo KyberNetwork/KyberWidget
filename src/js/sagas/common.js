@@ -67,57 +67,39 @@ export function* submitCallback(hash){
           }
         })
       }
-              
-      try{
+
+      try {
         if (!params.network){
           params.network = BLOCKCHAIN_INFO[exchange.network].networkName;
         }
 
-      // var response = yield call(commonFunc.submitUrlEncoded, submitData, submitUrl, params, 'POST', 3000)
-
-        // console.log(response)
-        // return true
-       var response = yield call(retrySubmit, submitUrl, params, 'POST', 3000)
-       return true
-      //  commonFunc.postUrlEncoded(submitUrl, params, 'POST')
-
-        // const response = yield call(fetch, submitUrl, {
-        //     method: 'POST',
-        //     // headers: {
-        //     //   'Accept': 'application/json',
-        //     //   'Content-Type': 'application/json'
-        //     // },
-        //     body: JSON.stringify(params)
-        // })   
-        // const responseBody = response.json()
-        // console.log("status_submit")
-        // console.log(responseBody)  
-      }catch(e){
-        console.log(e)
-        return false
+        return yield call(retrySubmit, submitUrl, params, 'POST', 3000)
+      } catch(e) {
+        throw e;
       }
-      
     }else{
       return true
     }
 }
 
 export function* retrySubmit(path, params, method, timeout){
-  while(true){
+  let retryTime = 0;
+
+  while(retryTime < 5) {
     console.log("re try submit")
     try{
       var response = yield call(commonFunc.submitUrlEncoded, path, params, method, timeout)
       console.log(response)
       return true
-      // if (response.success){
-      //   return true
-      // }
-   }catch(e){
-     console.log(e)  
-     yield call(delay, 1000) 
-     continue 
-   }
+    } catch(e) {
+      retryTime++;
+      console.log(e);
+      yield call(delay, 1000);
+      continue;
+    }
   }
+
+  throw Error("Cannot submit data to callback URL, please contact the merchant for more information");
 }
 
 
