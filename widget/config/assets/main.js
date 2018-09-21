@@ -168,12 +168,12 @@
     document.querySelector(".kyber-modal__close-btn").addEventListener("click", function() {
       closeModal();
     });
-    document.querySelector(".kyber-overlay, .kyber-modal__close-btn").addEventListener("click", function() {
-      if(event.target.nodeName.toLowerCase() === "a") return;
+    document.querySelector(".kyber-overlay, .kyber-modal__close-btn").addEventListener("click", function(e) {
+      if(e.target.nodeName.toLowerCase() === "a") return;
       closeModal();
     });
     document.querySelector(".kyber-modal").addEventListener("click", function(e) {
-      if(event.target.nodeName.toLowerCase() === "a") return;
+      if(e.target.nodeName.toLowerCase() === "a") return;
       e.stopPropagation();
     });
   }
