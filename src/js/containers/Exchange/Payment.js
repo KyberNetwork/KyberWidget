@@ -447,6 +447,14 @@ export default class Payment extends React.Component {
       }
     }
   }
+
+  getAdditionalAmount = () => {
+    var amountSlippageRate = converter.caculateSourceAmount(this.props.exchange.destAmount, converter.toTWei(this.props.exchange.slippageRate), 6)
+    var amountExpectedRate = converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)
+    return  (
+      <span className="slippage-bonus">+ {converter.roundingNumber(amountSlippageRate - amountExpectedRate)}</span>
+    )
+  }
   render() {
     var gasUsed;
 
@@ -640,7 +648,7 @@ export default class Payment extends React.Component {
                 <div>
                   <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
                   {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
-                    <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
+                    <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.getAdditionalAmount()} {this.props.exchange.sourceTokenSymbol}</span>
                   )}
                   {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol && (
                     <span>{('' + this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</span>
