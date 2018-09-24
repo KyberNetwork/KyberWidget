@@ -6,7 +6,6 @@ import { AdvanceConfigLayout, GasConfig } from "../../components/TransactionComm
 
 
 
-
 //import {TransactionLayout} from "../../components/TransactionCommon"
 import { getTranslate } from 'react-localize-redux'
 
@@ -547,7 +546,7 @@ export default class Payment extends React.Component {
               <div className={addPrefixClass("k-content")}>
                 <div>
                   <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
-                  <span>{converter.caculateSourceAmount( converter.toEther(this.props.exchange.monsterInETH), this.props.exchange.expectedRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
+                  <span>{converter.caculateSourceAmount(converter.toEther(this.props.exchange.monsterInETH), this.props.exchange.slippageRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
 
                   {/* {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
                     <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>

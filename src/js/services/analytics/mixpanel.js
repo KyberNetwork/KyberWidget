@@ -277,7 +277,7 @@ export default class Mixpanel {
     clickTermAndCondition() {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track(`${appName}_1_1_Click_To_Term_And_Codition`)
+                mixpanel.track(`${appName}_1_1_Click_To_Terms_And_Conditions`)
             } catch (e) {
                 console.log(e)
             }
