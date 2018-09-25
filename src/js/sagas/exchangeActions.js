@@ -333,7 +333,7 @@ export function* processApproveByColdWallet(action) {
   } catch (e) {
     console.log(e)
     let msg = ''
-    if (accountType === 'ledger') {
+    if (isLedgerError(accountType, e)) {
       msg = keyService.getLedgerError(e)
     } else {
       msg = e.message
@@ -529,7 +529,7 @@ export function* exchangeETHtoTokenColdWallet(action) {
     } catch (e) {
       console.log(e)
       let msg = ''
-      if (type === 'ledger') {
+      if (isLedgerError(type, e)) {
         msg = keyService.getLedgerError(e)
       } else {
         msg = e.message
@@ -754,7 +754,7 @@ function* exchangeTokentoETHColdWallet(action) {
     } catch (e) {
       console.log(e)
       let msg = ''
-      if (type === 'ledger') {
+      if (isLedgerError(type, e)) {
         msg = keyService.getLedgerError(e)
       } else {
         msg = e.message
@@ -1783,6 +1783,9 @@ function* watchMetamaskAccount(ethereum, web3Service, network) {
   }
 }
 
+function isLedgerError(accountType, error) {
+  return accountType === "ledger" && error.hasOwnProperty("statusCode");
+}
 
 export function* watchExchange() {
   //yield takeEvery("EXCHANGE.TX_BROADCAST_PENDING", broadCastTx)

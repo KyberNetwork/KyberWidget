@@ -178,7 +178,7 @@ function* transferColdWallet(action, callService) {
         gasPrice, keystring, type, password, networkId)
     } catch (e) {
       let msg = ''
-      if(e.native && type == 'ledger'){
+      if(isLedgerError(type, e)){
         msg = keyService.getLedgerError(e.native)
       }
       yield put(exchangeActions.setSignError(msg))
@@ -194,7 +194,7 @@ function* transferColdWallet(action, callService) {
     yield call(runAfterBroadcastTx, ethereum, rawTx, hash, account, data)
   } catch (e) {
     let msg = ''
-    if(type == 'ledger'){
+    if(isLedgerError(type, e)){
       msg = keyService.getLedgerError(e.native)
     }else{
       msg = e.message
@@ -474,6 +474,10 @@ export function* verifyTransfer(){
   }else{
     yield put(actions.thowErrorEthBalance(""))
   }
+}
+
+function isLedgerError(accountType, error) {
+  return accountType === "ledger" && error.hasOwnProperty("native");
 }
 
 export function* watchTransfer() {
