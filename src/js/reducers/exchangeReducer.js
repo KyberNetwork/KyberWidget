@@ -716,6 +716,7 @@ const exchange = (state = initState, action) => {
       resetState.selectedGas = newState.selectedGas;
       resetState.isEditGasPrice = newState.isEditGasPrice;
       resetState.destToken = newState.destToken;
+      resetState.type = newState.type;
 
       resetState.monsterId = newState.monsterId;
       resetState.catchable = newState.catchable;

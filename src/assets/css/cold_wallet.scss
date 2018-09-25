@@ -11,7 +11,7 @@
   }
 }
 
-#cold-wallet {
+.cold-wallet {
   .address-list-path {
     .k-content {
       text-align: left;
@@ -143,6 +143,23 @@
         background-color: white;
         padding: 0px 35px;
         margin-bottom: 20px;
+      }
+    }
+
+    .block-choose-path {
+      &__select-address {
+        .token-selector {
+          .focus-item {
+            div:first-child {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+            // .payment-gateway__arrow-down {
+            //   margin-left: 10px;
+            // }
+          }
+        }
       }
     }
   }

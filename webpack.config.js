@@ -6,6 +6,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WebpackShellPlugin = require('./webpack-shell-plugin');
+
+// var classPrfx = require('postcss-class-prefix');
+// //var precss = require('precss');    // for scss support
+
+// var postcss = () => {
+//     return [ classPrfx('kyber-widget-', { ignore: [/some-class-/] }) ];
+//   }
 
 module.exports = env => {
 
@@ -33,9 +41,10 @@ module.exports = env => {
         new webpack.HashedModuleIdsPlugin(),
         new CopyWebpackPlugin([
           { from: './assets/img/kyber-payment.png', to: '' }
-        ])
+        ])       
+
     ];
-    if (env && env.build !== 'true') {
+    if (env && env.logger === 'true') {
         //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
         plugins.push(new webpack.DefinePlugin({
             //'env': JSON.stringify(env.chain),
@@ -43,8 +52,24 @@ module.exports = env => {
                 'logger': 'true'
             }
         }));
+    } 
+    if (env && env.build !== 'true') {
+        //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
+        // plugins.push(new webpack.DefinePlugin({
+        //     //'env': JSON.stringify(env.chain),
+        //     'process.env': {
+        //         'logger': 'true'
+        //     }
+        // }));
     } else {
         //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
+        plugins.push(
+            new WebpackShellPlugin(
+                {
+                  onBuildEnd:[`FOLDER=${folder} node webpack-config-after.js`]
+                }
+              )
+        )
         plugins.push(new CleanPlugin([outputPath+'/app.*', outputPath+'/libary.*']))
         plugins.push(new UglifyJsPlugin({
             uglifyOptions: {
@@ -59,7 +84,7 @@ module.exports = env => {
             new webpack.DefinePlugin({
                 //'env': JSON.stringify(env.chain),
                 'process.env': {
-                    'NODE_ENV': JSON.stringify('production')
+                    'NODE_ENV': JSON.stringify('production')                    
                 }
             })
         );
@@ -122,3 +147,5 @@ module.exports = env => {
         plugins: plugins
     }
 };
+
+

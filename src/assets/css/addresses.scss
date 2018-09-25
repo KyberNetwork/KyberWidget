@@ -1,10 +1,10 @@
-#trezor {
-  .k-title {
-    padding-left: 65px;
-    color: #1C1B2C;
-    margin-bottom: 30px;
-  }
-}
+// #trezor {
+//   .k-title {
+//     padding-left: 65px;
+//     color: #1C1B2C;
+//     margin-bottom: 30px;
+//   }
+// }
 .address-list-path {
   span.hash{
     color: #222;
@@ -399,15 +399,15 @@
 
 .dropdown {
   display: inline-block;
-}
 
-.dropdown__content {
-  display: none;
-  position: absolute;
-}
+  &.dropdown--active .dropdown__content {
+    display: block;
+  }
 
-.dropdown--active .dropdown__content {
-  display: block;
+  &__content {
+    display: none;
+    position: absolute;
+  }
 }
 
 .address-selector {
