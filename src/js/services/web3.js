@@ -53,8 +53,11 @@ export default class Web3Service {
   }
 
   getCoinbase(){
+    //alert("get_coinbase")
     return new Promise((resolve, reject)=>{
       this.web3.eth.getCoinbase((error, result) => {
+      //  alert(error)
+      //  alert(result)
         if (error || !result) {
           var error = new Error("Cannot get coinbase")
           reject(error)
@@ -65,6 +68,6 @@ export default class Web3Service {
     })
   }
   setDefaultAddress(address){
-    web3.eth.defaultAccount = address
+    this.web3.eth.defaultAccount = address
   }
 }
