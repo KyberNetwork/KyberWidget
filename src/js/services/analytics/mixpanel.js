@@ -322,4 +322,22 @@ export default class Mixpanel {
             }
         }
     }
+    trackAccessToWidget(){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+            try {
+                mixpanel.track("Session_Widget_Start")
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    }
+    exitWidget(){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track("Session_Widget_End")
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
 }
