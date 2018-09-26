@@ -277,7 +277,7 @@ export default class Mixpanel {
     clickTermAndCondition() {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track(`${appName}_1_1_Click_To_Term_And_Codition`)
+                mixpanel.track(`${appName}_1_1_Click_To_Term_And_Condition`)
             } catch (e) {
                 console.log(e)
             }
@@ -323,4 +323,24 @@ export default class Mixpanel {
             }
         }
     }
+
+  clickSelectColdWalletAddress(walletType) {
+    if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+      try {
+        mixpanel.track(`${appName}_2_3_Click_Select_Cold_Wallet_Address`, {walletType: walletType})
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
+
+  clickChooseColdWalletAddress(walletType, address) {
+    if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+      try {
+        mixpanel.track(`${appName}_2_3_Click_Choose_Cold_Wallet_Address`, {walletType: walletType, address: address})
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
 }
