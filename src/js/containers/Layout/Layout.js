@@ -47,7 +47,8 @@ import Language from "../../../../lang"
     translate: getTranslate(store.locale),
     locale: store.locale,
     exchange: store.exchange,
-    haltPayment: store.global.haltPayment
+    haltPayment: store.global.haltPayment,
+    analytics: store.global.analytics
     // currentLanguage: getActiveLanguage(store.locale).code
   }
 })
@@ -79,7 +80,15 @@ export default class Layout extends React.Component {
     clearInterval(this.intervalIdle)
   }
 
-
+  componentDidMount = () => {
+    this.props.analytics.callTrack("trackAccessToWidget")
+    window.addEventListener("beforeunload", this.handleCloseWeb)
+  }
+  
+   handleCloseWeb = () => {
+    this.props.analytics.callTrack("exitWidget")
+  }
+  
   //  componentDidMount(){
   // //   var widgetParent = document.getElementById(constanst.APP_NAME)
   // //   var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
