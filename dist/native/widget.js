@@ -1,6 +1,6 @@
 (function (global) {
 
-  var WIDGET_VERSION = "0.3";
+  var WIDGET_VERSION = "0.2";
 
   function initKyberWidget() {
     function getCurrentScriptDir() {
