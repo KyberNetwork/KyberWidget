@@ -1,11 +1,11 @@
-#content {
-  // padding-bottom: 50px;
+// #content {
+//   // padding-bottom: 50px;
 
-  @include screen-max-width(mid-small) {
-    // padding: 0 1rem 0 1rem;
-    padding: 0;
-  }
-}
+//   @include screen-max-width(mid-small) {
+//     // padding: 0 1rem 0 1rem;
+//     padding: 0;
+//   }
+// }
 
 .k-container {
   max-width: $container-max-width;

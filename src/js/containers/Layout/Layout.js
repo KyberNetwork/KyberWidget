@@ -48,7 +48,8 @@ import Language from "../../../../lang"
     locale: store.locale,
     exchange: store.exchange,
     // currentLanguage: getActiveLanguage(store.locale).code
-    haltPayment: store.global.haltPayment
+    haltPayment: store.global.haltPayment,
+    analytics: store.global.analytics
   }
 })
 
@@ -77,6 +78,15 @@ export default class Layout extends React.Component {
   }
   componentWillUnmount() {
     clearInterval(this.intervalIdle)
+  }
+
+  componentDidMount = () => {
+    this.props.analytics.callTrack("trackAccessToWidget")
+    window.addEventListener("beforeunload", this.handleCloseWeb)
+  }
+  
+   handleCloseWeb = () => {
+    this.props.analytics.callTrack("exitWidget")
   }
 
 

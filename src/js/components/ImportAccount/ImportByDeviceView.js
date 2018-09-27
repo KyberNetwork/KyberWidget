@@ -1,6 +1,7 @@
 import React from "react";
 import PathSelector from "../../containers/CommonElements/PathSelector";
 import AddressSelector from "../../containers/CommonElements/AddressSelector";
+import {addPrefixClass} from "../../utils/className"
 
 const ImportByDeviceView = (props) => {
 
@@ -20,13 +21,13 @@ const ImportByDeviceView = (props) => {
     }
 
     return (
-      <div id="cold-wallet">
-        <div className={"address-list-path"}>
-          <div className="content">
-            <div className="block-title">
+      <div className={addPrefixClass("cold-wallet")}>
+        <div className={addPrefixClass("address-list-path")}>
+          <div className={addPrefixClass("k-content")}>
+            <div className={addPrefixClass("block-title")}>
               {props.translate("modal.select_hd_path") || "Select HD derivation path"}
             </div>
-            <div className="block-choose-path">
+            <div className={addPrefixClass("block-choose-path")}>
               <PathSelector
                 listItem={props.dPath}
                 choosePath={choosePath}
@@ -35,10 +36,10 @@ const ImportByDeviceView = (props) => {
               />
             </div>
 
-            <div className="block-title">
+            <div className={addPrefixClass("block-title")}>
               {props.translate("modal.select_address") || "Select the Address you'd' like to use"}
             </div>
-            <div className="block-choose-path">
+            <div className={addPrefixClass("block-choose-path block-choose-path__select-address")}>
               <AddressSelector
                 isFirstList={props.isFirstList}
                 addresses={props.currentAddresses}
@@ -58,46 +59,46 @@ const ImportByDeviceView = (props) => {
 
   return (
     <div>
-      <div className="payment-gateway__step-title payment-gateway__step-title--2">
+      <div className={addPrefixClass("payment-gateway__step-title payment-gateway__step-title--2")}>
         {props.translate(`modal.select_${props.chosenImportAccount}_address`) || 'Select Address'}
       </div>
 
-      <div className={"import-account-content__info " + (!props.hasError ? 'import-account-content__info--center' : '')}>
-        <div className={"import-account-content__info-type"}>
+      <div className={addPrefixClass("import-account-content__info " + (!props.hasError ? 'import-account-content__info--center' : ''))}>
+        <div className={addPrefixClass("import-account-content__info-type")}>
           <img
-            className={"import-account-content__info-type-image"}
+            className={addPrefixClass("import-account-content__info-type-image")}
             src={require(`../../../assets/img/landing/${props.chosenImportAccount}_active.svg`)}/>
-          <div className={"import-account-content__info-type-text"}>
+          <div className={addPrefixClass("import-account-content__info-type-text")}>
             {props.chosenImportAccount}
           </div>
         </div>
         {!props.hasError &&
-        <div className={"import-account-content__info-text"}>
-          <div className={"import-account-content__info-text-address"}>
+        <div className={addPrefixClass("import-account-content__info-text")}>
+          <div className={addPrefixClass("import-account-content__info-text-address")}>
           {props.translate("transaction.address") || "Address"}: {props.wallet.address.slice(0, 8)}...{props.wallet.address.slice(-6)}
           </div>
-          <div className={"import-account-content__info-text-balance"}>
+          <div className={addPrefixClass("import-account-content__info-text-balance")}>
           {props.translate("transaction.balance") || "Balance"}: {props.wallet.balance} ETH
           </div>
         </div>
         }
       </div>
 
-      <div className="import-account-content__device">
+      <div className={addPrefixClass("import-account-content__device")}>
         {getSelectAddressHtml()}
       </div>
 
       {props.hasError &&
-      <div className="import-account-content__error">{props.error}</div>
+      <div className={addPrefixClass("import-account-content__error")}>{props.error}</div>
       }
 
-      <div className={"import-account-content__button-container"}>
-        <div className={"import-account-content__button payment-gateway__button--back"} onClick={props.onCloseImportAccount}>
+      <div className={addPrefixClass("import-account-content__button-container")}>
+        <div className={addPrefixClass("import-account-content__button payment-gateway__button--back")} onClick={props.onCloseImportAccount}>
           {props.translate("transaction.back") || "Back"}
         </div>
 
         {!props.hasError &&
-        <div className={"import-account-content__button payment-gateway__button"} onClick={props.getAddress}>
+        <div className={addPrefixClass("import-account-content__button payment-gateway__button")} onClick={props.getAddress}>
           {props.translate("transaction.next") || "Next"}
         </div>
         }

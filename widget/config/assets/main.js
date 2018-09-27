@@ -168,24 +168,29 @@
     document.querySelector(".kyber-modal__close-btn").addEventListener("click", function() {
       closeModal();
     });
-    document.querySelector(".kyber-overlay, .kyber-modal__close-btn").addEventListener("click", function() {
-      if(event.target.nodeName.toLowerCase() === "a") return;
+    document.querySelector(".kyber-overlay, .kyber-modal__close-btn").addEventListener("click", function(e) {
+      if(e.target.nodeName.toLowerCase() === "a") return;
       closeModal();
     });
     document.querySelector(".kyber-modal").addEventListener("click", function(e) {
-      if(event.target.nodeName.toLowerCase() === "a") return;
+      if(e.target.nodeName.toLowerCase() === "a") return;
       e.stopPropagation();
     });
   }
 
   var generateTag = debounce(function () {
     var formData = grabForm();
+    var codeBtn = document.querySelector(".widget-config__code-btn");
+
     if (formData.error && formData.error.length) {
       document.getElementById("widget").innerHTML = "<div class='error'>" +
         formData.error.join("<br>") + "</div>";
       document.getElementById("sourceHtml").textContent = "";
+      codeBtn.classList.add("widget-config__code-btn--disabled");
       return;
     }
+
+    codeBtn.classList.remove("widget-config__code-btn--disabled");
 
     var mode = document.querySelector("form").mode.value || "tab";
     var buttonTheme = document.querySelector('input[name=button_theme]:checked').value;
@@ -195,7 +200,9 @@
     var url = widgetBaseUrl + "/?" + formData.data;
     var cssUrl = widgetBaseUrl + '/widget.css';
     var jsUrl = widgetBaseUrl + '/widget.js';
-    var tagHtml = "<a href='" + url + "'\nclass='kyber-widget-button" + buttonTheme + "' ";
+    var tagHtml = "<!-- This is the '" + formData.buttonText + "' button, place it anywhere on your webpage -->\n";
+    tagHtml += "<!-- You can add multiple buttons into a same page -->\n";
+    tagHtml += "<a href='" + url + "'\nclass='kyber-widget-button" + buttonTheme + "' ";
     tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay with tokens'\n";
     tagHtml += "target='_blank'>" + formData.buttonText + "</a>";
 
@@ -255,6 +262,13 @@
     document.body.classList.remove("no-scroll");
   }
 
+  function checkStandalone() {
+    if (window === window.parent) {
+      document.documentElement.classList.add("standalone");
+    }
+  }
+  
+  checkStandalone();
   insertWidgetFiles();
   generateTag();
   wireEvents();

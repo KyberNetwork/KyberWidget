@@ -36,8 +36,10 @@ export default class ImportAccount extends React.Component {
     // swapPage.className = swapPage.className === "" ? "no-min-height" : swapPage.className + " no-min-height"
 
     if (this.props.termOfServiceAccepted){
-      if (typeof web3 !== "undefined") {
-        var web3Service = new Web3Service(web3)
+      var web3Service = new Web3Service();
+      
+      if (web3Service.isHaveWeb3()) {
+        //var web3Service = new Web3Service(web3)
         var walletType = web3Service.getWalletType()
         if (walletType !== "metamask") {
           this.props.dispatch(importAccountMetamask(web3Service, BLOCKCHAIN_INFO[this.props.network].networkId))

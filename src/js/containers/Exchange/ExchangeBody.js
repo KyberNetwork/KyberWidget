@@ -1,34 +1,17 @@
 import React from "react"
 import { connect } from "react-redux"
-import { push } from 'react-router-redux';
-
-//import  from "../../utils/converter"
-
 import { PostExchangeWithKey, MinRate, AccountBalance } from "../Exchange"
 import { TransactionConfig } from "../../components/Transaction"
-
 import { ExchangeBodyLayout } from "../../components/Exchange"
-import { AddressBalance } from "../../components/TransactionCommon"
-
-import { TransactionLoading, Token } from "../CommonElements"
-
 import { TokenSelector } from "../TransactionCommon"
-
 import * as validators from "../../utils/validators"
 import * as common from "../../utils/common"
 import * as converter from "../../utils/converter"
-
-import { openTokenModal, hideSelectToken } from "../../actions/utilActions"
-
-import * as globalActions from "../../actions/globalActions"
-
 import * as exchangeActions from "../../actions/exchangeActions"
-
 import constansts from "../../services/constants"
-
-//import { randomForExchange } from "../../utils/random"
 import { getTranslate } from 'react-localize-redux'
 import { default as _ } from 'underscore'
+import {addPrefixClass} from "../../utils/className"
 
 @connect((store, props) => {
 
@@ -299,11 +282,11 @@ export default class ExchangeBody extends React.Component {
       />
     )
     var tokenDestSelect = this.props.global.params.receiveToken && this.props.tokens[this.props.global.params.receiveToken] ? (
-      <div className='token-chooser token-dest'>
-        <div className="focus-item">
+      <div className={addPrefixClass("token-chooser token-dest")}>
+        <div className={addPrefixClass("focus-item")}>
           <img src={require("../../../assets/img/tokens/" + this.props.tokens[this.props.global.params.receiveToken].icon)} />
-          <div class="focus-balance">
-            <span class="token-symbol">{this.props.global.params.receiveToken}</span>
+          <div className={addPrefixClass("focus-balance")}>
+            <span className={addPrefixClass("token-symbol")}>{this.props.global.params.receiveToken}</span>
           </div>
         </div>
       </div>
@@ -370,9 +353,9 @@ export default class ExchangeBody extends React.Component {
     var classNamePaymentbtn
     if (!validators.anyErrors(this.props.exchange.errors) && this.state.acceptedTerm && !this.props.exchange.isSelectToken) {
       //className += " animated infinite pulse next"
-      classNamePaymentbtn = "button accent next"
+      classNamePaymentbtn = addPrefixClass("button accent next")
     } else {
-      classNamePaymentbtn = "button accent disable"
+      classNamePaymentbtn = addPrefixClass("button accent disable")
     }
 
     return (

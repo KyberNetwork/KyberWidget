@@ -1,15 +1,16 @@
 import React from "react";
 import constants from '../../../services/constants';
+import {addPrefixClass} from "../../../utils/className"
 
 const ImportByLedgerView = (props) => {
   return (
-    <div className="import-account__item" onClick={() => props.onOpenImportAccount(constants.IMPORT_ACCOUNT_TYPE.ledger)}>
-      <div className="column">
-        <div className="importer ledger">
-          <div className="importer__symbol">
+    <div className={addPrefixClass("import-account__item")} onClick={() => props.onOpenImportAccount(constants.IMPORT_ACCOUNT_TYPE.ledger)}>
+      <div className={addPrefixClass("column")}>
+        <div className={addPrefixClass("importer ledger")}>
+          <div className={addPrefixClass("importer__symbol")}>
             {/* <img src={require('../../../../assets/img/landing/ledger_disable.png')} /> */}
-            <div className="importer__icon"></div>
-            <div className="importer__name">{props.translate("import.from_ledger") || "LEDGER"}</div>
+            <div className={addPrefixClass("importer__icon")}></div>
+            <div className={addPrefixClass("importer__name")}>{props.translate("import.from_ledger") || "LEDGER"}</div>
           </div>
         </div>
       </div>

@@ -19,6 +19,7 @@
     "bignumber.js": "^6.0.0",
     "bowser": "^1.9.1",
     "chart.js": "^2.7.2",
+    "classnames": "^2.2.6",
     "clean-webpack-plugin": "^0.1.19",
     "compression-webpack-plugin": "^1.1.3",
     "copy-webpack-plugin": "^4.5.2",
@@ -33,6 +34,8 @@
     "localforage": "^1.5.5",
     "lodash": "^4.17.4",
     "platform": "^1.3.4",
+    "postcss-class-prefix": "^0.3.0",
+    "precss": "^3.1.2",
     "raf": "^3.4.0",
     "rc-menu": "^6.2.6",
     "rc-slider": "^8.6.1",
@@ -104,7 +107,7 @@
   },
   "scripts": {
     "build-native": "NODE_ENV=production webpack --env.build=true --config webpack.config.js --env.folder=native",
-    "build-dev": "NODE_ENV=production webpack --env.build=true --config webpack.config.dev.js --env.folder=dev --env.logger=true",
+    "build-dev": "NODE_ENV=production webpack --env.build=true --config webpack.config.js --env.folder=dev --env.logger=true",
     "build-bundle": "NODE_ENV=production webpack --env.build=true --config webpack.config.bundle.js --env.folder=bundle",
     "dev": "webpack-dev-server --content-base src --inline --hot --history-api-fallback --host 0.0.0.0 --port 3002 --env.logger=true",
     "devs": "webpack-dev-server --content-base src --https --inline --hot --history-api-fallback --host 0.0.0.0 --port 3002 --env.logger=true"

@@ -163,13 +163,13 @@ $divider-color: darken($title-background-color, 5);
   }
 }
 
-#exchange-from-token-modal,
-#exchange-to-token-modal,
-#transfer-from-token-modal {
-  @include breakpoint(medium) {
-    max-width: 860px;
-  }
-}
+// #exchange-from-token-modal,
+// #exchange-to-token-modal,
+// #transfer-from-token-modal {
+//   @include breakpoint(medium) {
+//     max-width: 860px;
+//   }
+// }
 
 #passphrase-modal {
   @include breakpoint(medium) {
@@ -739,9 +739,9 @@ $divider-color: darken($title-background-color, 5);
   }
 
   &__button-container {
-    padding: 40px;
+    padding: 40px !important;
     text-align: center;
-    background-color: #f5f5f5;
+    background-color: #f5f5f5 !important;
   }
 }
 
