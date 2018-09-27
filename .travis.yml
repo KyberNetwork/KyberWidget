@@ -20,5 +20,29 @@ deploy:
     region: ap-southeast-1
     acl: public_read
     local_dir: dist/native
+    skip_cleanup: true
     on:
       branch: develop
+
+  # etheremon-widget 
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: dev-etheremon.knstats.com
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: dist/native
+    skip_cleanup: true
+    on:
+      branch: develop_etheremon
+
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: etheremon.kyber.network
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: dist/native
+    skip_cleanup: true
+    on:
+      branch: master_etheremon
