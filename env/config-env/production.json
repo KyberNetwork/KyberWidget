@@ -30,7 +30,17 @@
         "decimal": 18,
         "usd_id":"ethereum",
         "gasLimit": "0",
-        "priority": true
+        "priority":true        
+      },
+      "WETH": {
+        "name": "Wrapped Ether",
+        "decimal": 18,
+        "symbol" : "WETH",
+        "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "icon": "weth.svg",
+        "isNew": true,
+        "expireDate":"2018/09/30",
+        "exclude": true
       },
       "WETH": {
         "name": "Wrapped Ether",
@@ -46,7 +56,7 @@
         "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
         "decimal": 18,
         "usd_id":"kyber-network",
-        "priority": true
+        "priority":true        
       },
       "DAI": {
         "name" : "DAI",
@@ -251,7 +261,7 @@
         "decimal": 18,
         "symbol":"PAL",
         "address": "0xfedae5642668f8636a11987ff386bfd215f942ee",
-        "icon": "pal.svg"
+        "icon": "pal.png"
       },
       "ELEC": {
         "name": "ElectrifyAsia",
@@ -271,7 +281,7 @@
         "name": "Polymath",
         "decimal": 18,
         "address": "0x9992ec3cf6a55b00978cddf2b27bc6882d88d1ec",
-        "symbol":"POLY",
+        "symbol":"POLY", 
         "icon": "poly.svg"
       },
       "LBA": {
@@ -399,6 +409,13 @@
         "symbol" : "ZRX",
         "address": "0xe41d2489571d322189246dafa5ebde1f4699f498",
         "icon": "zrx.svg"
+      },
+      "MAS":{
+        "name": "MidasProtocol",
+        "decimal": 18,
+        "symbol" : "MAS",
+        "address": "0x23ccc43365d9dd3882eab88f43d515208f832430",
+        "icon": "mas.svg"
       }
     },
     "ethScanUrl": "https://etherscan.io/",
