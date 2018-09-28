@@ -3,14 +3,28 @@ sudo: required
 language: node_js
 
 node_js:
-  - node
+  - "8"
 
 script: 
   - echo "npm test temporarily disabled"
-  - echo "npm install temporarily disabled"
-install: true
+
+install:
+  - npm ci
+  - npm run build-native
 
 deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: dev-widget.knstats.com
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: dist/native
+    skip_cleanup: true
+    on:
+      branch: develop
+
+  # etheremon-widget 
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY_ID
     secret_access_key: $AWS_SECRET_ACCESS_KEY
@@ -18,8 +32,10 @@ deploy:
     region: ap-southeast-1
     acl: public_read
     local_dir: dist/native
+    skip_cleanup: true
     on:
       branch: develop_etheremon
+
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY_ID
     secret_access_key: $AWS_SECRET_ACCESS_KEY
@@ -27,5 +43,6 @@ deploy:
     region: ap-southeast-1
     acl: public_read
     local_dir: dist/native
+    skip_cleanup: true
     on:
       branch: master_etheremon

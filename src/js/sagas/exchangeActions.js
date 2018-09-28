@@ -336,7 +336,7 @@ export function* processApproveByColdWallet(action) {
   } catch (e) {
     console.log(e)
     let msg = ''
-    if (accountType === 'ledger') {
+    if (isLedgerError(accountType, e)) {
       msg = keyService.getLedgerError(e)
     } else {
       msg = e.message
@@ -532,7 +532,7 @@ export function* exchangeETHtoTokenColdWallet(action) {
     } catch (e) {
       console.log(e)
       let msg = ''
-      if (type === 'ledger') {
+      if (isLedgerError(type, e)) {
         msg = keyService.getLedgerError(e)
       } else {
         msg = e.message
@@ -773,7 +773,7 @@ function* exchangeTokentoETHColdWallet(action) {
     } catch (e) {
       console.log(e)
       let msg = ''
-      if (type === 'ledger') {
+      if (isLedgerError(type, e)) {
         msg = keyService.getLedgerError(e)
       } else {
         msg = e.message
@@ -1733,15 +1733,28 @@ export function* initParamsExchange(action) {
    ethereum.subcribe()
 
 
-  if (typeof web3 === "undefined") {
-    yield put(globalActions.throwErrorMematamask("Metamask is not installed"))
-  } else {
-    const web3Service = new Web3Service(web3)
+  const web3Service = new Web3Service()
+  // console.log("web3_data")
+  // console.log(web3Service.isHaveWeb3())
+  if(web3Service.isHaveWeb3()){
     const watchMetamask = yield fork(watchMetamaskAccount, ethereum, web3Service, network)
-
     yield take('GLOBAL.INIT_SESSION')
     yield cancel(watchMetamask)
+  }else{
+    yield put(globalActions.throwErrorMematamask("Metamask is not installed"))
   }
+  
+
+
+  // if (typeof web3 === "undefined") {
+  //   yield put(globalActions.throwErrorMematamask("Metamask is not installed"))
+  // } else {
+  //   const web3Service = new Web3Service(web3)
+  //   const watchMetamask = yield fork(watchMetamaskAccount, ethereum, web3Service, network)
+
+  //   yield take('GLOBAL.INIT_SESSION')
+  //   yield cancel(watchMetamask)
+  // }
 
 
   var notiService = new NotiService({ type: "session" })
@@ -1821,6 +1834,9 @@ function* watchMetamaskAccount(ethereum, web3Service, network) {
   }
 }
 
+function isLedgerError(accountType, error) {
+  return accountType === "ledger" && error.hasOwnProperty("statusCode");
+}
 
 export function* watchExchange() {
   //yield takeEvery("EXCHANGE.TX_BROADCAST_PENDING", broadCastTx)

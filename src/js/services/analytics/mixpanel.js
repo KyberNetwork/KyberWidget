@@ -277,7 +277,7 @@ export default class Mixpanel {
     clickTermAndCondition() {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track(`${appName}_1_1_Click_To_Term_And_Codition`)
+                mixpanel.track(`${appName}_1_1_Click_To_Term_And_Condition`)
             } catch (e) {
                 console.log(e)
             }
@@ -319,6 +319,44 @@ export default class Mixpanel {
             try {
                 mixpanel.track(`${appName}_2_3_Click_Input_New_Path_Cold_Wallet`, {walletType: walletType})
             } catch (e) {
+                console.log(e)
+            }
+        }
+    }
+
+  clickSelectColdWalletAddress(walletType) {
+    if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+      try {
+        mixpanel.track(`${appName}_2_3_Click_Select_Cold_Wallet_Address`, {walletType: walletType})
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
+
+  clickChooseColdWalletAddress(walletType, address) {
+    if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+      try {
+        mixpanel.track(`${appName}_2_3_Click_Choose_Cold_Wallet_Address`, {walletType: walletType, address: address})
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
+    trackAccessToWidget(){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+            try {
+                mixpanel.track(`Session_${appName}_Start`)
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    }
+    exitWidget(){
+        if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
+            try{
+                mixpanel.track(`Session_${appName}_End`)
+            }catch(e){
                 console.log(e)
             }
         }
