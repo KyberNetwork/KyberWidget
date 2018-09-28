@@ -5,6 +5,8 @@ language: node_js
 node_js:
   - "8"
 
+env:
+  - WIDGET_VERSION=v0.2
 script: 
   - echo "npm test temporarily disabled"
 
@@ -13,6 +15,7 @@ install:
   - npm run build-native
 
 deploy:
+  # kyber widget
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY_ID
     secret_access_key: $AWS_SECRET_ACCESS_KEY
@@ -23,6 +26,43 @@ deploy:
     skip_cleanup: true
     on:
       branch: develop
+
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: widget.kyber.network
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: dist/native
+    upload-dir: $WIDGET_VERSION
+    skip_cleanup: true
+    on:
+      branch: master
+
+  # widget/config
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: dev-widget.knstats.com
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: widget/config
+    upload-dir: widget/config
+    skip_cleanup: true
+    on:
+      branch: develop
+
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: widget.kyber.network
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: widget/config
+    upload-dir: widget/config
+    skip_cleanup: true
+    on:
+      branch: master
 
   # etheremon-widget 
   - provider: s3
