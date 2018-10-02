@@ -73,8 +73,8 @@ function* checkApproveAccount(address, type) {
     //var sourceAmount = 0
     //if (exchange.isHaveDestAmount) {
     var minConversionRate = exchange.snapshot.minConversionRate
-    var monsterInETH = converter.toEther(exchange.snapshot.monsterInETH)
-    var sourceAmount = converter.caculateSourceAmount(monsterInETH, minConversionRate, 6)
+    var productPrice = converter.toEther(exchange.snapshot.productPrice)
+    var sourceAmount = converter.caculateSourceAmount(productPrice, minConversionRate, 6)
     sourceAmount = converter.toTWei(sourceAmount, tokens[exchange.sourceTokenSymbol].decimal)
     // } else {
     //   sourceAmount = converter.toTWei(exchange.sourceAmount, tokens[exchange.sourceTokenSymbol].decimal)
@@ -128,7 +128,7 @@ function* checkMaxCap(address) {
       return
     }
 
-  var destAmount = converter.toEther(exchange.monsterInETH)
+  var destAmount = converter.toEther(exchange.productPrice)
   var minConversionRate = exchange.minConversionRate
   var srcAmount = converter.caculateSourceAmount(destAmount, minConversionRate, 6)
   srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)
@@ -206,7 +206,7 @@ function* checkBalance(address) {
   // }
 
   //check whether balance is sufficient  
-  var destAmount = converter.toEther(exchange.monsterInETH)
+  var destAmount = converter.toEther(exchange.productPrice)
   var minConversionRate = exchange.minConversionRate
   var srcAmount = converter.caculateSourceAmount(destAmount, minConversionRate, 6)
   srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)

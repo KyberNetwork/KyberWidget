@@ -38,18 +38,18 @@ export default class BaseProvider {
 
 
 
-    getMonsterPriceInETH (etheremonAddr, monsterId, payPrice){
-        return new Promise((resolve, reject) => {
-            var data = this.wapperEtheremon.methods.getMonsterPriceInETH(etheremonAddr, monsterId, payPrice).call()
-                        .then(result => {
-                            const {monsterInETH, catchable} = result
-                            resolve({monsterInETH, catchable})
-                        }).catch(e => {
-                            console.log(e)
-                            reject(e)
-                        })
-        })
-    }
+    // getMonsterPriceInETH (etheremonAddr, monsterId, payPrice){
+    //     return new Promise((resolve, reject) => {
+    //         var data = this.wapperEtheremon.methods.getMonsterPriceInETH(etheremonAddr, monsterId, payPrice).call()
+    //                     .then(result => {
+    //                         const {monsterInETH, catchable} = result
+    //                         resolve({monsterInETH, catchable})
+    //                     }).catch(e => {
+    //                         console.log(e)
+    //                         reject(e)
+    //                     })
+    //     })
+    // }
 
     isConnectNode() {
         return new Promise((resolve, reject) => {

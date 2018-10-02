@@ -18,8 +18,8 @@ const ExchangeBodyLayout = (props) => {
   if (props.exchange.isSelectToken) {
     tokenPrice = <img src={require('../../../assets/img/waiting.svg')} />
   } else {
-    if (props.exchange.expectedRate != 0 && props.exchange.monsterInETH) {
-      var ethValue = converter.toEther(props.exchange.monsterInETH)
+    if (props.exchange.expectedRate != 0 && props.exchange.productPrice) {
+      var ethValue = converter.toEther(props.exchange.productPrice)
       tokenPrice = converter.roundingNumber(converter.caculateSourceAmount(ethValue, props.exchange.expectedRate, 6))
     }
   }
@@ -57,29 +57,38 @@ const ExchangeBodyLayout = (props) => {
                     <div className={addPrefixClass("info-1")}>
                       {props.translate("transaction.you_about_to_pay") || "You are about to pay"}
                     </div>
-                    <div className={addPrefixClass(props.exchange.monsterAvatar &&  props.exchange.monsterAvatar != "" ? "monster-avatar" : "" )}>
-                      {props.exchange.monsterAvatar &&  props.exchange.monsterAvatar != "" ?
-                        <div className={addPrefixClass("kyber-avatar")}><img src={props.exchange.monsterAvatar} /></div> : ""
+                    <div className={addPrefixClass(props.global.params.productAvatar &&  props.global.params.productAvatar!= "" ? "product-avatar" : "" )}>
+                      {props.global.params.productAvatar &&  props.global.params.productAvatar != "" ?
+                        <div className={addPrefixClass("kyber-avatar")}><img src={props.global.params.productAvatar} /></div> : ""
                       }
                       <div className={addPrefixClass("info-2")}>
-                        <div className={addPrefixClass("info-2__content")}>
-                          <div>Monster Id:</div>
-                          <div>{props.exchange.monsterId}</div>
-                        </div>
 
-                        {props.exchange.monsterName && props.exchange.monsterName !== "" && (
+                      {props.global.params.productId && (
+                        <div className={addPrefixClass("info-2__content")}>
+                          <div>Product Id:</div>
+                          <div>{props.global.params.productId}</div>
+                        </div>
+                      )}
+                        
+
+                        {props.global.params.productName && props.global.params.productName !== "" && (
                           <div className={addPrefixClass("info-2__content")}>
-                            <div>Monster Name:</div>
-                            <div>{props.exchange.monsterName}</div>
+                            <div>Product Name:</div>
+                            <div>{props.global.params.productName}</div>
                           </div>
                         )}
 
-                        {props.exchange.catchable && (
+                          <div className={addPrefixClass("info-2__content")}>
+                            <div>Price:</div>
+                            <div>{props.exchange.productPrice ? converter.toEther(props.exchange.productPrice): 0} ETH</div>
+                          </div>
+
+                        {/* {props.exchange.catchable && (
                           <div className={addPrefixClass("info-2__content")}>
                             <div>Price:</div>
                             <div>{props.exchange.monsterInETH ? converter.toEther(props.exchange.monsterInETH): 0} ETH</div>
                           </div>
-                        )}
+                        )} */}
                       </div>
                     </div>                    
                   </div>
@@ -92,19 +101,19 @@ const ExchangeBodyLayout = (props) => {
                       <div className={addPrefixClass(errorExchange ? "error select-token-panel" : "select-token-panel")}>
                         {props.tokenSourceSelect}
 
-                        {props.exchange.catchable === false && (
+                        {/* {props.exchange.catchable === false && (
                           <div className={addPrefixClass("payment-error")}>
                             This monster is not catchable
                           </div>
-                        )}
+                        )} */}
 
-                        {props.exchange.expectedRate == 0 && props.exchange.expectedRate && (
+                        {/* {props.exchange.expectedRate == 0 && props.exchange.expectedRate && (
                           <div className={addPrefixClass("payment-error")}>
                             Cannot catch monster with {props.exchange.sourceTokenSymbol} at the momment
                           </div>
-                        )}
+                        )} */}
 
-                        {props.exchange.expectedRate != 0 && props.exchange.catchable && (
+                        {props.exchange.expectedRate != 0 && (
                         <div className={addPrefixClass("amount-pay")}>
                           <div>{props.translate("transaction.estimate_value_should_pay_in_token") || "Estimate value you should pay"} in {props.exchange.sourceTokenSymbol}</div>
                           <div>{tokenPrice} {props.exchange.sourceTokenSymbol}</div>

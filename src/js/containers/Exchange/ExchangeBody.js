@@ -87,9 +87,9 @@ export default class ExchangeBody extends React.Component {
       return
     }
 
-    if (!this.props.exchange.catchable){
-      return
-    }
+    // if (!this.props.exchange.catchable){
+    //   return
+    // }
 
     var isValidate = true
 
@@ -209,8 +209,7 @@ export default class ExchangeBody extends React.Component {
       this.state.acceptedTerm &&
       !this.props.exchange.isSelectToken &&
       this.props.exchange.kyber_enabled &&
-      this.props.exchange.expectedRate != 0 &&
-      this.props.exchange.catchable
+      this.props.exchange.expectedRate != 0       
     ) {
       classNamePaymentbtn = addPrefixClass("button accent next")
     } else {

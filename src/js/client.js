@@ -52,7 +52,7 @@ import AnalyticFactory from "./services/analytics"
 //   // break
 // }
 
-function initParams(appId) {
+function initParams(appId, getPrice, getTxData) {
   //var translate = getTranslate(store.locale)
   var translate = (...args) => {
     return null
@@ -64,11 +64,11 @@ function initParams(appId) {
     
     var query = {}
 
-    var etheremonAddr
-    var monsterId
-    var monsterName
-    var monsterAvatar
-    var payPrice
+    //var etheremonAddr
+    var productId
+    var productName
+    var productAvatar
+    //var payPrice
 
     var callback
     var network
@@ -91,32 +91,32 @@ function initParams(appId) {
 
       //this.props.dispatch(initParamsGlobal(query))
 
-      etheremonAddr = widgetParent.getAttribute('data-widget-etheremon-addr')
-      monsterId = widgetParent.getAttribute('data-widget-monster-id')
-      monsterName = widgetParent.getAttribute('data-widget-monster-name')
-      monsterAvatar = widgetParent.getAttribute('data-widget-monster-avatar')
+      //etheremonAddr = widgetParent.getAttribute('data-widget-etheremon-addr')
+      productId = widgetParent.getAttribute('data-widget-product-id')
+      productName = widgetParent.getAttribute('data-widget-product-name')
+      productAvatar = widgetParent.getAttribute('data-widget-product-avatar')
 
       callback = widgetParent.getAttribute('data-widget-callback')
       network = widgetParent.getAttribute('data-widget-network')
       paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
       signer = widgetParent.getAttribute('data-widget-signer')
       commissionID = widgetParent.getAttribute('data-widget-commission-id')   
-      payPrice = widgetParent.getAttribute('data-widget-pay-price')   
+     // payPrice = widgetParent.getAttribute('data-widget-pay-price')   
       pinTokens = widgetParent.getAttribute("data-widget-pinned-tokens")
     }else{
       query  = common.getQueryParams(window.location.search)
 
-      etheremonAddr = common.getParameterByName("etheremonAddr")
-      monsterId = common.getParameterByName("monsterId")
-      monsterName = common.getParameterByName("monsterName")
-      monsterAvatar = common.getParameterByName("monsterAvatar")
+     // etheremonAddr = common.getParameterByName("etheremonAddr")
+      productId = common.getParameterByName("productId")
+      productName = common.getParameterByName("productName")
+      productAvatar = common.getParameterByName("productAvatar")
 
       callback = common.getParameterByName("callback")
       network = common.getParameterByName("network")
       paramForwarding = common.getParameterByName("paramForwarding")
       signer = common.getParameterByName("signer")
       commissionID = common.getParameterByName("commissionId")      
-      payPrice = common.getParameterByName("payPrice")      
+     // payPrice = common.getParameterByName("payPrice")      
       pinTokens = common.getParameterByName("pinnedTokens")
     }
 
@@ -143,30 +143,30 @@ function initParams(appId) {
     
 
     var errors = {}
-    if (validator.verifyAccount(etheremonAddr)){
-      errors["etheremonAddr"] = translate('error.etheremon_address_must_be_ethereum_addr') 
-        || "etheremonAddr must be a valid ethereum address"
-    }
-    if (monsterId){
-      monsterId = parseInt(monsterId, 10)
-      if (monsterId === 0){
-        errors["monsterId"] = translate('error.monster_id_is_not_int') 
-        || "monsterId must be interger"
-      }      
-    }else{
-      errors["monsterId"] = translate('error.monster_id_must_be_require') 
-        || "monsterId must be required"
-    }
+    // if (validator.verifyAccount(etheremonAddr)){
+    //   errors["etheremonAddr"] = translate('error.etheremon_address_must_be_ethereum_addr') 
+    //     || "etheremonAddr must be a valid ethereum address"
+    // }
+    // if (monsterId){
+    //   monsterId = parseInt(monsterId, 10)
+    //   if (monsterId === 0){
+    //     errors["monsterId"] = translate('error.monster_id_is_not_int') 
+    //     || "monsterId must be interger"
+    //   }      
+    // }else{
+    //   errors["monsterId"] = translate('error.monster_id_must_be_require') 
+    //     || "monsterId must be required"
+    // }
 
-    if (payPrice){
-      payPrice = parseFloat(payPrice);
-      if(isNaN(payPrice)){
-        errors["payPrice"] = translate('error.pay_price_must_be_a_number') 
-        || "payPrice must be number"
-      }
-    }else{
-      payPrice = 0
-    }
+    // if (payPrice){
+    //   payPrice = parseFloat(payPrice);
+    //   if(isNaN(payPrice)){
+    //     errors["payPrice"] = translate('error.pay_price_must_be_a_number') 
+    //     || "payPrice must be number"
+    //   }
+    // }else{
+    //   payPrice = 0
+    // }
    
 
 
@@ -204,7 +204,7 @@ function initParams(appId) {
       store.dispatch(haltPayment(errors))
     }else{
       //var tokenAddr =  BLOCKCHAIN_INFO[network].tokens[receiveToken].address
-      store.dispatch(initParamsExchange(etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID, payPrice, listPinTokens));
+      store.dispatch(initParamsExchange(productId, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, listPinTokens, getPrice, getTxData));
       
         //init analytic
       var analytic = new AnalyticFactory({ listWorker: ['mix'], network })
@@ -218,7 +218,8 @@ Modal.setAppElement('body');
 window.kyberWidgetInstance = {}
 
 //console.log(document.getElementById(constanst.APP_NAME))
-window.kyberWidgetInstance.render = (widgetId) => {
+window.kyberWidgetInstance.render = (obj) => {
+  const {widgetId, getPrice, getTxData} = obj
   var appId = widgetId ? widgetId : constanst.APP_NAME
 
   if (!document.getElementById(appId)) {
@@ -237,7 +238,7 @@ window.kyberWidgetInstance.render = (widgetId) => {
   //     </PersistGate>, document.getElementById(constanst.APP_NAME));
   // }
   store.dispatch(initSession())
-  initParams(appId)
+  initParams(appId, getPrice, getTxData)
 
   ReactDOM.render(
     <PersistGate persistor={persistor}>
@@ -249,7 +250,6 @@ window.kyberWidgetInstance.render = (widgetId) => {
 
 
 
-window.kyberWidgetInstance.render()
 
 
 

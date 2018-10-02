@@ -110,130 +110,130 @@ export default class Payment extends React.Component {
     this.props.global.analytics.callTrack("clickToApprove", params.sourceTokenSymbol)
   }
 
-  processTransferTx = () => {
-    try {
-      var password = ""
-      if (this.props.account.type === "keystore") {
-        password = document.getElementById("passphrase").value
-        document.getElementById("passphrase").value = ''
-      }
+  // processTransferTx = () => {
+  //   try {
+  //     var password = ""
+  //     if (this.props.account.type === "keystore") {
+  //       password = document.getElementById("passphrase").value
+  //       document.getElementById("passphrase").value = ''
+  //     }
 
-      var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
-
-
-      // sending by wei
-      var account = this.props.account
-      var nonce = validators.verifyNonce(this.props.account.getUsableNonce())
-      var ethereum = this.props.ethereum
-      var formId = "transfer"
-      var data = ""
-
-      //const params = this.formParams()
-      var token = this.props.exchange.destTokenSymbol
-      var tokenAddress = this.props.tokens[token].address
-      var tokenDecimal = this.props.tokens[token].decimal
-      var tokenName = this.props.tokens[token].tokenName
-
-      var amount
-      if (this.props.exchange.isHaveDestAmount) {
-        amount = converter.stringToHex(this.props.exchange.destAmount, tokenDecimal)
-      } else {
-        amount = converter.stringToHex(this.props.exchange.sourceAmount, tokenDecimal)
-      }
+  //     var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
 
 
-      var destAddress = this.props.exchange.receiveAddr
-      var gas = converter.numberToHex(this.props.exchange.gas)
-      var gasPrice = converter.numberToHex(converter.gweiToWei(this.props.exchange.gasPrice))
+  //     // sending by wei
+  //     var account = this.props.account
+  //     var nonce = validators.verifyNonce(this.props.account.getUsableNonce())
+  //     var ethereum = this.props.ethereum
+  //     var formId = "transfer"
+  //     var data = ""
 
-      var balanceData = {
-        //balance: this.props.form.balance.toString(),
-        name: tokenName,
-        decimal: tokenDecimal,
-        tokenSymbol: token,
-        amount: this.props.destAmount
-      }
+  //     //const params = this.formParams()
+  //     var token = this.props.exchange.destTokenSymbol
+  //     var tokenAddress = this.props.tokens[token].address
+  //     var tokenDecimal = this.props.tokens[token].decimal
+  //     var tokenName = this.props.tokens[token].tokenName
 
-      this.props.dispatch(transferActions.processTransfer(formId, ethereum, account.address,
-        tokenAddress, amount,
-        destAddress, nonce, gas,
-        gasPrice, account.keystring, account.type, password, account, data, this.props.keyService, balanceData))
-    } catch (e) {
-      console.log(e)
-      //this.props.dispatch(transferActions.throwPassphraseError(this.props.translate("error.passphrase_error")))
-      // this.setState({passwordError : this.props.translate("error.passphrase_error") || "Key derivation failed - possibly wrong password" })
-    }
-  }
+  //     var amount
+  //     if (this.props.exchange.isHaveDestAmount) {
+  //       amount = converter.stringToHex(this.props.exchange.destAmount, tokenDecimal)
+  //     } else {
+  //       amount = converter.stringToHex(this.props.exchange.sourceAmount, tokenDecimal)
+  //     }
+
+
+  //     var destAddress = this.props.exchange.receiveAddr
+  //     var gas = converter.numberToHex(this.props.exchange.gas)
+  //     var gasPrice = converter.numberToHex(converter.gweiToWei(this.props.exchange.gasPrice))
+
+  //     var balanceData = {
+  //       //balance: this.props.form.balance.toString(),
+  //       name: tokenName,
+  //       decimal: tokenDecimal,
+  //       tokenSymbol: token,
+  //       amount: this.props.destAmount
+  //     }
+
+  //     this.props.dispatch(transferActions.processTransfer(formId, ethereum, account.address,
+  //       tokenAddress, amount,
+  //       destAddress, nonce, gas,
+  //       gasPrice, account.keystring, account.type, password, account, data, this.props.keyService, balanceData))
+  //   } catch (e) {
+  //     console.log(e)
+  //     //this.props.dispatch(transferActions.throwPassphraseError(this.props.translate("error.passphrase_error")))
+  //     // this.setState({passwordError : this.props.translate("error.passphrase_error") || "Key derivation failed - possibly wrong password" })
+  //   }
+  // }
 
   getSourceAmount = () => {
     //var sourceAmount = converter.stringToHex(this.props.snapshot.sourceAmount, this.props.snapshot.sourceDecimal)
     var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
     var minConversionRate = this.props.snapshot.minConversionRate
-    var ethValue = converter.toEther(this.props.snapshot.monsterInETH)
+    var ethValue = converter.toEther(this.props.snapshot.productPrice)
     var sourceAmount = converter.caculateSourceAmount(ethValue, minConversionRate, 6)
 
     sourceAmount = converter.stringToHex(sourceAmount, this.props.tokens[sourceTokenSymbol].decimal)
     return sourceAmount
   }
 
-  formParamOfSnapshot = () => {
-    var selectedAccount = this.props.account.address
-    var sourceToken = this.props.snapshot.sourceToken
+  // formParamOfSnapshot = () => {
+  //   var selectedAccount = this.props.account.address
+  //   var sourceToken = this.props.snapshot.sourceToken
 
 
-    var sourceAmount = converter.stringToHex(this.props.snapshot.sourceAmount, this.props.snapshot.sourceDecimal)
+  //   var sourceAmount = converter.stringToHex(this.props.snapshot.sourceAmount, this.props.snapshot.sourceDecimal)
 
 
-    var destToken = this.props.snapshot.destToken
+  //   var destToken = this.props.snapshot.destToken
 
-    var minConversionRate = converter.toTWei(this.props.snapshot.minConversionRate)
-    minConversionRate = converter.numberToHex(minConversionRate)
+  //   var minConversionRate = converter.toTWei(this.props.snapshot.minConversionRate)
+  //   minConversionRate = converter.numberToHex(minConversionRate)
 
-    var blockNo
-    if (this.props.exchange.commissionID) {
-      blockNo = this.props.exchange.commissionID
-    } else {
-      blockNo = converter.numberToHexAddress(this.props.snapshot.blockNo)
-    }
+  //   var blockNo
+  //   if (this.props.exchange.commissionID) {
+  //     blockNo = this.props.exchange.commissionID
+  //   } else {
+  //     blockNo = converter.numberToHexAddress(this.props.snapshot.blockNo)
+  //   }
 
-    var destAddress
-    if (this.props.exchange.isSwap){
-      destAddress = this.props.account.address
-    }else{
-      destAddress = this.props.exchange.receiveAddr
-    }
+  //   var destAddress
+  //   if (this.props.exchange.isSwap){
+  //     destAddress = this.props.account.address
+  //   }else{
+  //     destAddress = this.props.exchange.receiveAddr
+  //   }
     
 
-    var maxDestAmount = converter.biggestNumber()
+  //   var maxDestAmount = converter.biggestNumber()
 
-    var throwOnFailure = this.props.snapshot.throwOnFailure
-    var nonce = validators.verifyNonce(this.props.account.getUsableNonce())
-    // should use estimated gas
-    var gas = converter.numberToHex(this.props.snapshot.gas)
-    var gas_approve = converter.numberToHex(this.props.snapshot.gas_approve)
-    // should have better strategy to determine gas price
-    var gasPrice = converter.numberToHex(converter.gweiToWei(this.props.snapshot.gasPrice))
-    var sourceTokenSymbol = this.props.snapshot.sourceTokenSymbol
-    var balanceData = {
-      sourceName: this.props.snapshot.sourceName,
-      sourceSymbol: this.props.snapshot.sourceTokenSymbol,
-      sourceDecimal: this.props.snapshot.sourceDecimal,
-      // source: this.props.snapshot.sourceBalance.toString(),
-      destName: this.props.snapshot.destName,
-      destDecimal: this.props.snapshot.destDecimal,
-      destSymbol: this.props.snapshot.destTokenSymbol,
-      //  dest: this.props.snapshot.destBalance.toString(),
+  //   var throwOnFailure = this.props.snapshot.throwOnFailure
+  //   var nonce = validators.verifyNonce(this.props.account.getUsableNonce())
+  //   // should use estimated gas
+  //   var gas = converter.numberToHex(this.props.snapshot.gas)
+  //   var gas_approve = converter.numberToHex(this.props.snapshot.gas_approve)
+  //   // should have better strategy to determine gas price
+  //   var gasPrice = converter.numberToHex(converter.gweiToWei(this.props.snapshot.gasPrice))
+  //   var sourceTokenSymbol = this.props.snapshot.sourceTokenSymbol
+  //   var balanceData = {
+  //     sourceName: this.props.snapshot.sourceName,
+  //     sourceSymbol: this.props.snapshot.sourceTokenSymbol,
+  //     sourceDecimal: this.props.snapshot.sourceDecimal,
+  //     // source: this.props.snapshot.sourceBalance.toString(),
+  //     destName: this.props.snapshot.destName,
+  //     destDecimal: this.props.snapshot.destDecimal,
+  //     destSymbol: this.props.snapshot.destTokenSymbol,
+  //     //  dest: this.props.snapshot.destBalance.toString(),
 
-      // sourceAmount: this.props.form.balanceData.sourceAmount,
-      // destAmount: this.props.form.balanceData.destAmount,
-    }
-    //var balanceData = {}
-    return {
-      selectedAccount, sourceToken, sourceAmount, destToken,
-      minConversionRate, destAddress, maxDestAmount,
-      throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo
-    }
-  }
+  //     // sourceAmount: this.props.form.balanceData.sourceAmount,
+  //     // destAmount: this.props.form.balanceData.destAmount,
+  //   }
+  //   //var balanceData = {}
+  //   return {
+  //     selectedAccount, sourceToken, sourceAmount, destToken,
+  //     minConversionRate, destAddress, maxDestAmount,
+  //     throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo
+  //   }
+  // }
 
   formParamOfSnapshotMaxDest = () => {
     var selectedAccount = this.props.account.address
@@ -257,7 +257,7 @@ export default class Payment extends React.Component {
     }
 
     var destAddress = this.props.exchange.receiveAddr
-    var maxDestAmount = converter.toHex(this.props.snapshot.monsterInETH)
+    var maxDestAmount = converter.toHex(this.props.snapshot.productPrice)
 
     var throwOnFailure = this.props.snapshot.throwOnFailure
     var nonce = validators.verifyNonce(this.props.account.getUsableNonce())
@@ -315,13 +315,13 @@ export default class Payment extends React.Component {
 
       // console.log("params: ")
       // console.log(params)
-
+      var getTxData = this.props.exchange.getTxData
 
       this.props.dispatch(exchangeActions.processExchange(formId, ethereum, account.address, params.sourceToken,
         params.sourceAmount, params.destToken, params.destAddress,
         params.maxDestAmount, params.minConversionRate,
         params.throwOnFailure, params.nonce, params.gas,
-        params.gasPrice, account.keystring, account.type, password, account, data, this.props.keyService, params.balanceData, params.sourceTokenSymbol, params.blockNo))
+        params.gasPrice, account.keystring, account.type, password, account, data, this.props.keyService, params.balanceData, params.sourceTokenSymbol, params.blockNo, getTxData))
 
 
     } catch (e) {
@@ -480,8 +480,8 @@ export default class Payment extends React.Component {
     var broadcastExchangeError = this.props.exchange.broadcastError ? this.props.exchange.broadcastError : ""
     var txError = signExchangeError + broadcastExchangeError
 
-    var haveProductName = this.props.exchange.productName && this.props.exchange.productName !== "" ? true : false
-    var haveProductAvatar = this.props.exchange.productAvatar && this.props.exchange.productAvatar !== "" ? true : false
+    //var haveProductName = this.props.exchange.productName && this.props.exchange.productName !== "" ? true : false
+    //var haveProductAvatar = this.props.exchange.productAvatar && this.props.exchange.productAvatar !== "" ? true : false
 
     return (
       <div id="exchange" className={addPrefixClass("widget-exchange k-frame payment_confirm" + classError)}>
@@ -500,30 +500,33 @@ export default class Payment extends React.Component {
           <div className={addPrefixClass("k-title")}>
             {this.props.translate("transaction.you_about_to_pay") || "YOU ARE ABOUT TO PAY"}
           </div>
-          <div className={addPrefixClass(this.props.exchange.monsterAvatar && this.props.exchange.monsterAvatar != "" ? "monster-avatar" : "") }>
-            {this.props.exchange.monsterAvatar &&  this.props.exchange.monsterAvatar != "" ?
-              <div className={addPrefixClass("kyber-avatar")}><img src={this.props.exchange.monsterAvatar} /></div> : ""
+          <div className={addPrefixClass(this.props.global.params.productAvatar && this.props.global.params.productAvatar != "" ? "product-avatar" : "") }>
+            {this.props.global.params.productAvatar &&  this.props.global.params.productAvatar != "" ?
+              <div className={addPrefixClass("kyber-avatar")}><img src={this.props.global.params.productAvatar} /></div> : ""
             }
             <div className={addPrefixClass("k-content")}>
-              <div>
-                <span>{this.props.translate("transaction.monster_id") || "Monster Id"}:</span>
-                <span>
-                  {this.props.exchange.monsterId}
-                </span>
-              </div>
-              {this.props.exchange.monsterName && (
+              {this.props.global.params.productId && (
                 <div>
-                  <span>{this.props.translate("transaction.monster_name") || "Monster Name"}:</span>
+                  <span>{this.props.translate("transaction.product_id") || "Product Id"}:</span>
                   <span>
-                    {this.props.exchange.monsterName}
+                    {this.props.global.params.productId}
+                  </span>
+                </div>
+              )}
+              
+              {this.props.global.params.productName && (
+                <div>
+                  <span>{this.props.translate("transaction.product_name") || "Product Name"}:</span>
+                  <span>
+                    {this.props.global.params.productName}
                   </span>
                 </div>
               )}
 
               <div>
-                <span>{this.props.translate("transaction.monster_value") || "Price"}:</span>
+                <span>{this.props.translate("transaction.product_value") || "Price"}:</span>
                 <span>
-                  {converter.toEther(this.props.exchange.monsterInETH)} ETH
+                  {converter.toEther(this.props.exchange.productPrice)} ETH
                 </span>
               </div>
             </div>
@@ -547,7 +550,7 @@ export default class Payment extends React.Component {
               <div className={addPrefixClass("k-content")}>
                 <div>
                   <span>{this.props.translate("transaction.amount") || "Amount"}:</span>
-                  <span>{converter.caculateSourceAmount( converter.toEther(this.props.exchange.monsterInETH), this.props.exchange.expectedRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
+                  <span>{converter.caculateSourceAmount( converter.toEther(this.props.exchange.productPrice), this.props.exchange.expectedRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>
 
                   {/* {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
                     <span>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</span>

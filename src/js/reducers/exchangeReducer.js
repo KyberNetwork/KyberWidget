@@ -612,7 +612,7 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.INIT_PARAMS_EXCHANGE":{
-      const {monsterAvatar, callback, network, paramForwarding, signer, commissionID} = action.payload
+      const {callback, network, paramForwarding, signer, commissionID, getPrice, getTxData} = action.payload
       // {etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID}
       // newState.destTokenSymbol = receiveToken
       // newState.destAmount = receiveAmount
@@ -632,7 +632,10 @@ const exchange = (state = initState, action) => {
       newState.paramForwarding = paramForwarding
       newState.signer = signer
       newState.commissionID = commissionID
-      newState.monsterAvatar = monsterAvatar
+
+      newState.getPrice = getPrice
+      newState.getTxData = getTxData 
+      //newState.monsterAvatar = monsterAvatar
       
       return newState
     }
@@ -670,13 +673,9 @@ const exchange = (state = initState, action) => {
       return newState
     }
 
-    case "EXCHANGE.UPDATE_MONSTER_INFO":{
-      const {monsterInETH, catchable, etheremonAddr, monsterId, monsterName} = action.payload
-      newState.monsterInETH = monsterInETH
-      newState.catchable = catchable
-      newState.etheremonAddr = etheremonAddr
-      newState.monsterId = monsterId
-      newState.monsterName = monsterName
+    case "EXCHANGE.UPDATE_PRODUCT_INFO":{
+      const {productPrice} = action.payload
+      newState.productPrice = productPrice      
       return newState
     }
 
@@ -685,11 +684,11 @@ const exchange = (state = initState, action) => {
       return newState
     }
 
-    case "EXCHANGE.UPDATE_MONSTER_PRICE":{
-      const {etheremonPrice} = action.payload
-      newState.etheremonPrice = {...etheremonPrice}
-      return newState
-    }
+    // case "EXCHANGE.UPDATE_MONSTER_PRICE":{
+    //   const {etheremonPrice} = action.payload
+    //   newState.etheremonPrice = {...etheremonPrice}
+    //   return newState
+    // }
 
     case "EXCHANGE.UPDATE_RATE_TOKEN":{
       const {expectedRate, slippageRate} = action.payload

@@ -279,7 +279,7 @@ export function processExchange(formId, ethereum, address, sourceToken,
   sourceAmount, destToken, destAddress,
   maxDestAmount, minConversionRate,
   throwOnFailure, nonce, gas,
-  gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo) {
+  gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo, getTxData) {
   return {
     type: "EXCHANGE.PROCESS_EXCHANGE",
     payload: {
@@ -287,7 +287,7 @@ export function processExchange(formId, ethereum, address, sourceToken,
       sourceAmount, destToken, destAddress,
       maxDestAmount, minConversionRate,
       throwOnFailure, nonce, gas,
-      gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo
+      gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo, getTxData
     }
   }
 }
@@ -601,10 +601,10 @@ export function closeImportAccountExchange(){
     type: "EXCHANGE.CLOSE_IMPORT_ACCOUNT"
   }
 }
-export function initParamsExchange(etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID, payPrice, pinTokens){
+export function initParamsExchange(productId, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, listPinTokens, getPrice, getTxData){
   return {
     type: "EXCHANGE.INIT_PARAMS_EXCHANGE",
-    payload: {etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID, payPrice,pinTokens}
+    payload: {productId, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, listPinTokens, getPrice, getTxData}
   }
 }
 
@@ -650,19 +650,19 @@ export function unsetConfirming() {
 }
 
 
-export function updateMonsterInfo(monsterInETH, catchable, etheremonAddr, monsterId, monsterName){
+export function updateProductInfo(productPrice){
   return {
-    type: "EXCHANGE.UPDATE_MONSTER_INFO",
-    payload: {monsterInETH, catchable, etheremonAddr, monsterId, monsterName}
+    type: "EXCHANGE.UPDATE_PRODUCT_INFO",
+    payload: {productPrice}
   }
 }
 
-export function updateMonsterPrice(etheremonPrice){
-  return {
-    type: "EXCHANGE.UPDATE_MONSTER_PRICE",
-    payload: {etheremonPrice}
-  }
-}
+// export function updateMonsterPrice(etheremonPrice){
+//   return {
+//     type: "EXCHANGE.UPDATE_MONSTER_PRICE",
+//     payload: {etheremonPrice}
+//   }
+// }
 
 export function updateRateCompleted(){
   return {
