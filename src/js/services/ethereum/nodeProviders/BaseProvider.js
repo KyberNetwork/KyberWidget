@@ -4,6 +4,7 @@ import * as ethUtil from 'ethereumjs-util'
 import BLOCKCHAIN_INFO from "../../../../../env"
 import abiDecoder from "abi-decoder"
 import EthereumTx from "ethereumjs-tx"
+import * as common from "../../../utils/common";
 
 export default class BaseProvider {
     // constructor(props) {
@@ -250,10 +251,10 @@ export default class BaseProvider {
         })
     }
 
-  getPaymentEncodedData(
-    sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-    walletId, paymentData = constants.DEFAULT_BYTES, hint = constants.DEFAULT_BYTES
-  ) {
+  getPaymentEncodedData(sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate, walletId) {
+    const paymentData = common.getParameterByName("paymentData") || constants.DEFAULT_BYTES;
+    const hint = common.getParameterByName("hint") || constants.DEFAULT_BYTES;
+
     if (!this.rpc.utils.isAddress(walletId)) {
       walletId = "0x" + Array(41).join("0")
     }
