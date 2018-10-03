@@ -1,119 +1,115 @@
-import { verifyNonce } from "../../utils/validators"
-import { biggestNumber } from "../../utils/converter"
-//import BLOCKCHAIN_INFO from "../../../../env"
+import { biggestNumber } from "../../utils/converter";
 
 export const sendEtherFromAccount = (
-  id, ethereum, account, sourceToken, sourceAmount,
-  destAddress, nonce, gas, gasPrice, keystring, accountType,
-  password, networkId) => {
+  id, ethereum, account, sourceToken, sourceAmount, destAddress,
+  nonce, gas, gasPrice, keystring, accountType, password, networkId
+) => {
 
-  const txParams = {
+  const txParams = createTxParams(account, nonce, gasPrice, gas, destAddress, sourceAmount, "", networkId);
+
+  return new Promise((resolve) => {
+    resolve({ txParams, keystring, password })
+  })
+};
+
+export const sendTokenFromAccount = (
+  id, ethereum, account, sourceToken, sourceAmount, destAddress,
+  nonce, gas, gasPrice, keystring, accountType, password, networkId
+) => {
+  return new Promise((resolve) => {
+    ethereum.call("sendTokenData", sourceToken, sourceAmount, destAddress).then(result => {
+
+      const txParams = createTxParams(account, nonce, gasPrice, gas, sourceToken, "0x0", result, networkId);
+
+      resolve({ txParams, keystring, password })
+    })
+  })
+};
+
+export const etherToOthersFromAccount = (
+  id, ethereum, account, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
+  minConversionRate, commissionId, nonce, gas, gasPrice, keystring, accountType, password, networkId, kyberNetwork
+) => {
+  return new Promise((resolve) => {
+    ethereum.call("exchangeData", sourceToken, sourceAmount, destToken, destAddress,
+      maxDestAmount, minConversionRate, commissionId).then(result => {
+
+      const txParams = createTxParams(account, nonce, gasPrice, gas, kyberNetwork, sourceAmount, result, networkId);
+
+      resolve({ txParams, keystring, password })
+    })
+  })
+};
+
+export const tokenToOthersFromAccount = (
+  id, ethereum, account, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
+  commissionId, nonce, gas, gasPrice, keystring, accountType, password, networkId, kyberNetwork
+) => {
+  return new Promise((resolve) => {
+    ethereum.call("exchangeData", sourceToken, sourceAmount, destToken, destAddress,
+      maxDestAmount, minConversionRate, commissionId).then(result => {
+
+      const txParams = createTxParams(account, nonce, gasPrice, gas, kyberNetwork, "0x0", result, networkId);
+
+      resolve({ txParams, keystring, password })
+    })
+  })
+};
+
+export const etherToOthersPayment= (
+  id, ethereum, account, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
+  minConversionRate, commissionId, nonce, gas, gasPrice, keystring, accountType, password, networkId, kyberNetwork
+) => {
+  return new Promise((resolve) => {
+    ethereum.call("getPaymentEncodedData", sourceToken, sourceAmount, destToken, destAddress,
+      maxDestAmount, minConversionRate, commissionId).then(result => {
+
+      const txParams = createTxParams(account, nonce, gasPrice, gas, kyberNetwork, sourceAmount, result, networkId);
+
+      resolve({ txParams, keystring, password })
+    })
+  })
+};
+
+export const tokenToOthersPayment = (
+  id, ethereum, account, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
+  commissionId, nonce, gas, gasPrice, keystring, accountType, password, networkId, kyberNetwork
+) => {
+  return new Promise((resolve) => {
+    ethereum.call("getPaymentEncodedData", sourceToken, sourceAmount, destToken, destAddress,
+      maxDestAmount, minConversionRate, commissionId).then(result => {
+
+      const txParams = createTxParams(account, nonce, gasPrice, gas, kyberNetwork, "0x0", result, networkId);
+
+      resolve({ txParams, keystring, password })
+    })
+  })
+};
+
+export const getAppoveToken = (
+  isPayMode, ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
+  keystring, password, accountType, account, networkId
+) => {
+  return new Promise((resolve) => {
+    ethereum.call("approveTokenData", sourceToken, biggestNumber(), isPayMode).then(result => {
+
+      const txParams = createTxParams(account, nonce, gasPrice, gas, sourceToken, "0x0", result, networkId);
+
+      resolve({ txParams, keystring, password })
+    })
+  })
+};
+
+function createTxParams(account, nonce, gasPrice, gas, to, value, data, chainId) {
+  return {
     from: account,
     nonce: nonce,
     gasPrice: gasPrice,
     gasLimit: gas,
-    to: destAddress,
-    value: sourceAmount,
+    to: to,
+    value: value,
+    data: data,
     // EIP 155 chainId - mainnet: 1, ropsten: 3
-    chainId: networkId
-  }
-  return new Promise((resolve, reject) => {
-    resolve({ txParams, keystring, password })
-  })
+    chainId: chainId
+  };
 }
-
-export const sendTokenFromAccount = (
-  id, ethereum, account, sourceToken, sourceAmount,
-  destAddress, nonce, gas, gasPrice, keystring, accountType,
-  password, networkId) => {
-
-  return new Promise((resolve, reject) => {
-    ethereum.call("sendTokenData", sourceToken, sourceAmount, destAddress).then(result => {
-      const txParams = {
-        from: account,
-        nonce: nonce,
-        gasPrice: gasPrice,
-        gasLimit: gas,
-        to: sourceToken,
-        value: '0x0',
-        data: result,
-        // EIP 155 chainId - mainnet: 1, ropsten: 3
-        chainId: networkId
-      }
-      resolve({ txParams, keystring, password })
-    })
-  })
-}
-
-export const etherToOthersFromAccount = (
-  id, ethereum, account, sourceToken, sourceAmount, destToken,
-  destAddress, maxDestAmount, minConversionRate,
-  throwOnFailure, nonce, gas, gasPrice, keystring, accountType,
-  password, networkId, kyberNetwork) => {
-   // var throwOnFailure = "0x0000000000000000000000000000000000000000"
-  return new Promise((resolve, reject) => {
-    ethereum.call("exchangeData",
-      sourceToken, sourceAmount, destToken, destAddress,
-      maxDestAmount, minConversionRate, throwOnFailure).then(result => {
-        const txParams = {
-          from: account,
-          nonce: nonce,
-          gasPrice: gasPrice,
-          gasLimit: gas,
-          to: kyberNetwork,
-          value: sourceAmount,
-          data: result,
-          // EIP 155 chainId - mainnet: 1, ropsten: 3
-          chainId: networkId
-        }
-        resolve({ txParams, keystring, password })
-      })
-  })
-}
-
-export const getAppoveToken = (ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-  keystring, password, accountType, account, networkId) => {
-  //const approvalData = ethereum.approveTokenData(sourceToken, sourceAmount)  
-  return new Promise((resolve, reject) => {
-    ethereum.call("approveTokenData", sourceToken, biggestNumber()).then(result => {
-      const txParams = {
-        from: account,
-        nonce: nonce,
-        gasPrice: gasPrice,
-        gasLimit: gas,
-        to: sourceToken,
-        value: '0x0',
-        data: result,
-        // EIP 155 chainId - mainnet: 1, ropsten: 3
-        chainId: networkId
-      }
-      resolve({ txParams, keystring, password })
-    })
-  })
-}
-
-export const tokenToOthersFromAccount = (
-  id, ethereum, account, sourceToken, sourceAmount, destToken,
-  destAddress, maxDestAmount, minConversionRate,
-  throwOnFailure, nonce, gas, gasPrice, keystring, accountType,
-  password, networkId, kyberNetwork) => {
-  return new Promise((resolve, reject) => {
-    ethereum.call("exchangeData",
-      sourceToken, sourceAmount, destToken, destAddress,
-      maxDestAmount, minConversionRate, throwOnFailure).then(result => {
-        const txParams = {
-          from: account,
-          nonce: nonce,
-          gasPrice: gasPrice,
-          gasLimit: gas,
-          to: kyberNetwork,
-          value: '0x0',
-          data: result,
-          // EIP 155 chainId - mainnet: 1, ropsten: 3
-          chainId: networkId
-        }
-        resolve({ txParams, keystring, password })
-      })
-  })
-}
-

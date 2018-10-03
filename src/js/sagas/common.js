@@ -49,6 +49,12 @@ export function getKyberAddress(){
   return BLOCKCHAIN_INFO[exchange.network].network
 }
 
+export function getPayWrapperAddress(){
+  var state = store.getState()
+  var exchange = state.exchange
+  return BLOCKCHAIN_INFO[exchange.network].payWrapper
+}
+
 export function* submitCallback(hash){
     console.log("submit_hash: " + hash)
     var state = store.getState()

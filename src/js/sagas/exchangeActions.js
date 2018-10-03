@@ -279,8 +279,10 @@ export function* checkTokenBalanceOfColdWallet(action) {
     throwOnFailure, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService } = action.payload
   let translate = getTranslate(store.getState().locale)
+  const isPayMode = checkIsPayMode();
+
   try {
-    const remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address)
+    const remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address, isPayMode)
     const remain = converter.hexToBigNumber(remainStr)
     const sourceAmountBig = converter.hexToBigNumber(sourceAmount)
 
@@ -327,8 +329,10 @@ export function* processApproveByColdWallet(action) {
   var kyberAddress = common.getKyberAddress()
   //try {
   let rawApprove
+  const isPayMode = checkIsPayMode();
+
   try {
-    rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
+    rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", isPayMode, ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
       keystring, password, accountType, account.address, networkId, kyberAddress)
   } catch (e) {
     console.log(e)
@@ -363,8 +367,10 @@ export function* processApproveByMetamask(action) {
 
   var networkId = common.getNetworkId()
   var kyberAddress = common.getKyberAddress()
+  const isPayMode = checkIsPayMode();
+
   try {
-    const hashApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
+    const hashApprove = yield call(keyService.callSignTransaction, "getAppoveToken", isPayMode, ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
       keystring, password, accountType, account.address, networkId, kyberAddress);
 
     yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol));
@@ -443,10 +449,13 @@ export function* exchangeETHtoTokenKeystore(action) {
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
 
   var networkId = common.getNetworkId()
-  var kyberAddress = common.getKyberAddress()
-  var txRaw
+  var txRaw;
+  const keyFunctionName = getFunctionByPayMode("etherToOthersFromAccount", "etherToOthersPayment");
+  const isPayMode = checkIsPayMode();
+  var kyberAddress = isPayMode ? common.getPayWrapperAddress() : common.getKyberAddress();
+
   try {
-    txRaw = yield call(keyService.callSignTransaction, "etherToOthersFromAccount", formId, ethereum, address, sourceToken,
+    txRaw = yield call(keyService.callSignTransaction, keyFunctionName, formId, ethereum, address, sourceToken,
       sourceAmount, destToken, destAddress,
       maxDestAmount, minConversionRate,
       blockNo, nonce, gas,
@@ -479,12 +488,14 @@ export function* exchangeETHtoTokenPrivateKey(action) {
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
 
   var networkId = common.getNetworkId()
-  var kyberAddress = common.getKyberAddress()
+  const keyFunctionName = getFunctionByPayMode("etherToOthersFromAccount", "etherToOthersPayment");
+  const isPayMode = checkIsPayMode();
+  var kyberAddress = isPayMode ? common.getPayWrapperAddress() : common.getKyberAddress();
 
   try {
     var txRaw
     try {
-      txRaw = yield call(keyService.callSignTransaction, "etherToOthersFromAccount", formId, ethereum, address, sourceToken,
+      txRaw = yield call(keyService.callSignTransaction, keyFunctionName, formId, ethereum, address, sourceToken,
         sourceAmount, destToken, destAddress,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
@@ -517,11 +528,14 @@ export function* exchangeETHtoTokenColdWallet(action) {
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
 
   var networkId = common.getNetworkId()
-  var kyberAddress = common.getKyberAddress()
+  const keyFunctionName = getFunctionByPayMode("etherToOthersFromAccount", "etherToOthersPayment");
+  const isPayMode = checkIsPayMode();
+  var kyberAddress = isPayMode ? common.getPayWrapperAddress() : common.getKyberAddress();
+
   try {
     var txRaw
     try {
-      txRaw = yield call(keyService.callSignTransaction, "etherToOthersFromAccount", formId, ethereum, address, sourceToken,
+      txRaw = yield call(keyService.callSignTransaction, keyFunctionName, formId, ethereum, address, sourceToken,
         sourceAmount, destToken, destAddress,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
@@ -559,11 +573,14 @@ function* exchangeETHtoTokenMetamask(action) {
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
 
   var networkId = common.getNetworkId()
-  var kyberAddress = common.getKyberAddress()
+  const keyFunctionName = getFunctionByPayMode("etherToOthersFromAccount", "etherToOthersPayment");
+  const isPayMode = checkIsPayMode();
+  var kyberAddress = isPayMode ? common.getPayWrapperAddress() : common.getKyberAddress();
+
   try {
     var hash
     try {
-      hash = yield call(keyService.callSignTransaction, "etherToOthersFromAccount", formId, ethereum, address, sourceToken,
+      hash = yield call(keyService.callSignTransaction, keyFunctionName, formId, ethereum, address, sourceToken,
         sourceAmount, destToken, destAddress,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
@@ -577,7 +594,6 @@ function* exchangeETHtoTokenMetamask(action) {
     const txRaw = { gas, gasPrice, nonce }
     yield call(runAfterBroadcastTx, ethereum, txRaw, hash, account, data)
   } catch (e) {
-    let msg = converter.sliceErrorMsg(e.message)
     yield call(doTxFail, ethereum, account, e.message)
     return
   }
@@ -591,16 +607,17 @@ function* exchangeTokentoETHKeystore(action) {
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
 
   var networkId = common.getNetworkId()
-  var kyberAddress = common.getKyberAddress()
+  const isPayMode = checkIsPayMode();
+  var kyberAddress = isPayMode ? common.getPayWrapperAddress() : common.getKyberAddress();
 
-  var remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address)
+  var remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address, isPayMode)
   console.log("remain: " + remainStr)
   var remain = converter.hexToBigNumber(remainStr)
   var sourceAmountBig = converter.hexToBigNumber(sourceAmount)
   if (!remain.isGreaterThanOrEqualTo(sourceAmountBig) && !isApproveTxPending()) {
     var rawApprove
     try {
-      rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
+      rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", isPayMode, ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
         keystring, password, type, address, networkId, kyberAddress)
     } catch (e) {
       console.log(e)
@@ -611,14 +628,15 @@ function* exchangeTokentoETHKeystore(action) {
       yield put(actions.prePareBroadcast(balanceData))
       var hashApprove, txRaw
       try {
-        var hashApprove = yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", rawApprove)
+        var hashApprove = yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", rawApprove);
+        const keyFunctionName = getFunctionByPayMode("tokenToOthersFromAccount", "tokenToOthersPayment");
 
         yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol))
         console.log("approve: " + hashApprove)
-        //increase nonce 
+        //increase nonce
         yield put(incManualNonceAccount(account.address))
         nonce++
-        txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
+        txRaw = yield call(keyService.callSignTransaction, keyFunctionName, formId, ethereum, address, sourceToken,
           sourceAmount, destToken, destAddress,
           maxDestAmount, minConversionRate,
           blockNo, nonce, gas,
@@ -642,8 +660,10 @@ function* exchangeTokentoETHKeystore(action) {
     }
   } else {
     var txRaw
+    const keyFunctionName = getFunctionByPayMode("tokenToOthersFromAccount", "tokenToOthersPayment");
+
     try {
-      txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
+      txRaw = yield call(keyService.callSignTransaction, keyFunctionName, formId, ethereum, address, sourceToken,
         sourceAmount, destToken, destAddress,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
@@ -677,15 +697,17 @@ export function* exchangeTokentoETHPrivateKey(action) {
 
   var networkId = common.getNetworkId()
   var kyberAddress = common.getKyberAddress()
+  const isPayMode = checkIsPayMode();
 
   try {
-    var remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address)
+    var remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address, isPayMode)
     var remain = converter.hexToBigNumber(remainStr)
     var sourceAmountBig = converter.hexToBigNumber(sourceAmount)
+
     if (!remain.isGreaterThanOrEqualTo(sourceAmountBig) && !isApproveTxPending()) {
       let rawApprove
       try {
-        rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
+        rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", isPayMode, ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
           keystring, password, type, address, networkId, kyberAddress)
       } catch (e) {
         yield put(actions.setSignError(e.message))
@@ -698,7 +720,7 @@ export function* exchangeTokentoETHPrivateKey(action) {
         var hashApprove = yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", rawApprove)
         yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol))
         console.log(hashApprove)
-        //increase nonce 
+        //increase nonce
         yield put(incManualNonceAccount(account.address))
         nonce++
       } catch (e) {
@@ -709,8 +731,10 @@ export function* exchangeTokentoETHPrivateKey(action) {
     }
 
     var txRaw
+    const keyFunctionName = getFunctionByPayMode("tokenToOthersFromAccount", "tokenToOthersPayment");
+
     try {
-      txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
+      txRaw = yield call(keyService.callSignTransaction, keyFunctionName, formId, ethereum, address, sourceToken,
         sourceAmount, destToken, destAddress,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
@@ -741,12 +765,15 @@ function* exchangeTokentoETHColdWallet(action) {
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
 
   var networkId = common.getNetworkId()
-  var kyberAddress = common.getKyberAddress()
+  const isPayMode = checkIsPayMode();
+  var kyberAddress = isPayMode ? common.getPayWrapperAddress() : common.getKyberAddress();
 
   try {
     let txRaw
+    const keyFunctionName = getFunctionByPayMode("tokenToOthersFromAccount", "tokenToOthersPayment");
+
     try {
-      txRaw = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
+      txRaw = yield call(keyService.callSignTransaction, keyFunctionName, formId, ethereum, address, sourceToken,
         sourceAmount, destToken, destAddress,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
@@ -784,12 +811,15 @@ export function* exchangeTokentoETHMetamask(action) {
     gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload
 
   var networkId = common.getNetworkId()
-  var kyberAddress = common.getKyberAddress()
+  const isPayMode = checkIsPayMode();
+  var kyberAddress = isPayMode ? common.getPayWrapperAddress() : common.getKyberAddress();
 
   try {
     var hash
+    const keyFunctionName = getFunctionByPayMode("tokenToOthersFromAccount", "tokenToOthersPayment");
+
     try {
-      hash = yield call(keyService.callSignTransaction, "tokenToOthersFromAccount", formId, ethereum, address, sourceToken,
+      hash = yield call(keyService.callSignTransaction, keyFunctionName, formId, ethereum, address, sourceToken,
         sourceAmount, destToken, destAddress,
         maxDestAmount, minConversionRate,
         blockNo, nonce, gas,
@@ -992,7 +1022,7 @@ function* updateRatePending(action) {
     //   yield put.sync(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock))
     //   yield put(actions.caculateAmount())
     // }
-    // catch (err) {    
+    // catch (err) {
     //   console.log(err)
     //   yield put.sync(actions.updateRateExchangeComplete(rateInit, "0", "0", 0))
     //   yield put(actions.setRateSystemError())
@@ -1230,8 +1260,10 @@ function* getGasConfirm() {
   const maxDestAmount = converter.biggestNumber()
   const minConversionRate = converter.numberToHex(converter.toTWei(exchange.slippageRate, 18))
   const blockNo = converter.numberToHexAddress(exchange.blockNo)
+  const keyFunctionName = getFunctionByPayMode("exchangeData", "getPaymentEncodedData");
+
   //const throwOnFailure = "0x0000000000000000000000000000000000000000"
-  var data = yield call([ethereum, ethereum.call], "exchangeData", sourceToken, sourceAmount,
+  var data = yield call([ethereum, ethereum.call], keyFunctionName, sourceToken, sourceAmount,
     destToken, address,
     maxDestAmount, minConversionRate, blockNo)
 
@@ -1283,8 +1315,10 @@ function* getGasApprove() {
 
   const maxGasApprove = yield call(getMaxGasApprove)
   var gas_approve = 0
+  const isPayMode = checkIsPayMode();
+
   try {
-    var dataApprove = yield call([ethereum, ethereum.call], "approveTokenData", sourceToken, converter.biggestNumber())
+    var dataApprove = yield call([ethereum, ethereum.call], "approveTokenData", sourceToken, converter.biggestNumber(), isPayMode)
     var txObjApprove = {
       from: address,
       to: sourceToken,
@@ -1335,21 +1369,25 @@ function* getGasUsed() {
     const maxDestAmount = converter.biggestNumber()
     const minConversionRate = converter.numberToHex(converter.toTWei(exchange.slippageRate, 18))
     const blockNo = converter.numberToHexAddress(exchange.blockNo)
+    const keyFunctionName = getFunctionByPayMode("exchangeData", "getPaymentEncodedData");
+
     //const throwOnFailure = "0x0000000000000000000000000000000000000000"
-    var data = yield call([ethereum, ethereum.call], "exchangeData", sourceToken, sourceAmount,
+    var data = yield call([ethereum, ethereum.call], keyFunctionName, sourceToken, sourceAmount,
       destToken, address,
       maxDestAmount, minConversionRate, blockNo)
     var value = '0'
     if (exchange.sourceTokenSymbol === 'ETH') {
       value = sourceAmount
     } else {
+      const isPayMode = checkIsPayMode();
       //calculate gas approve
-      const remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address)
+      const remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address, isPayMode)
       const remain = converter.hexToBigNumber(remainStr)
       const sourceAmountBig = converter.hexToBigNumber(sourceAmount)
+
       if (!remain.isGreaterThanOrEqualTo(sourceAmountBig)) {
         //calcualte gas approve
-        var dataApprove = yield call([ethereum, ethereum.call], "approveTokenData", sourceToken, converter.biggestNumber())
+        var dataApprove = yield call([ethereum, ethereum.call], "approveTokenData", sourceToken, converter.biggestNumber(), isPayMode)
         var txObjApprove = {
           from: address,
           to: sourceToken,
@@ -1709,7 +1747,7 @@ export function* initParamsExchange(action) {
   }else{
     yield put(globalActions.throwErrorMematamask("Metamask is not installed"))
   }
-  
+
 
 
   // if (typeof web3 === "undefined") {
@@ -1736,7 +1774,7 @@ export function* initParamsExchange(action) {
 function* watchMetamaskAccount(ethereum, web3Service, network) {
   // var state = store.getState()
   // var exchange = state.exchange
-  //check 
+  //check
   var translate = getTranslate(store.getState().locale)
   while (true) {
     try {
@@ -1785,6 +1823,16 @@ function* watchMetamaskAccount(ethereum, web3Service, network) {
 
 function isLedgerError(accountType, error) {
   return accountType === "ledger" && error.hasOwnProperty("statusCode");
+}
+
+function getFunctionByPayMode(exchangeFunction, paymentFunction) {
+  return checkIsPayMode() ? paymentFunction : exchangeFunction;
+}
+
+function checkIsPayMode() {
+  const state = store.getState();
+
+  return !state.exchange.isSwap;
 }
 
 export function* watchExchange() {

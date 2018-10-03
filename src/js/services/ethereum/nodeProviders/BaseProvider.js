@@ -19,10 +19,11 @@ export default class BaseProvider {
         this.erc20Contract = new this.rpc.eth.Contract(constants.ERC20)
         this.networkAddress = BLOCKCHAIN_INFO[this.network].network
         this.wrapperAddress = BLOCKCHAIN_INFO[this.network].wrapper
-        // console.log(BLOCKCHAIN_INFO)
-        // console.log(this.wrapperAddress)
+        this.payWrapperAddress = BLOCKCHAIN_INFO[this.network].payWrapper
+
         this.networkContract = new this.rpc.eth.Contract(constants.KYBER_NETWORK, this.networkAddress)
-        this.wrapperContract = new this.rpc.eth.Contract(constants.KYBER_WRAPPER, this.wrapperAddress)
+        this.wrapperContract = new this.rpc.eth.Contract(constants.KYBER_WRAPPER, this.wrapperAddress);
+        this.payWrapperContract = new this.rpc.eth.Contract(constants.KYBER_PAY_WRAPPER, this.payWrapperAddress);
     }
 
     version() {
@@ -91,7 +92,7 @@ export default class BaseProvider {
         })
     }
 
-    
+
 
     getAllBalancesTokenAtSpecificBlock(address, tokens, blockno) {
         var promises = Object.keys(tokens).map(index => {
@@ -206,11 +207,13 @@ export default class BaseProvider {
         })
     }
 
-    approveTokenData(sourceToken, sourceAmount) {
-        var tokenContract = this.erc20Contract
+    approveTokenData(sourceToken, sourceAmount, isPayMode = false) {
+        var tokenContract = this.erc20Contract;
+        const spender = isPayMode ? this.payWrapperAddress : this.networkAddress;
+
         tokenContract.options.address = sourceToken
 
-        var data = tokenContract.methods.approve(this.networkAddress, sourceAmount).encodeABI()
+        var data = tokenContract.methods.approve(spender, sourceAmount).encodeABI()
         return new Promise((resolve, reject) => {
             resolve(data)
         })
@@ -225,11 +228,13 @@ export default class BaseProvider {
         })
     }
 
-    getAllowanceAtLatestBlock(sourceToken, owner) {
-        var tokenContract = this.erc20Contract
+    getAllowanceAtLatestBlock(sourceToken, owner, isPayMode = false) {
+        var tokenContract = this.erc20Contract;
+        const spender = isPayMode ? this.payWrapperAddress : this.networkAddress;
+
         tokenContract.options.address = sourceToken
 
-        var data = tokenContract.methods.allowance(owner, this.networkAddress).encodeABI()
+        var data = tokenContract.methods.allowance(owner, spender).encodeABI()
 
         return new Promise((resolve, reject) => {
             this.rpc.eth.call({
@@ -244,6 +249,24 @@ export default class BaseProvider {
                 })
         })
     }
+
+  getPaymentEncodedData(
+    sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
+    walletId, paymentData = constants.DEFAULT_BYTES, hint = constants.DEFAULT_BYTES
+  ) {
+    if (!this.rpc.utils.isAddress(walletId)) {
+      walletId = "0x" + Array(41).join("0")
+    }
+
+    const data = this.payWrapperContract.methods.pay(
+      sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
+      minConversionRate, walletId, paymentData, hint, this.networkAddress
+    ).encodeABI();
+
+    return new Promise((resolve) => {
+      resolve(data);
+    });
+  }
 
     getDecimalsOfToken(token) {
         var tokenContract = this.erc20Contract
