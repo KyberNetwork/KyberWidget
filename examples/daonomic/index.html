@@ -82,7 +82,8 @@
             ropsten: {
                 url: 'https://ropsten.infura.io/DtzEYY0Km2BA3YwyJcBG',
                 kyber_network: '0x818E6FECD516Ecc3849DAf6845e3EC868087B755',
-                wrapper: '0xae9ac1cdcef0068b1af1c1531da69fc01c0cfdc9'
+                wrapper: '0xae9ac1cdcef0068b1af1c1531da69fc01c0cfdc9',
+                saleAddr: '0xe925c0aaafc8ed136c5563b1114273811da75ddf'
             }
         }
 
@@ -98,8 +99,8 @@
 
         function getParams() {
             var network = getParameterByName('network')
-            var saleAddr = getParameterByName('saleAddr')
-            return { network, saleAddr }
+           // var saleAddr = getParameterByName('saleAddr')
+            return { network }
         }
         window.onload = function () {
             console.log("daonomic")
@@ -121,7 +122,7 @@
                 getPrice: function () {
                     //var params = getParams()
                     return new Promise((resolve, reject) => {
-                        wapperContract.methods.getETHPrice(params.saleAddr).call()
+                        wapperContract.methods.getETHPrice(configData.saleAddr).call()
                             .then(result => {
                                 var ethPrice = result
                                 resolve(ethPrice)
@@ -139,7 +140,7 @@
                     }
                     var data = wapperContract.methods.tradeAndBuy(
                         configData.kyber_network,
-                        params.saleAddr,
+                        configData.saleAddr,
                         sourceToken,
                         sourceAmount,
                         maxDestAmount,
