@@ -81,7 +81,7 @@
             ropsten: {
                 url: 'https://ropsten.infura.io/DtzEYY0Km2BA3YwyJcBG',
                 kyber_network: '0x818E6FECD516Ecc3849DAf6845e3EC868087B755',
-                wapper_address: '0xae9ac1cdcef0068b1af1c1531da69fc01c0cfdc9'
+                wrapper: '0xae9ac1cdcef0068b1af1c1531da69fc01c0cfdc9'
             }
         }
 
@@ -145,7 +145,7 @@
                         walletId).encodeABI()
 
                     return new Promise((resolve, reject) => {
-                        resolve({ value: 0, data, gasLimit: 800000, to: configData.wapper_address })
+                        resolve({ value: 0, data, gasLimit: 800000, to: configData.wrapper })
                     })
                 }
             })
