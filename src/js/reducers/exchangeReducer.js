@@ -612,7 +612,7 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.INIT_PARAMS_EXCHANGE":{
-      const {callback, network, paramForwarding, signer, commissionID, getPrice, getTxData} = action.payload
+      const {callback, network, paramForwarding, signer, commissionID, getPrice, getTxData, wrapper} = action.payload
       // {etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID}
       // newState.destTokenSymbol = receiveToken
       // newState.destAmount = receiveAmount
@@ -635,6 +635,7 @@ const exchange = (state = initState, action) => {
 
       newState.getPrice = getPrice
       newState.getTxData = getTxData 
+      newState.wrapper = wrapper
       //newState.monsterAvatar = monsterAvatar
       
       return newState

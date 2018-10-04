@@ -72,10 +72,11 @@ export const etherToOthersFromAccount = (
 }
 
 export const getAppoveToken = (ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-  keystring, password, accountType, account, networkId) => {
+  keystring, password, accountType, account, networkId, spender) => {
   //const approvalData = ethereum.approveTokenData(sourceToken, sourceAmount)  
+  //console.log(sourceAmount)
   return new Promise((resolve, reject) => {
-    ethereum.call("approveTokenData", sourceToken, biggestNumber()).then(result => {
+    ethereum.call("approveTokenData", sourceToken, sourceAmount, spender).then(result => {
       const txParams = {
         from: account,
         nonce: nonce,
@@ -101,13 +102,13 @@ export const tokenToOthersFromAccount = (
     getTxData(
     sourceToken, sourceAmount,
     maxDestAmount, minConversionRate, walletId).then(result => {
-        const {value, data} = result
+        const {value, data, gasLimit, to} = result
         const txParams = {
           from: account,
           nonce: nonce,
           gasPrice: gasPrice,
-          gasLimit: gas,
-          to: ethermonWrapper,
+          gasLimit: gasLimit,
+          to: to,
           value: value,
           data: data,
           // EIP 155 chainId - mainnet: 1, ropsten: 3

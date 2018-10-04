@@ -41,7 +41,7 @@
   <script type="text/javascript" src="widget.js"></script> -->
 
     <link rel="shortcut icon" href="favicon.png">
-    <link href="https://dev-widget.knstats.com/wrapper/app.bundle.css?v=1538453945553" rel="stylesheet">
+    <link href="http://localhost:3002/app.bundle.css?v=1538453945553" rel="stylesheet">
 </head>
 
 <body class="notranslate">
@@ -61,7 +61,7 @@
             border-right: 1px solid #eee;
         }
     </style>
-    <script type="text/javascript" src="https://dev-widget.knstats.com/wrapper/app.min.js?v=1538453945553"></script>
+    <script type="text/javascript" src="http://localhost:3002/app.min.js?v=1538453945553"></script>
 
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script>
     <script>
@@ -102,12 +102,13 @@
             var url = configData.url
             //console.log(url)
             var web3 = new Web3(new Web3.providers.HttpProvider(url, 3000));
-            console.log(web3)
+            //console.log(web3)
             var ETHEREMON_ABI = [{ "constant": true, "inputs": [{ "name": "_kyberProxy", "type": "address" }, { "name": "token", "type": "address" }, { "name": "monsterInETH", "type": "uint256" }], "name": "getMonsterRates", "outputs": [{ "name": "expectedRate", "type": "uint256" }, { "name": "slippageRate", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_KyberNetwork", "type": "address" }], "name": "setKyberNetwork", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "token", "type": "address" }, { "name": "expectedRate", "type": "uint256" }, { "name": "monsterInETH", "type": "uint256" }], "name": "getMonsterPriceInTokens", "outputs": [{ "name": "monsterInTokens", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "newAdmin", "type": "address" }], "name": "transferAdmin", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "_etheremon", "type": "address" }, { "name": "_classId", "type": "uint32" }, { "name": "_payPrice", "type": "uint256" }], "name": "getMonsterPriceInETH", "outputs": [{ "name": "catchable", "type": "bool" }, { "name": "monsterInETH", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "newOperator", "type": "address" }], "name": "addOperator", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "KyberNetwork", "outputs": [{ "name": "", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "operator", "type": "address" }], "name": "removeOperator", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_kyberProxy", "type": "address" }, { "name": "_etheremon", "type": "address" }, { "name": "_classId", "type": "uint32" }, { "name": "_name", "type": "string" }, { "name": "token", "type": "address" }, { "name": "tokenQty", "type": "uint256" }, { "name": "maxDestQty", "type": "uint256" }, { "name": "minRate", "type": "uint256" }, { "name": "walletId", "type": "address" }], "name": "catchMonster", "outputs": [{ "name": "monsterId", "type": "uint256" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "token", "type": "address" }, { "name": "user", "type": "address" }], "name": "getBalance", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "admin", "outputs": [{ "name": "", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "uint256" }], "name": "operatorsGroup", "outputs": [{ "name": "", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [{ "name": "_KyberNetwork", "type": "address" }], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "payable": true, "stateMutability": "payable", "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "startTokenBalance", "type": "uint256" }, { "indexed": false, "name": "change", "type": "uint256" }], "name": "SwapTokenChange", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "sender", "type": "address" }, { "indexed": false, "name": "monsterId", "type": "uint256" }, { "indexed": false, "name": "token", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" }], "name": "CaughtWithToken", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "sender", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" }], "name": "ETHReceived", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "newAdmin", "type": "address" }], "name": "TransferAdmin", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "newOperator", "type": "address" }, { "indexed": false, "name": "isAdd", "type": "bool" }], "name": "OperatorAdded", "type": "event" }]
             var wapperEtheremon = new web3.eth.Contract(ETHEREMON_ABI, configData.wrapper)
 
             window.kyberWidgetInstance.render({
                 appId: "kyber-widget",
+                wrapper: configData.wrapper,
                 getPrice: function () {
                     var params = getParams()
                     return new Promise((resolve, reject) => {
@@ -139,7 +140,7 @@
                         walletId).encodeABI()
 
                     return new Promise((resolve, reject) => {
-                        resolve({ value: 0, data })
+                        resolve({ value: 0, data,gasLimit: 800000, to: configData.wrapper })
                     })
                 }
             })

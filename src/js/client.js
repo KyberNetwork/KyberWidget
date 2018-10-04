@@ -52,7 +52,7 @@ import AnalyticFactory from "./services/analytics"
 //   // break
 // }
 
-function initParams(appId, getPrice, getTxData) {
+function initParams(appId, wrapper, getPrice, getTxData) {
   //var translate = getTranslate(store.locale)
   var translate = (...args) => {
     return null
@@ -204,7 +204,7 @@ function initParams(appId, getPrice, getTxData) {
       store.dispatch(haltPayment(errors))
     }else{
       //var tokenAddr =  BLOCKCHAIN_INFO[network].tokens[receiveToken].address
-      store.dispatch(initParamsExchange(productId, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, listPinTokens, getPrice, getTxData));
+      store.dispatch(initParamsExchange(productId, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, listPinTokens, getPrice, getTxData, wrapper));
       
         //init analytic
       var analytic = new AnalyticFactory({ listWorker: ['mix'], network })
@@ -219,7 +219,7 @@ window.kyberWidgetInstance = {}
 
 //console.log(document.getElementById(constanst.APP_NAME))
 window.kyberWidgetInstance.render = (obj) => {
-  const {widgetId, getPrice, getTxData} = obj
+  const {widgetId, getPrice, getTxData, wrapper} = obj
   var appId = widgetId ? widgetId : constanst.APP_NAME
 
   if (!document.getElementById(appId)) {
@@ -238,7 +238,7 @@ window.kyberWidgetInstance.render = (obj) => {
   //     </PersistGate>, document.getElementById(constanst.APP_NAME));
   // }
   store.dispatch(initSession())
-  initParams(appId, getPrice, getTxData)
+  initParams(appId, wrapper, getPrice, getTxData)
 
   ReactDOM.render(
     <PersistGate persistor={persistor}>

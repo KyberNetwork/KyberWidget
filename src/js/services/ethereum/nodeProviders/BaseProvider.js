@@ -233,11 +233,11 @@ export default class BaseProvider {
         })
     }
 
-    approveTokenData(sourceToken, sourceAmount) {
+    approveTokenData(sourceToken, sourceAmount, spender) {
         var tokenContract = this.erc20Contract
         tokenContract.options.address = sourceToken
 
-        var data = tokenContract.methods.approve(this.wrapperEtheremonAddr, sourceAmount).encodeABI()
+        var data = tokenContract.methods.approve(spender, sourceAmount).encodeABI()
         return new Promise((resolve, reject) => {
             resolve(data)
         })
@@ -252,11 +252,13 @@ export default class BaseProvider {
         })
     }
 
-    getAllowanceAtLatestBlock(sourceToken, owner) {
+    getAllowanceAtLatestBlock(sourceToken, owner, spender) {
         var tokenContract = this.erc20Contract
         tokenContract.options.address = sourceToken
 
-        var data = tokenContract.methods.allowance(owner, this.wrapperEtheremonAddr).encodeABI()
+        console.log({sourceToken, owner, spender})
+
+        var data = tokenContract.methods.allowance(owner, spender).encodeABI()
 
         return new Promise((resolve, reject) => {
             this.rpc.eth.call({

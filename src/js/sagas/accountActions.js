@@ -76,11 +76,13 @@ function* checkApproveAccount(address, type) {
     var productPrice = converter.toEther(exchange.snapshot.productPrice)
     var sourceAmount = converter.caculateSourceAmount(productPrice, minConversionRate, 6)
     sourceAmount = converter.toTWei(sourceAmount, tokens[exchange.sourceTokenSymbol].decimal)
+
+    // var sourceAmountHex = converter.toHex(sourceAmount)
     // } else {
     //   sourceAmount = converter.toTWei(exchange.sourceAmount, tokens[exchange.sourceTokenSymbol].decimal)
     // }
     //get allowance
-    var remain = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", tokens[exchange.sourceTokenSymbol].address, address)
+    var remain = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", tokens[exchange.sourceTokenSymbol].address, address, exchange.wrapper)
 
     console.log("remaining")
     console.log(remain)

@@ -326,13 +326,16 @@ export function* processApproveByColdWallet(action) {
   const { ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
     keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload
 
+  var state = store.getState()
+  var exchange = state.exchange
+
   var networkId = common.getNetworkId()
-  var kyberAddress = common.getKyberAddress()
+  //var kyberAddress = common.getKyberAddress()
   //try {
   let rawApprove
   try {
     rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-      keystring, password, accountType, account.address, networkId, kyberAddress)
+      keystring, password, accountType, account.address, networkId, exchange.wrapper)
   } catch (e) {
     console.log(e)
     let msg = ''
@@ -364,11 +367,15 @@ export function* processApproveByMetamask(action) {
   const { ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
     keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload;
 
+
+    var state = store.getState()
+    var exchange = state.exchange
+
   var networkId = common.getNetworkId()
-  var kyberAddress = common.getKyberAddress()
+  //var kyberAddress = common.getKyberAddress()
   try {
     const hashApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-      keystring, password, accountType, account.address, networkId, kyberAddress);
+      keystring, password, accountType, account.address, networkId, exchange.wrapper);
 
     yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol));
     yield put(incManualNonceAccount(account.address));
@@ -606,6 +613,9 @@ function* exchangeTokentoETHKeystore(action) {
 
   var networkId = common.getNetworkId()
   var kyberAddress = common.getKyberAddress()
+  var state = store.getState()
+  var exchange = state.exchange
+  
 
   var remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address)
   console.log("remain: " + remainStr)
@@ -615,7 +625,7 @@ function* exchangeTokentoETHKeystore(action) {
     var rawApprove
     try {
       rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-        keystring, password, type, address, networkId, kyberAddress)
+        keystring, password, type, address, networkId, exchange.wrapper)
     } catch (e) {
       console.log(e)
       yield put(actions.throwPassphraseError(e.message))
@@ -693,6 +703,8 @@ export function* exchangeTokentoETHPrivateKey(action) {
 
   var networkId = common.getNetworkId()
   var kyberAddress = common.getKyberAddress()
+  var state = store.getState()
+  var exchange = state.exchange
 
   try {
     var remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address)
@@ -702,7 +714,7 @@ export function* exchangeTokentoETHPrivateKey(action) {
       let rawApprove
       try {
         rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-          keystring, password, type, address, networkId, kyberAddress)
+          keystring, password, type, address, networkId, exchange.wrapper)
       } catch (e) {
         yield put(actions.setSignError(e.message))
         return
