@@ -53,6 +53,8 @@ export default class Trezor extends React.Component {
   }
 
   sealTx = (params) => {
+    console.log("paramszzz")
+    console.log(params)
     var address_n = params.address_n
     var nonce = numberToHex(params.nonce).slice(2);
     if (nonce.length % 2) {

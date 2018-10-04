@@ -1,5 +1,6 @@
 import { verifyNonce } from "../../utils/validators"
 import { biggestNumber } from "../../utils/converter"
+import * as converter from "../../utils/converter"
 //import BLOCKCHAIN_INFO from "../../../../env"
 
 export const sendEtherFromAccount = (
@@ -102,7 +103,11 @@ export const tokenToOthersFromAccount = (
     getTxData(
     sourceToken, sourceAmount,
     maxDestAmount, minConversionRate, walletId).then(result => {
-        const {value, data, gasLimit, to} = result
+        var {value, data, gasLimit, to} = result
+
+        gasLimit = converter.toHex(gasLimit)
+        value = converter.toHex(value)
+
         const txParams = {
           from: account,
           nonce: nonce,
