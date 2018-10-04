@@ -167,8 +167,8 @@ const tokens = (state = initState, action) => {
     }
 
     case 'EXCHANGE.INIT_PARAMS_EXCHANGE':{
-      const {network, pinTokens} = action.payload
-      var newState = initTokens(network, pinTokens)
+      const {network, listPinTokens} = action.payload
+      var newState = initTokens(network, listPinTokens)
       return Object.assign({}, state, JSON.parse(JSON.stringify(newState))) 
     }
 
