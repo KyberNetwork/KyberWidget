@@ -345,7 +345,9 @@ function* fetchingGas(address) {
     gas = 250000
     //yield put(exchangeActions.throwErrorExchange("gas_estimate", translate("error.gas_estimate") || "Exceed gas"))    
   }
-  yield put(exchangeActions.setEstimateGas(gas, 0))
+  // console.log("gas_approve")
+  // console.log(exchange.max_gas_approve)
+  yield put(exchangeActions.setEstimateGas(gas, exchange.max_gas_approve))
   yield put(exchangeActions.fetchGasSuccess())
 }
 

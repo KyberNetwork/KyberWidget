@@ -75,7 +75,8 @@ export function* submitCallback(hash){
 
         return yield call(retrySubmit, submitUrl, params, 'POST', 3000)
       } catch(e) {
-        throw e;
+        //throw e;
+        return true
       }
     }else{
       return true
