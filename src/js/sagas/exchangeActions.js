@@ -54,6 +54,11 @@ function* approveTx(action) {
   }
 }
 
+function* swapToken(action){
+  const {source, dest} = action.payload
+  yield call(estimateGasUsed,dest, source)
+}
+
 function* selectToken(action) {
   const { symbol, address, type, ethereum } = action.payload
   yield put.sync(actions.selectToken(symbol, address, type))
@@ -174,9 +179,11 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   //submit callback
   // console.log("account___")
   // console.log(account)
-  if(account.type === 'metamask'){
-    yield fork(common.submitCallback, hash)
-  }
+  // if(account.type === 'metamask'){
+  //   yield fork(common.submitCallback, hash)
+  // }
+  yield fork(common.submitCallback, hash)
+  //var response = yield call(common.submitCallback, hash)
 
 
 
@@ -430,9 +437,9 @@ export function* doBeforeMakeTransaction(txRaw) {
   var hash = yield call([ethereum, ethereum.call], "getTxHash", txRaw)
 
 //  console.log(hash)
-  var response = yield call(common.submitCallback, hash)
+//var response = yield call(common.submitCallback, hash)
 //  console.log("submit hash success")
-  return response
+  return true
 }
 
 export function* exchangeETHtoTokenKeystore(action) {
@@ -1810,4 +1817,6 @@ export function* watchExchange() {
   yield takeEvery("EXCHANGE.FETCH_EXCHANGE_ENABLE", fetchExchangeEnable)
 
   yield takeEvery("EXCHANGE.INIT_PARAMS_EXCHANGE", initParamsExchange)
+
+  yield takeEvery("EXCHANGE.SWAP_TOKEN", swapToken)
 }

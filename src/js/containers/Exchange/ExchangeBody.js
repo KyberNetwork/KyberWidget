@@ -248,7 +248,7 @@ export default class ExchangeBody extends React.Component {
   }
 
   swapToken = () => {
-    this.props.dispatch(exchangeActions.swapToken())
+    this.props.dispatch(exchangeActions.swapToken(this.props.exchange.sourceTokenSymbol, this.props.exchange.destTokenSymbol))
     this.props.ethereum.fetchRateExchange(true)
 
     // var path = constansts.BASE_HOST + "/swap/" + this.props.exchange.destTokenSymbol.toLowerCase() + "_" + this.props.exchange.sourceTokenSymbol.toLowerCase()

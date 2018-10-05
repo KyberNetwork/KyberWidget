@@ -444,9 +444,10 @@ export function setEstimateGasSnapshot(gas, gas_approve){
   }
 }
 
-export function swapToken() {
+export function swapToken(source, dest) {
   return {
     type: "EXCHANGE.SWAP_TOKEN",
+    payload: {source, dest}
   }
 }
 
