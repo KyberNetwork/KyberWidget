@@ -75,8 +75,6 @@ function initParams(appId) {
   var productAvatar
   var type
   var pinTokens
-  var paymentData
-  var hint
 
   if (attributeWidget === true || attributeWidget === 'true') {
     for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++) {
@@ -104,8 +102,6 @@ function initParams(appId) {
     productAvatar = widgetParent.getAttribute('data-widget-product-avatar')
     type = widgetParent.getAttribute('data-widget-type')
     pinTokens = widgetParent.getAttribute('data-widget-pinned-tokens')
-    paymentData = widgetParent.getAttribute('data-widget-payment-data')
-    hint = widgetParent.getAttribute('data-widget-hint')
   } else {
     query = common.getQueryParams(window.location.search)
 
@@ -121,8 +117,6 @@ function initParams(appId) {
     productAvatar = common.getParameterByName("productAvatar")
     type = common.getParameterByName("type")
     pinTokens = common.getParameterByName("pinnedTokens")
-    paymentData = common.getParameterByName("paymentData")
-    hint = common.getParameterByName("hint")
   }
 
 
@@ -186,14 +180,6 @@ function initParams(appId) {
           errors["receiveToken"] = translate('error.receive_token_is_not_support')
             || "Receive token is not supported by kyber"
         }
-      }
-
-      if (paymentData && !paymentData.includes("0x")) {
-        errors["paymentData"] = "paymentData should be in valid bytes"
-      }
-
-      if (hint && !hint.includes("0x")) {
-        errors["hint"] = "hint should be in valid bytes"
       }
 
       break

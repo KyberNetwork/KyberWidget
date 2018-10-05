@@ -2,7 +2,7 @@ import { biggestNumber } from "../../utils/converter";
 
 export const sendEtherFromAccount = (
   id, ethereum, account, sourceToken, sourceAmount, destAddress,
-  nonce, gas, gasPrice, keystring, accountType, password, networkId
+  nonce, gas, gasPrice, keystring, accountType, password, networkId, contract
 ) => {
 
   const txParams = createTxParams(account, nonce, gasPrice, gas, destAddress, sourceAmount, "", networkId);
@@ -14,7 +14,7 @@ export const sendEtherFromAccount = (
 
 export const sendTokenFromAccount = (
   id, ethereum, account, sourceToken, sourceAmount, destAddress,
-  nonce, gas, gasPrice, keystring, accountType, password, networkId
+  nonce, gas, gasPrice, keystring, accountType, password, networkId, contract
 ) => {
   return new Promise((resolve) => {
     ethereum.call("sendTokenData", sourceToken, sourceAmount, destAddress).then(result => {
@@ -50,6 +50,34 @@ export const tokenToOthersFromAccount = (
       maxDestAmount, minConversionRate, commissionId).then(result => {
 
       const txParams = createTxParams(account, nonce, gasPrice, gas, kyberNetwork, "0x0", result, networkId);
+
+      resolve({ txParams, keystring, password })
+    })
+  })
+};
+
+export const sendEtherPayment = (
+  id, ethereum, account, sourceToken, sourceAmount, destAddress,
+  nonce, gas, gasPrice, keystring, accountType, password, networkId, contract
+) => {
+  return new Promise((resolve) => {
+    ethereum.call("getPaymentEncodedData", sourceToken, sourceAmount, sourceToken, destAddress, sourceAmount, 0).then(result => {
+
+      const txParams = createTxParams(account, nonce, gasPrice, gas, contract, sourceAmount, result, networkId);
+
+      resolve({ txParams, keystring, password })
+    })
+  })
+};
+
+export const sendTokenPayment = (
+  id, ethereum, account, sourceToken, sourceAmount, destAddress,
+  nonce, gas, gasPrice, keystring, accountType, password, networkId, contract
+) => {
+  return new Promise((resolve) => {
+    ethereum.call("getPaymentEncodedData", sourceToken, sourceAmount, sourceToken, destAddress, sourceAmount, 0).then(result => {
+
+      const txParams = createTxParams(account, nonce, gasPrice, gas, contract, "0x0", result, networkId);
 
       resolve({ txParams, keystring, password })
     })

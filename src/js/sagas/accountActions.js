@@ -335,16 +335,26 @@ function* fetchingGas(address) {
     }
   }
   var gas
-  try {
-    var gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
-    if (exchange.sourceTokenSymbol !== "ETH") {
-      gas = Math.round(gas * 120 / 100)
+
+  if (!exchange.isSwap) {
+    if (exchange.sourceTokenSymbol === "ETH") {
+      gas = 100000;
+    } else {
+      gas = 200000;
     }
-  } catch (e) {
-    console.log(e)
-    gas = 250000
-    //yield put(exchangeActions.throwErrorExchange("gas_estimate", translate("error.gas_estimate") || "Exceed gas"))    
+  } else {
+    try {
+      var gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
+      if (exchange.sourceTokenSymbol !== "ETH") {
+        gas = Math.round(gas * 120 / 100)
+      }
+    } catch (e) {
+      console.log(e)
+      gas = 250000
+      //yield put(exchangeActions.throwErrorExchange("gas_estimate", translate("error.gas_estimate") || "Exceed gas"))
+    }
   }
+
   yield put(exchangeActions.setEstimateGas(gas, 0))
   yield put(exchangeActions.fetchGasSuccess())
 }
