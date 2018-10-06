@@ -1624,11 +1624,22 @@ export function* initParamsExchange(action) {
 
 
 
-  const { receiveAddr, receiveToken, tokenAddr, receiveAmount, network, type } = action.payload
+  const { receiveAddr, receiveToken, tokenAddr, receiveAmount, network, type, defaultPairArr } = action.payload
 
   var tokens = BLOCKCHAIN_INFO[network].tokens
   //var ethereum = state.connection.ethereum
   var ethereum = new EthereumService({ network })
+
+
+  if (type === 'swap' && defaultPairArr.length === 2){
+    var sourceSymbol = defaultPairArr[0]
+    var sourceAddress = tokens[sourceSymbol].address
+    var destSymbol = defaultPairArr[1]
+    var destAddress = tokens[destSymbol].address
+    yield put.sync(actions.changeDefaultTokens(sourceSymbol, sourceAddress, destSymbol, destAddress))
+  }
+
+
   yield put.sync(setConnection(ethereum))
 
 

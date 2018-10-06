@@ -704,6 +704,14 @@ const exchange = (state = initState, action) => {
       newState.sourceToken =source
       return newState
     }
+    case "EXCHANGE.CHANGE_DEFAULT_TOKEN":{
+      var {sourceSymbol, sourceAddress, destSymbol, destAddress} = action.payload
+      newState.sourceTokenSymbol = sourceSymbol
+      newState.sourceToken = sourceAddress
+      newState.destTokenSymbol = destSymbol
+      newState.destToken = destAddress
+      return newState
+    }
   }
   return state
 }
