@@ -251,15 +251,8 @@ export default class BaseProvider {
         })
     }
 
-  getPaymentEncodedData(sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate, walletId = "") {
-    let paymentData = common.getParameterByName("paymentData") ?
-      this.rpc.utils.stringToHex(common.getParameterByName("paymentData")) : constants.DEFAULT_BYTES;
-    const hint = constants.DEFAULT_BYTES;
-
-    if (!walletId) {
-      walletId = common.getParameterByName("commissionId");
-    }
-
+  getPaymentEncodedData(sourceToken, sourceAmount, destToken, destAddress,
+                        maxDestAmount, minConversionRate, walletId, paymentData, hint) {
     if (!this.rpc.utils.isAddress(walletId)) {
       walletId = "0x" + Array(41).join("0")
     }

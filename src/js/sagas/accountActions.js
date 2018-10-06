@@ -28,6 +28,7 @@ import * as commonFunc from "../utils/common"
 
 import { getTranslate } from 'react-localize-redux'
 import { store } from '../store';
+import BLOCKCHAIN_INFO from "../../../env";
 
 export function* updateAccount(action) {
   const { account, ethereum } = action.payload
@@ -317,42 +318,66 @@ function* fetchingGas(address) {
 
   var destAddr = exchange.receiveAddr
 
-  var txObj
-  if (exchange.sourceTokenSymbol === "ETH") {
-    txObj = {
-      from: address,
-      value: amount,
-      to: destAddr
+  var txObj;
+  let data;
+  const isETHSource = exchange.sourceTokenSymbol === "ETH";
+  const isPayMode = !exchange.isSwap;
+
+  if (isPayMode) {
+    const toContract = BLOCKCHAIN_INFO[exchange.network].payWrapper;
+    var tokens = state.tokens.tokens
+    var sourceDecimal = 18
+    var sourceTokenSymbol = exchange.sourceTokenSymbol
+    if (tokens[sourceTokenSymbol]) {
+      sourceDecimal = tokens[sourceTokenSymbol].decimal
+    }
+    const sourceToken = exchange.sourceToken;
+    const sourceAmount = converter.stringToHex(exchange.sourceAmount, sourceDecimal)
+    const commissionID = converter.numberToHexAddress(exchange.blockNo)
+    const paymentData = exchange.paymentData;
+    const hint = exchange.hint;
+
+    data = yield call([ethereum, ethereum.call], "getPaymentEncodedData", sourceToken, sourceAmount,
+      sourceToken, address, sourceAmount, 0, commissionID, paymentData, hint);
+
+    if (isETHSource) {
+      txObj = {
+        from: address,
+        value: amount,
+        to: toContract,
+        data: data
+      }
     }
   } else {
-    var tokenAddr = tokens[exchange.sourceTokenSymbol].address
-    var data = yield call([ethereum, ethereum.call], "sendTokenData", tokenAddr, amount, destAddr)
-    txObj = {
-      from: address,
-      value: "0",
-      to: tokenAddr,
-      data: data
+    if (isETHSource) {
+      txObj = {
+        from: address,
+        value: amount,
+        to: destAddr
+      }
+    } else {
+      var tokenAddr = tokens[exchange.sourceTokenSymbol].address
+      data = yield call([ethereum, ethereum.call], "sendTokenData", tokenAddr, amount, destAddr)
+      txObj = {
+        from: address,
+        value: "0",
+        to: tokenAddr,
+        data: data
+      }
     }
   }
+
   var gas
 
-  if (!exchange.isSwap) {
-    if (exchange.sourceTokenSymbol === "ETH") {
-      gas = 100000;
-    } else {
-      gas = 200000;
+  try {
+    gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
+    if (!isETHSource) {
+      gas = Math.round(gas * 120 / 100)
     }
-  } else {
-    try {
-      var gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
-      if (exchange.sourceTokenSymbol !== "ETH") {
-        gas = Math.round(gas * 120 / 100)
-      }
-    } catch (e) {
-      console.log(e)
-      gas = 250000
-      //yield put(exchangeActions.throwErrorExchange("gas_estimate", translate("error.gas_estimate") || "Exceed gas"))
-    }
+  } catch (e) {
+    console.log(e)
+    gas = 250000
+    //yield put(exchangeActions.throwErrorExchange("gas_estimate", translate("error.gas_estimate") || "Exceed gas"))
   }
 
   yield put(exchangeActions.setEstimateGas(gas, 0))

@@ -24,6 +24,7 @@ import * as common from "./utils/common"
 import * as validator from "./utils/validators"
 
 import AnalyticFactory from "./services/analytics"
+import Web3 from "web3";
 
 //console.log(platform)
 //check browser compatible
@@ -75,6 +76,8 @@ function initParams(appId) {
   var productAvatar
   var type
   var pinTokens
+  var paymentData
+  var hint
 
   if (attributeWidget === true || attributeWidget === 'true') {
     for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++) {
@@ -102,6 +105,8 @@ function initParams(appId) {
     productAvatar = widgetParent.getAttribute('data-widget-product-avatar')
     type = widgetParent.getAttribute('data-widget-type')
     pinTokens = widgetParent.getAttribute('data-widget-pinned-tokens')
+    paymentData = widgetParent.getAttribute('data-widget-payment-data') || ""
+    hint = widgetParent.getAttribute('data-widget-hint') || ""
   } else {
     query = common.getQueryParams(window.location.search)
 
@@ -117,6 +122,8 @@ function initParams(appId) {
     productAvatar = common.getParameterByName("productAvatar")
     type = common.getParameterByName("type")
     pinTokens = common.getParameterByName("pinnedTokens")
+    paymentData = common.getParameterByName("paymentData") || ""
+    hint = common.getParameterByName("hint") || ""
   }
 
 
@@ -299,12 +306,16 @@ function initParams(appId) {
     }
   }
 
+  paymentData = Web3.utils.utf8ToHex(paymentData);
+  hint = Web3.utils.utf8ToHex(hint);
+
   if (validator.anyErrors(errors)) {
     store.dispatch(haltPayment(errors))
   } else {
     receiveToken = receiveToken ? receiveToken : "KNC"
     var tokenAddr = BLOCKCHAIN_INFO[network].tokens[receiveToken].address
-    store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, isSwap, type, listPinTokens));
+    store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
+      callback, network, paramForwarding, signer, commissionID, isSwap, type, listPinTokens, paymentData, hint));
 
     //init analytic
     var analytic = new AnalyticFactory({ listWorker: ['mix'], network })

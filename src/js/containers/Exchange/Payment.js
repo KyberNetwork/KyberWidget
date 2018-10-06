@@ -143,6 +143,9 @@ export default class Payment extends React.Component {
       var destAddress = this.props.exchange.receiveAddr
       var gas = converter.numberToHex(this.props.exchange.gas)
       var gasPrice = converter.numberToHex(converter.gweiToWei(this.props.exchange.gasPrice))
+      var commissionID = this.props.exchange.commissionID
+      var paymentData = this.props.exchange.paymentData
+      var hint = this.props.exchange.hint
 
       var balanceData = {
         //balance: this.props.form.balance.toString(),
@@ -152,10 +155,9 @@ export default class Payment extends React.Component {
         amount: this.props.destAmount
       }
 
-      this.props.dispatch(transferActions.processTransfer(formId, ethereum, account.address,
-        tokenAddress, amount,
-        destAddress, nonce, gas,
-        gasPrice, account.keystring, account.type, password, account, data, this.props.keyService, balanceData))
+      this.props.dispatch(transferActions.processTransfer(formId, ethereum, account.address, tokenAddress, amount,
+        destAddress, nonce, gas, gasPrice, account.keystring, account.type, password, account, data,
+        this.props.keyService, balanceData, commissionID, paymentData, hint))
     } catch (e) {
       console.log(e)
       //this.props.dispatch(transferActions.throwPassphraseError(this.props.translate("error.passphrase_error")))
@@ -224,11 +226,14 @@ export default class Payment extends React.Component {
       // sourceAmount: this.props.form.balanceData.sourceAmount,
       // destAmount: this.props.form.balanceData.destAmount,
     }
+
+    var paymentData = this.props.exchange.paymentData
+    var hint = this.props.exchange.hint
+
     //var balanceData = {}
     return {
-      selectedAccount, sourceToken, sourceAmount, destToken,
-      minConversionRate, destAddress, maxDestAmount,
-      throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo
+      selectedAccount, sourceToken, sourceAmount, destToken, minConversionRate, destAddress, maxDestAmount,
+      throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo, paymentData, hint
     }
   }
 
@@ -283,11 +288,14 @@ export default class Payment extends React.Component {
       // sourceAmount: this.props.form.balanceData.sourceAmount,
       // destAmount: this.props.form.balanceData.destAmount,
     }
+
+    var paymentData = this.props.exchange.paymentData
+    var hint = this.props.exchange.hint
+
     //var balanceData = {}
     return {
-      selectedAccount, sourceToken, sourceAmount, destToken,
-      minConversionRate, destAddress, maxDestAmount,
-      throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo
+      selectedAccount, sourceToken, sourceAmount, destToken, minConversionRate, destAddress, maxDestAmount,
+      throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo, paymentData, hint
     }
   }
   processExchangeTx = () => {
@@ -318,14 +326,12 @@ export default class Payment extends React.Component {
       // console.log("params: ")
       // console.log(params)
 
-
-      this.props.dispatch(exchangeActions.processExchange(formId, ethereum, account.address, params.sourceToken,
-        params.sourceAmount, params.destToken, params.destAddress,
-        params.maxDestAmount, params.minConversionRate,
-        params.throwOnFailure, params.nonce, params.gas,
-        params.gasPrice, account.keystring, account.type, password, account, data, this.props.keyService, params.balanceData, params.sourceTokenSymbol, params.blockNo))
-
-
+      this.props.dispatch(exchangeActions.processExchange(
+        formId, ethereum, account.address, params.sourceToken, params.sourceAmount, params.destToken, params.destAddress,
+        params.maxDestAmount, params.minConversionRate, params.throwOnFailure, params.nonce, params.gas, params.gasPrice,
+        account.keystring, account.type, password, account, data, this.props.keyService, params.balanceData,
+        params.sourceTokenSymbol, params.blockNo, params.paymentData, params.hint
+      ))
     } catch (e) {
       console.log(e)
       //   this.setState({passwordError : this.props.translate("error.passphrase_error") || "Key derivation failed - possibly wrong password" })

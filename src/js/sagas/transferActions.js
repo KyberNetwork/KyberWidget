@@ -100,28 +100,18 @@ export function* processTransfer(action) {
     token, amount,
     destAddress, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData } = action.payload
-  let callService;
-  let contract;
-
-  if (checkIsPayMode()) {
-    callService = token == constants.ETHER_ADDRESS ? "sendEtherPayment" : "sendTokenPayment"
-    contract = common.getPayWrapperAddress();
-  } else {
-    callService = token == constants.ETHER_ADDRESS ? "sendEtherFromAccount" : "sendTokenFromAccount"
-  }
-
 
   switch (type) {
     case "keystore":
-      yield call(transferKeystore, action, callService, contract)
+      yield call(transferKeystore, action)
       break
     case "privateKey":
     case "trezor":
     case "ledger":
-      yield call(transferColdWallet, action, callService, contract)
+      yield call(transferColdWallet, action)
       break
     case "metamask":
-      yield call(transferMetamask, action, callService, contract)
+      yield call(transferMetamask, action)
       break
   }
 }
@@ -140,19 +130,17 @@ function* doBeforeMakeTransaction(txRaw) {
   return response
 }
 
-function* transferKeystore(action, callService, contract) {
-  const { formId, ethereum, address,
-    token, amount,
-    destAddress, nonce, gas,
-    gasPrice, keystring, type, password, account, data, keyService, balanceData } = action.payload
+function* transferKeystore(action) {
+  const {
+    formId, ethereum, address, token, amount, destAddress, nonce, gas, gasPrice, keystring, type, password,
+    account, data, keyService, balanceData, commissionID, paymentData, hint } = action.payload;
 
-  var networkId  = common.getNetworkId()  
+  var networkId  = common.getNetworkId();
+  var rawTx;
 
   try {
-    var rawTx = yield call(keyService.callSignTransaction, callService, formId, ethereum, address,
-      token, amount,
-      destAddress, nonce, gas,
-      gasPrice, keystring, type, password, networkId, contract)
+    rawTx = yield callService(keyService, formId, ethereum, address, token, amount, destAddress, nonce,
+      gas, gasPrice, keystring, type, password, networkId, commissionID, paymentData, hint);
   } catch (e) {
     yield put(exchangeActions.throwPassphraseError(e.message))
     return
@@ -171,21 +159,17 @@ function* transferKeystore(action, callService, contract) {
 
 }
 
-function* transferColdWallet(action, callService, contract) {
-  const { formId, ethereum, address,
-    token, amount,
-    destAddress, nonce, gas,
-    gasPrice, keystring, type, password, account, data, keyService, balanceData } = action.payload
+function* transferColdWallet(action) {
+  const { formId, ethereum, address, token, amount, destAddress, nonce, gas, gasPrice, keystring, type, password,
+    account, data, keyService, balanceData, commissionID, paymentData, hint } = action.payload;
 
-  var networkId  = common.getNetworkId()  
+  var networkId  = common.getNetworkId()
 
   try {
     var rawTx
     try {
-      rawTx = yield call(keyService.callSignTransaction, callService, formId, ethereum, address,
-        token, amount,
-        destAddress, nonce, gas,
-        gasPrice, keystring, type, password, networkId, contract)
+      rawTx = yield callService(keyService, formId, ethereum, address, token, amount, destAddress, nonce,
+        gas, gasPrice, keystring, type, password, networkId, commissionID, paymentData, hint);
     } catch (e) {
       let msg = ''
       if(isLedgerError(type, e)){
@@ -214,21 +198,18 @@ function* transferColdWallet(action, callService, contract) {
   }
 }
 
-function* transferMetamask(action, callService, contract) {
-  const { formId, ethereum, address,
-    token, amount,
-    destAddress, nonce, gas,
-    gasPrice, keystring, type, password, account, data, keyService, balanceData } = action.payload
+function* transferMetamask(action) {
+  const {
+    formId, ethereum, address, token, amount, destAddress, nonce, gas, gasPrice, keystring, type, password,
+    account, data, keyService, balanceData, commissionID, paymentData, hint } = action.payload;
 
     var networkId  = common.getNetworkId()  
 
   try {
     var hash
     try {
-      hash = yield call(keyService.callSignTransaction, callService, formId, ethereum, address,
-        token, amount,
-        destAddress, nonce, gas,
-        gasPrice, keystring, type, password, networkId, contract)
+      hash = yield callService(keyService, formId, ethereum, address, token, amount, destAddress, nonce,
+        gas, gasPrice, keystring, type, password, networkId, commissionID, paymentData, hint);
     } catch (e) {
       console.log(e)
       yield put(exchangeActions.setSignError(e))
@@ -246,6 +227,28 @@ function* transferMetamask(action, callService, contract) {
   }
 }
 
+function* callService(keyService, formId, ethereum, address, token, amount, destAddress, nonce,
+    gas, gasPrice, keystring, type, password, networkId, commissionID, paymentData, hint) {
+  let service;
+  let toContract;
+
+  if (checkIsPayMode()) {
+    toContract = common.getPayWrapperAddress();
+    service = token == constants.ETHER_ADDRESS ? "sendEtherPayment" : "sendTokenPayment";
+
+    return yield call(
+      keyService.callSignTransaction, service, formId, ethereum, address, token, amount, destAddress,
+      nonce, gas, gasPrice, keystring, type, password, networkId, toContract, commissionID, paymentData, hint
+    );
+  } else {
+    service = token == constants.ETHER_ADDRESS ? "sendEtherFromAccount" : "sendTokenFromAccount"
+
+    return yield call(
+      keyService.callSignTransaction, service, formId, ethereum, address, token,
+      amount, destAddress, nonce, gas, gasPrice, keystring, type, password, networkId
+    );
+  }
+}
 
 function* getMaxGasTransfer(){
   var state = store.getState()
