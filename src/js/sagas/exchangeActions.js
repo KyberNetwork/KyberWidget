@@ -1622,6 +1622,8 @@ export function* initParamsExchange(action) {
   //var tokens = state.tokens.tokens
   var exchange = state.exchange
 
+  var sourceTokenSymbol = exchange.sourceTokenSymbol
+  var source = exchange.sourceToken
 
 
   const { receiveAddr, receiveToken, tokenAddr, receiveAmount, network, type, defaultPairArr } = action.payload
@@ -1632,20 +1634,22 @@ export function* initParamsExchange(action) {
 
 
   if (type === 'swap' && defaultPairArr.length === 2){
-    var sourceSymbol = defaultPairArr[0]
-    var sourceAddress = tokens[sourceSymbol].address
+    sourceTokenSymbol = defaultPairArr[0]
+    source = tokens[sourceTokenSymbol].address
     var destSymbol = defaultPairArr[1]
     var destAddress = tokens[destSymbol].address
-    yield put.sync(actions.changeDefaultTokens(sourceSymbol, sourceAddress, destSymbol, destAddress))
+    yield put.sync(actions.changeDefaultTokens(sourceTokenSymbol, source, destSymbol, destAddress))
   }
 
+  console.log("source_toke")
+  console.log(sourceTokenSymbol)
+  console.log(receiveToken)
 
   yield put.sync(setConnection(ethereum))
 
 
 
-  var sourceTokenSymbol = exchange.sourceTokenSymbol
-  var source = exchange.sourceToken
+ 
 
   if (type === 'buy') {
     if (receiveToken === 'ETH') {

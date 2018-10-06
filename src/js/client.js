@@ -330,6 +330,9 @@ function initParams(appId) {
     store.dispatch(haltPayment(errors))
   } else {
     receiveToken = receiveToken ? receiveToken : "KNC"
+    if (type==="swap" && defaultPairArr.length === 2){
+      receiveToken = defaultPairArr[1]
+    }
     var tokenAddr = BLOCKCHAIN_INFO[network].tokens[receiveToken].address
     store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, isSwap, type, listPinTokens, defaultPairArr));
 
