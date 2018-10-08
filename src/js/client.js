@@ -345,9 +345,8 @@ function initParams(appId) {
       receiveToken = defaultPairArr[1]
     }
     var tokenAddr = BLOCKCHAIN_INFO[network].tokens[receiveToken].address
-    store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, isSwap, type, listPinTokens, defaultPairArr));
     store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
-      callback, network, paramForwarding, signer, commissionID, isSwap, type, listPinTokens, paymentData, hint));
+      callback, network, paramForwarding, signer, commissionID, isSwap, type, listPinTokens, defaultPairArr, paymentData, hint));
 
     //init analytic
     var analytic = new AnalyticFactory({ listWorker: ['mix'], network })

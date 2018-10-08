@@ -58,6 +58,7 @@ function* checkApproveAccount(address, type) {
   var exchange = state.exchange
   var tokens = state.tokens.tokens
   var ethereum = state.connection.ethereum
+  var isPayMode = !exchange.isSwap;
 
   if ((type === "keystore") || (type === "privateKey")) {
     yield put(exchangeActions.setApprove(false))
@@ -80,7 +81,7 @@ function* checkApproveAccount(address, type) {
         sourceAmount = converter.toTWei(exchange.sourceAmount, tokens[exchange.sourceTokenSymbol].decimal)
       }
       //get allowance
-      var remain = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", tokens[exchange.sourceTokenSymbol].address, address)
+      var remain = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", tokens[exchange.sourceTokenSymbol].address, address, isPayMode)
       remain = converter.hexToBigNumber(remain)
 
       // console.log("check_remain")

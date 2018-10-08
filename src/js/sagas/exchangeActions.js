@@ -333,14 +333,13 @@ export function* processApproveByColdWallet(action) {
     keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload
 
   var networkId = common.getNetworkId()
-  var kyberAddress = common.getKyberAddress()
   //try {
   let rawApprove
   const isPayMode = checkIsPayMode();
 
   try {
-    rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", isPayMode, ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-      keystring, password, accountType, account.address, networkId, kyberAddress)
+    rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", isPayMode, ethereum, sourceToken,
+      sourceAmount, nonce, gas, gasPrice, keystring, password, accountType, account.address, networkId)
   } catch (e) {
     console.log(e)
     let msg = ''
@@ -373,12 +372,11 @@ export function* processApproveByMetamask(action) {
     keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload;
 
   var networkId = common.getNetworkId()
-  var kyberAddress = common.getKyberAddress()
   const isPayMode = checkIsPayMode();
 
   try {
-    const hashApprove = yield call(keyService.callSignTransaction, "getAppoveToken", isPayMode, ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-      keystring, password, accountType, account.address, networkId, kyberAddress);
+    const hashApprove = yield call(keyService.callSignTransaction, "getAppoveToken", isPayMode, ethereum, sourceToken,
+      sourceAmount, nonce, gas, gasPrice, keystring, password, accountType, account.address, networkId);
 
     yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol));
     yield put(incManualNonceAccount(account.address));
@@ -598,7 +596,6 @@ function* exchangeTokentoETHKeystore(action) {
 
   var networkId = common.getNetworkId()
   const isPayMode = checkIsPayMode();
-  var kyberAddress = isPayMode ? common.getPayWrapperAddress() : common.getKyberAddress();
 
   var remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address, isPayMode)
   console.log("remain: " + remainStr)
@@ -607,8 +604,8 @@ function* exchangeTokentoETHKeystore(action) {
   if (!remain.isGreaterThanOrEqualTo(sourceAmountBig) && !isApproveTxPending()) {
     var rawApprove
     try {
-      rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", isPayMode, ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-        keystring, password, type, address, networkId, kyberAddress)
+      rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", isPayMode, ethereum, sourceToken,
+        sourceAmount, nonce, gas, gasPrice, keystring, password, type, address, networkId)
     } catch (e) {
       console.log(e)
       yield put(actions.throwPassphraseError(e.message))
@@ -685,7 +682,6 @@ export function* exchangeTokentoETHPrivateKey(action) {
     sourceTokenSymbol, blockNo, paymentData, hint } = action.payload;
 
   var networkId = common.getNetworkId()
-  var kyberAddress = common.getKyberAddress()
   const isPayMode = checkIsPayMode();
 
   try {
@@ -696,8 +692,8 @@ export function* exchangeTokentoETHPrivateKey(action) {
     if (!remain.isGreaterThanOrEqualTo(sourceAmountBig) && !isApproveTxPending()) {
       let rawApprove
       try {
-        rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", isPayMode, ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-          keystring, password, type, address, networkId, kyberAddress)
+        rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", isPayMode, ethereum, sourceToken,
+          sourceAmount, nonce, gas, gasPrice, keystring, password, type, address, networkId)
       } catch (e) {
         yield put(actions.setSignError(e.message))
         return
