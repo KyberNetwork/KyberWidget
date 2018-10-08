@@ -68,10 +68,10 @@ function* checkApproveAccount(address, type) {
     //   var token = { ...token }
     //   tokenMaps[token.symbol] = token
     // })
-    if ((exchange.sourceTokenSymbol === exchange.destTokenSymbol) || (exchange.sourceTokenSymbol === "ETH")) {
+    if ((!isPayMode && exchange.sourceTokenSymbol === exchange.destTokenSymbol) || (exchange.sourceTokenSymbol === "ETH")) {
       yield put(exchangeActions.setApprove(false))
     } else {
-      //get source amount 
+      //get source amount
       var sourceAmount = 0
       if (exchange.isHaveDestAmount) {
         var minConversionRate = converter.toTWei(exchange.snapshot.minConversionRate)

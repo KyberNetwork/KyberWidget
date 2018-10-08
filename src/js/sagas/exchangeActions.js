@@ -125,12 +125,13 @@ function* selectToken(action) {
 // }
 
 export function* estimateGasUsed(source, dest) {
-  //calculate gas use
-  // var state = store.getState()
-  // var exchange = state.exchange
+  const state = store.getState();
+  const exchange = state.exchange;
+  const isPayMode = !exchange.isSwap;
+
   var gasUsed
   var gasApproved = 0
-  if (source === dest) {
+  if (!isPayMode && source === dest) {
     switch (source) {
       case "ETH":
         gasUsed = 21000
@@ -150,7 +151,6 @@ export function* estimateGasUsed(source, dest) {
     }
   }
   yield put(actions.setEstimateGas(gasUsed, gasApproved))
-  //return {gasUsed, gasApproved}
 }
 
 
@@ -1240,7 +1240,7 @@ function* getGasConfirm() {
   const kyber_address = BLOCKCHAIN_INFO.network
 
   const maxGas = yield call(getMaxGasExchange)
-
+alert(342);
   var gas = maxGas
   var gas_approve = 0
 
