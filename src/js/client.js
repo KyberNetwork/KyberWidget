@@ -52,6 +52,21 @@ import AnalyticFactory from "./services/analytics"
 //   // break
 // }
 
+function checkInListToken(str, network){
+  var listTokens = str.split("_")
+  var listPinTokens = []
+  //validate tokens
+  var symbol
+  for (var i = 0; i<listTokens.length; i++){
+    symbol = listTokens[i].toUpperCase()
+    if (!BLOCKCHAIN_INFO[network].tokens[symbol]){
+      return false
+    }
+    listPinTokens.push(symbol)
+  }
+  return listPinTokens
+}
+
 function initParams(appId) {
   //var translate = getTranslate(store.locale)
   var translate = (...args) => {
@@ -75,6 +90,7 @@ function initParams(appId) {
   var productAvatar
   var type
   var pinTokens
+  var defaultPair 
 
   if (attributeWidget === true || attributeWidget === 'true') {
     for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++) {
@@ -102,6 +118,7 @@ function initParams(appId) {
     productAvatar = widgetParent.getAttribute('data-widget-product-avatar')
     type = widgetParent.getAttribute('data-widget-type')
     pinTokens = widgetParent.getAttribute('data-widget-pinned-tokens')
+    defaultPair = widgetParent.getAttribute('data-widget-default-pair')
   } else {
     query = common.getQueryParams(window.location.search)
 
@@ -117,6 +134,7 @@ function initParams(appId) {
     productAvatar = common.getParameterByName("productAvatar")
     type = common.getParameterByName("type")
     pinTokens = common.getParameterByName("pinnedTokens")
+    defaultPair = common.getParameterByName("defaultPair")
   }
 
 
@@ -136,7 +154,7 @@ function initParams(appId) {
 
 
   var errors = {}
-  
+  var defaultPairArr = []
 
   switch (type) {
     case "swap":
@@ -147,6 +165,24 @@ function initParams(appId) {
       if (receiveToken) {
         errors["receiveToken"] = "Swap layout cannot include receiveToken"
       }
+      if(defaultPair){
+        var listDefault = checkInListToken(defaultPair, network)
+        if(listDefault === false){
+          errors["defaultPair"] = "Default pair includes invalid token"
+        }else{
+          if(listDefault.length !== 2){
+            errors["defaultPair_length"] = "Default pair includes more than 2 tokens"
+            break;
+          }
+          if(listDefault[0] === listDefault[1]){
+            errors["defaultPair_pair"] = "2 tokens in default pair must be different"
+            break;
+          }
+          defaultPairArr.push(listDefault[0])
+          defaultPairArr.push(listDefault[1])
+        }
+      }
+      
       break;
     case "buy":
       type = "buy"
@@ -284,17 +320,9 @@ function initParams(appId) {
   }
 
   if (pinTokens){
-    var listTokens = pinTokens.split("_")
-    var listPinTokens = []
-    //validate tokens
-    var symbol
-    for (var i = 0; i<listTokens.length; i++){
-      symbol = listTokens[i].toUpperCase()
-      if (!BLOCKCHAIN_INFO[network].tokens[symbol]){
-        errors["pinTokens"] = translate('error.invalid_pinTokens') || "Pinned tokens include invalid tokens"
-        break
-      }
-      listPinTokens.push(symbol)
+    var listPinTokens = checkInListToken(pinTokens, network)
+    if (listPinTokens === false){
+      errors["pinTokens"] = translate('error.invalid_pinTokens') || "Pinned tokens include invalid tokens"
     }
   }
 
@@ -302,8 +330,11 @@ function initParams(appId) {
     store.dispatch(haltPayment(errors))
   } else {
     receiveToken = receiveToken ? receiveToken : "KNC"
+    if (type==="swap" && defaultPairArr.length === 2){
+      receiveToken = defaultPairArr[1]
+    }
     var tokenAddr = BLOCKCHAIN_INFO[network].tokens[receiveToken].address
-    store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, isSwap, type, listPinTokens));
+    store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, isSwap, type, listPinTokens, defaultPairArr));
 
     //init analytic
     var analytic = new AnalyticFactory({ listWorker: ['mix'], network })

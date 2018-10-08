@@ -602,10 +602,10 @@ export function closeImportAccountExchange(){
     type: "EXCHANGE.CLOSE_IMPORT_ACCOUNT"
   }
 }
-export function initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, isSwap, type, pinTokens){
+export function initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr){
   return {
     type: "EXCHANGE.INIT_PARAMS_EXCHANGE",
-    payload: {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, network, paramForwarding, signer, commissionID, isSwap, type, pinTokens}
+    payload: {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, network, paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr}
   }
 }
 
@@ -663,5 +663,13 @@ export function updateSourceToken(sourceTokenSymbol, source){
   return {
     type: "EXCHANGE.UPDATE_SOURCE_TOKEN",
     payload: {sourceTokenSymbol, source}
+  }
+}
+
+
+export function changeDefaultTokens(sourceSymbol, sourceAddress, destSymbol, destAddress){
+  return {
+    type: "EXCHANGE.CHANGE_DEFAULT_TOKEN",
+    payload: {sourceSymbol, sourceAddress, destSymbol, destAddress}
   }
 }
