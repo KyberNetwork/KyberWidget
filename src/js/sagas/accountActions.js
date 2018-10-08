@@ -28,6 +28,7 @@ import * as commonFunc from "../utils/common"
 
 import { getTranslate } from 'react-localize-redux'
 import { store } from '../store';
+import BLOCKCHAIN_INFO from "../../../env";
 
 export function* updateAccount(action) {
   const { account, ethereum } = action.payload
@@ -57,6 +58,7 @@ function* checkApproveAccount(address, type) {
   var exchange = state.exchange
   var tokens = state.tokens.tokens
   var ethereum = state.connection.ethereum
+  var isPayMode = !exchange.isSwap;
 
   if ((type === "keystore") || (type === "privateKey")) {
     yield put(exchangeActions.setApprove(false))
@@ -66,10 +68,10 @@ function* checkApproveAccount(address, type) {
     //   var token = { ...token }
     //   tokenMaps[token.symbol] = token
     // })
-    if ((exchange.sourceTokenSymbol === exchange.destTokenSymbol) || (exchange.sourceTokenSymbol === "ETH")) {
+    if ((!isPayMode && exchange.sourceTokenSymbol === exchange.destTokenSymbol) || (exchange.sourceTokenSymbol === "ETH")) {
       yield put(exchangeActions.setApprove(false))
     } else {
-      //get source amount 
+      //get source amount
       var sourceAmount = 0
       if (exchange.isHaveDestAmount) {
         var minConversionRate = converter.toTWei(exchange.snapshot.minConversionRate)
@@ -79,7 +81,7 @@ function* checkApproveAccount(address, type) {
         sourceAmount = converter.toTWei(exchange.sourceAmount, tokens[exchange.sourceTokenSymbol].decimal)
       }
       //get allowance
-      var remain = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", tokens[exchange.sourceTokenSymbol].address, address)
+      var remain = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", tokens[exchange.sourceTokenSymbol].address, address, isPayMode)
       remain = converter.hexToBigNumber(remain)
 
       // console.log("check_remain")
@@ -317,37 +319,69 @@ function* fetchingGas(address) {
 
   var destAddr = exchange.receiveAddr
 
-  var txObj
-  if (exchange.sourceTokenSymbol === "ETH") {
-    txObj = {
-      from: address,
-      value: amount,
-      to: destAddr
+  var txObj;
+  let data;
+  const isETHSource = exchange.sourceTokenSymbol === "ETH";
+  const isPayMode = !exchange.isSwap;
+
+  if (isPayMode) {
+    const toContract = BLOCKCHAIN_INFO[exchange.network].payWrapper;
+    var tokens = state.tokens.tokens
+    var sourceDecimal = 18
+    var sourceTokenSymbol = exchange.sourceTokenSymbol
+    if (tokens[sourceTokenSymbol]) {
+      sourceDecimal = tokens[sourceTokenSymbol].decimal
+    }
+    const sourceToken = exchange.sourceToken;
+    const sourceAmount = converter.stringToHex(exchange.sourceAmount, sourceDecimal)
+    const commissionID = converter.numberToHexAddress(exchange.blockNo)
+    const paymentData = exchange.paymentData;
+    const hint = exchange.hint;
+
+    data = yield call([ethereum, ethereum.call], "getPaymentEncodedData", sourceToken, sourceAmount,
+      sourceToken, address, sourceAmount, 0, commissionID, paymentData, hint);
+
+    if (isETHSource) {
+      txObj = {
+        from: address,
+        value: amount,
+        to: toContract,
+        data: data
+      }
     }
   } else {
-    var tokenAddr = tokens[exchange.sourceTokenSymbol].address
-    var data = yield call([ethereum, ethereum.call], "sendTokenData", tokenAddr, amount, destAddr)
-    txObj = {
-      from: address,
-      value: "0",
-      to: tokenAddr,
-      data: data
+    if (isETHSource) {
+      txObj = {
+        from: address,
+        value: amount,
+        to: destAddr
+      }
+    } else {
+      var tokenAddr = tokens[exchange.sourceTokenSymbol].address
+      data = yield call([ethereum, ethereum.call], "sendTokenData", tokenAddr, amount, destAddr)
+      txObj = {
+        from: address,
+        value: "0",
+        to: tokenAddr,
+        data: data
+      }
     }
   }
+
   var gas
+
   try {
-    var gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
-    if (exchange.sourceTokenSymbol !== "ETH") {
+    gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
+    if (!isETHSource) {
       gas = Math.round(gas * 120 / 100)
     }
   } catch (e) {
     console.log(e)
     gas = 250000
-    //yield put(exchangeActions.throwErrorExchange("gas_estimate", translate("error.gas_estimate") || "Exceed gas"))    
+    //yield put(exchangeActions.throwErrorExchange("gas_estimate", translate("error.gas_estimate") || "Exceed gas"))
   }
-  // console.log("gas_approve")
-  // console.log(exchange.max_gas_approve)
-  yield put(exchangeActions.setEstimateGas(gas, exchange.max_gas_approve))
+
+  yield put(exchangeActions.setEstimateGas(gas, 0))
   yield put(exchangeActions.fetchGasSuccess())
 }
 

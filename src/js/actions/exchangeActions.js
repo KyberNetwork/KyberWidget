@@ -275,19 +275,16 @@ export function throwPassphraseError(message) {
   }
 }
 
-export function processExchange(formId, ethereum, address, sourceToken,
-  sourceAmount, destToken, destAddress,
-  maxDestAmount, minConversionRate,
-  throwOnFailure, nonce, gas,
-  gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo) {
+export function processExchange(
+  formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
+  throwOnFailure, nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
+  sourceTokenSymbol, blockNo, paymentData, hint) {
   return {
     type: "EXCHANGE.PROCESS_EXCHANGE",
     payload: {
-      formId, ethereum, address, sourceToken,
-      sourceAmount, destToken, destAddress,
-      maxDestAmount, minConversionRate,
-      throwOnFailure, nonce, gas,
-      gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo
+      formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
+      throwOnFailure, nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
+      sourceTokenSymbol, blockNo, paymentData, hint
     }
   }
 }
@@ -602,10 +599,12 @@ export function closeImportAccountExchange(){
     type: "EXCHANGE.CLOSE_IMPORT_ACCOUNT"
   }
 }
-export function initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr){
+export function initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
+    callback, network, paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr, paymentData, hint) {
   return {
     type: "EXCHANGE.INIT_PARAMS_EXCHANGE",
-    payload: {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, network, paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr}
+    payload: {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, network,
+      paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr, paymentData, hint}
   }
 }
 
@@ -665,7 +664,6 @@ export function updateSourceToken(sourceTokenSymbol, source){
     payload: {sourceTokenSymbol, source}
   }
 }
-
 
 export function changeDefaultTokens(sourceSymbol, sourceAddress, destSymbol, destAddress){
   return {
