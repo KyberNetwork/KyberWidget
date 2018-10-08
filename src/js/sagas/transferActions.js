@@ -49,9 +49,9 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   // analytics.trackCoinTransfer(data.tokenSymbol)
   // analytics.completeTrade(hash, "kyber", "transfer")
 
-  if(account.type === 'metamask'){
+  //if(account.type === 'metamask'){
     yield fork(common.submitCallback, hash)
-  }
+  //}
 
   const tx = new Tx(
     hash, account.address, ethUtil.bufferToInt(txRaw.gas),
@@ -125,9 +125,9 @@ function* doBeforeMakeTransaction(txRaw) {
   var hash = yield call([ethereum, ethereum.call], "getTxHash", txRaw)
 
 //  console.log(hash)
-  var response = yield call(common.submitCallback, hash)
+  //var response = yield call(common.submitCallback, hash)
 //  console.log("submit hash success")
-  return response
+  return true
 }
 
 function* transferKeystore(action) {

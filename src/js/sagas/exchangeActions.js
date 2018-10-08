@@ -54,6 +54,11 @@ function* approveTx(action) {
   }
 }
 
+function* swapToken(action){
+  const {source, dest} = action.payload
+  yield call(estimateGasUsed,dest, source)
+}
+
 function* selectToken(action) {
   const { symbol, address, type, ethereum } = action.payload
   yield put.sync(actions.selectToken(symbol, address, type))
@@ -174,9 +179,11 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   //submit callback
   // console.log("account___")
   // console.log(account)
-  if(account.type === 'metamask'){
-    yield fork(common.submitCallback, hash)
-  }
+  // if(account.type === 'metamask'){
+  //   yield fork(common.submitCallback, hash)
+  // }
+  yield fork(common.submitCallback, hash)
+  //var response = yield call(common.submitCallback, hash)
 
 
 
@@ -436,9 +443,9 @@ export function* doBeforeMakeTransaction(txRaw) {
   var hash = yield call([ethereum, ethereum.call], "getTxHash", txRaw)
 
 //  console.log(hash)
-  var response = yield call(common.submitCallback, hash)
+//var response = yield call(common.submitCallback, hash)
 //  console.log("submit hash success")
-  return response
+  return true
 }
 
 export function* exchangeETHtoTokenKeystore(action) {
@@ -1661,19 +1668,34 @@ export function* initParamsExchange(action) {
   //var tokens = state.tokens.tokens
   var exchange = state.exchange
 
+  var sourceTokenSymbol = exchange.sourceTokenSymbol
+  var source = exchange.sourceToken
 
 
-  const { receiveAddr, receiveToken, tokenAddr, receiveAmount, network, type } = action.payload
+  const { receiveAddr, receiveToken, tokenAddr, receiveAmount, network, type, defaultPairArr } = action.payload
 
   var tokens = BLOCKCHAIN_INFO[network].tokens
   //var ethereum = state.connection.ethereum
   var ethereum = new EthereumService({ network })
+
+
+  if (type === 'swap' && defaultPairArr.length === 2){
+    sourceTokenSymbol = defaultPairArr[0]
+    source = tokens[sourceTokenSymbol].address
+    var destSymbol = defaultPairArr[1]
+    var destAddress = tokens[destSymbol].address
+    yield put.sync(actions.changeDefaultTokens(sourceTokenSymbol, source, destSymbol, destAddress))
+  }
+
+  console.log("source_toke")
+  console.log(sourceTokenSymbol)
+  console.log(receiveToken)
+
   yield put.sync(setConnection(ethereum))
 
 
 
-  var sourceTokenSymbol = exchange.sourceTokenSymbol
-  var source = exchange.sourceToken
+ 
 
   if (type === 'buy') {
     if (receiveToken === 'ETH') {
@@ -1862,4 +1884,6 @@ export function* watchExchange() {
   yield takeEvery("EXCHANGE.FETCH_EXCHANGE_ENABLE", fetchExchangeEnable)
 
   yield takeEvery("EXCHANGE.INIT_PARAMS_EXCHANGE", initParamsExchange)
+
+  yield takeEvery("EXCHANGE.SWAP_TOKEN", swapToken)
 }
