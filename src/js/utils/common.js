@@ -1,3 +1,5 @@
+import constant from "../services/constants";
+
 export function getParameterByName(name, url) {
   if (!url) url = window.location.href;
   name = name.replace(/[\[\]]/g, "\\$&");
@@ -259,4 +261,8 @@ export function timeout(ms, promise) {
     }, ms)
     promise.then(resolve, reject)
   })
+}
+
+export function getAssetUrl(uri = "") {
+  return constant.ASSET_URL + uri;
 }

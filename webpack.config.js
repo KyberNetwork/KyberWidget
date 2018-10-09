@@ -137,7 +137,7 @@ module.exports = env => {
                         {
                             loader: 'url-loader',
                             options: {
-                                limit: 2000000
+                                limit: 10000
                             }
                         }
                     ]

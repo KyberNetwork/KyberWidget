@@ -159,31 +159,9 @@ $animation-time: 0.5s;
         justify-content: center;
         align-items: center;
         padding: 0 0.9375rem;
-        .importer__icon {
-          background-image: url(../img/landing/metamask_active.svg);
-        }
+
         @include screen-max-width(medium) {
           padding: 0;
-        }
-      }
-      &.json {
-        .importer__icon {
-          background-image: url(../img/landing/keystore_active.svg);
-        }
-      }
-      &.trezor {
-        .importer__icon {
-          background-image: url(../img/landing/trezor_active.svg);
-        }
-      }
-      &.pkey {
-        .importer__icon {
-          background-image: url(../img/landing/privatekey_active.svg);
-        }
-      }
-      &.ledger {
-        .importer__icon {
-          background-image: url(../img/landing/ledger_active.svg);
         }
       }
 

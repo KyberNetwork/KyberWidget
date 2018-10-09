@@ -1,5 +1,6 @@
 import React from "react";
 import {addPrefixClass} from "../../../utils/className"
+import { getAssetUrl } from "../../../utils/common";
 
 const ImportByPKeyContent = (props) => {
   return (
@@ -12,7 +13,7 @@ const ImportByPKeyContent = (props) => {
           <div className={addPrefixClass("import-account-content__info-type")}>
             <img
                 className={addPrefixClass("import-account-content__info-type-image")}
-                src={require('../../../../assets/img/landing/privatekey_active.svg')}/>
+                src={getAssetUrl(`wallets/privatekey.svg`)}/>
             <div className={addPrefixClass("import-account-content__info-type-text")}>
               {props.translate("import.from_private_key") || "PRIVATE KEY"}
             </div>

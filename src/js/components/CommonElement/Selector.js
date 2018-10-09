@@ -1,7 +1,8 @@
 import React from "react"
 //import { toT, roundingNumber } from "../../utils/converter"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
-import {addPrefixClass} from "../../utils/className"
+import {addPrefixClass} from "../../utils/className";
+import { getAssetUrl } from "../../utils/common";
 
 const Selector = (props) => {
   var focusItem = props.listItem[props.focusItem]
@@ -25,7 +26,7 @@ const Selector = (props) => {
           <div key={key} onClick={(e) => props.selectItem(e, item.symbol, item.address)} className="token-item">
             <div>
               <span className="item-icon">
-                <img src={require("../../../assets/img/tokens/" + item.icon)} />
+                <img src={getAssetUrl(`tokens/${item.icon}`)}/>
               </span>
               <span className="item-name">
                 <span className="font-w-b">{item.symbol}</span><span className="show-for-large token-name"> - {item.name}</span></span>
@@ -49,7 +50,7 @@ const Selector = (props) => {
           <div className={addPrefixClass("focus-item d-flex")}>
             <div>
               <div className={addPrefixClass("icon")}>
-                <img src={require("../../../assets/img/tokens/" + focusItem.icon)} />
+                <img src={getAssetUrl(`tokens/${focusItem.icon}`)}/>
               </div>
               <div>
                 <div>{focusItem.name}</div>

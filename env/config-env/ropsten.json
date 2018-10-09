@@ -61,7 +61,7 @@
         "name":"Aelf",
         "address": "0x9fcc27c7320703c43368cf1a4bf076402cd0d6b4",
         "symbol": "ELF",
-        "icon": "aelf.svg",
+        "icon": "elf.svg",
         "decimal": 18,
         "usd_id":"aelf"
       },
@@ -69,7 +69,7 @@
         "name":"Power Ledger",
         "address": "0xa577731515303f0c0d00e236041855a5c4f114dc",
         "symbol": "POWR",
-        "icon": "pwr.svg",
+        "icon": "powr.svg",
         "decimal": 6,
         "usd_id":"power-ledger"
       },
@@ -101,7 +101,7 @@
         "name":"Gifto",
         "address": "0xe55c607d58c53b2b06a8e38f67f4c0fcaeed2c31",
         "symbol": "GTO",
-        "icon": "gifto.svg",
+        "icon": "gto.svg",
         "decimal": 5,
         "usd_id":"gifto"
       },
