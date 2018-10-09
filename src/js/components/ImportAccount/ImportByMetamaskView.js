@@ -1,5 +1,6 @@
 import React from "react"
-import {addPrefixClass} from "../../utils/className"
+import { addPrefixClass } from "../../utils/className";
+import { getAssetUrl } from "../../utils/common";
 
 const ImportByMetamaskView = (props) => {
   return (
@@ -8,7 +9,7 @@ const ImportByMetamaskView = (props) => {
         <div className={addPrefixClass("importer metamask")}>
           <div className={addPrefixClass("importer__symbol")}>
             {/* <img src={require('../../../assets/img/landing/metamask_disable.png')} /> */}
-            <div className={addPrefixClass("importer__icon")}></div>
+            <div className={addPrefixClass("importer__icon")} style={{backgroundImage: "url(" + getAssetUrl(`DesignAssets/wallets/metamask.svg`) + ")"}}></div>
             <div className={addPrefixClass("importer__name")}>{props.translate("import.from_metamask") || "METAMASK"}</div>
           </div>
 

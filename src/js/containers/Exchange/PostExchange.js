@@ -17,6 +17,7 @@ import { PostExchangeBtn } from "../../components/Exchange"
 
 import { getTranslate } from 'react-localize-redux';
 import { RateBetweenToken } from "../Exchange"
+import { getAssetUrl } from "../../utils/common";
 
 @connect((store, props) => {
   var sourceTokenSymbol = store.exchange.sourceTokenSymbol
@@ -238,7 +239,7 @@ export default class PostExchange extends React.Component {
             <div className="amount-item amount-left">
               <div className="d-flex">
                 <div className="item-icon">
-                  <img src={require("../../../assets/img/tokens/" + sourceIcon)} />
+                  <img src={getAssetUrl(`DesignAssets/tokens/${sourceIcon}`)}/>
                 </div>
                 <span>
                   {sourceAmount.slice(0, 7)}{sourceAmount.length > 7 ? '...' : ''} {sourceTokenSymbol}
@@ -252,7 +253,7 @@ export default class PostExchange extends React.Component {
                 :
                 <div className="d-flex">
                   <div className="item-icon">
-                    <img src={require("../../../assets/img/tokens/" +destIcon)} />
+                    <img src={getAssetUrl(`DesignAssets/tokens/${destIcon}`)}/>
                   </div>
                   <span className="grid-x">
                     {destAmount.slice(0, 7)}{destAmount.length > 7 ? '...' : ''} {destTokenSymbol}
@@ -282,7 +283,7 @@ export default class PostExchange extends React.Component {
             <div className="amount-item amount-left">
               <div className="grid-x">
                 <div className="cell medium-3 small-12 amount-icon">
-                  <img src={require("../../../assets/img/tokens/" + sourceIcon)} />
+                  <img src={getAssetUrl(`DesignAssets/tokens/${sourceIcon}`)}/>
                 </div>
                 <div className="cell medium-9 small-12">
                   <div className="amount-detail">
@@ -303,7 +304,7 @@ export default class PostExchange extends React.Component {
                 :
                 <div className="grid-x">
                   <div className="cell medium-3 small-12 amount-icon">
-                    <img src={require("../../../assets/img/tokens/" + destIcon)} />
+                    <img src={getAssetUrl(`DesignAssets/tokens/${destIcon}`)}/>
                   </div>
                   <div className="cell medium-9 small-12">
                     <div className="amount-detail">

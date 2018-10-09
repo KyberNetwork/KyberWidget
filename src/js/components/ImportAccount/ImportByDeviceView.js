@@ -2,6 +2,7 @@ import React from "react";
 import PathSelector from "../../containers/CommonElements/PathSelector";
 import AddressSelector from "../../containers/CommonElements/AddressSelector";
 import {addPrefixClass} from "../../utils/className"
+import { getAssetUrl } from "../../utils/common";
 
 const ImportByDeviceView = (props) => {
 
@@ -67,7 +68,7 @@ const ImportByDeviceView = (props) => {
         <div className={addPrefixClass("import-account-content__info-type")}>
           <img
             className={addPrefixClass("import-account-content__info-type-image")}
-            src={require(`../../../assets/img/landing/${props.chosenImportAccount}_active.svg`)}/>
+            src={getAssetUrl(`DesignAssets/wallets/${props.chosenImportAccount}.svg`)}/>
           <div className={addPrefixClass("import-account-content__info-type-text")}>
             {props.chosenImportAccount}
           </div>

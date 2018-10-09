@@ -25,6 +25,7 @@ import { clearSession } from "../../actions/globalActions"
 import { ImportAccount } from "../ImportAccount"
 import { KeyStore, Trezor, Ledger, PrivateKey, Metamask } from "../../services/keys"
 import {addPrefixClass} from "../../utils/className"
+import { getAssetUrl } from "../../utils/common";
 
 //import {HeaderTransaction} from "../TransactionCommon"
 
@@ -381,23 +382,23 @@ export default class Payment extends React.Component {
 
     switch (this.props.account.type) {
       case "metamask":
-        icon = 'metamask_active.svg';
+        icon = 'metamask.svg';
         method = "Metamask";
         break;
       case "keystore":
-        icon = 'keystore_active.svg';
+        icon = 'keystore.svg';
         method = "Json";
         break;
       case "privateKey":
-        icon = 'privatekey_active.svg';
+        icon = 'privatekey.svg';
         method = "Private key";
         break;
       case "trezor":
-        icon = 'trezor_active.svg';
+        icon = 'trezor.svg';
         method = "Trezor";
         break;
       case "ledger":
-        icon = 'ledger_active.svg';
+        icon = 'ledger.svg';
         method = "Ledger";
         break;
       default:
@@ -406,7 +407,7 @@ export default class Payment extends React.Component {
 
     return <div className={addPrefixClass("import-account-content__info import-account-content__info--center")}>
       <div className={addPrefixClass("import-account-content__info-type")}>
-        <img className={addPrefixClass("import-account-content__info-type-image")} src={require(`../../../assets/img/landing/${icon}`)} />
+        <img className={addPrefixClass("import-account-content__info-type-image")} src={getAssetUrl(`DesignAssets/wallets/${icon}`)}/>
         <div className={addPrefixClass("import-account-content__info-type-text")}>{method}</div>
       </div>
       <div className={addPrefixClass("import-account-content__info-text")}>

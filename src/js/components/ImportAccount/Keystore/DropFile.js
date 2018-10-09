@@ -1,6 +1,7 @@
 import React from "react"
 import Dropzone from 'react-dropzone'
 import {addPrefixClass} from "../../../utils/className"
+import { getAssetUrl } from "../../../utils/common";
 
 const DropFile = (props) => {
   var keystring
@@ -33,7 +34,7 @@ const DropFile = (props) => {
         <div className={addPrefixClass("importer json")}>
           <div className={addPrefixClass("importer__symbol")}>
             {/* <img src={require('../../../../assets/img/landing/keystore_disable.png')} /> */}
-            <div className={addPrefixClass("importer__icon")}></div>
+            <div className={addPrefixClass("importer__icon")} style={{backgroundImage: 'url(' + getAssetUrl(`DesignAssets/wallets/keystore.svg`) + ')'}}></div>
             <div className={addPrefixClass("importer__name")}>{props.translate("import.json") || "JSON"}</div>
           </div>
         </div>

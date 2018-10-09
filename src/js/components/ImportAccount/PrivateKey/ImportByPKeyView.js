@@ -1,6 +1,7 @@
 import React from "react";
 import constants from '../../../services/constants';
 import {addPrefixClass} from "../../../utils/className"
+import { getAssetUrl } from "../../../utils/common";
 
 const ImportByPKeyView = (props) => {
   return (
@@ -9,7 +10,7 @@ const ImportByPKeyView = (props) => {
         <div className={addPrefixClass("importer pkey")}>
           <div className={addPrefixClass("importer__symbol")}>
             {/* <img src={require('../../../../assets/img/landing/privatekey_disable.png')} /> */}
-            <div className={addPrefixClass("importer__icon")}></div>
+            <div className={addPrefixClass("importer__icon")} style={{backgroundImage: "url(" + getAssetUrl(`DesignAssets/wallets/privatekey.svg`) + ")"}}></div>
             <div className={addPrefixClass("importer__name")}>{props.translate("import.from_private_key") || "PRIVATE KEY"}</div>
           </div>
         </div>

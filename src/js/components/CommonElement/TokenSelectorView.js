@@ -3,6 +3,7 @@ import * as converter from "../../utils/converter"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import {addPrefixClass} from "../../utils/className"
 import { default as _ } from "underscore";
+import { getAssetUrl } from "../../utils/common";
 
 const TokenSelectorView = (props) => {
   var focusItem = props.listItem[props.focusItem]
@@ -56,7 +57,7 @@ const TokenSelectorView = (props) => {
           className={addPrefixClass("token-item-container payment-gateway__hover-color")}>
           <div className={addPrefixClass("token-item-content")}>
             <div className={addPrefixClass("token-item")}>
-              <img className={addPrefixClass("token-item__icon")} src={require("../../../assets/img/tokens/" + item.icon)}/>
+              <img className={addPrefixClass("token-item__icon")} src={getAssetUrl(`DesignAssets/tokens/${item.icon}`)}/>
               <span className={addPrefixClass("token-item__symbol")}>{item.symbol}</span>
             </div>
 
@@ -81,8 +82,6 @@ const TokenSelectorView = (props) => {
     })
   }
 
-  var rateFocusItem = props.exchange.isSelectToken ? <img src={require('../../../assets/img/waiting.svg')} /> : converter.roundingNumber(converter.toT(props.exchange.offeredRate,18))
-
   return (
     <div className={addPrefixClass("token-chooser")}>
       <Dropdown className={addPrefixClass("token-dropdown")} onShow = {(e) => props.showTokens(e)} onHide = {(e) => props.hideTokens(e)} active={props.open}>
@@ -90,22 +89,14 @@ const TokenSelectorView = (props) => {
           <div className={addPrefixClass("focus-item d-flex")}>
             <div className={addPrefixClass("d-flex")}>
               <div className={addPrefixClass("icon")}>
-                <img src={require("../../../assets/img/tokens/" + focusItem.icon)} />
+                <img src={getAssetUrl(`DesignAssets/tokens/${focusItem.icon}`)} />
               </div>
               <div>
                 <div className={addPrefixClass("focus-balance")}>
-                  {/* {props.account !== false && (
-                    <span className="token-balance" title = {converter.toT(focusItem.balance)}>{converter.roundingNumber(converter.toT(focusItem.balance, focusItem.decimal))}</span>
-                  )} */}
                   <span className={addPrefixClass("token-symbol")}>{focusItem.symbol}</span>
                 </div>
               </div>
             </div>
-            {/* {focusItem.symbol !== props.exchange.destTokenSymbol && (
-              <div className="rate-token">
-                1 {focusItem.symbol} = {rateFocusItem} {props.exchange.destTokenSymbol}
-              </div>
-            )} */}
             <div><i className={addPrefixClass('k k-angle ' + (props.open ? 'up' : 'down'))}></i></div>
           </div>
         </DropdownTrigger>
@@ -115,7 +106,7 @@ const TokenSelectorView = (props) => {
               {priorityTokens.map((token, i) => {
                 return (
                   <div className={addPrefixClass("suggest-item__content")} key={i} onClick={(e) => props.selectItem(e, token.symbol, token.address, "suggest")}>
-                    <img className={addPrefixClass("suggest-item__icon")} src={require(`../../../assets/img/tokens/${token.icon}`)} />
+                    <img className={addPrefixClass("suggest-item__icon")} src={getAssetUrl(`DesignAssets/tokens/${token.icon}`)} />
                     <div className={addPrefixClass("suggest-item__symbol")}>{token.symbol}</div>
                   </div>
                 )
