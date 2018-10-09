@@ -71,8 +71,8 @@ const INIT_EXCHANGE_FORM_STATE = {
   blockNo: 0,
 
   throwOnFailure: "0x0000000000000000000000000000000000000000",
-  gas: 330000,
-  max_gas: 330000,
+  gas: 350000,
+  max_gas: 350000,
 
   gas_approve: 100000,
   max_gas_approve: 100000,
