@@ -317,14 +317,10 @@ function* fetchingGas(address) {
     amount = converter.stringToHex(exchange.sourceAmount, decimal)
   }
 
-  var destAddr = exchange.receiveAddr
-
-  var txObj;
-  let data;
+  let gas;
   const isETHSource = exchange.sourceTokenSymbol === "ETH";
-  const isPayMode = !exchange.isSwap;
 
-  if (isPayMode) {
+  if (isETHSource) {
     const toContract = BLOCKCHAIN_INFO[exchange.network].payWrapper;
     var tokens = state.tokens.tokens
     var sourceDecimal = 18
@@ -338,47 +334,25 @@ function* fetchingGas(address) {
     const paymentData = exchange.paymentData;
     const hint = exchange.hint;
 
-    data = yield call([ethereum, ethereum.call], "getPaymentEncodedData", sourceToken, sourceAmount,
+    const data = yield call([ethereum, ethereum.call], "getPaymentEncodedData", sourceToken, sourceAmount,
       sourceToken, address, sourceAmount, 0, commissionID, paymentData, hint);
 
-    if (isETHSource) {
-      txObj = {
-        from: address,
-        value: amount,
-        to: toContract,
-        data: data
-      }
+    const txObj = {
+      from: address,
+      value: amount,
+      to: toContract,
+      data: data
+    };
+
+    try {
+      gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
+      gas = Math.round(gas * 120 / 100)
+    } catch (e) {
+      console.log(e)
+      gas = 250000
     }
   } else {
-    if (isETHSource) {
-      txObj = {
-        from: address,
-        value: amount,
-        to: destAddr
-      }
-    } else {
-      var tokenAddr = tokens[exchange.sourceTokenSymbol].address
-      data = yield call([ethereum, ethereum.call], "sendTokenData", tokenAddr, amount, destAddr)
-      txObj = {
-        from: address,
-        value: "0",
-        to: tokenAddr,
-        data: data
-      }
-    }
-  }
-
-  var gas
-
-  try {
-    gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
-    if (!isETHSource) {
-      gas = Math.round(gas * 120 / 100)
-    }
-  } catch (e) {
-    console.log(e)
-    gas = 250000
-    //yield put(exchangeActions.throwErrorExchange("gas_estimate", translate("error.gas_estimate") || "Exceed gas"))
+    gas = constants.PAYMENT_TOKEN_TRANSFER_GAS;
   }
 
   yield put(exchangeActions.setEstimateGas(gas, 0))
