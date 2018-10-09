@@ -13,7 +13,7 @@ const ImportByPKeyContent = (props) => {
           <div className={addPrefixClass("import-account-content__info-type")}>
             <img
                 className={addPrefixClass("import-account-content__info-type-image")}
-                src={getAssetUrl(`DesignAssets/wallets/privatekey.svg`)}/>
+                src={getAssetUrl(`wallets/privatekey.svg`)}/>
             <div className={addPrefixClass("import-account-content__info-type-text")}>
               {props.translate("import.from_private_key") || "PRIVATE KEY"}
             </div>

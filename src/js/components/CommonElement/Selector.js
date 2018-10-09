@@ -26,7 +26,7 @@ const Selector = (props) => {
           <div key={key} onClick={(e) => props.selectItem(e, item.symbol, item.address)} className="token-item">
             <div>
               <span className="item-icon">
-                <img src={getAssetUrl(`DesignAssets/tokens/${item.icon}`)}/>
+                <img src={getAssetUrl(`tokens/${item.icon}`)}/>
               </span>
               <span className="item-name">
                 <span className="font-w-b">{item.symbol}</span><span className="show-for-large token-name"> - {item.name}</span></span>
@@ -50,7 +50,7 @@ const Selector = (props) => {
           <div className={addPrefixClass("focus-item d-flex")}>
             <div>
               <div className={addPrefixClass("icon")}>
-                <img src={getAssetUrl(`DesignAssets/tokens/${focusItem.icon}`)}/>
+                <img src={getAssetUrl(`tokens/${focusItem.icon}`)}/>
               </div>
               <div>
                 <div>{focusItem.name}</div>

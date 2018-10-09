@@ -263,7 +263,7 @@ const SUPPORTED_NETWORK = [
 
 const APP_NAME='kyber-widget'
 const VERSION='v0.1';
-const ASSET_URL = 'https://files.kyber.network';
+const ASSET_URL = 'https://files.kyber.network/DesignAssets/';
 
 module.exports = {
   ERC20, KYBER_NETWORK, KYBER_WRAPPER, EPSILON, ETHER_ADDRESS, ETH, RESERVES, KYBER_WALLET, KYBER_PAY_WRAPPER,

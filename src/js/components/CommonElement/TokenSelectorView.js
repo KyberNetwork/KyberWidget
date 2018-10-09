@@ -57,7 +57,7 @@ const TokenSelectorView = (props) => {
           className={addPrefixClass("token-item-container payment-gateway__hover-color")}>
           <div className={addPrefixClass("token-item-content")}>
             <div className={addPrefixClass("token-item")}>
-              <img className={addPrefixClass("token-item__icon")} src={getAssetUrl(`DesignAssets/tokens/${item.icon}`)}/>
+              <img className={addPrefixClass("token-item__icon")} src={getAssetUrl(`tokens/${item.icon}`)}/>
               <span className={addPrefixClass("token-item__symbol")}>{item.symbol}</span>
             </div>
 
@@ -89,7 +89,7 @@ const TokenSelectorView = (props) => {
           <div className={addPrefixClass("focus-item d-flex")}>
             <div className={addPrefixClass("d-flex")}>
               <div className={addPrefixClass("icon")}>
-                <img src={getAssetUrl(`DesignAssets/tokens/${focusItem.icon}`)} />
+                <img src={getAssetUrl(`tokens/${focusItem.icon}`)} />
               </div>
               <div>
                 <div className={addPrefixClass("focus-balance")}>
@@ -106,7 +106,7 @@ const TokenSelectorView = (props) => {
               {priorityTokens.map((token, i) => {
                 return (
                   <div className={addPrefixClass("suggest-item__content")} key={i} onClick={(e) => props.selectItem(e, token.symbol, token.address, "suggest")}>
-                    <img className={addPrefixClass("suggest-item__icon")} src={getAssetUrl(`DesignAssets/tokens/${token.icon}`)} />
+                    <img className={addPrefixClass("suggest-item__icon")} src={getAssetUrl(`tokens/${token.icon}`)} />
                     <div className={addPrefixClass("suggest-item__symbol")}>{token.symbol}</div>
                   </div>
                 )

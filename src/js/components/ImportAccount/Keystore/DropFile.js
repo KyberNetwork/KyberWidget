@@ -34,7 +34,7 @@ const DropFile = (props) => {
         <div className={addPrefixClass("importer json")}>
           <div className={addPrefixClass("importer__symbol")}>
             {/* <img src={require('../../../../assets/img/landing/keystore_disable.png')} /> */}
-            <div className={addPrefixClass("importer__icon")} style={{backgroundImage: 'url(' + getAssetUrl(`DesignAssets/wallets/keystore.svg`) + ')'}}></div>
+            <div className={addPrefixClass("importer__icon")} style={{backgroundImage: 'url(' + getAssetUrl(`wallets/keystore.svg`) + ')'}}></div>
             <div className={addPrefixClass("importer__name")}>{props.translate("import.json") || "JSON"}</div>
           </div>
         </div>

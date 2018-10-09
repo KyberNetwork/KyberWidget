@@ -13,7 +13,7 @@ const ImportByKeystoreView = (props) => {
           <div className={addPrefixClass("import-account-content__info-type")}>
             <img
                 className={addPrefixClass("import-account-content__info-type-image")}
-                src={getAssetUrl(`DesignAssets/wallets/keystore.svg`)}/>
+                src={getAssetUrl(`wallets/keystore.svg`)}/>
             <div className={addPrefixClass("import-account-content__info-type-text")}>
               {props.translate("import.json") || "JSON"}
             </div>

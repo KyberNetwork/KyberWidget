@@ -407,7 +407,7 @@ export default class Payment extends React.Component {
 
     return <div className={addPrefixClass("import-account-content__info import-account-content__info--center")}>
       <div className={addPrefixClass("import-account-content__info-type")}>
-        <img className={addPrefixClass("import-account-content__info-type-image")} src={getAssetUrl(`DesignAssets/wallets/${icon}`)}/>
+        <img className={addPrefixClass("import-account-content__info-type-image")} src={getAssetUrl(`wallets/${icon}`)}/>
         <div className={addPrefixClass("import-account-content__info-type-text")}>{method}</div>
       </div>
       <div className={addPrefixClass("import-account-content__info-text")}>

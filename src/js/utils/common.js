@@ -264,5 +264,5 @@ export function timeout(ms, promise) {
 }
 
 export function getAssetUrl(uri = "") {
-  return constant.ASSET_URL + "/" + uri;
+  return constant.ASSET_URL + uri;
 }

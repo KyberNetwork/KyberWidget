@@ -9,7 +9,7 @@ const ImportByMetamaskView = (props) => {
         <div className={addPrefixClass("importer metamask")}>
           <div className={addPrefixClass("importer__symbol")}>
             {/* <img src={require('../../../assets/img/landing/metamask_disable.png')} /> */}
-            <div className={addPrefixClass("importer__icon")} style={{backgroundImage: "url(" + getAssetUrl(`DesignAssets/wallets/metamask.svg`) + ")"}}></div>
+            <div className={addPrefixClass("importer__icon")} style={{backgroundImage: "url(" + getAssetUrl(`wallets/metamask.svg`) + ")"}}></div>
             <div className={addPrefixClass("importer__name")}>{props.translate("import.from_metamask") || "METAMASK"}</div>
           </div>
 

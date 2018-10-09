@@ -68,7 +68,7 @@ const ImportByDeviceView = (props) => {
         <div className={addPrefixClass("import-account-content__info-type")}>
           <img
             className={addPrefixClass("import-account-content__info-type-image")}
-            src={getAssetUrl(`DesignAssets/wallets/${props.chosenImportAccount}.svg`)}/>
+            src={getAssetUrl(`wallets/${props.chosenImportAccount}.svg`)}/>
           <div className={addPrefixClass("import-account-content__info-type-text")}>
             {props.chosenImportAccount}
           </div>
