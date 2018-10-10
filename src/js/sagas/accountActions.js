@@ -1,34 +1,17 @@
-import { take, put, call, fork, select, takeEvery, all, cancel } from 'redux-saga/effects'
+import { take, put, call, fork, takeEvery, cancel } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 import * as actions from '../actions/accountActions'
-import { clearSession, setGasPrice, setBalanceToken, goToRoute, updateAllRate, updateAllRateComplete } from "../actions/globalActions"
-//import { fetchExchangeEnable, setApprove } from "../actions/exchangeActions"
-
-
-
-
+import { clearSession, setBalanceToken } from "../actions/globalActions"
 import * as exchangeActions from "../actions/exchangeActions"
-
 import * as utilActions from '../actions/utilActions'
-
-
 import * as common from "./common"
-import * as analytics from "../utils/analytics"
-
-//import {  } from "../actions/globalActions"
-
-//import { randomForExchange } from "../utils/random"
-
 import * as service from "../services/accounts"
 import constants from "../services/constants"
 import { Rate, updateAllRatePromise } from "../services/rate"
-
 import * as converter from "../utils/converter"
 import * as commonFunc from "../utils/common"
-
 import { getTranslate } from 'react-localize-redux'
 import { store } from '../store';
-import BLOCKCHAIN_INFO from "../../../env";
 
 export function* updateAccount(action) {
   const { account, ethereum } = action.payload
@@ -297,66 +280,26 @@ function* checkReceiveAddress(address) {
 
 // function* fetchingGasTransfer(){}
 function* fetchingGas(address) {
-  var state = store.getState()
-  var exchange = state.exchange
-  var ethereum = state.connection.ethereum
-  // console.log("ethereum_conector")
-  // console.log(ethereum)
-  //temporaly hardcode for exchange gas limit
+  const state = store.getState();
+  const exchange = state.exchange;
+  const isETHSource = exchange.sourceTokenSymbol === "ETH";
+  let gas;
+
+  //temporarily hard-code for exchange gas limit
   if (exchange.sourceTokenSymbol !== exchange.destTokenSymbol) {
     return
   }
-  yield put(exchangeActions.fetchGas())
-  //if transfer estimate
-  var tokens = state.tokens.tokens
-  var decimal = tokens[exchange.sourceTokenSymbol].decimal
-  var amount
-  if (exchange.isHaveDestAmount) {
-    amount = converter.stringToHex(exchange.destAmount, decimal)
-  } else {
-    amount = converter.stringToHex(exchange.sourceAmount, decimal)
-  }
 
-  let gas;
-  const isETHSource = exchange.sourceTokenSymbol === "ETH";
+  yield put(exchangeActions.fetchGas());
 
   if (isETHSource) {
-    const toContract = BLOCKCHAIN_INFO[exchange.network].payWrapper;
-    var tokens = state.tokens.tokens
-    var sourceDecimal = 18
-    var sourceTokenSymbol = exchange.sourceTokenSymbol
-    if (tokens[sourceTokenSymbol]) {
-      sourceDecimal = tokens[sourceTokenSymbol].decimal
-    }
-    const sourceToken = exchange.sourceToken;
-    const sourceAmount = converter.stringToHex(exchange.sourceAmount, sourceDecimal)
-    const commissionID = converter.numberToHexAddress(exchange.blockNo)
-    const paymentData = exchange.paymentData;
-    const hint = exchange.hint;
-
-    const data = yield call([ethereum, ethereum.call], "getPaymentEncodedData", sourceToken, sourceAmount,
-      sourceToken, address, sourceAmount, 0, commissionID, paymentData, hint);
-
-    const txObj = {
-      from: address,
-      value: amount,
-      to: toContract,
-      data: data
-    };
-
-    try {
-      gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
-      gas = Math.round(gas * 120 / 100)
-    } catch (e) {
-      console.log(e)
-      gas = 250000
-    }
+    gas = yield common.estimateEthTransfer(address);
   } else {
     gas = constants.PAYMENT_TOKEN_TRANSFER_GAS;
   }
 
-  yield put(exchangeActions.setEstimateGas(gas, 0))
-  yield put(exchangeActions.fetchGasSuccess())
+  yield put(exchangeActions.setEstimateGas(gas, 0));
+  yield put(exchangeActions.fetchGasSuccess());
 }
 
 function* createNewAccount(address, type, keystring, ethereum) {
