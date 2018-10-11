@@ -266,3 +266,7 @@ export function timeout(ms, promise) {
 export function getAssetUrl(uri = "") {
   return constant.ASSET_URL + uri;
 }
+
+export function getTokenUrl(symbol = "") {
+  return constant.ASSET_URL + "/tokens/" +  symbol.toLowerCase() + ".svg";
+}

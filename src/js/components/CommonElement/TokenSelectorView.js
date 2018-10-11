@@ -3,7 +3,7 @@ import * as converter from "../../utils/converter"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import {addPrefixClass} from "../../utils/className"
 import { default as _ } from "underscore";
-import { getAssetUrl } from "../../utils/common";
+import { getTokenUrl } from "../../utils/common";
 
 const TokenSelectorView = (props) => {
   var focusItem = props.listItem[props.focusItem]
@@ -57,7 +57,7 @@ const TokenSelectorView = (props) => {
           className={addPrefixClass("token-item-container payment-gateway__hover-color")}>
           <div className={addPrefixClass("token-item-content")}>
             <div className={addPrefixClass("token-item")}>
-              <img className={addPrefixClass("token-item__icon")} src={getAssetUrl(`tokens/${item.icon}`)}/>
+              <img className={addPrefixClass("token-item__icon")} src={getTokenUrl(item.symbol)}/>
               <span className={addPrefixClass("token-item__symbol")}>{item.symbol}</span>
             </div>
 
@@ -89,7 +89,7 @@ const TokenSelectorView = (props) => {
           <div className={addPrefixClass("focus-item d-flex")}>
             <div className={addPrefixClass("d-flex")}>
               <div className={addPrefixClass("icon")}>
-                <img src={getAssetUrl(`tokens/${focusItem.icon}`)} />
+                <img src={getTokenUrl(focusItem.symbol)} />
               </div>
               <div>
                 <div className={addPrefixClass("focus-balance")}>
@@ -106,7 +106,7 @@ const TokenSelectorView = (props) => {
               {priorityTokens.map((token, i) => {
                 return (
                   <div className={addPrefixClass("suggest-item__content")} key={i} onClick={(e) => props.selectItem(e, token.symbol, token.address, "suggest")}>
-                    <img className={addPrefixClass("suggest-item__icon")} src={getAssetUrl(`tokens/${token.icon}`)} />
+                    <img className={addPrefixClass("suggest-item__icon")} src={getTokenUrl(token.symbol)} />
                     <div className={addPrefixClass("suggest-item__symbol")}>{token.symbol}</div>
                   </div>
                 )
