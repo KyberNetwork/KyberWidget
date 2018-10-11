@@ -131,16 +131,17 @@ export function* estimateGasUsed(source, dest) {
 
   var gasUsed
   var gasApproved = 0
-  if (!isPayMode && source === dest) {
+
+  if (source === dest) {
     switch (source) {
       case "ETH":
-        gasUsed = 21000
+        gasUsed = isPayMode ? constants.PAYMENT_ETH_TRANSFER_GAS : 21000;
         break
       case "DGX":
         gasUsed = 250000
         break
       default:
-        gasUsed = 100000
+        gasUsed = isPayMode ? constants.PAYMENT_TOKEN_TRANSFER_GAS : 100000;
         break
     }
   } else {
@@ -1240,7 +1241,7 @@ function* getGasConfirm() {
   const kyber_address = BLOCKCHAIN_INFO.network
 
   const maxGas = yield call(getMaxGasExchange)
-alert(342);
+
   var gas = maxGas
   var gas_approve = 0
 
