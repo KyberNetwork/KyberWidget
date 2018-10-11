@@ -5,7 +5,7 @@ import { Route } from 'react-router'
 import { Link } from 'react-router-dom'
 import { Layout } from "./containers/Layout"
 
-import BLOCKCHAIN_INFO from "../../env"
+//import BLOCKCHAIN_INFO from "../../env"
 
 import constanst from "./services/constants"
 //import NotSupportPage from "./components/NotSupportPage"
@@ -13,6 +13,7 @@ import constanst from "./services/constants"
 //import { blackList } from './blacklist'
 import { initSession, initParamsGlobal, haltPayment, initAnalytics } from "./actions/globalActions"
 import { initParamsExchange } from "./actions/exchangeActions"
+import {initListTokens} from "./actions/tokenActions"
 
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import { persistor, store } from "./store"
@@ -26,41 +27,46 @@ import * as validator from "./utils/validators"
 import AnalyticFactory from "./services/analytics"
 import Web3 from "web3";
 
-//console.log(platform)
-//check browser compatible
-// var clientPlatform = {
-//   name: platform.name,
-//   version: platform.version,
-//   os: platform.os.family
-// }
+function getListTokens(network) {
+  //in ropsten
+  var sampleTokens = [{
+    "name": "Ethereum",
+    "symbol": "ETH",
+    "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "decimals": 18
+  },
+  {
+    "name": "KyberNetwork",
+    "symbol": "KNC",
+    "address": "0x4e470dc7321e84ca96fcaedd0c8abcebbaeb68c6",
+    "decimals": 18
+  },
+  {
+    "name": "OmiseGO",
+    "symbol": "OMG",
+    "address": "0x4bfba4a8f28755cb2061c413459ee562c6b9c51b",
+    "decimals": 18
+  }
+  ]
+  return new Promise((resolve, reject) => {
+    //return list of object tokens
+    var tokens = {}
+    sampleTokens.map(val => {
+      tokens[val.symbol] = val
+    })
+    resolve(tokens)
+  })
+}
 
-//  console.log("client: ", clientPlatform)
-
-
-//var illegal = false
-// for (var i = 0; i < blackList.length; i++) {
-//   if ((clientPlatform.name === blackList[i].name) && (clientPlatform.os === blackList[i].os)) {
-//     illegal = true
-//     break
-//   }
-//   // if (clientPlatform.version.substring(0, blackList[i].version.length) !== blackList[i].version) {
-//   //   continue
-//   // }
-//   // if (clientPlatform.os.indexOf(blackList[i].os) === -1) {
-//   //   continue
-//   // }
-//   // illegal = true
-//   // break
-// }
-
-function checkInListToken(str, network){
+function checkInListToken(str, tokens) {
+  
   var listTokens = str.split("_")
   var listPinTokens = []
   //validate tokens
   var symbol
-  for (var i = 0; i<listTokens.length; i++){
+  for (var i = 0; i < listTokens.length; i++) {
     symbol = listTokens[i].toUpperCase()
-    if (!BLOCKCHAIN_INFO[network].tokens[symbol]){
+    if (!tokens[symbol]) {
       return false
     }
     listPinTokens.push(symbol)
@@ -156,202 +162,179 @@ function initParams(appId) {
       break
   }
 
-  query.appId = appId
-  store.dispatch(initParamsGlobal(query))
+  getListTokens(network).then(tokens => {
+
+    //init tokens data
+    //store.dispatch(initListTokens(tokens, network))
+
+    query.appId = appId
+    store.dispatch(initParamsGlobal(query))
 
 
-  var errors = {}
-  var defaultPairArr = []
+    var errors = {}
+    var defaultPairArr = []
 
-  switch (type) {
-    case "swap":
-      type = "swap"
-      if (receiveAddr) {
-        errors["receiveAddr"] = "Swap layout cannot include receiveAddr"
-      }
-      if (receiveToken) {
-        errors["receiveToken"] = "Swap layout cannot include receiveToken"
-      }
-      if(defaultPair){
-        var listDefault = checkInListToken(defaultPair, network)
-        if(listDefault === false){
-          errors["defaultPair"] = "Default pair includes invalid token"
-        }else{
-          if(listDefault.length !== 2){
-            errors["defaultPair_length"] = "Default pair includes more than 2 tokens"
-            break;
+    switch (type) {
+      case "swap":
+        type = "swap"
+        if (receiveAddr) {
+          errors["receiveAddr"] = "Swap layout cannot include receiveAddr"
+        }
+        if (receiveToken) {
+          errors["receiveToken"] = "Swap layout cannot include receiveToken"
+        }
+        if (defaultPair) {
+          var listDefault = checkInListToken(defaultPair, tokens)
+          if (listDefault === false) {
+            errors["defaultPair"] = "Default pair includes invalid token"
+          } else {
+            if (listDefault.length !== 2) {
+              errors["defaultPair_length"] = "Default pair includes more than 2 tokens"
+              break;
+            }
+            if (listDefault[0] === listDefault[1]) {
+              errors["defaultPair_pair"] = "2 tokens in default pair must be different"
+              break;
+            }
+            defaultPairArr.push(listDefault[0])
+            defaultPairArr.push(listDefault[1])
           }
-          if(listDefault[0] === listDefault[1]){
-            errors["defaultPair_pair"] = "2 tokens in default pair must be different"
-            break;
+        }
+
+        break;
+      case "buy":
+        type = "buy"
+        if (receiveAddr) {
+          errors["receiveAddr"] = "Buy token layout cannot include receiveAddr"
+        }
+        if (receiveToken) {
+          receiveToken = receiveToken.toUpperCase()
+          if (!tokens[receiveToken]) {
+            errors["receiveToken"] = translate('error.receive_token_is_not_support')
+              || "Receive token is not supported by kyber"
           }
-          defaultPairArr.push(listDefault[0])
-          defaultPairArr.push(listDefault[1])
+        } else {
+          errors["receiveToken"] = "Buy token layout must include receiveToken"
         }
-      }
-
-      break;
-    case "buy":
-      type = "buy"
-      if (receiveAddr) {
-        errors["receiveAddr"] = "Buy token layout cannot include receiveAddr"
-      }
-      if (receiveToken) {
-        receiveToken = receiveToken.toUpperCase()
-        if (!BLOCKCHAIN_INFO[network].tokens[receiveToken]) {
-          errors["receiveToken"] = translate('error.receive_token_is_not_support')
-            || "Receive token is not supported by kyber"
+        break
+      default:
+        type = "pay"
+        if (receiveAddr) {
+          if (validator.verifyAccount(receiveAddr)) {
+            errors["receiveAddr"] = translate('error.receive_address_must_be_ethereum_addr')
+              || "Receive address must be a valid ethereum address"
+          }
+        } else {
+          errors["receiveAddr"] = "Payment layout must include receiveAddr"
         }
-      } else {
-        errors["receiveToken"] = "Buy token layout must include receiveToken"
-      }
-      break
-    default:
-      type = "pay"
-      if (receiveAddr) {
-        if (validator.verifyAccount(receiveAddr)) {
-          errors["receiveAddr"] = translate('error.receive_address_must_be_ethereum_addr')
-            || "Receive address must be a valid ethereum address"
+
+        if (receiveToken) {
+          receiveToken = receiveToken.toUpperCase()
+          if (!tokens[receiveToken]) {
+            errors["receiveToken"] = translate('error.receive_token_is_not_support')
+              || "Receive token is not supported by kyber"
+          }
         }
-      } else {
-        errors["receiveAddr"] = "Payment layout must include receiveAddr"
+
+        break
+    }
+
+
+
+    var isSwap = true
+    if (type === "pay") {
+      isSwap = false
+    }
+
+    if (!receiveToken) {
+      if (receiveAmount && receiveAmount !== "") {
+        errors["receiveToken"] = translate('error.receive_token_not_have_amount_have')
+          || "Cannot set receive amount of unknown token"
       }
-
-      if (receiveToken) {
-        receiveToken = receiveToken.toUpperCase()
-        if (!BLOCKCHAIN_INFO[network].tokens[receiveToken]) {
-          errors["receiveToken"] = translate('error.receive_token_is_not_support')
-            || "Receive token is not supported by kyber"
-        }
-      }
-
-      break
-  }
-  
+    }
 
 
-  var isSwap = true
-  if (type === "pay"){
-    isSwap = false
-  }
 
-  // if (isSwap){
-  //   if (receiveAddr && receiveAddr !== 'self'){
-  //     errors["receiveAddr"] = "Swap layout cannot include receiveAddr"
-  //   }
-  // }else{
-  //   if (!receiveAddr || receiveAddr === 'self' || validator.verifyAccount(receiveAddr)){
-  //     errors["receiveAddr"] = translate('error.receive_address_must_be_ethereum_addr') 
-  //         || "Receive address must be a valid ethereum address"
-  //   }
-  // }
-
-  // if (receiveAddr){
-  //   if(receiveAddr !== 'self'){
-  //     if (validator.verifyAccount(receiveAddr)){
-  //       errors["receiveAddr"] = translate('error.receive_address_must_be_ethereum_addr') 
-  //         || "Receive address must be a valid ethereum address"
-  //     }
-  //   }
-  // }
-  if (!receiveToken) {
     if (receiveAmount && receiveAmount !== "") {
-      errors["receiveToken"] = translate('error.receive_token_not_have_amount_have')
-        || "Cannot set receive amount of unknown token"
-    }
-  }
+      receiveAmount = receiveAmount.toString();
 
-  // if (receiveToken){
-  //   receiveToken = receiveToken.toUpperCase()
-  //   if (!BLOCKCHAIN_INFO[network].tokens[receiveToken]){
-  //     errors["receiveToken"] = translate('error.receive_token_is_not_support') 
-  //       || "Receive token is not supported by kyber"
-  //   }
-  // }else{
-  //   if (receiveAmount && receiveAmount !== ""){
-  //         errors["receiveToken"] = translate('error.receive_token_not_have_amount_have') 
-  //     || "Cannot set receive amount of unknown token"
-  //   }
-  // }
-  // else{
-  //   errors["receiveToken"] = translate('error.receive_token_must_be_required') 
-  //     || "Receive token must be required"
-  // }
-
-
-  if (receiveAmount && receiveAmount !== "") {
-    receiveAmount = receiveAmount.toString();
-
-    if (isNaN(receiveAmount)) {
-      errors["receiveAmount"] = translate('error.receive_amount_is_invalid_number')
-        || "Receive amount is invalid number"
-    }
-    if (receiveAmount <= 0) {
-      errors["receiveAmount"] = translate('error.receive_amount_must_be_positive')
-        || "Receive amount must be positive number"
-    }
-  } else {
-    receiveAmount = null
-  }
-
-
-  if (commissionID) {
-    if (validator.verifyAccount(commissionID)) {
-      errors["commissionID"] = translate('error.commission_address_must_be_valid')
-        || "Commission address must be a valid ethereum address"
-    }
-  }
-
-  if (callback) {
-    if (!callback.startsWith("https://")) {
-      errors["callback"] = translate('error.callback_https')
-        || "Callback must be a https location"
-    }
-  }
-
-  if (signer) {
-    var invalidAddresses = []
-    var addressArr = signer.split("_")
-
-    addressArr.map(address => {
-      if (validator.verifyAccount(address)) {
-        invalidAddresses.push(address)
+      if (isNaN(receiveAmount)) {
+        errors["receiveAmount"] = translate('error.receive_amount_is_invalid_number')
+          || "Receive amount is invalid number"
       }
-    })
-    if (invalidAddresses.length > 0) {
-      errors["signer"] = translate('error.signer_include_invalid_address') || "Signer include invalid addresses"
+      if (receiveAmount <= 0) {
+        errors["receiveAmount"] = translate('error.receive_amount_must_be_positive')
+          || "Receive amount must be positive number"
+      }
+    } else {
+      receiveAmount = null
     }
-  }
 
-  if (!validator.verifyNetwork(network)) {
-    errors["network"] = translate('error.invalid_network') || "Current network is not supported"
-  }
 
-  if (pinTokens){
-    var listPinTokens = checkInListToken(pinTokens, network)
-    if (listPinTokens === false){
-      errors["pinTokens"] = translate('error.invalid_pinTokens') || "Pinned tokens include invalid tokens"
+    if (commissionID) {
+      if (validator.verifyAccount(commissionID)) {
+        errors["commissionID"] = translate('error.commission_address_must_be_valid')
+          || "Commission address must be a valid ethereum address"
+      }
     }
-  }
 
-  paymentData = Web3.utils.utf8ToHex(paymentData);
-  hint = Web3.utils.utf8ToHex(hint);
-
-  if (validator.anyErrors(errors)) {
-    store.dispatch(haltPayment(errors))
-  } else {
-    receiveToken = receiveToken ? receiveToken : "KNC"
-    if (type==="swap" && defaultPairArr.length === 2){
-      receiveToken = defaultPairArr[1]
+    if (callback) {
+      if (!callback.startsWith("https://")) {
+        errors["callback"] = translate('error.callback_https')
+          || "Callback must be a https location"
+      }
     }
-    var tokenAddr = BLOCKCHAIN_INFO[network].tokens[receiveToken].address
-    store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
-      callback, network, paramForwarding, signer, commissionID, isSwap, type, listPinTokens, defaultPairArr, paymentData, hint));
 
-    //init analytic
-    var analytic = new AnalyticFactory({ listWorker: ['mix'], network })
-    store.dispatch(initAnalytics(analytic))
-  }
+    if (signer) {
+      var invalidAddresses = []
+      var addressArr = signer.split("_")
+
+      addressArr.map(address => {
+        if (validator.verifyAccount(address)) {
+          invalidAddresses.push(address)
+        }
+      })
+      if (invalidAddresses.length > 0) {
+        errors["signer"] = translate('error.signer_include_invalid_address') || "Signer include invalid addresses"
+      }
+    }
+
+    if (!validator.verifyNetwork(network)) {
+      errors["network"] = translate('error.invalid_network') || "Current network is not supported"
+    }
+
+    if (pinTokens) {
+      var listPinTokens = checkInListToken(pinTokens, tokens)
+      if (listPinTokens === false) {
+        errors["pinTokens"] = translate('error.invalid_pinTokens') || "Pinned tokens include invalid tokens"
+      }
+    }
+
+    paymentData = Web3.utils.utf8ToHex(paymentData);
+    hint = Web3.utils.utf8ToHex(hint);
+
+    if (validator.anyErrors(errors)) {
+      store.dispatch(haltPayment(errors))
+    } else {
+      receiveToken = receiveToken ? receiveToken : "KNC"
+      if (type === "swap" && defaultPairArr.length === 2) {
+        receiveToken = defaultPairArr[1]
+      }
+      var tokenAddr = tokens[receiveToken].address
+      
+
+      store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
+        callback, network, paramForwarding, signer, commissionID, isSwap, type, listPinTokens, defaultPairArr, paymentData, hint, tokens));
+
+      //init analytic
+      var analytic = new AnalyticFactory({ listWorker: ['mix'], network })
+      store.dispatch(initAnalytics(analytic))
+    }
+
+  })
+
+
+
 }
 
 Modal.setAppElement('body');

@@ -21,6 +21,11 @@
       "ws": "wss://mainnet.infura.io/ws"
     },
     "api_usd":"https://api.coinmarketcap.com",
+    "tokens_gas": {
+      "ETH": 0,
+      "DGX": 750000
+    },
+    "pinnedTokens": ["ETH", "KNC", "DAI"],
     "tokens": {
       "ETH": {
         "name": "Ethereum",

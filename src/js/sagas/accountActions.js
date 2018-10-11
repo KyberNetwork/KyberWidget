@@ -59,9 +59,9 @@ function* checkApproveAccount(address, type) {
       if (exchange.isHaveDestAmount) {
         var minConversionRate = converter.toTWei(exchange.snapshot.minConversionRate)
         sourceAmount = converter.caculateSourceAmount(exchange.snapshot.destAmount, minConversionRate, 6)
-        sourceAmount = converter.toTWei(sourceAmount, tokens[exchange.sourceTokenSymbol].decimal)
+        sourceAmount = converter.toTWei(sourceAmount, tokens[exchange.sourceTokenSymbol].decimals)
       } else {
-        sourceAmount = converter.toTWei(exchange.sourceAmount, tokens[exchange.sourceTokenSymbol].decimal)
+        sourceAmount = converter.toTWei(exchange.sourceAmount, tokens[exchange.sourceTokenSymbol].decimals)
       }
       //get allowance
       var remain = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", tokens[exchange.sourceTokenSymbol].address, address, isPayMode)
@@ -123,11 +123,11 @@ function* checkMaxCap(address) {
       var destAmount = exchange.destAmount
       var minConversionRate = converter.toTWei(exchange.minConversionRate, 18)
       srcAmount = converter.caculateSourceAmount(exchange.destAmount, minConversionRate, 6)
-      srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)
+      srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimals)
 
     } else {
       srcAmount = exchange.sourceAmount
-      srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)
+      srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimals)
       // if (converter.compareTwoNumber(srcAmount, maxCapOneExchange) === 1){
       //   var maxCap = converter.toEther(maxCapOneExchange)
       //   yield put(exchangeActions.throwErrorExchange("exceed_cap", translate("error.source_amount_too_high_cap", { cap: maxCap })))
@@ -136,8 +136,8 @@ function* checkMaxCap(address) {
 
     if (sourceTokenSymbol !== "ETH") {
       var rate = tokens[sourceTokenSymbol].rate
-      var decimal = tokens[sourceTokenSymbol].decimal
-      srcAmount = converter.toT(srcAmount, decimal)
+      var decimal = tokens[sourceTokenSymbol].decimals
+      srcAmount = converter.toT(srcAmount, decimals)
       srcAmount = converter.caculateDestAmount(srcAmount, rate, 6)
       srcAmount = converter.toTWei(srcAmount, 18)
     }
@@ -195,16 +195,16 @@ function* checkBalance(address) {
     var destAmount = exchange.destAmount
 
     if (exchange.sourceTokenSymbol === exchange.destTokenSymbol) {
-      srcAmount = converter.toTWei(destAmount, tokens[sourceTokenSymbol].decimal)
+      srcAmount = converter.toTWei(destAmount, tokens[sourceTokenSymbol].decimals)
     } else {
       var minRate = converter.toTWei(exchange.minConversionRate, 18)
       srcAmount = converter.caculateSourceAmount(exchange.destAmount, minRate, 6)
-      srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)
+      srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimals)
     }
   } else {
     srcAmount = exchange.sourceAmount
     //var sourceTokenSymbol = exchange.sourceTokenSymbol
-    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)
+    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimals)
   }
   if (sourceTokenSymbol !== "ETH") {
     var srcBalance = mapBalance[sourceTokenSymbol]
