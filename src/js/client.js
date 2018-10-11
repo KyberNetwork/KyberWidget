@@ -199,6 +199,8 @@ function initParams(appId) {
         errors["receiveToken"] = "Buy token layout must include receiveToken"
       }
       break
+    case "vote":
+      type = "vote"
     default:
       type = "pay"
       if (receiveAddr) {
