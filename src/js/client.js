@@ -5,7 +5,7 @@ import { Route } from 'react-router'
 import { Link } from 'react-router-dom'
 import { Layout } from "./containers/Layout"
 
-//import BLOCKCHAIN_INFO from "../../env"
+import BLOCKCHAIN_INFO from "../../env"
 
 import constanst from "./services/constants"
 //import NotSupportPage from "./components/NotSupportPage"
@@ -13,7 +13,7 @@ import constanst from "./services/constants"
 //import { blackList } from './blacklist'
 import { initSession, initParamsGlobal, haltPayment, initAnalytics } from "./actions/globalActions"
 import { initParamsExchange } from "./actions/exchangeActions"
-import {initListTokens} from "./actions/tokenActions"
+import { initListTokens } from "./actions/tokenActions"
 
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import { persistor, store } from "./store"
@@ -29,37 +29,38 @@ import Web3 from "web3";
 
 function getListTokens(network) {
   //in ropsten
-  var sampleTokens = [{
-    "name": "Ethereum",
-    "symbol": "ETH",
-    "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-    "decimals": 18
-  },
-  {
-    "name": "KyberNetwork",
-    "symbol": "KNC",
-    "address": "0x4e470dc7321e84ca96fcaedd0c8abcebbaeb68c6",
-    "decimals": 18
-  },
-  {
-    "name": "OmiseGO",
-    "symbol": "OMG",
-    "address": "0x4bfba4a8f28755cb2061c413459ee562c6b9c51b",
-    "decimals": 18
-  }
-  ]
   return new Promise((resolve, reject) => {
     //return list of object tokens
-    var tokens = {}
-    sampleTokens.map(val => {
-      tokens[val.symbol] = val
+    fetch(BLOCKCHAIN_INFO + '/currencies/getList/' + network, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+    }).then((response) => {
+      return response.json()
     })
-    resolve(tokens)
+      .then((result) => {
+        if (result.success) {
+          var tokens = {}
+          result.data.map(val => {
+            tokens[val.symbol] = val
+          })
+          resolve(tokens)
+
+          //resolve(result.data)
+        } else {
+          rejected(new Error("Cannot get data"))
+        }
+      })
+      .catch((err) => {
+        rejected(err)
+      })
   })
 }
 
 function checkInListToken(str, tokens) {
-  
+
   var listTokens = str.split("_")
   var listPinTokens = []
   //validate tokens
@@ -321,7 +322,7 @@ function initParams(appId) {
         receiveToken = defaultPairArr[1]
       }
       var tokenAddr = tokens[receiveToken].address
-      
+
 
       store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
         callback, network, paramForwarding, signer, commissionID, isSwap, type, listPinTokens, defaultPairArr, paymentData, hint, tokens));
@@ -331,6 +332,11 @@ function initParams(appId) {
       store.dispatch(initAnalytics(analytic))
     }
 
+  }).catch(err => {
+    var errors = {
+      tokens: "Cannot get list tokens"
+    }
+    store.dispatch(haltPayment(errors))
   })
 
 
