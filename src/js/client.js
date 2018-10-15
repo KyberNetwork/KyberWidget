@@ -32,7 +32,7 @@ function getListTokens(network) {
   //in ropsten
   return new Promise((resolve, reject) => {
     //return list of object tokens
-    fetch(BLOCKCHAIN_INFO[network].api_url + '/currencies/getList/' + network, {
+    fetch(BLOCKCHAIN_INFO[network].api_url + '/trading/getList/' + network, {
       method: 'GET',
       headers: {
         'Accept': 'application/json, text/plain, */*',
