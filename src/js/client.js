@@ -43,8 +43,11 @@ function getListTokens(network) {
     })
       .then((result) => {
         if (result.success) {
+          //check listing time
+          var now = Math.round(new Date().getTime()/1000)
           var tokens = {}
           result.data.map(val => {
+            if (val.time_listing > now) return
             tokens[val.symbol] = val
           })
           resolve(tokens)
