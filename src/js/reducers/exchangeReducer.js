@@ -478,7 +478,7 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.SET_GAS_USED_SNAPSHOT": {
-      const {gas, gas_approve} = action.payload      
+      const {gas, gas_approve} = action.payload
       newState.snapshot.gas = gas
       newState.snapshot.gas_approve = gas_approve
       return newState
@@ -736,6 +736,14 @@ const exchange = (state = initState, action) => {
       var {sourceTokenSymbol, source} = action.payload
       newState.sourceTokenSymbol =sourceTokenSymbol
       newState.sourceToken =source
+      return newState
+    }
+    case "EXCHANGE.CHANGE_DEFAULT_TOKEN":{
+      var {sourceSymbol, sourceAddress, destSymbol, destAddress} = action.payload
+      newState.sourceTokenSymbol = sourceSymbol
+      newState.sourceToken = sourceAddress
+      newState.destTokenSymbol = destSymbol
+      newState.destToken = destAddress
       return newState
     }
   }

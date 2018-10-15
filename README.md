@@ -84,6 +84,7 @@ The widget supports following params:
 - ***monsterName*** (string) - Name of monster
 - ***payPrice*** (string) - Price of monster, in case payPrice is smaller than monster price get from contract. Price of monster will equal to monster price get from contract.
 - ***callback*** (string) - missing or blank value will prevent the widget to call the callback, the information will not be informed anywhere.
+- ***pinnedTokens*** (string) - default: "ETH_KNC_DAI". This param help to show priority tokens in list select token. 
 - ***network*** (string) - default: `ropsten`, ethereum network that the widget will run. Possible value: `test, ropsten, production, mainnet`.
 - ***paramForwarding*** (bool) - default: `true`, if it is true, all params that were passed to the widget will be submitted via the `callback`. It is useful that you can give your user a secret token (ideally one time token) to pass to the callback just so you know the callback is not coming from a malicious actor.
 - ***signer*** (string) - concatenation of a list of ethereum address by underscore `_`, eg. 0xFDF28Bf25779ED4cA74e958d54653260af604C20_0xFDF28Bf25779ED4cA74e958d54653260af604C20 - If you pass this param, the user will be forced to pay from one of those addresses.

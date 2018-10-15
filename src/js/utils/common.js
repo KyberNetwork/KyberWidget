@@ -1,3 +1,5 @@
+import constant from "../services/constants";
+
 export function getParameterByName(name, url) {
   if (!url) url = window.location.href;
   name = name.replace(/[\[\]]/g, "\\$&");
@@ -138,6 +140,7 @@ export function submitForm(path, params, method, maxTimeout) {
       form.appendChild(hiddenField);
     }
   }
+  form.formEnctype = "application/x-www-form-urlencoded";
 
   //document.body.appendChild(form);
   return new Promise((resolve, reject) => {
@@ -151,8 +154,9 @@ export function submitForm(path, params, method, maxTimeout) {
       reject("time out");
     }
 
-
+    //console.log("xhr_request")
     xhr.onload = function (event) {
+      //console.log("event_data")
       // if (isTimeout) {
       //   rejected(new Error("Timeout error"))
       // }
@@ -164,7 +168,8 @@ export function submitForm(path, params, method, maxTimeout) {
       ///alert("The server responded with: " + event.target.response); 
     }
 
-    xhr.onerror = function () {
+    xhr.onerror = function (event) {
+      //console.log("event_data")
       reject({
         status: this.status,
         statusText: xhr.statusText
@@ -198,9 +203,17 @@ export function submitUrlEncoded(path, params, method, maxTimeout) {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
       },
       body: formBody
-    }).then(response => response.json())).then(result => {
-      resolve(result)
-    }).catch(e => {
+    }).then( response => {
+       console.log("reponse_data")
+      // console.log(response)
+      if(response.status === 200){
+        resolve(true)
+      }else{
+        reject("status code is not 200")
+      }
+      //response.json()
+    }
+    )).catch(e => {
       reject(e)
     })
   })
@@ -248,4 +261,12 @@ export function timeout(ms, promise) {
     }, ms)
     promise.then(resolve, reject)
   })
+}
+
+export function getAssetUrl(uri = "") {
+  return constant.ASSET_URL + uri;
+}
+
+export function getTokenUrl(symbol = "") {
+  return constant.ASSET_URL + "/tokens/" +  symbol.toLowerCase() + ".svg";
 }

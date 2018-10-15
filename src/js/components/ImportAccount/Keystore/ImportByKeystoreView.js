@@ -1,5 +1,6 @@
 import React from "react";
 import { addPrefixClass } from "../../../utils/className";
+import { getAssetUrl } from "../../../utils/common";
 
 const ImportByKeystoreView = (props) => {
   return (
@@ -12,7 +13,7 @@ const ImportByKeystoreView = (props) => {
           <div className={addPrefixClass("import-account-content__info-type")}>
             <img
                 className={addPrefixClass("import-account-content__info-type-image")}
-                src={require('../../../../assets/img/landing/keystore_active.svg')}/>
+                src={getAssetUrl(`wallets/keystore.svg`)}/>
             <div className={addPrefixClass("import-account-content__info-type-text")}>
               {props.translate("import.json") || "JSON"}
             </div>

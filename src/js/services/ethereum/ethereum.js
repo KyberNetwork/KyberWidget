@@ -227,23 +227,27 @@ export default class EthereumService extends React.Component {
   
   fetchRateData() {
     var state = store.getState()
+    var tokens = state.tokens.tokens
     var ethereum = state.connection.ethereum  
-    store.dispatch(updateAllRate(ethereum, BLOCKCHAIN_INFO[this.network].tokens))
+    store.dispatch(updateAllRate(ethereum, tokens))
   }
 
   fetchTokenBalance() {
     var state = store.getState()
     var ethereum = state.connection.ethereum
+    var tokens = state.tokens.tokens
     var account = state.account.account
     if (account.address) {
-      store.dispatch(updateTokenBalance(ethereum, account.address, BLOCKCHAIN_INFO[this.network].tokens))
+      store.dispatch(updateTokenBalance(ethereum, account.address, tokens))
     }
   }
 
   fetchRateUSD() {
     var state = store.getState()
     var ethereum = state.connection.ethereum
-    store.dispatch(updateAllRateUSD(ethereum, BLOCKCHAIN_INFO[this.network].tokens))
+    var tokens = state.tokens.tokens
+    
+    store.dispatch(updateAllRateUSD(ethereum, tokens))
   }
 
   fetchTxsData = () => {

@@ -21,6 +21,12 @@
       "ws": "wss://mainnet.infura.io/ws"
     },
     "api_usd":"https://api.coinmarketcap.com",
+    "api_url": "https://dev-api.knstats.com",
+    "tokens_gas": {
+      "ETH": 0,
+      "DGX": 750000
+    },
+    "pinnedTokens": ["ETH", "KNC", "DAI"],
     "tokens": {
       "ETH": {
         "name": "Ethereum",
@@ -79,7 +85,7 @@
         "name":"Aelf",
         "address": "0xbf2179859fc6d5bee9bf9158632dc51678a4100e",
         "symbol": "ELF",
-        "icon": "aelf.svg",
+        "icon": "elf.svg",
         "decimal": 18,
         "usd_id":"aelf"
       },
@@ -87,7 +93,7 @@
         "name":"Power Ledger",
         "address": "0x595832f8fc6bf59c85c527fec3740a1b7a361269",
         "symbol": "POWR",
-        "icon": "pwr.svg",
+        "icon": "powr.svg",
         "decimal": 6,
         "usd_id":"power-ledger"
       },
@@ -119,7 +125,7 @@
         "name":"Gifto",
         "address": "0xc5bbae50781be1669306b9e001eff57a2957b09d",
         "symbol": "GTO",
-        "icon": "gifto.svg",
+        "icon": "gto.svg",
         "decimal": 5,
         "usd_id":"gifto"
       },
@@ -319,12 +325,12 @@
         "symbol":"POE",
         "icon": "poe.svg"
       },
-      "CHAT": {
-        "name": "Chatcoin",
+      "PAY": {
+        "name": "TenX",
         "decimal": 18,
-        "address": "0x442bc47357919446eabc18c7211e57a13d983469",
-        "symbol":"CHAT",
-        "icon": "chat.svg"
+        "address": "0xb97048628db6b661d4c2aa833e95dbe1a905b280",
+        "symbol":"PAY", 
+        "icon": "pay.svg"
       },
       "DTA": {
         "name": "Data",
@@ -423,6 +429,7 @@
     "reserve": "0x63825c174ab367968ec60f061753d3bbd36a0d8f",
     "network": "0x818e6fecd516ecc3849daf6845e3ec868087b755",
     "wrapper": "0x6172afc8c00c46e0d07ce3af203828198194620a",
+    "payWrapper": "0xd1946aeffc2d053b76fab96117b6f2c7bf395e32",
     "trade_topic":"0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
     "ethermon_wrapper":"0xffa4bee0b9cd2c2e4eacb8d8f11096baa3e6c55d",
     "endpoint": "wss://mainnet.infura.io/ws",

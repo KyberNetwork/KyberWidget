@@ -1,31 +1,15 @@
-import { take, put, call, fork, select, takeEvery, all, cancel } from 'redux-saga/effects'
+import { take, put, call, fork, takeEvery, cancel } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 import * as actions from '../actions/accountActions'
-import { clearSession, setGasPrice, setBalanceToken, goToRoute, updateAllRate, updateAllRateComplete } from "../actions/globalActions"
-//import { fetchExchangeEnable, setApprove } from "../actions/exchangeActions"
-
-
-
-
+import { clearSession, setBalanceToken } from "../actions/globalActions"
 import * as exchangeActions from "../actions/exchangeActions"
-
 import * as utilActions from '../actions/utilActions'
-
-
 import * as common from "./common"
-import * as analytics from "../utils/analytics"
-
-//import {  } from "../actions/globalActions"
-
-//import { randomForExchange } from "../utils/random"
-
 import * as service from "../services/accounts"
 import constants from "../services/constants"
 import { Rate, updateAllRatePromise } from "../services/rate"
-
 import * as converter from "../utils/converter"
 import * as commonFunc from "../utils/common"
-
 import { getTranslate } from 'react-localize-redux'
 import { store } from '../store';
 
@@ -57,6 +41,7 @@ function* checkApproveAccount(address, type) {
   var exchange = state.exchange
   var tokens = state.tokens.tokens
   var ethereum = state.connection.ethereum
+  var isPayMode = !exchange.isSwap;
 
   if ((type === "keystore") || (type === "privateKey")) {
     yield put(exchangeActions.setApprove(false))
@@ -75,7 +60,7 @@ function* checkApproveAccount(address, type) {
     var minConversionRate = exchange.snapshot.minConversionRate
     var productPrice = converter.toEther(exchange.snapshot.productPrice)
     var sourceAmount = converter.caculateSourceAmount(productPrice, minConversionRate, 6)
-    sourceAmount = converter.toTWei(sourceAmount, tokens[exchange.sourceTokenSymbol].decimal)
+    sourceAmount = converter.toTWei(sourceAmount, tokens[exchange.sourceTokenSymbol].decimals)
 
     // var sourceAmountHex = converter.toHex(sourceAmount)
     // } else {
@@ -84,9 +69,9 @@ function* checkApproveAccount(address, type) {
     //get allowance
     var remain = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", tokens[exchange.sourceTokenSymbol].address, address, exchange.wrapper)
 
-    console.log("remaining")
-    console.log(remain)
-    console.log(sourceAmount)
+    // console.log("remaining")
+    // console.log(remain)
+    // console.log(sourceAmount)
 
     remain = converter.hexToBigNumber(remain)
 
@@ -133,7 +118,7 @@ function* checkMaxCap(address) {
   var destAmount = converter.toEther(exchange.productPrice)
   var minConversionRate = exchange.minConversionRate
   var srcAmount = converter.caculateSourceAmount(destAmount, minConversionRate, 6)
-  srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)
+  srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimals)
 
   // var srcAmount
   // var sourceTokenSymbol = exchange.sourceTokenSymbol
@@ -154,7 +139,7 @@ function* checkMaxCap(address) {
 
   //if (sourceTokenSymbol !== "ETH") {
     var rate = tokens[sourceTokenSymbol].rate
-    var decimal = tokens[sourceTokenSymbol].decimal
+    var decimal = tokens[sourceTokenSymbol].decimals
     srcAmount = converter.toT(srcAmount, decimal)
     srcAmount = converter.caculateDestAmount(srcAmount, rate, 6)
     srcAmount = converter.toTWei(srcAmount, 18)
@@ -211,7 +196,7 @@ function* checkBalance(address) {
   var destAmount = converter.toEther(exchange.productPrice)
   var minConversionRate = exchange.minConversionRate
   var srcAmount = converter.caculateSourceAmount(destAmount, minConversionRate, 6)
-  srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)
+  srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimals)
 
   // var srcAmount
   // if (exchange.isHaveDestAmount) {
@@ -303,58 +288,26 @@ function* checkSigner(address) {
 
 // function* fetchingGasTransfer(){}
 function* fetchingGas(address) {
-  var state = store.getState()
-  var exchange = state.exchange
-  var ethereum = state.connection.ethereum
-  // console.log("ethereum_conector")
-  // console.log(ethereum)
-  //temporaly hardcode for exchange gas limit
+  const state = store.getState();
+  const exchange = state.exchange;
+  const isETHSource = exchange.sourceTokenSymbol === "ETH";
+  let gas;
+
+  //temporarily hard-code for exchange gas limit
   if (exchange.sourceTokenSymbol !== exchange.destTokenSymbol) {
     return
   }
-  yield put(exchangeActions.fetchGas())
-  //if transfer estimate
-  var tokens = state.tokens.tokens
-  var decimal = tokens[exchange.sourceTokenSymbol].decimal
-  var amount
-  if (exchange.isHaveDestAmount) {
-    amount = converter.stringToHex(exchange.destAmount, decimal)
+
+  yield put(exchangeActions.fetchGas());
+
+  if (isETHSource) {
+    gas = yield common.estimateEthTransfer(address);
   } else {
-    amount = converter.stringToHex(exchange.sourceAmount, decimal)
+    gas = constants.PAYMENT_TOKEN_TRANSFER_GAS;
   }
 
-  var destAddr = exchange.receiveAddr
-
-  var txObj
-  if (exchange.sourceTokenSymbol === "ETH") {
-    txObj = {
-      from: address,
-      value: amount,
-      to: destAddr
-    }
-  } else {
-    var tokenAddr = tokens[exchange.sourceTokenSymbol].address
-    var data = yield call([ethereum, ethereum.call], "sendTokenData", tokenAddr, amount, destAddr)
-    txObj = {
-      from: address,
-      value: "0",
-      to: tokenAddr,
-      data: data
-    }
-  }
-  var gas
-  try {
-    var gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
-    if (exchange.sourceTokenSymbol !== "ETH") {
-      gas = Math.round(gas * 120 / 100)
-    }
-  } catch (e) {
-    console.log(e)
-    gas = 250000
-    //yield put(exchangeActions.throwErrorExchange("gas_estimate", translate("error.gas_estimate") || "Exceed gas"))    
-  }
-  yield put(exchangeActions.setEstimateGas(gas, 0))
-  yield put(exchangeActions.fetchGasSuccess())
+  yield put(exchangeActions.setEstimateGas(gas, 0));
+  yield put(exchangeActions.fetchGasSuccess());
 }
 
 function* createNewAccount(address, type, keystring, ethereum) {

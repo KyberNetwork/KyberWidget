@@ -3,9 +3,14 @@ import * as converter from "../../utils/converter"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import {addPrefixClass} from "../../utils/className"
 import { default as _ } from "underscore";
+import { getTokenUrl } from "../../utils/common";
 
 const TokenSelectorView = (props) => {
   var focusItem = props.listItem[props.focusItem]
+  if (!focusItem) {
+    focusItem = {}
+  }
+  console.log("list_item")
   var listShow = {};
   let priorityTokens = [];
 
@@ -50,7 +55,7 @@ const TokenSelectorView = (props) => {
           className={addPrefixClass("token-item-container payment-gateway__hover-color")}>
           <div className={addPrefixClass("token-item-content")}>
             <div className={addPrefixClass("token-item")}>
-              <img className={addPrefixClass("token-item__icon")} src={require("../../../assets/img/tokens/" + item.icon)}/>
+              <img className={addPrefixClass("token-item__icon")} src={getTokenUrl(item.symbol)}/>
               <span className={addPrefixClass("token-item__symbol")}>{item.symbol}</span>
             </div>
 
@@ -75,7 +80,12 @@ const TokenSelectorView = (props) => {
 
 
   //var rateFocusItem = converter.roundingNumber(converter.toT(props.tokens.offeredRate,18))
-  var rateFocusItem = focusItem.symbol === "ETH" ? "": converter.roundingNumber(converter.toT(props.tokens[focusItem.symbol].rate, 18))
+  var rateFocusItem
+  if (focusItem.symbol){
+    rateFocusItem = focusItem.symbol === "ETH" ? "": converter.roundingNumber(converter.toT(props.tokens[focusItem.symbol].rate, 18))
+  }else{
+    rateFocusItem = 0
+  }
   
 
   return (
@@ -85,13 +95,10 @@ const TokenSelectorView = (props) => {
           <div className={addPrefixClass("focus-item d-flex")}>
             <div className={addPrefixClass("d-flex")}>
               <div className={addPrefixClass("icon")}>
-                <img src={require("../../../assets/img/tokens/" + focusItem.icon)} />
+                <img src={getTokenUrl(focusItem.symbol)} />
               </div>
               <div>
                 <div className={addPrefixClass("focus-balance")}>
-                  {/* {props.account !== false && (
-                    <span className="token-balance" title = {converter.toT(focusItem.balance)}>{converter.roundingNumber(converter.toT(focusItem.balance, focusItem.decimal))}</span>
-                  )} */}
                   <span className={addPrefixClass("token-symbol")}>{focusItem.symbol}</span>
                 </div>
               </div>
@@ -110,7 +117,7 @@ const TokenSelectorView = (props) => {
               {priorityTokens.map((token, i) => {
                 return (
                   <div className={addPrefixClass("suggest-item__content")} key={i} onClick={(e) => props.selectItem(e, token.symbol, token.address, "suggest")}>
-                    <img className={addPrefixClass("suggest-item__icon")} src={require(`../../../assets/img/tokens/${token.icon}`)} />
+                    <img className={addPrefixClass("suggest-item__icon")} src={getTokenUrl(token.symbol)} />
                     <div className={addPrefixClass("suggest-item__symbol")}>{token.symbol}</div>
                   </div>
                 )

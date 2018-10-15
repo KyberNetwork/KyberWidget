@@ -13,6 +13,12 @@
     "ws": "wss://ropsten.kyber.network/ws/"
   },
   "api_usd":"https://api.coinmarketcap.com",
+  "api_url": "https://dev-api.knstats.com",
+  "tokens_gas": {
+    "ETH": 0,
+    "DGX": 750000
+  },
+  "pinnedTokens": ["ETH", "KNC", "DAI"],
   "tokens": {
       "ETH": {
         "name": "Ethereum",
@@ -60,7 +66,7 @@
         "name":"Aelf",
         "address": "0x9fcc27c7320703c43368cf1a4bf076402cd0d6b4",
         "symbol": "ELF",
-        "icon": "aelf.svg",
+        "icon": "elf.svg",
         "decimal": 18,
         "usd_id":"aelf"
       },
@@ -68,7 +74,7 @@
         "name":"Power Ledger",
         "address": "0xa577731515303f0c0d00e236041855a5c4f114dc",
         "symbol": "POWR",
-        "icon": "pwr.svg",
+        "icon": "powr.svg",
         "decimal": 6,
         "usd_id":"power-ledger"
       },
@@ -100,7 +106,7 @@
         "name":"Gifto",
         "address": "0xe55c607d58c53b2b06a8e38f67f4c0fcaeed2c31",
         "symbol": "GTO",
-        "icon": "gifto.svg",
+        "icon": "gto.svg",
         "decimal": 5,
         "usd_id":"gifto"
       },
@@ -230,6 +236,7 @@
   "reserve": "0x0fc1cf3e7dd049f7b42e6823164a64f76fc06be0",
   "network": "0x818E6FECD516Ecc3849DAf6845e3EC868087B755",
   "wrapper": "0x665d34f192f4940da4e859ff7768c0a80ed3ae10",
+  "payWrapper": "0xd1946aeffc2d053b76fab96117b6f2c7bf395e32",
   "trade_topic":"0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
   "endpoint": "https://ropsten.infura.io/DtzEYY0Km2BA3YwyJcBG",
   "averageBlockTime": 6000,

@@ -444,9 +444,10 @@ export function setEstimateGasSnapshot(gas, gas_approve){
   }
 }
 
-export function swapToken() {
+export function swapToken(source, dest) {
   return {
     type: "EXCHANGE.SWAP_TOKEN",
+    payload: {source, dest}
   }
 }
 
@@ -601,10 +602,10 @@ export function closeImportAccountExchange(){
     type: "EXCHANGE.CLOSE_IMPORT_ACCOUNT"
   }
 }
-export function initParamsExchange(productId, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, listPinTokens, getPrice, getTxData, wrapper){
+export function initParamsExchange(productId, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, listPinTokens, getPrice, getTxData, wrapper, tokens){
   return {
     type: "EXCHANGE.INIT_PARAMS_EXCHANGE",
-    payload: {productId, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, listPinTokens, getPrice, getTxData, wrapper}
+    payload: {productId, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, listPinTokens, getPrice, getTxData, wrapper, tokens}
   }
 }
 
