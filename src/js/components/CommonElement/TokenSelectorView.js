@@ -10,7 +10,7 @@ const TokenSelectorView = (props) => {
   if (!focusItem) {
     focusItem = {}
   }
-  console.log("list_item")
+  //console.log("list_item")
   var listShow = {};
   let priorityTokens = [];
 
