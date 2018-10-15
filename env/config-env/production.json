@@ -21,6 +21,12 @@
       "ws": "wss://mainnet.infura.io/ws"
     },
     "api_usd":"https://api.coinmarketcap.com",
+    "api_url": "https://dev-api.knstats.com",
+    "tokens_gas": {
+      "ETH": 0,
+      "DGX": 750000
+    },
+    "pinnedTokens": ["ETH", "KNC", "DAI"],
     "tokens": {
       "ETH": {
         "name": "Ethereum",
@@ -347,13 +353,6 @@
         "address": "0xb97048628db6b661d4c2aa833e95dbe1a905b280",
         "symbol":"PAY", 
         "icon": "pay.svg"
-      },
-      "CHAT": {
-        "name": "Chatcoin",
-        "decimal": 18,
-        "address": "0x442bc47357919446eabc18c7211e57a13d983469",
-        "symbol":"CHAT", 
-        "icon": "chat.svg"
       },
       "DTA": {
         "name": "Data",

@@ -260,67 +260,6 @@ function* getMaxGasTransfer(){
   }
 }
 
-function* estimateGasUsed(action){
-  var state = store.getState()
-  var transfer = state.transfer
-
-  var tokens = state.tokens.tokens
-  var decimal = 18
-  var tokenSymbol = state.transfer.tokenSymbol
-  if (tokens[tokenSymbol]) {
-    decimal = tokens[tokenSymbol].decimal
-  }
-
-  var account = state.account.account
-  var fromAddr = account.address
-
-  var gasRequest = yield call(common.handleRequest, calculateGasUse, fromAddr, transfer.tokenSymbol, transfer.token, decimal, transfer.amount)
-  if (gasRequest.status === "success"){
-    const gas = gasRequest.data
-    yield put(actions.setGasUsed(gas))
-  }
-  if ((gasRequest.status === "timeout") || (gasRequest.status === "fail")){
-    //var state = store.getState()
-    //var transfer = state.transfer
-    var gasLimit = yield call(getMaxGasTransfer)
-    yield put(actions.setGasUsed(gasLimit))
-  }
-//  yield call(calculateGasUse, fromAddr, transfer.tokenSymbol, transfer.token, decimal, transfer.amount)
-}
-
-
-
-function* estimateGasUsedWhenSelectToken(action){
-  const { symbol, address } = action.payload
-
-  var state = store.getState()
-  var transfer = state.transfer
-
-  var tokens = state.tokens.tokens
-  var decimal = 18
-  var tokenSymbol = symbol
-  if (tokens[tokenSymbol]) {
-    decimal = tokens[tokenSymbol].decimal
-  }
-
-  var account = state.account.account
-  var fromAddr = account.address
-
-  var gasRequest = yield call(common.handleRequest, calculateGasUse, fromAddr, tokenSymbol, address, decimal, transfer.amount)
-  if (gasRequest.status === "success"){
-    const gas = gasRequest.data
-    yield put(actions.setGasUsed(gas))
-  }
-  if ((gasRequest.status === "timeout") || (gasRequest.status === "fail")){
-    // var state = store.getState()
-    // var transfer = state.transfer
-    // var gasLimit = transfer.gas_limit
-    var gasLimit = yield call(getMaxGasTransfer)
-    yield put(actions.setGasUsed(gasLimit))
-  }
-
-  //yield call(calculateGasUse, fromAddr, tokenSymbol, address, decimal, transfer.amount)
-}
 
 function* estimateGasUsedWhenChangeAmount(action){
   var amount = action.payload
@@ -332,7 +271,7 @@ function* estimateGasUsedWhenChangeAmount(action){
   var decimal = 18
   var tokenSymbol = transfer.tokenSymbol
   if (tokens[tokenSymbol]) {
-    decimal = tokens[tokenSymbol].decimal
+    decimal = tokens[tokenSymbol].decimals
   }
 
   var account = state.account.account
@@ -355,37 +294,6 @@ function* estimateGasUsedWhenChangeAmount(action){
 }
 
 
-// function* fetchGas(){
-//   var state = store.getState()
-//   var transfer = state.transfer
-//   var tokens = state.tokens.tokens
-
-//   var decimal = 18
-//   var tokenSymbol = transfer.tokenSymbol
-//   if (tokens[tokenSymbol]) {
-//     decimal = tokens[tokenSymbol].decimal
-//   }
-
-//   var account = state.account.account
-//   var fromAddr = account.address
-
-
-
-//   var gasRequest = yield call(common.handleRequest, calculateGasUse, fromAddr, tokenSymbol, transfer.token, decimal, transfer.amount)
-//   if (gasRequest.status === "success"){
-//     const gas = gasRequest.data
-//     yield put(actions.setGasUsed(gas))
-//   }
-//   if ((gasRequest.status === "timeout") || (gasRequest.status === "fail")){
-//     var state = store.getState()
-//     var transfer = state.transfer
-//     var gasLimit = transfer.gas_limit
-//     yield put(actions.setGasUsed(gasLimit))
-//   }
-
-//   //yield call(calculateGasUse, fromAddr, tokenSymbol, transfer.token, decimal, transfer.amount)
-//   yield put(actions.fetchGasSuccess())
-// }
 
 function* fetchGasSnapshot(){
   var state = store.getState()
@@ -503,8 +411,8 @@ export function* watchTransfer() {
   //yield takeEvery("TRANSFER.TX_BROADCAST_PENDING", broadCastTx)
   yield takeEvery("TRANSFER.PROCESS_TRANSFER", processTransfer)
 
-  yield takeEvery("TRANSFER.ESTIMATE_GAS_USED", estimateGasUsed)
-  yield takeEvery("TRANSFER.SELECT_TOKEN", estimateGasUsedWhenSelectToken)
+  // yield takeEvery("TRANSFER.ESTIMATE_GAS_USED", estimateGasUsed)
+  // yield takeEvery("TRANSFER.SELECT_TOKEN", estimateGasUsedWhenSelectToken)
   yield takeEvery("TRANSFER.TRANSFER_SPECIFY_AMOUNT", estimateGasUsedWhenChangeAmount)
   //yield takeEvery("TRANSFER.FETCH_GAS", fetchGas)
   yield takeEvery("TRANSFER.FETCH_GAS_SNAPSHOT", fetchGasSnapshot)

@@ -171,7 +171,7 @@ export function* estimateEthTransfer(address) {
   const commissionID = converter.numberToHexAddress(exchange.blockNo);
   const paymentData = exchange.paymentData;
   const hint = exchange.hint;
-  const decimal = tokens[exchange.sourceTokenSymbol].decimal;
+  const decimals = tokens[exchange.sourceTokenSymbol].decimals;
   let sourceDecimal = 18;
   let amount;
   let gas;
@@ -180,13 +180,13 @@ export function* estimateEthTransfer(address) {
   let txObj;
 
   if (exchange.isHaveDestAmount) {
-    amount = converter.stringToHex(exchange.destAmount, decimal)
+    amount = converter.stringToHex(exchange.destAmount, decimals)
   } else {
-    amount = converter.stringToHex(exchange.sourceAmount, decimal)
+    amount = converter.stringToHex(exchange.sourceAmount, decimals)
   }
 
   if (tokens[sourceTokenSymbol]) {
-    sourceDecimal = tokens[sourceTokenSymbol].decimal
+    sourceDecimal = tokens[sourceTokenSymbol].decimals
   }
 
   sourceAmount = converter.stringToHex(exchange.sourceAmount, sourceDecimal);

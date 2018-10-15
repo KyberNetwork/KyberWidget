@@ -867,10 +867,9 @@ function* getSourceAmount(sourceTokenSymbol, sourceAmount) {
 
   var sourceAmountHex = "0x0"
   if (tokens[sourceTokenSymbol]) {
-    var decimal = tokens[sourceTokenSymbol].decimal
+    var decimals = tokens[sourceTokenSymbol].decimals
     var rateSell = tokens[sourceTokenSymbol].rate
-    //console.log({ sourceAmount, decimal, rateSell })
-    sourceAmountHex = converter.calculateMinSource(sourceTokenSymbol, sourceAmount, decimal, rateSell)
+    sourceAmountHex = converter.calculateMinSource(sourceTokenSymbol, sourceAmount, decimals, rateSell)
   } else {
     sourceAmountHex = converter.stringToHex(sourceAmount, 18)
   }
@@ -882,9 +881,9 @@ function* getSourceAmountZero(sourceTokenSymbol) {
   var tokens = state.tokens.tokens
   var sourceAmountHex = "0x0"
   if (tokens[sourceTokenSymbol]) {
-    var decimal = tokens[sourceTokenSymbol].decimal
+    var decimals = tokens[sourceTokenSymbol].decimals
     var rateSell = tokens[sourceTokenSymbol].rate
-    sourceAmountHex = converter.toHex(converter.getSourceAmountZero(sourceTokenSymbol, decimal, rateSell))
+    sourceAmountHex = converter.toHex(converter.getSourceAmountZero(sourceTokenSymbol, decimals, rateSell))
   }
   return sourceAmountHex
 }
@@ -896,21 +895,7 @@ function* updateRatePending(action) {
   // var exchangeSnapshot = state.exchange.snapshot
   var translate = getTranslate(state.locale)
 
-  // console.log("rate_updater")
-  // if (sourceTokenSymbol === "ETH"){
-  //   if (parseFloat(sourceAmount) > constants.MAX_AMOUNT_RATE_HANDLE){
-  //     yield put(actions.throwErrorHandleAmount())
-  //     return
-  //   }
-  // }else{
-  //   var tokens = state.tokens.tokens
-  //   //var sourceAmountT = converter.toT(sourceAmount, tokens[sourceTokenSymbol].decimal)
-  //   var destAmount = converter.calculateDest(sourceAmount, tokens[sourceTokenSymbol].rate, 6)
-  //   if (parseFloat(destAmount) > constants.MAX_AMOUNT_RATE_HANDLE){
-  //     yield put(actions.throwErrorHandleAmount())
-  //     return
-  //   }
-  // }
+
 
   var sourceAmoutRefined = yield call(getSourceAmount, sourceTokenSymbol, sourceAmount)
   var sourceAmoutZero = yield call(getSourceAmountZero, sourceTokenSymbol)
@@ -1220,8 +1205,8 @@ function* getMaxGasExchange(source, dest) {
   var sourceTokenLimit = tokens[source].gasLimit
   var destTokenLimit = tokens[dest].gasLimit
 
-  var sourceGasLimit = sourceTokenLimit ? parseInt(sourceTokenLimit) : exchange.max_gas
-  var destGasLimit = destTokenLimit ? parseInt(destTokenLimit) : exchange.max_gas
+  var sourceGasLimit = sourceTokenLimit || sourceTokenLimit === 0 ? parseInt(sourceTokenLimit) : exchange.max_gas
+  var destGasLimit = destTokenLimit || destTokenLimit === 0 ? parseInt(destTokenLimit) : exchange.max_gas
 
   return sourceGasLimit + destGasLimit
 }
@@ -1252,7 +1237,7 @@ function* getGasConfirm() {
   var sourceDecimal = 18
   var sourceTokenSymbol = exchange.sourceTokenSymbol
   if (tokens[sourceTokenSymbol]) {
-    sourceDecimal = tokens[sourceTokenSymbol].decimal
+    sourceDecimal = tokens[sourceTokenSymbol].decimals
   }
 
   const sourceToken = exchange.sourceToken
@@ -1366,7 +1351,7 @@ function* getGasUsed() {
   var sourceDecimal = 18
   var sourceTokenSymbol = exchange.sourceTokenSymbol
   if (tokens[sourceTokenSymbol]) {
-    sourceDecimal = tokens[sourceTokenSymbol].decimal
+    sourceDecimal = tokens[sourceTokenSymbol].decimals
   }
   try {
     const sourceToken = exchange.sourceToken
@@ -1601,16 +1586,16 @@ function* verifyExchange() {
     var destAmount = exchange.destAmount
     var offeredRate = exchange.offeredRate
     srcAmount = converter.caculateSourceAmount(exchange.destAmount, offeredRate, 6)
-    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)
+    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimals)
   } else {
     srcAmount = exchange.sourceAmount
-    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimal)
+    srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimals)
   }
 
   if (sourceTokenSymbol !== "ETH") {
     var rate = tokens[sourceTokenSymbol].rate
-    var decimal = tokens[sourceTokenSymbol].decimal
-    srcAmount = converter.toT(srcAmount, decimal)
+    var decimals = tokens[sourceTokenSymbol].decimals
+    srcAmount = converter.toT(srcAmount, decimals)
     srcAmount = converter.caculateDestAmount(srcAmount, rate, 6)
     srcAmount = converter.toTWei(srcAmount, 18)
   }
@@ -1669,9 +1654,9 @@ export function* initParamsExchange(action) {
   var source = exchange.sourceToken
 
 
-  const { receiveAddr, receiveToken, tokenAddr, receiveAmount, network, type, defaultPairArr } = action.payload
+  const { receiveAddr, receiveToken, tokenAddr, receiveAmount, network, type, defaultPairArr, tokens } = action.payload
 
-  var tokens = BLOCKCHAIN_INFO[network].tokens
+  //var tokens = BLOCKCHAIN_INFO[network].tokens
   //var ethereum = state.connection.ethereum
   var ethereum = new EthereumService({ network })
 
@@ -1684,9 +1669,9 @@ export function* initParamsExchange(action) {
     yield put.sync(actions.changeDefaultTokens(sourceTokenSymbol, source, destSymbol, destAddress))
   }
 
-  console.log("source_toke")
-  console.log(sourceTokenSymbol)
-  console.log(receiveToken)
+  // console.log("source_toke")
+  // console.log(sourceTokenSymbol)
+  // console.log(receiveToken)
 
   yield put.sync(setConnection(ethereum))
 

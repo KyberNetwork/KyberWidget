@@ -13,6 +13,12 @@
     "ws": "wss://ropsten.kyber.network/ws/"
   },
   "api_usd":"https://api.coinmarketcap.com",
+  "api_url": "https://dev-api.knstats.com",
+  "tokens_gas": {
+    "ETH": 0,
+    "DGX": 750000
+  },
+  "pinnedTokens": ["ETH", "KNC", "DAI"],
   "tokens": {
       "ETH": {
         "name": "Ethereum",

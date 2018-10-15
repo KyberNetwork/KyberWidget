@@ -130,7 +130,7 @@ export default class Payment extends React.Component {
       //const params = this.formParams()
       var token = this.props.exchange.destTokenSymbol
       var tokenAddress = this.props.tokens[token].address
-      var tokenDecimal = this.props.tokens[token].decimal
+      var tokenDecimal = this.props.tokens[token].decimals
       var tokenName = this.props.tokens[token].tokenName
 
       var amount
@@ -151,7 +151,7 @@ export default class Payment extends React.Component {
       var balanceData = {
         //balance: this.props.form.balance.toString(),
         name: tokenName,
-        decimal: tokenDecimal,
+        decimals: tokenDecimal,
         tokenSymbol: token,
         amount: this.props.destAmount
       }
@@ -376,7 +376,7 @@ export default class Payment extends React.Component {
   getAccountBgk = () => {
     const sourceTokenSymbol = this.props.exchange.sourceTokenSymbol;
     const sourceBalance = this.props.tokens[sourceTokenSymbol].balance;
-    const sourceDecimal = this.props.tokens[sourceTokenSymbol].decimal;
+    const sourceDecimal = this.props.tokens[sourceTokenSymbol].decimals;
     const ethBalance = this.props.tokens["ETH"].balance;
     let icon, method;
 

@@ -600,11 +600,11 @@ export function closeImportAccountExchange(){
   }
 }
 export function initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
-    callback, network, paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr, paymentData, hint) {
+    callback, network, paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr, paymentData, hint, tokens) {
   return {
     type: "EXCHANGE.INIT_PARAMS_EXCHANGE",
     payload: {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, network,
-      paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr, paymentData, hint}
+      paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr, paymentData, hint, tokens}
   }
 }
 
