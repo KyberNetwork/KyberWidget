@@ -268,5 +268,5 @@ export function getAssetUrl(uri = "") {
 }
 
 export function getTokenUrl(symbol = "") {
-  return constant.ASSET_URL + "/tokens/" +  symbol.toLowerCase() + ".svg";
+  return constant.ASSET_URL + "tokens/" +  symbol.toLowerCase() + ".svg";
 }

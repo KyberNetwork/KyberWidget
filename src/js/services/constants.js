@@ -270,7 +270,7 @@ const SUPPORTED_NETWORK = [
 
 const APP_NAME='kyber-widget'
 const VERSION='v0.1';
-const ASSET_URL = 'https://files.kyber.network/DesignAssets';
+const ASSET_URL = 'https://files.kyber.network/DesignAssets/';
 const PAYMENT_TOKEN_TRANSFER_GAS = 200000;
 const PAYMENT_ETH_TRANSFER_GAS = 48500;
 
