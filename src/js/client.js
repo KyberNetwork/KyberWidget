@@ -121,34 +121,25 @@ function initParams(appId, wrapper, getPrice, getTxData) {
       }
     }
 
-    //this.props.dispatch(initParamsGlobal(query))
-
-    //etheremonAddr = widgetParent.getAttribute('data-widget-etheremon-addr')
     productId = widgetParent.getAttribute('data-widget-product-id')
     productName = widgetParent.getAttribute('data-widget-product-name')
     productAvatar = widgetParent.getAttribute('data-widget-product-avatar')
-
     callback = widgetParent.getAttribute('data-widget-callback')
     network = widgetParent.getAttribute('data-widget-network')
     paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
     signer = widgetParent.getAttribute('data-widget-signer')
     commissionID = widgetParent.getAttribute('data-widget-commission-id')
-    // payPrice = widgetParent.getAttribute('data-widget-pay-price')   
     pinTokens = widgetParent.getAttribute("data-widget-pinned-tokens")
   } else {
     query = common.getQueryParams(window.location.search)
-
-    // etheremonAddr = common.getParameterByName("etheremonAddr")
     productId = common.getParameterByName("productId")
     productName = common.getParameterByName("productName")
     productAvatar = common.getParameterByName("productAvatar")
-
     callback = common.getParameterByName("callback")
     network = common.getParameterByName("network")
     paramForwarding = common.getParameterByName("paramForwarding")
     signer = common.getParameterByName("signer")
     commissionID = common.getParameterByName("commissionId")
-    // payPrice = common.getParameterByName("payPrice")      
     pinTokens = common.getParameterByName("pinnedTokens")
   }
 
@@ -202,8 +193,10 @@ function initParams(appId, wrapper, getPrice, getTxData) {
     //   payPrice = 0
     // }
 
-
-
+    if (!productId) {
+      errors["productID"] = translate("error.product_id_is_required")
+        || "Product ID is required"
+    }
 
     if (commissionID) {
       if (validator.verifyAccount(commissionID)) {
