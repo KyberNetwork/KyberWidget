@@ -869,7 +869,6 @@ function* getSourceAmount(sourceTokenSymbol, sourceAmount) {
   if (tokens[sourceTokenSymbol]) {
     var decimals = tokens[sourceTokenSymbol].decimals
     var rateSell = tokens[sourceTokenSymbol].rate
-    //console.log({ sourceAmount, decimal, rateSell })
     sourceAmountHex = converter.calculateMinSource(sourceTokenSymbol, sourceAmount, decimals, rateSell)
   } else {
     sourceAmountHex = converter.stringToHex(sourceAmount, 18)

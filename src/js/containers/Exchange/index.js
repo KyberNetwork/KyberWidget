@@ -9,3 +9,5 @@ export { default as ExchangeBody } from './ExchangeBody.js'
 
 export { default as Payment } from './Payment.js'
 export { default as ErrorPayment } from './ErrorPayment.js'
+
+export {default as TokenSelector } from './TokenSelector.js'

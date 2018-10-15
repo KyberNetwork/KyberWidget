@@ -28,10 +28,11 @@ import AnalyticFactory from "./services/analytics"
 import Web3 from "web3";
 
 function getListTokens(network) {
+  
   //in ropsten
   return new Promise((resolve, reject) => {
     //return list of object tokens
-    fetch(BLOCKCHAIN_INFO + '/currencies/getList/' + network, {
+    fetch(BLOCKCHAIN_INFO[network].api_url + '/currencies/getList/' + network, {
       method: 'GET',
       headers: {
         'Accept': 'application/json, text/plain, */*',
@@ -50,11 +51,16 @@ function getListTokens(network) {
 
           //resolve(result.data)
         } else {
-          rejected(new Error("Cannot get data"))
+          //rejected(new Error("Cannot get data"))
+          //get from snapshot
+          var tokens = BLOCKCHAIN_INFO[network].tokens
+          resolve(tokens)
         }
       })
       .catch((err) => {
-        rejected(err)
+        console.log(err)
+        var tokens = BLOCKCHAIN_INFO[network].tokens
+        resolve(tokens)
       })
   })
 }
@@ -157,6 +163,9 @@ function initParams(appId) {
     case "production":
     case "mainnet":
       network = "mainnet"
+      break
+    case "rinkeby":
+      network = "rinkeby"
       break
     default:
       network = "ropsten"
