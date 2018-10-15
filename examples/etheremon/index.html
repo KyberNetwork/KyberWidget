@@ -93,17 +93,21 @@
         }
 
         function getParams() {
-          //  var etheremonAddr = getParameterByName('etheremonAddr')
+            var errors = {};
             var monsterId = getParameterByName('productId');
             var monsterName = getParameterByName('productName');
             var payPrice = getParameterByName('payPrice');
             var network = getParameterByName('network');
-            if (!payPrice) payPrice = 0
-            return { monsterId, monsterName, payPrice, network }
+
+            if (!payPrice) payPrice = 0;
+            if (!network) network = "rinkeby";
+            if (!monsterId) errors["productID"] = "Product ID is required";
+
+            return { monsterId, monsterName, payPrice, network, errors }
         }
         window.onload = function () {
             var params = getParams();
-            var network = params.network ? params.network : "rinkeby";
+            var network = params.network;
             var configData = config[network];
             var url = configData.url;
             var web3 = new Web3(new Web3.providers.HttpProvider(url, 3000));
@@ -149,7 +153,8 @@
                     return new Promise((resolve, reject) => {
                         resolve({ value: 0, data,gasLimit: 800000, to: configData.wrapper })
                     })
-                }
+                },
+                errors: params.errors
             })
         }
     </script>

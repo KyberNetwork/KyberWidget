@@ -84,7 +84,7 @@ function checkInListToken(str, tokens) {
   return listPinTokens
 }
 
-function initParams(appId, wrapper, getPrice, getTxData) {
+function initParams(appId, wrapper, getPrice, getTxData, errors = {}) {
   //var translate = getTranslate(store.locale)
   var translate = (...args) => {
     return null
@@ -92,16 +92,10 @@ function initParams(appId, wrapper, getPrice, getTxData) {
 
   var widgetParent = document.getElementById(appId)
   var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
-
-
   var query = {}
-
-  //var etheremonAddr
   var productId
   var productName
   var productAvatar
-  //var payPrice
-
   var callback
   var network
   var paramForwarding
@@ -166,8 +160,6 @@ function initParams(appId, wrapper, getPrice, getTxData) {
     query.network = network
     store.dispatch(initParamsGlobal(query))
 
-
-    var errors = {}
     // if (validator.verifyAccount(etheremonAddr)){
     //   errors["etheremonAddr"] = translate('error.etheremon_address_must_be_ethereum_addr') 
     //     || "etheremonAddr must be a valid ethereum address"
@@ -192,11 +184,6 @@ function initParams(appId, wrapper, getPrice, getTxData) {
     // }else{
     //   payPrice = 0
     // }
-
-    if (!productId) {
-      errors["productID"] = translate("error.product_id_is_required")
-        || "Product ID is required"
-    }
 
     if (commissionID) {
       if (validator.verifyAccount(commissionID)) {
@@ -248,10 +235,10 @@ window.kyberWidgetInstance = {}
 
 //console.log(document.getElementById(constanst.APP_NAME))
 window.kyberWidgetInstance.render = (obj) => {
-  const { widgetId, getPrice, getTxData, wrapper } = obj
-  var appId = widgetId ? widgetId : constanst.APP_NAME
+  const { appId, getPrice, getTxData, wrapper, errors } = obj;
+  var widgetId = appId ? appId : constanst.APP_NAME
 
-  if (!document.getElementById(appId)) {
+  if (!document.getElementById(widgetId)) {
     return
   }
   // if (illegal) {
@@ -267,7 +254,7 @@ window.kyberWidgetInstance.render = (obj) => {
   //     </PersistGate>, document.getElementById(constanst.APP_NAME));
   // }
   store.dispatch(initSession())
-  initParams(appId, wrapper, getPrice, getTxData)
+  initParams(widgetId, wrapper, getPrice, getTxData, errors);
 
   ReactDOM.render(
     <PersistGate persistor={persistor}>
