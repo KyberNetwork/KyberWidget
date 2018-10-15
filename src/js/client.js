@@ -84,7 +84,7 @@ function checkInListToken(str, tokens) {
   return listPinTokens
 }
 
-function initParams(appId, wrapper, getPrice, getTxData) {
+function initParams(appId, wrapper, getPrice, getTxData, errors = {}) {
   //var translate = getTranslate(store.locale)
   var translate = (...args) => {
     return null
@@ -92,16 +92,10 @@ function initParams(appId, wrapper, getPrice, getTxData) {
 
   var widgetParent = document.getElementById(appId)
   var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
-
-
   var query = {}
-
-  //var etheremonAddr
   var productId
   var productName
   var productAvatar
-  //var payPrice
-
   var callback
   var network
   var paramForwarding
@@ -121,34 +115,25 @@ function initParams(appId, wrapper, getPrice, getTxData) {
       }
     }
 
-    //this.props.dispatch(initParamsGlobal(query))
-
-    //etheremonAddr = widgetParent.getAttribute('data-widget-etheremon-addr')
     productId = widgetParent.getAttribute('data-widget-product-id')
     productName = widgetParent.getAttribute('data-widget-product-name')
     productAvatar = widgetParent.getAttribute('data-widget-product-avatar')
-
     callback = widgetParent.getAttribute('data-widget-callback')
     network = widgetParent.getAttribute('data-widget-network')
     paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
     signer = widgetParent.getAttribute('data-widget-signer')
     commissionID = widgetParent.getAttribute('data-widget-commission-id')
-    // payPrice = widgetParent.getAttribute('data-widget-pay-price')   
     pinTokens = widgetParent.getAttribute("data-widget-pinned-tokens")
   } else {
     query = common.getQueryParams(window.location.search)
-
-    // etheremonAddr = common.getParameterByName("etheremonAddr")
     productId = common.getParameterByName("productId")
     productName = common.getParameterByName("productName")
     productAvatar = common.getParameterByName("productAvatar")
-
     callback = common.getParameterByName("callback")
     network = common.getParameterByName("network")
     paramForwarding = common.getParameterByName("paramForwarding")
     signer = common.getParameterByName("signer")
     commissionID = common.getParameterByName("commissionId")
-    // payPrice = common.getParameterByName("payPrice")      
     pinTokens = common.getParameterByName("pinnedTokens")
   }
 
@@ -175,8 +160,6 @@ function initParams(appId, wrapper, getPrice, getTxData) {
     query.network = network
     store.dispatch(initParamsGlobal(query))
 
-
-    var errors = {}
     // if (validator.verifyAccount(etheremonAddr)){
     //   errors["etheremonAddr"] = translate('error.etheremon_address_must_be_ethereum_addr') 
     //     || "etheremonAddr must be a valid ethereum address"
@@ -201,9 +184,6 @@ function initParams(appId, wrapper, getPrice, getTxData) {
     // }else{
     //   payPrice = 0
     // }
-
-
-
 
     if (commissionID) {
       if (validator.verifyAccount(commissionID)) {
@@ -255,10 +235,10 @@ window.kyberWidgetInstance = {}
 
 //console.log(document.getElementById(constanst.APP_NAME))
 window.kyberWidgetInstance.render = (obj) => {
-  const { widgetId, getPrice, getTxData, wrapper } = obj
-  var appId = widgetId ? widgetId : constanst.APP_NAME
+  const { appId, getPrice, getTxData, wrapper, errors } = obj;
+  var widgetId = appId ? appId : constanst.APP_NAME
 
-  if (!document.getElementById(appId)) {
+  if (!document.getElementById(widgetId)) {
     return
   }
   // if (illegal) {
@@ -274,7 +254,7 @@ window.kyberWidgetInstance.render = (obj) => {
   //     </PersistGate>, document.getElementById(constanst.APP_NAME));
   // }
   store.dispatch(initSession())
-  initParams(appId, wrapper, getPrice, getTxData)
+  initParams(widgetId, wrapper, getPrice, getTxData, errors);
 
   ReactDOM.render(
     <PersistGate persistor={persistor}>
