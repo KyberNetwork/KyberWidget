@@ -233,12 +233,13 @@ export function* checkTokenBalanceOfColdWallet(action) {
     sourceAmount, destToken, destAddress,
     maxDestAmount, minConversionRate,
     throwOnFailure, nonce, gas,
-    gasPrice, keystring, type, password, account, data, keyService } = action.payload
-  let translate = getTranslate(store.getState().locale)
-  const isPayMode = checkIsPayMode();
+    gasPrice, keystring, type, password, account, data, keyService } = action.payload;
+  var state = store.getState();
+  var exchange = state.exchange;
+  let translate = getTranslate(state.locale)
 
   try {
-    const remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address, isPayMode)
+    const remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address, exchange.wrapper)
     const remain = converter.hexToBigNumber(remainStr)
     const sourceAmountBig = converter.hexToBigNumber(sourceAmount)
 
@@ -285,7 +286,6 @@ export function* processApproveByColdWallet(action) {
   var exchange = state.exchange
   var networkId = common.getNetworkId()
   let rawApprove
-  const isPayMode = checkIsPayMode();
 
   try {
     rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
@@ -562,13 +562,11 @@ function* exchangeTokentoETHKeystore(action) {
   var networkId = common.getNetworkId()
   var kyberAddress = common.getKyberAddress()
   var state = store.getState()
-  var exchange = state.exchange
-  
+  var exchange = state.exchange;
+  var remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address, exchange.wrapper);
+  var remain = converter.hexToBigNumber(remainStr);
+  var sourceAmountBig = converter.hexToBigNumber(sourceAmount);
 
-  var remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address, isPayMode)
-  console.log("remain: " + remainStr)
-  var remain = converter.hexToBigNumber(remainStr)
-  var sourceAmountBig = converter.hexToBigNumber(sourceAmount)
   if (!remain.isGreaterThanOrEqualTo(sourceAmountBig) && !isApproveTxPending()) {
     var rawApprove
     try {
@@ -656,7 +654,7 @@ export function* exchangeTokentoETHPrivateKey(action) {
   var exchange = state.exchange
 
   try {
-    var remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address, isPayMode)
+    var remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address, exchange.wrapper)
     var remain = converter.hexToBigNumber(remainStr)
     var sourceAmountBig = converter.hexToBigNumber(sourceAmount)
 
@@ -1383,7 +1381,7 @@ function* getGasUsed() {
     } else {
       const isPayMode = checkIsPayMode();
       //calculate gas approve
-      const remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address, isPayMode)
+      const remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address, exchange.wrapper)
       const remain = converter.hexToBigNumber(remainStr)
       const sourceAmountBig = converter.hexToBigNumber(sourceAmount)
 
