@@ -271,8 +271,6 @@ const SUPPORTED_NETWORK = [
 const APP_NAME='kyber-widget'
 const VERSION='v0.1';
 const ASSET_URL = 'https://files.kyber.network/DesignAssets/';
-const PAYMENT_TOKEN_TRANSFER_GAS = 200000;
-const PAYMENT_ETH_TRANSFER_GAS = 48500;
 
 module.exports = {
   ERC20, KYBER_NETWORK, KYBER_WRAPPER, EPSILON, ETHER_ADDRESS, ETH, RESERVES,
