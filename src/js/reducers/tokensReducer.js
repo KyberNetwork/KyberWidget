@@ -6,8 +6,8 @@ import constants from "../services/constants"
 import * as converter from "../utils/converter"
 
 
-function initTokens(network, pinTokens) {
-  var network = network ? network: "ropsten"
+function initTokens() {
+  //var network = network ? network: "ropsten"
   let tokens = {}
   
   // var length = pinTokens? pinTokens.length: 0
@@ -224,19 +224,28 @@ const tokens = (state = initState, action) => {
       delete tokens[symbol].approveTx
       return Object.assign({}, state, { tokens: tokens }) 
     }
-    // case 'TOKEN.INIT_LIST_TOKEN':{
-    //   const {tokens, network} = action.payload
-    //   var newTokens = JSON.parse(JSON.stringify(tokens))
-    //   //add gaslimit in token
-    //   if (BLOCKCHAIN_INFO[network].tokens_gas){
-    //     Object.keys(BLOCKCHAIN_INFO[network].tokens_gas).map(key => {
-    //       if (newTokens[key]){
-    //         newTokens[key].gasLimit = BLOCKCHAIN_INFO[network].tokens_gas[key]
-    //       }
-    //     })
-    //   }
-    //   return Object.assign({}, state, { tokens: newTokens }) 
-    // }
+    case 'TOKEN.INIT_LIST_TOKEN':{
+      const {network} = action.payload
+      var tokens = {}
+      Object.keys(BLOCKCHAIN_INFO[network].tokens).forEach((key) => {
+        tokens[key] = BLOCKCHAIN_INFO[network].tokens[key]
+        tokens[key].rate = 0
+        tokens[key].minRate = 0
+        tokens[key].rateEth = 0
+        tokens[key].minRateEth = 0
+        tokens[key].balance = 0
+        tokens[key].rateUSD = 0
+        // if (pinTokens){
+        //   if(pinTokens.includes(key)){
+        //     tokens[key].priority = true;
+        //     tokens[key].index = pinTokens.indexOf(key);
+        //   }else{
+        //     tokens[key].priority = false
+        //   }
+        // }
+      })
+      return Object.assign({}, state, { tokens: tokens }) 
+    }
     default: return state
   }
 }
