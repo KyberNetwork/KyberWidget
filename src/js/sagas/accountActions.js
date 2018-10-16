@@ -290,24 +290,65 @@ function* checkSigner(address) {
 function* fetchingGas(address) {
   const state = store.getState();
   const exchange = state.exchange;
-  const isETHSource = exchange.sourceTokenSymbol === "ETH";
-  let gas;
 
   //temporarily hard-code for exchange gas limit
   if (exchange.sourceTokenSymbol !== exchange.destTokenSymbol) {
     return
   }
 
-  yield put(exchangeActions.fetchGas());
-
-  if (isETHSource) {
-    gas = yield common.estimateEthTransfer(address);
+  yield put(exchangeActions.fetchGas())
+  //if transfer estimate
+  var tokens = state.tokens.tokens
+  var decimal = tokens[exchange.sourceTokenSymbol].decimal
+  var amount
+  if (exchange.isHaveDestAmount) {
+    amount = converter.stringToHex(exchange.destAmount, decimal)
   } else {
-    gas = constants.PAYMENT_TOKEN_TRANSFER_GAS;
+    amount = converter.stringToHex(exchange.sourceAmount, decimal)
   }
 
-  yield put(exchangeActions.setEstimateGas(gas, 0));
-  yield put(exchangeActions.fetchGasSuccess());
+  var destAddr = exchange.receiveAddr
+
+  var txObj
+  if (exchange.sourceTokenSymbol === "ETH") {
+    txObj = {
+      from: address,
+      value: amount,
+      to: destAddr
+    }
+  } else {
+    var tokenAddr = tokens[exchange.sourceTokenSymbol].address
+    var data = yield call([ethereum, ethereum.call], "sendTokenData", tokenAddr, amount, destAddr)
+    txObj = {
+      from: address,
+      value: "0",
+      to: tokenAddr,
+      data: data
+    }
+  }
+  var gas
+
+  if (!exchange.isSwap) {
+    if (exchange.sourceTokenSymbol === "ETH") {
+      gas = 100000;
+    } else {
+      gas = 200000;
+    }
+  } else {
+    try {
+      gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
+      if (exchange.sourceTokenSymbol !== "ETH") {
+        gas = Math.round(gas * 120 / 100)
+      }
+    } catch (e) {
+      console.log(e)
+      gas = 250000
+      //yield put(exchangeActions.throwErrorExchange("gas_estimate", translate("error.gas_estimate") || "Exceed gas"))
+    }
+  }
+
+  yield put(exchangeActions.setEstimateGas(gas, 0))
+  yield put(exchangeActions.fetchGasSuccess())
 }
 
 function* createNewAccount(address, type, keystring, ethereum) {

@@ -3,7 +3,6 @@ import * as converter from "../../utils/converter"
 import {addPrefixClass} from "../../utils/className"
 
 const ExchangeBodyLayout = (props) => {
-
   var errorSource = []
   var errorExchange = false
   Object.keys(props.exchange.errors).map(key => {
@@ -27,6 +26,8 @@ const ExchangeBodyLayout = (props) => {
   var errorShow = errorSource.map((value, index) => {
     return <span class="error-text" key={index}>{value}</span>
   });
+
+  var productPrice = props.exchange.productPrice ? converter.toEther(props.exchange.productPrice) : 0;
 
   return (
     <div id="exchange" className={addPrefixClass("widget-exchange")}>
@@ -61,15 +62,14 @@ const ExchangeBodyLayout = (props) => {
                       {props.global.params.productAvatar &&  props.global.params.productAvatar != "" ?
                         <div className={addPrefixClass("kyber-avatar")}><img src={props.global.params.productAvatar} /></div> : ""
                       }
-                      <div className={addPrefixClass("info-2")}>
 
-                      {props.global.params.productId && (
-                        <div className={addPrefixClass("info-2__content")}>
-                          <div>Product Id:</div>
-                          <div>{props.global.params.productId}</div>
-                        </div>
-                      )}
-                        
+                      <div className={addPrefixClass("info-2")}>
+                        {props.global.params.productId && (
+                          <div className={addPrefixClass("info-2__content")}>
+                            <div>Product Id:</div>
+                            <div>{props.global.params.productId}</div>
+                          </div>
+                        )}
 
                         {props.global.params.productName && props.global.params.productName !== "" && (
                           <div className={addPrefixClass("info-2__content")}>
@@ -78,19 +78,20 @@ const ExchangeBodyLayout = (props) => {
                           </div>
                         )}
 
+                        {productPrice != 0 && (
                           <div className={addPrefixClass("info-2__content")}>
                             <div>Price:</div>
-                            <div>{props.exchange.productPrice ? converter.toEther(props.exchange.productPrice): 0} ETH</div>
+                            <div>{productPrice} ETH</div>
                           </div>
+                        )}
 
-                        {/* {props.exchange.catchable && (
-                          <div className={addPrefixClass("info-2__content")}>
-                            <div>Price:</div>
-                            <div>{props.exchange.monsterInETH ? converter.toEther(props.exchange.monsterInETH): 0} ETH</div>
+                        {productPrice == 0 && (
+                          <div className={addPrefixClass("info-2__error")}>
+                            This monster is not catchable
                           </div>
-                        )} */}
-                      </div>
-                    </div>                    
+                        )}
+                        </div>
+                    </div>
                   </div>
 
                   <div>
