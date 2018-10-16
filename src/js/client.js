@@ -199,16 +199,18 @@ function initParams(appId, wrapper, getPrice, getTxData, errors = {}) {
       }
     }
 
+    var listPinTokens = [];
     if (pinTokens) {
-      var listTokens = pinTokens.split("_")
-      var listPinTokens = []
+      var listTokens = pinTokens.split("_");
+      var symbol;
+
       //validate tokens
-      var symbol
       for (var i = 0; i < listTokens.length; i++) {
         symbol = listTokens[i].toUpperCase()
         if (!BLOCKCHAIN_INFO[network].tokens[symbol]) {
           errors["pinTokens"] = translate('error.invalid_pinTokens') || "Pinned tokens include invalid tokens"
         }
+        listPinTokens.push(symbol);
       }
     }
 
