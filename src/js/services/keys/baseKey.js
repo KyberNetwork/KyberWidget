@@ -1,7 +1,5 @@
-import { verifyNonce } from "../../utils/validators"
 import { biggestNumber } from "../../utils/converter"
 import * as converter from "../../utils/converter"
-//import BLOCKCHAIN_INFO from "../../../../env"
 
 export const sendEtherFromAccount = (
   id, ethereum, account, sourceToken, sourceAmount, destAddress,
@@ -47,7 +45,7 @@ export const etherToOthersFromAccount = (
 export const tokenToOthersFromAccount = (
   id, ethereum, account, sourceToken, sourceAmount, getTxData, maxDestAmount, minConversionRate,
   walletId, nonce, gas, gasPrice, keystring, accountType,
-  password, networkId, ethermonWrapper) => {
+  password, networkId) => {
 
   return new Promise((resolve, reject) => {
     getTxData(
@@ -135,11 +133,11 @@ export const tokenToOthersPayment = (
 };
 
 export const getAppoveToken = (
-  isPayMode, ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-  keystring, password, accountType, account, networkId
+  ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
+  keystring, password, accountType, account, networkId, spender
 ) => {
   return new Promise((resolve) => {
-    ethereum.call("approveTokenData", sourceToken, biggestNumber(), isPayMode).then(result => {
+    ethereum.call("approveTokenData", sourceToken, biggestNumber(), spender).then(result => {
 
       const txParams = createTxParams(account, nonce, gasPrice, gas, sourceToken, "0x0", result, networkId);
 
