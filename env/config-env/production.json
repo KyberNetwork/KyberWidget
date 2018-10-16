@@ -27,7 +27,7 @@
       "ETH": 0,
       "DGX": 750000
     },
-    "pinnedTokens": ["ETH", "KNC", "DAI"],
+    "pinnedTokens": ["KNC", "DAI"],
     "tokens": {
       "ETH": {
         "name": "Ethereum",

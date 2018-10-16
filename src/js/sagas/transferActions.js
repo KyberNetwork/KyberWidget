@@ -402,9 +402,7 @@ function isLedgerError(accountType, error) {
 }
 
 function checkIsPayMode() {
-  const state = store.getState();
-
-  return !state.exchange.isSwap;
+  return false;
 }
 
 export function* watchTransfer() {

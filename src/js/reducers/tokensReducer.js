@@ -167,7 +167,7 @@ const tokens = (state = initState, action) => {
     }
 
     case 'EXCHANGE.INIT_PARAMS_EXCHANGE':{
-      const {tokens, network, pinTokens} = action.payload
+      const {tokens, network, listPinTokens} = action.payload
       var newTokens = JSON.parse(JSON.stringify(tokens))
       //add gaslimit in token
       if (BLOCKCHAIN_INFO[network].tokens_gas){
@@ -179,12 +179,9 @@ const tokens = (state = initState, action) => {
       }
 
       //add pinneTokens
-      var pinnedTokens = pinTokens?pinTokens:BLOCKCHAIN_INFO[network].pinnedTokens
-      // if (!pinTokens){
-      //   pinTokens = BLOCKCHAIN_INFO[network].pinnedTokens
-      // }
+      var pinnedTokens = listPinTokens ? listPinTokens : BLOCKCHAIN_INFO[network].pinnedTokens
       
-      for (var i= 0;i<  pinnedTokens.length; i++){
+      for (var i= 0; i < pinnedTokens.length; i++){
         var key = pinnedTokens[i]
         if (newTokens[key]){
           newTokens[key].priority = true

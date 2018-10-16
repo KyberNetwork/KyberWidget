@@ -204,6 +204,12 @@
         }
       }
     }
+
+    &__error {
+      font-size: 13px;
+      margin-top: 10px;
+      color: $error-color;
+    }
   }
 }
 
