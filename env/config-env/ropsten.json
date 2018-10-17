@@ -36,8 +36,7 @@
         "icon": "knc.svg",
         "address": "0x4e470dc7321e84ca96fcaedd0c8abcebbaeb68c6",
         "decimals": 18,
-        "usd_id":"kyber-network",
-        "priority": true
+        "usd_id":"kyber-network"
       },
       "OMG": {
         "name": "OmiseGO",
@@ -45,8 +44,7 @@
         "icon": "omg.svg",
         "address": "0x4bfba4a8f28755cb2061c413459ee562c6b9c51b",
         "decimals": 18,
-        "usd_id":"omisego",
-        "priority": true
+        "usd_id":"omisego"
       },
       "EOS": {
         "name": "Eos",
@@ -190,8 +188,7 @@
         "icon": "dai.svg",
         "address": "0xad6d458402f60fd3bd25163575031acdce07538d",
         "decimals": 18,
-        "usd_id":"dai",
-        "priority": true
+        "usd_id":"dai"
       },
       "LINK": {
         "name": "Chain Link",

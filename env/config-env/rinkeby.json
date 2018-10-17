@@ -31,8 +31,7 @@
             "icon": "knc.svg",
             "address": "0x55080ac40700BdE5725D8a87f48a01e192F660AF",
             "decimals": 18,
-            "usd_id": "kyber-network",
-            "priority": true
+            "usd_id": "kyber-network"
         },
         "OMG": {
             "name": "OmiseGO",
@@ -40,8 +39,7 @@
             "icon": "omg.svg",
             "address": "0x659c4206b2ee8CC00af837CddA132eb30fA58df8",
             "decimals": 18,
-            "usd_id": "omisego",
-            "priority": true
+            "usd_id": "omisego"
         },
         "SALT": {
             "name": "Salt",
