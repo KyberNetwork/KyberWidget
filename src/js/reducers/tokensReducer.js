@@ -169,6 +169,15 @@ const tokens = (state = initState, action) => {
     case 'EXCHANGE.INIT_PARAMS_EXCHANGE':{
       const {tokens, network, pinTokens} = action.payload
       var newTokens = JSON.parse(JSON.stringify(tokens))
+
+      for (var symbol in newTokens) {
+        newTokens[symbol].rate = 0;
+        newTokens[symbol].minRate = 0;
+        newTokens[symbol].rateEth = 0;
+        newTokens[symbol].minRateEth = 0;
+        newTokens[symbol].rateUSD = 0;
+      }
+
       //add gaslimit in token
       if (BLOCKCHAIN_INFO[network].tokens_gas){
         Object.keys(BLOCKCHAIN_INFO[network].tokens_gas).map(key => {
