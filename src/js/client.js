@@ -47,6 +47,7 @@ function getListTokens(network) {
           var now = Math.round(new Date().getTime() / 1000)
           var tokens = {}
           result.data.map(val => {
+            if (val.is_not_erc20) return
             if (val.listing_time > now) return
             tokens[val.symbol] = val
           })
