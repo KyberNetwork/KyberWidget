@@ -9,7 +9,7 @@ import * as converter from "../utils/converter"
 function initTokens(network, pinTokens) {
   var network = network ? network: "ropsten"
   let tokens = {}
-  
+
   // var length = pinTokens? pinTokens.length: 0
   // var index = 0
 
@@ -169,7 +169,7 @@ const tokens = (state = initState, action) => {
     case 'EXCHANGE.INIT_PARAMS_EXCHANGE':{
       const {tokens, network, listPinTokens} = action.payload
       var newTokens = JSON.parse(JSON.stringify(tokens))
-      //add gaslimit in token
+
       if (BLOCKCHAIN_INFO[network].tokens_gas){
         Object.keys(BLOCKCHAIN_INFO[network].tokens_gas).map(key => {
           if (newTokens[key]){
@@ -178,26 +178,18 @@ const tokens = (state = initState, action) => {
         })
       }
 
-      //add pinneTokens
-      var pinnedTokens = listPinTokens ? listPinTokens : BLOCKCHAIN_INFO[network].pinnedTokens
-      
-      for (var i= 0; i < pinnedTokens.length; i++){
-        var key = pinnedTokens[i]
-        if (newTokens[key]){
-          newTokens[key].priority = true
+      var pinnedTokens = listPinTokens.length > 0 ? listPinTokens : BLOCKCHAIN_INFO[network].pinnedTokens;
+
+      for (let symbol in newTokens) {
+        newTokens[symbol].priority = false;
+
+        if (pinnedTokens.includes(symbol)) {
+          newTokens[symbol].priority = true;
+          newTokens[symbol].index = pinnedTokens.indexOf(symbol);
         }
       }
 
-      // if (pinTokens) {
-      //   newTokens.
-      //   if (pinTokens.includes(key)) {
-      //     tokens[key].priority = true;
-      //     tokens[key].index = pinTokens.indexOf(key);
-      //   } else {
-      //     tokens[key].priority = false
-      //   }
-      // }
-      return Object.assign({}, state, { tokens: newTokens }) 
+      return Object.assign({}, state, { tokens: newTokens })
     }
 
     case 'GLOBAL.CLEAR_SESSION_FULFILLED': {

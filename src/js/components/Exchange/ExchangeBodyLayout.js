@@ -28,6 +28,7 @@ const ExchangeBodyLayout = (props) => {
   });
 
   var productPrice = props.exchange.productPrice ? converter.toEther(props.exchange.productPrice) : 0;
+  var isMonsterCachable = productPrice != 0;
 
   return (
     <div id="exchange" className={addPrefixClass("widget-exchange")}>
@@ -78,14 +79,14 @@ const ExchangeBodyLayout = (props) => {
                           </div>
                         )}
 
-                        {productPrice != 0 && (
+                        {isMonsterCachable && (
                           <div className={addPrefixClass("info-2__content")}>
                             <div>Price:</div>
                             <div>{productPrice} ETH</div>
                           </div>
                         )}
 
-                        {productPrice == 0 && (
+                        {(props.exchange.isProductPriceFetched && !isMonsterCachable) && (
                           <div className={addPrefixClass("info-2__error")}>
                             This monster is not catchable
                           </div>

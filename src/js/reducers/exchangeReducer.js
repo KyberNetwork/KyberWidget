@@ -613,46 +613,20 @@ const exchange = (state = initState, action) => {
     }
     case "EXCHANGE.INIT_PARAMS_EXCHANGE":{
       const {callback, network, paramForwarding, signer, commissionID, getPrice, getTxData, wrapper} = action.payload
-      // {etheremonAddr, monsterId, monsterName, monsterAvatar, callback, network, paramForwarding, signer, commissionID}
-      // newState.destTokenSymbol = receiveToken
-      // newState.destAmount = receiveAmount
-      // if (receiveAmount === null){
+
       newState.isHaveDestAmount = false
-      // }else{
-      //   newState.isHaveDestAmount = true
-      // }
-      // newState.destToken = tokenAddr
-      // newState.receiveAddr = receiveAddr
-
-      // newState.productName = productName
-      // newState.productAvatar = productAvatar
-
       newState.callback = callback
       newState.network = network
       newState.paramForwarding = paramForwarding
       newState.signer = signer
       newState.commissionID = commissionID
-
       newState.getPrice = getPrice
-      newState.getTxData = getTxData 
+      newState.getTxData = getTxData
       newState.wrapper = wrapper
-      //newState.monsterAvatar = monsterAvatar
-      
+
       return newState
     }
-    // case "EXCHANGE.SAVE_PARAMS_EXCHANGE":{
-    //   const {receiveAddr, receiveToken, receiveAmount, tokenAddr} = action.payload
-    //   newState.destTokenSymbol = receiveToken
-    //   newState.destAmount = receiveAmount
-    //   if (receiveAmount === null){
-    //     newState.isHaveDestAmount = false
-    //   }else{
-    //     newState.isHaveDestAmount = true
-    //   }
-    //   newState.destToken = tokenAddr
-    //   newState.receiveAddr = receiveAddr
-    //   return newState
-    // }
+
     case "EXCHANGE.SET_APPROVE":{
       const {isNeedApprove} = action.payload;
       newState.isNeedApprove = isNeedApprove;
@@ -674,9 +648,12 @@ const exchange = (state = initState, action) => {
       return newState
     }
 
-    case "EXCHANGE.UPDATE_PRODUCT_INFO":{
-      const {productPrice} = action.payload
-      newState.productPrice = productPrice      
+    case "EXCHANGE.UPDATE_PRODUCT_INFO": {
+      const { productPrice } = action.payload;
+
+      newState.productPrice = productPrice;
+      newState.isProductPriceFetched = true;
+
       return newState
     }
 

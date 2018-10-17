@@ -1679,79 +1679,39 @@ export function* getProductRateInToken(tokenSymbol, productPrice, tokens){
 
 export function* initParamsExchange(action) {
   var state = store.getState()
-  //var tokens = state.tokens.tokens
   var exchange = state.exchange
-
   const {network, getPrice, getTxData, tokens} = action.payload
+  var ethereum = new EthereumService({network})
 
+  yield put.sync(setConnection(ethereum))
 
-  //var payPriceInEth = payPrice ? converter.toTWei(payPrice): "0"
-   //var ethereum = state.connection.ethereum
-   var ethereum = new EthereumService({network})
-   yield put.sync(setConnection(ethereum))
-
-
-
-  var sourceTokenSymbol = exchange.sourceTokenSymbol
-  //var sourceAddr = tokens[sourceTokenSymbol].address
-
-
-  //get ethremon price 
-  try{
+  try {
     var productPrice = yield call(getPrice)
-    
-    // if (converter.compareTwoNumber(monsterInETH, payPriceInEth) === -1){
-    //   monsterInETH = payPriceInEth
-    // }
+
     yield put.sync(actions.updateProductInfo(productPrice))
 
-  //calculate rate in token
-  const {expectedRate, slippageRate} = yield call(getProductRateInToken, exchange.sourceTokenSymbol, productPrice, tokens)
-  yield put(actions.updateRateToken(expectedRate, slippageRate ))
+    const {expectedRate, slippageRate} = yield call(getProductRateInToken, exchange.sourceTokenSymbol, productPrice, tokens);
 
-  }catch(e){
+    yield put(actions.updateRateToken(expectedRate, slippageRate ))
+  } catch(e) {
     console.log(e)
   }
-  
 
-  //yield call(estimateGasUsed, sourceTokenSymbol)
-
-
-
-   ethereum.subcribe()
-
+  ethereum.subcribe()
 
   const web3Service = new Web3Service()
-  // console.log("web3_data")
-  // console.log(web3Service.isHaveWeb3())
-  if(web3Service.isHaveWeb3()){
+
+  if (web3Service.isHaveWeb3()) {
     const watchMetamask = yield fork(watchMetamaskAccount, ethereum, web3Service, network)
     yield take('GLOBAL.INIT_SESSION')
     yield cancel(watchMetamask)
-  }else{
+  } else {
     yield put(globalActions.throwErrorMematamask("Metamask is not installed"))
   }
 
-
-
-  // if (typeof web3 === "undefined") {
-  //   yield put(globalActions.throwErrorMematamask("Metamask is not installed"))
-  // } else {
-  //   const web3Service = new Web3Service(web3)
-  //   const watchMetamask = yield fork(watchMetamaskAccount, ethereum, web3Service, network)
-
-  //   yield take('GLOBAL.INIT_SESSION')
-  //   yield cancel(watchMetamask)
-  // }
-
-
   var notiService = new NotiService({ type: "session" })
+
   yield put(globalActions.setNotiHandler(notiService))
-
-  //store.dispatch(updateRateExchange(source, dest, sourceAmount, sourceTokenSymbol, isManual))
-
-  //estimate gas
-
 }
 
 

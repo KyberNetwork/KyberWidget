@@ -207,7 +207,7 @@ function initParams(appId, wrapper, getPrice, getTxData, errors = {}) {
       //validate tokens
       for (var i = 0; i < listTokens.length; i++) {
         symbol = listTokens[i].toUpperCase()
-        if (!BLOCKCHAIN_INFO[network].tokens[symbol]) {
+        if (symbol === "ETH" || !BLOCKCHAIN_INFO[network].tokens[symbol]) {
           errors["pinTokens"] = translate('error.invalid_pinTokens') || "Pinned tokens include invalid tokens"
         }
         listPinTokens.push(symbol);
