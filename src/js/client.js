@@ -32,7 +32,7 @@ function getListTokens(network) {
   //in ropsten
   return new Promise((resolve, reject) => {
     //return list of object tokens
-    fetch(BLOCKCHAIN_INFO[network].api_url + '/trading/getList/' + network, {
+    fetch(BLOCKCHAIN_INFO[network].api_tokens, {
       method: 'GET',
       headers: {
         'Accept': 'application/json, text/plain, */*',
@@ -47,7 +47,8 @@ function getListTokens(network) {
           var now = Math.round(new Date().getTime() / 1000)
           var tokens = {}
           result.data.map(val => {
-            if (val.time_listing > now) return
+            if (val.is_not_erc20) return
+            if (val.listing_time > now) return
             tokens[val.symbol] = val
           })
           resolve(tokens)
@@ -153,6 +154,8 @@ function initParams(appId, wrapper, getPrice, getTxData, errors = {}) {
       network = "ropsten"
       break
   }
+  //init tokens
+  //store.dispatch(initListTokens(network))
 
   getListTokens(network).then(tokens => {
 
