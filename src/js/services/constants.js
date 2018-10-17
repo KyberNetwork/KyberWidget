@@ -152,7 +152,8 @@ const INIT_EXCHANGE_FORM_STATE = {
   analizeError : {},
   snapshot: {},
   etheremonPrice: {},
-  network: 'ropsten'
+  network: 'ropsten',
+  isProductPriceFetched: false
 }
 
 const INIT_TRANSFER_FORM_STATE = {
