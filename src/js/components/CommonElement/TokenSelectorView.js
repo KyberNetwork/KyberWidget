@@ -95,7 +95,9 @@ const TokenSelectorView = (props) => {
           <div className={addPrefixClass("focus-item d-flex")}>
             <div className={addPrefixClass("d-flex")}>
               <div className={addPrefixClass("icon")}>
-                <img src={getTokenUrl(focusItem.symbol)} />
+                {focusItem.symbol && (
+                  <img src={getTokenUrl(focusItem.symbol)} />
+                )}
               </div>
               <div>
                 <div className={addPrefixClass("focus-balance")}>
