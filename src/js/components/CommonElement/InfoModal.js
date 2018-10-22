@@ -1,15 +1,15 @@
-import React from "react"
-import { IDLE_TIME_OUT } from "../../services/constants";
-import {Modal} from '../CommonElement'
-import {addPrefixClass} from "../../utils/className"
+import React from "react";
+import { Modal } from "../CommonElement";
+import { addPrefixClass } from "../../utils/className"
 
 const InfoModal = (props) => {
   var content = (
     <div>
-      <div class="k-title text-center">{props.title}</div><a class="x" onClick={props.closeModal}>&times;</a>
-      <div class="k-content">
-          <div class="row">
-              <div class="column">
+      <div className={addPrefixClass("k-title text-center")}>{props.title}</div>
+      <a className={addPrefixClass("x")} onClick={props.closeModal}>&times;</a>
+      <div className={addPrefixClass("k-content")}>
+          <div className={addPrefixClass("row")}>
+              <div className={addPrefixClass("column")}>
                   <center>
                       <p>{props.content}</p>
                   </center>
