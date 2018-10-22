@@ -187,29 +187,18 @@ const tokens = (state = initState, action) => {
         })
       }
 
-      //add pinneTokens
-      var pinnedTokens = pinTokens?pinTokens:BLOCKCHAIN_INFO[network].pinnedTokens
-      // if (!pinTokens){
-      //   pinTokens = BLOCKCHAIN_INFO[network].pinnedTokens
-      // }
-      
-      for (var i= 0;i<  pinnedTokens.length; i++){
-        var key = pinnedTokens[i]
-        if (newTokens[key]){
-          newTokens[key].priority = true
-        }
+      const pinnedTokens = pinTokens ? pinTokens : BLOCKCHAIN_INFO[network].pinnedTokens;
+
+      if (pinnedTokens.length > 0) {
+        Object.keys(newTokens).forEach((key) => {
+          if (pinnedTokens.includes(key)){
+            newTokens[key].priority = true;
+            newTokens[key].index = pinnedTokens.indexOf(key);
+          }
+        });
       }
 
-      // if (pinTokens) {
-      //   newTokens.
-      //   if (pinTokens.includes(key)) {
-      //     tokens[key].priority = true;
-      //     tokens[key].index = pinTokens.indexOf(key);
-      //   } else {
-      //     tokens[key].priority = false
-      //   }
-      // }
-      return Object.assign({}, state, { tokens: newTokens }) 
+      return Object.assign({}, state, { tokens: newTokens });
     }
 
     case 'GLOBAL.CLEAR_SESSION_FULFILLED': {
