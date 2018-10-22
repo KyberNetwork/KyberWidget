@@ -187,7 +187,7 @@ const tokens = (state = initState, action) => {
         })
       }
 
-      const pinnedTokens = pinTokens ? pinTokens : BLOCKCHAIN_INFO[network].pinnedTokens;
+      var pinnedTokens = pinTokens ? pinTokens : BLOCKCHAIN_INFO[network].pinnedTokens;
 
       if (pinnedTokens.length > 0) {
         Object.keys(newTokens).forEach((key) => {
