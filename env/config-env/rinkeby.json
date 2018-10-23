@@ -10,7 +10,7 @@
     },
     "api_usd":"https://api.coinmarketcap.com",
     "api_url": "https://dev-api.knstats.com",
-    "api_tokens": "https://dev-api.knstats.com/internal/getListToken/rinkeby",
+    "api_tokens": "https://rinkeby-api.kyber.network/internal/currencies",
     "tokens_gas": {
         "ETH": 0,
         "DGX": 750000
