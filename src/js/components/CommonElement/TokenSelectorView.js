@@ -63,17 +63,7 @@ const TokenSelectorView = (props) => {
 
             <div className={addPrefixClass("token-item")}>
               <div className={addPrefixClass("token-item__rate")}>
-              {sourceSymbol !== destSymbol && (
                 <div>1 {sourceSymbol} = {rate} {destSymbol}</div>
-              )}
-              
-                {/* {rate != 0 &&
-                  <div>1 {item.symbol} = {rate} {props.exchange.destTokenSymbol}</div>
-                }
-
-                {rate == 0 &&
-                  <div>{props.translate('error.maintenance') || 'Maintenance'}</div>
-                } */}
               </div>
             </div>
           </div>
