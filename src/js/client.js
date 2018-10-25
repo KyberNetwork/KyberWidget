@@ -100,7 +100,7 @@ function getPinnedTokens(str, tokens, defaultPinnedTokens) {
   return listPinTokens.length > 0 ? listPinTokens : defaultPinnedTokens;
 }
 
-function initParams(appId) {
+function initParams(appId, wrapper, getPrice, getTxData, errors) {
   //var translate = getTranslate(store.locale)
   var translate = (...args) => {
     return null
@@ -118,7 +118,8 @@ function initParams(appId) {
   var signer
   var commissionID
   var pinTokens
-
+  //var errors = {}
+  if (!errors) errors = {}
   if (attributeWidget === true || attributeWidget === 'true') {
     for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++) {
       var nodeName = atts[i].nodeName
