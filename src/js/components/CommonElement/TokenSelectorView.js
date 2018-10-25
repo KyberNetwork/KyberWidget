@@ -61,15 +61,7 @@ const TokenSelectorView = (props) => {
 
             <div className={addPrefixClass("token-item")}>
               <div className={addPrefixClass("token-item__rate")}>
-              {rate != 0 &&
-                  <div>1 {item.symbol} = {rate} ETH</div>
-              }
-              
-               
-
-                {rate == 0 &&
-                  <div>{props.translate('error.maintenance') || 'Maintenance'}</div>
-                }
+                <div>1 {sourceSymbol} = {rate} {destSymbol}</div>
               </div>
             </div>
           </div>
@@ -115,6 +107,7 @@ const TokenSelectorView = (props) => {
         </DropdownTrigger>
         <DropdownContent className={addPrefixClass("token-dropdown__content")}>
           <div className={addPrefixClass("select-item")}>
+            {priorityTokens.length > 0 &&
             <div className={addPrefixClass("suggest-item")}>
               {priorityTokens.map((token, i) => {
                 return (
@@ -125,6 +118,7 @@ const TokenSelectorView = (props) => {
                 )
               })}
             </div>
+            }
             <div className={addPrefixClass("search-item")}>
               <input value={props.searchWord} placeholder='Try "DAI"' onChange={(e) => props.changeWord(e)} type="text" onFocus={(e) => props.analytics.callTrack("searchToken", props.type)}/>
             </div>

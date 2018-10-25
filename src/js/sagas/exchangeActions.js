@@ -8,7 +8,7 @@ import { setConnection } from "../actions/connectionActions"
 
 import EthereumService from "../services/ethereum/ethereum"
 import NotiService from "../services/noti_service/noti_service"
-import Web3Service from "../services/web3"
+import * as web3Package from "../services/web3"
 
 import * as common from "./common"
 import * as validators from "../utils/validators"
@@ -1699,9 +1699,11 @@ export function* initParamsExchange(action) {
 
   ethereum.subcribe()
 
-  const web3Service = new Web3Service()
 
-  if (web3Service.isHaveWeb3()) {
+  const web3Service = web3Package.newWeb3Instance()
+  // console.log("web3_data")
+  // console.log(web3Service.isHaveWeb3())
+  if(web3Service !== false){
     const watchMetamask = yield fork(watchMetamaskAccount, ethereum, web3Service, network)
     yield take('GLOBAL.INIT_SESSION')
     yield cancel(watchMetamask)

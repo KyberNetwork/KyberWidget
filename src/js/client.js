@@ -85,7 +85,22 @@ function checkInListToken(str, tokens) {
   return listPinTokens
 }
 
-function initParams(appId, wrapper, getPrice, getTxData, errors = {}) {
+function getPinnedTokens(str, tokens, defaultPinnedTokens) {
+  var listTokens = str.split("_")
+  var listPinTokens = []
+  var symbol
+
+  for (var i = 0; i < listTokens.length; i++) {
+    symbol = listTokens[i].toUpperCase()
+    if (tokens[symbol]) {
+      listPinTokens.push(symbol)
+    }
+  }
+
+  return listPinTokens.length > 0 ? listPinTokens : defaultPinnedTokens;
+}
+
+function initParams(appId) {
   //var translate = getTranslate(store.locale)
   var translate = (...args) => {
     return null
@@ -202,19 +217,27 @@ function initParams(appId, wrapper, getPrice, getTxData, errors = {}) {
       }
     }
 
+    if (signer) {
+      var invalidAddresses = []
+      var addressArr = signer.split("_")
+
+      addressArr.map(address => {
+        if (validator.verifyAccount(address)) {
+          invalidAddresses.push(address)
+        }
+      })
+      if (invalidAddresses.length > 0) {
+        errors["signer"] = translate('error.signer_include_invalid_address') || "Signer include invalid addresses"
+      }
+    }
+
+    if (!validator.verifyNetwork(network)) {
+      errors["network"] = translate('error.invalid_network') || "Current network is not supported"
+    }
+
     var listPinTokens = [];
     if (pinTokens) {
-      var listTokens = pinTokens.split("_");
-      var symbol;
-
-      //validate tokens
-      for (var i = 0; i < listTokens.length; i++) {
-        symbol = listTokens[i].toUpperCase()
-        if (symbol === "ETH" || !BLOCKCHAIN_INFO[network].tokens[symbol]) {
-          errors["pinTokens"] = translate('error.invalid_pinTokens') || "Pinned tokens include invalid tokens"
-        }
-        listPinTokens.push(symbol);
-      }
+      listPinTokens = getPinnedTokens(pinTokens, tokens, BLOCKCHAIN_INFO[network].pinnedTokens);
     }
 
     if (validator.anyErrors(errors)) {

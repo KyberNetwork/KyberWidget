@@ -5,7 +5,7 @@ import { ImportByMetamask} from "../ImportAccount"
 import { getTranslate } from 'react-localize-redux'
 import { importAccountMetamask, openImportAccount, closeImportAccount } from "../../actions/accountActions"
 import BLOCKCHAIN_INFO from "../../../../env"
-import Web3Service from "../../services/web3"
+//import Web3Service from "../../services/web3"
 import { goToStep } from "../../actions/exchangeActions"
 
 @connect((store, props) => {
@@ -31,22 +31,20 @@ import { goToStep } from "../../actions/exchangeActions"
 })
 
 export default class ImportAccount extends React.Component {
-  componentDidMount = () => {
-    // var swapPage = document.getElementById("swap-app")
-    // swapPage.className = swapPage.className === "" ? "no-min-height" : swapPage.className + " no-min-height"
+  // componentDidMount = () => {
 
-    if (this.props.termOfServiceAccepted){
-      var web3Service = new Web3Service();
+  //   if (this.props.termOfServiceAccepted){
+  //     var web3Service = new Web3Service();
       
-      if (web3Service.isHaveWeb3()) {
-        //var web3Service = new Web3Service(web3)
-        var walletType = web3Service.getWalletType()
-        if (walletType !== "metamask") {
-          this.props.dispatch(importAccountMetamask(web3Service, BLOCKCHAIN_INFO[this.props.network].networkId))
-        }
-      }
-    }
-  }
+  //     if (web3Service.isHaveWeb3()) {
+  //       //var web3Service = new Web3Service(web3)
+  //       var walletType = web3Service.getWalletType()
+  //       if (walletType !== "metamask") {
+  //         this.props.dispatch(importAccountMetamask(web3Service, BLOCKCHAIN_INFO[this.props.network].networkId))
+  //       }
+  //     }
+  //   }
+  // }
 
   getSignerAddresses = ()  => {
     if (!this.props.exchange.signer) {

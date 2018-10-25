@@ -170,6 +170,15 @@ const tokens = (state = initState, action) => {
       const {tokens, network, listPinTokens} = action.payload
       var newTokens = JSON.parse(JSON.stringify(tokens))
 
+      for (var symbol in newTokens) {
+        newTokens[symbol].rate = 0;
+        newTokens[symbol].minRate = 0;
+        newTokens[symbol].rateEth = 0;
+        newTokens[symbol].minRateEth = 0;
+        newTokens[symbol].rateUSD = 0;
+      }
+
+      //add gaslimit in token
       if (BLOCKCHAIN_INFO[network].tokens_gas){
         Object.keys(BLOCKCHAIN_INFO[network].tokens_gas).map(key => {
           if (newTokens[key]){
@@ -178,18 +187,18 @@ const tokens = (state = initState, action) => {
         })
       }
 
-      var pinnedTokens = listPinTokens.length > 0 ? listPinTokens : BLOCKCHAIN_INFO[network].pinnedTokens;
+      const pinnedTokens = pinTokens ? pinTokens : BLOCKCHAIN_INFO[network].pinnedTokens;
 
-      for (let symbol in newTokens) {
-        newTokens[symbol].priority = false;
-
-        if (pinnedTokens.includes(symbol)) {
-          newTokens[symbol].priority = true;
-          newTokens[symbol].index = pinnedTokens.indexOf(symbol);
-        }
+      if (pinnedTokens.length > 0) {
+        Object.keys(newTokens).forEach((key) => {
+          if (pinnedTokens.includes(key)){
+            newTokens[key].priority = true;
+            newTokens[key].index = pinnedTokens.indexOf(key);
+          }
+        });
       }
 
-      return Object.assign({}, state, { tokens: newTokens })
+      return Object.assign({}, state, { tokens: newTokens });
     }
 
     case 'GLOBAL.CLEAR_SESSION_FULFILLED': {
