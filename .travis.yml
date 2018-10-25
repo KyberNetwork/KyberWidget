@@ -2,6 +2,10 @@ sudo: required
 
 language: node_js
 
+cache:
+    directories:
+      - node_modules
+
 node_js:
   - "8"
 
@@ -26,6 +30,18 @@ deploy:
     skip_cleanup: true
     on:
       branch: develop
+
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: widget.kyber.network
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: dist/native
+    upload-dir: $WIDGET_VERSION
+    skip_cleanup: true
+    on:
+      branch: master
 
   # widget/config
   - provider: s3
@@ -61,6 +77,19 @@ deploy:
     acl: public_read
     local_dir: dist/native
     upload-dir: wrapper
+    skip_cleanup: true
+    on:
+      branch: develop_wrapper
+
+  # examples
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: dev-widget.knstats.com
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: examples
+    upload-dir: examples
     skip_cleanup: true
     on:
       branch: develop_wrapper
