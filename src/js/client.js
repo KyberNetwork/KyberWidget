@@ -84,6 +84,21 @@ function checkInListToken(str, tokens) {
   return listPinTokens
 }
 
+function getPinnedTokens(str, tokens, defaultPinnedTokens) {
+  var listTokens = str.split("_")
+  var listPinTokens = []
+  var symbol
+
+  for (var i = 0; i < listTokens.length; i++) {
+    symbol = listTokens[i].toUpperCase()
+    if (tokens[symbol]) {
+      listPinTokens.push(symbol)
+    }
+  }
+
+  return listPinTokens.length > 0 ? listPinTokens : defaultPinnedTokens;
+}
+
 function initParams(appId) {
   //var translate = getTranslate(store.locale)
   var translate = (...args) => {
@@ -318,11 +333,9 @@ function initParams(appId) {
       errors["network"] = translate('error.invalid_network') || "Current network is not supported"
     }
 
+    var listPinTokens = [];
     if (pinTokens) {
-      var listPinTokens = checkInListToken(pinTokens, tokens)
-      if (listPinTokens === false) {
-        errors["pinTokens"] = translate('error.invalid_pinTokens') || "Pinned tokens include invalid tokens"
-      }
+      listPinTokens = getPinnedTokens(pinTokens, tokens, BLOCKCHAIN_INFO[network].pinnedTokens);
     }
 
     paymentData = Web3.utils.utf8ToHex(paymentData);
