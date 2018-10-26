@@ -187,15 +187,13 @@ const tokens = (state = initState, action) => {
         })
       }
 
-      const pinnedTokens = pinTokens ? pinTokens : BLOCKCHAIN_INFO[network].pinnedTokens;
-
-      if (pinnedTokens.length > 0) {
-        Object.keys(newTokens).forEach((key) => {
-          if (pinnedTokens.includes(key)){
-            newTokens[key].priority = true;
-            newTokens[key].index = pinnedTokens.indexOf(key);
+      if (pinTokens.length > 0) {
+        for (let symbol in newTokens) {
+          if (pinTokens.includes(symbol)) {
+            newTokens[symbol].priority = true;
+            newTokens[symbol].index = pinTokens.indexOf(symbol);
           }
-        });
+        }
       }
 
       return Object.assign({}, state, { tokens: newTokens });

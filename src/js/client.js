@@ -84,21 +84,6 @@ function checkInListToken(str, tokens) {
   return listPinTokens
 }
 
-function getPinnedTokens(str, tokens, defaultPinnedTokens) {
-  var listTokens = str.split("_")
-  var listPinTokens = []
-  var symbol
-
-  for (var i = 0; i < listTokens.length; i++) {
-    symbol = listTokens[i].toUpperCase()
-    if (tokens[symbol]) {
-      listPinTokens.push(symbol)
-    }
-  }
-
-  return listPinTokens.length > 0 ? listPinTokens : defaultPinnedTokens;
-}
-
 function initParams(appId) {
   //var translate = getTranslate(store.locale)
   var translate = (...args) => {
@@ -121,7 +106,7 @@ function initParams(appId) {
   var productName
   var productAvatar
   var type
-  var pinTokens
+  var pinnedTokens
   var paymentData
   var hint
   var defaultPair
@@ -151,7 +136,7 @@ function initParams(appId) {
     productName = widgetParent.getAttribute('data-widget-product-name')
     productAvatar = widgetParent.getAttribute('data-widget-product-avatar')
     type = widgetParent.getAttribute('data-widget-type')
-    pinTokens = widgetParent.getAttribute('data-widget-pinned-tokens')
+    pinnedTokens = widgetParent.getAttribute('data-widget-pinned-tokens') || []
     paymentData = widgetParent.getAttribute('data-widget-payment-data') || ""
     hint = widgetParent.getAttribute('data-widget-hint') || ""
     defaultPair = widgetParent.getAttribute('data-widget-default-pair')
@@ -169,7 +154,7 @@ function initParams(appId) {
     productName = common.getParameterByName("productName")
     productAvatar = common.getParameterByName("productAvatar")
     type = common.getParameterByName("type")
-    pinTokens = common.getParameterByName("pinnedTokens")
+    pinnedTokens = common.getParameterByName("pinnedTokens") || []
     paymentData = common.getParameterByName("paymentData") || ""
     hint = common.getParameterByName("hint") || ""
     defaultPair = common.getParameterByName("defaultPair")
@@ -333,11 +318,6 @@ function initParams(appId) {
       errors["network"] = translate('error.invalid_network') || "Current network is not supported"
     }
 
-    var listPinTokens = [];
-    if (pinTokens) {
-      listPinTokens = getPinnedTokens(pinTokens, tokens, BLOCKCHAIN_INFO[network].pinnedTokens);
-    }
-
     paymentData = Web3.utils.utf8ToHex(paymentData);
     hint = Web3.utils.utf8ToHex(hint);
 
@@ -352,7 +332,7 @@ function initParams(appId) {
 
 
       store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
-        callback, network, paramForwarding, signer, commissionID, isSwap, type, listPinTokens, defaultPairArr, paymentData, hint, tokens));
+        callback, network, paramForwarding, signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens));
 
       //init analytic
       var analytic = new AnalyticFactory({ listWorker: ['mix'], network })
