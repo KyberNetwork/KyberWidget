@@ -24,12 +24,12 @@ const ExchangeBodyLayout = (props) => {
   }
 
   var errorShow = errorSource.map((value, index) => {
-    return <span class="error-text" key={index}>{value}</span>
+    return <span class={addPrefixClass("error-text")} key={index}>{value}</span>
   });
   
   if (props.exchange.expectedRate == 0){
     errorShow.push(
-      <span class="error-text" key={errorShow.length + 1}>Can not pay by this token</span>
+      <span class={addPrefixClass("error-text")} key={errorShow.length + 1}>Can not pay by this token</span>
     )
   }
   
