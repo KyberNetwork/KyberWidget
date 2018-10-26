@@ -1652,10 +1652,10 @@ export function* getExchangeEnable() {
 export function* getProductRateInToken(tokenSymbol, productPrice, tokens){
   var state = store.getState()
   var ethereum = state.connection.ethereum
+  var tokenAddr = tokens[tokenSymbol].address
+  var ethereumAddr = constants.ETHER_ADDRESS
+  var decimal = tokens[tokenSymbol].decimals
   try{
-    var tokenAddr = tokens[tokenSymbol].address
-    var decimal = tokens[tokenSymbol].decimal
-    var ethereumAddr = constants.ETHER_ADDRESS
     var rate = yield call([ethereum, ethereum.call], "getRate", tokenAddr,ethereumAddr, 0)
     var expectedRateRelative = rate.expectedRate
     if (expectedRateRelative == 0){
