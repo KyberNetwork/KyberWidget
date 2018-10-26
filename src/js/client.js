@@ -333,7 +333,7 @@ function initParams(appId) {
       errors["network"] = translate('error.invalid_network') || "Current network is not supported"
     }
 
-    var listPinTokens = [];
+    var listPinTokens = BLOCKCHAIN_INFO[network].pinnedTokens;
     if (pinTokens) {
       listPinTokens = getPinnedTokens(pinTokens, tokens, BLOCKCHAIN_INFO[network].pinnedTokens);
     }
