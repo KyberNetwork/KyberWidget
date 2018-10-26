@@ -61,14 +61,12 @@ const TokenSelectorView = (props) => {
 
             <div className={addPrefixClass("token-item")}>
               <div className={addPrefixClass("token-item__rate")}>
-              {rate != 0 &&
-                  <div>1 {item.symbol} = {rate} ETH</div>
-              }
-              
-               
+                {rate != 0 &&
+                <div>1 {item.symbol} = {rate} ETH</div>
+                }
 
                 {rate == 0 &&
-                  <div>{props.translate('error.maintenance') || 'Maintenance'}</div>
+                <div>{props.translate('error.maintenance') || 'Maintenance'}</div>
                 }
               </div>
             </div>
@@ -105,7 +103,7 @@ const TokenSelectorView = (props) => {
                 </div>
               </div>
             </div>
-            {focusItem.symbol !== "ETH" && (              
+            {(focusItem.symbol !== "ETH" && rateFocusItem != 0) && (
               <div className="rate-token">
                 1 {focusItem.symbol} = {rateFocusItem} ETH
               </div>
