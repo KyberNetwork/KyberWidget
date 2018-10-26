@@ -26,6 +26,13 @@ const ExchangeBodyLayout = (props) => {
   var errorShow = errorSource.map((value, index) => {
     return <span class="error-text" key={index}>{value}</span>
   });
+  
+  if (props.exchange.expectedRate == 0){
+    errorShow.push(
+      <span class="error-text" key={errorShow.length + 1}>Can not pay by this token</span>
+    )
+  }
+  
 
   var productPrice = props.exchange.productPrice ? converter.toEther(props.exchange.productPrice) : 0;
   var isProductBuyable = productPrice != 0;
@@ -121,8 +128,14 @@ const ExchangeBodyLayout = (props) => {
                           <div>{tokenPrice} {props.exchange.sourceTokenSymbol}</div>
                         </div>
                         )}
+                        {/* {props.exchange.expectedRate === 0 && (
+                        <div className={addPrefixClass("amount-pay")}>
+                          <div>{props.translate("transaction.estimate_value_should_pay_in_token") || "Estimate value you should pay"} in {props.exchange.sourceTokenSymbol}</div>
+                          <div>{tokenPrice} {props.exchange.sourceTokenSymbol}</div>
+                        </div>
+                        )} */}
                       </div>
-                      <div className={addPrefixClass(errorExchange ? "error" : "")}>
+                      <div className={addPrefixClass(errorShow.length > 0 ? "error" : "")}>
                         {errorShow}
                       </div>
                     </div>
