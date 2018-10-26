@@ -69,37 +69,6 @@ function getListTokens(network) {
   })
 }
 
-function checkInListToken(str, tokens) {
-
-  var listTokens = str.split("_")
-  var listPinTokens = []
-  //validate tokens
-  var symbol
-  for (var i = 0; i < listTokens.length; i++) {
-    symbol = listTokens[i].toUpperCase()
-    if (!tokens[symbol]) {
-      return false
-    }
-    listPinTokens.push(symbol)
-  }
-  return listPinTokens
-}
-
-function getPinnedTokens(str, tokens, defaultPinnedTokens) {
-  var listTokens = str.split("_")
-  var listPinTokens = []
-  var symbol
-
-  for (var i = 0; i < listTokens.length; i++) {
-    symbol = listTokens[i].toUpperCase()
-    if (tokens[symbol]) {
-      listPinTokens.push(symbol)
-    }
-  }
-
-  return listPinTokens.length > 0 ? listPinTokens : defaultPinnedTokens;
-}
-
 function initParams(appId, wrapper, getPrice, getTxData, errors) {
   //var translate = getTranslate(store.locale)
   var translate = (...args) => {
@@ -117,7 +86,7 @@ function initParams(appId, wrapper, getPrice, getTxData, errors) {
   var paramForwarding
   var signer
   var commissionID
-  var pinTokens
+  var pinnedTokens
   //var errors = {}
   if (!errors) errors = {}
   if (attributeWidget === true || attributeWidget === 'true') {
@@ -140,7 +109,7 @@ function initParams(appId, wrapper, getPrice, getTxData, errors) {
     paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
     signer = widgetParent.getAttribute('data-widget-signer')
     commissionID = widgetParent.getAttribute('data-widget-commission-id')
-    pinTokens = widgetParent.getAttribute("data-widget-pinned-tokens")
+    pinnedTokens = widgetParent.getAttribute("data-widget-pinned-tokens") || []
   } else {
     query = common.getQueryParams(window.location.search)
     productId = common.getParameterByName("productId")
@@ -151,7 +120,7 @@ function initParams(appId, wrapper, getPrice, getTxData, errors) {
     paramForwarding = common.getParameterByName("paramForwarding")
     signer = common.getParameterByName("signer")
     commissionID = common.getParameterByName("commissionId")
-    pinTokens = common.getParameterByName("pinnedTokens")
+    pinnedTokens = common.getParameterByName("pinnedTokens") || []
   }
 
   //this.props.dispatch(initParamsGlobal(query))
@@ -236,16 +205,11 @@ function initParams(appId, wrapper, getPrice, getTxData, errors) {
       errors["network"] = translate('error.invalid_network') || "Current network is not supported"
     }
 
-    var listPinTokens = [];
-    if (pinTokens) {
-      listPinTokens = getPinnedTokens(pinTokens, tokens, BLOCKCHAIN_INFO[network].pinnedTokens);
-    }
-
     if (validator.anyErrors(errors)) {
       store.dispatch(haltPayment(errors))
     } else {
       //var tokenAddr =  BLOCKCHAIN_INFO[network].tokens[receiveToken].address
-      store.dispatch(initParamsExchange(productId, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, listPinTokens, getPrice, getTxData, wrapper, tokens));
+      store.dispatch(initParamsExchange(productId, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, pinnedTokens, getPrice, getTxData, wrapper, tokens));
 
       //init analytic
       var analytic = new AnalyticFactory({ listWorker: ['mix'], network })

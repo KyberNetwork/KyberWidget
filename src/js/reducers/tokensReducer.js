@@ -178,14 +178,12 @@ const tokens = (state = initState, action) => {
         })
       }
 
-      var pinnedTokens = listPinTokens.length > 0 ? listPinTokens : BLOCKCHAIN_INFO[network].pinnedTokens;
-
-      for (let symbol in newTokens) {
-        newTokens[symbol].priority = false;
-
-        if (pinnedTokens.includes(symbol)) {
-          newTokens[symbol].priority = true;
-          newTokens[symbol].index = pinnedTokens.indexOf(symbol);
+      if (listPinTokens.length > 0) {
+        for (let symbol in newTokens) {
+          if (listPinTokens != "ETH" && listPinTokens.includes(symbol)) {
+            newTokens[symbol].priority = true;
+            newTokens[symbol].index = listPinTokens.indexOf(symbol);
+          }
         }
       }
 
