@@ -259,7 +259,8 @@ const SUPPORTED_NETWORK = [
   'ropsten',
   'production',
   'mainnet',
-  'rinkeby'
+  'rinkeby',
+  'staging'
 ];
 
 const APP_NAME='kyber-widget'

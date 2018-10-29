@@ -170,6 +170,9 @@ function initParams(appId) {
     case "rinkeby":
       network = "rinkeby"
       break
+    case "staging":
+      network = "staging"
+      break
     default:
       network = "ropsten"
       break
