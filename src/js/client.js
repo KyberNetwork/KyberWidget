@@ -1,31 +1,17 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { Provider } from "react-redux"
-import { Route } from 'react-router'
-import { Link } from 'react-router-dom'
 import { Layout } from "./containers/Layout"
-
 import BLOCKCHAIN_INFO from "../../env"
-
 import constanst from "./services/constants"
-//import NotSupportPage from "./components/NotSupportPage"
-//import platform from 'platform'
-//import { blackList } from './blacklist'
 import { initSession, initParamsGlobal, haltPayment, initAnalytics } from "./actions/globalActions"
 import { initParamsExchange } from "./actions/exchangeActions"
-import { initListTokens } from "./actions/tokenActions"
-
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import { persistor, store } from "./store"
 import Modal from 'react-modal';
-
-import { getTranslate } from 'react-localize-redux'
-
 import * as common from "./utils/common"
 import * as validator from "./utils/validators"
-
 import AnalyticFactory from "./services/analytics"
-import Web3 from "web3";
 
 function getListTokens(network) {
 
@@ -47,7 +33,6 @@ function getListTokens(network) {
           var now = Math.round(new Date().getTime() / 1000)
           var tokens = {}
           result.data.map(val => {
-            if (val.is_not_erc20) return
             if (val.listing_time > now) return
             tokens[val.symbol] = val
           })
@@ -87,6 +72,8 @@ function initParams(appId, wrapper, getPrice, getTxData, errors) {
   var signer
   var commissionID
   var pinnedTokens
+  var disabledTokens
+
   //var errors = {}
   if (!errors) errors = {}
   if (attributeWidget === true || attributeWidget === 'true') {
@@ -110,6 +97,7 @@ function initParams(appId, wrapper, getPrice, getTxData, errors) {
     signer = widgetParent.getAttribute('data-widget-signer')
     commissionID = widgetParent.getAttribute('data-widget-commission-id')
     pinnedTokens = widgetParent.getAttribute("data-widget-pinned-tokens") || []
+    disabledTokens = widgetParent.getAttribute("data-widget-disabled-tokens") || []
   } else {
     query = common.getQueryParams(window.location.search)
     productId = common.getParameterByName("productId")
@@ -121,10 +109,8 @@ function initParams(appId, wrapper, getPrice, getTxData, errors) {
     signer = common.getParameterByName("signer")
     commissionID = common.getParameterByName("commissionId")
     pinnedTokens = common.getParameterByName("pinnedTokens") || []
+    disabledTokens = common.getParameterByName("disabledTokens") || []
   }
-
-  //this.props.dispatch(initParamsGlobal(query))
-
 
   paramForwarding = paramForwarding === "true" || paramForwarding === true ? paramForwarding : "false"
   switch (network) {
@@ -212,7 +198,10 @@ function initParams(appId, wrapper, getPrice, getTxData, errors) {
       store.dispatch(haltPayment(errors))
     } else {
       //var tokenAddr =  BLOCKCHAIN_INFO[network].tokens[receiveToken].address
-      store.dispatch(initParamsExchange(productId, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, pinnedTokens, getPrice, getTxData, wrapper, tokens));
+      store.dispatch(initParamsExchange(
+        productId, productName, productAvatar, callback, network, paramForwarding, signer,
+        commissionID, pinnedTokens, disabledTokens, getPrice, getTxData, wrapper, tokens
+      ));
 
       //init analytic
       var analytic = new AnalyticFactory({ listWorker: ['mix'], network })
