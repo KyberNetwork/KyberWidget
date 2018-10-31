@@ -167,8 +167,10 @@ const tokens = (state = initState, action) => {
     }
 
     case 'EXCHANGE.INIT_PARAMS_EXCHANGE':{
-      const {tokens, network, listPinTokens} = action.payload
-      var newTokens = JSON.parse(JSON.stringify(tokens))
+      const {tokens, network, listPinTokens, disabledTokens} = action.payload
+      var newTokens = JSON.parse(JSON.stringify(tokens));
+      const isPinnedTokensEmpty = listPinTokens.length === 0;
+      const isDisabledTokensEmpty = disabledTokens.length === 0;
 
       if (BLOCKCHAIN_INFO[network].tokens_gas){
         Object.keys(BLOCKCHAIN_INFO[network].tokens_gas).map(key => {
@@ -178,11 +180,15 @@ const tokens = (state = initState, action) => {
         })
       }
 
-      if (listPinTokens.length > 0) {
+      if (!isPinnedTokensEmpty || !isDisabledTokensEmpty) {
         for (let symbol in newTokens) {
-          if (listPinTokens != "ETH" && listPinTokens.includes(symbol)) {
+          if (!isPinnedTokensEmpty && symbol != "ETH" && listPinTokens.includes(symbol)) {
             newTokens[symbol].priority = true;
             newTokens[symbol].index = listPinTokens.indexOf(symbol);
+          }
+
+          if (!isDisabledTokensEmpty && disabledTokens.includes(symbol)) {
+            delete newTokens[symbol];
           }
         }
       }

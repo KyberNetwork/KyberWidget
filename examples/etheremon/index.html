@@ -94,21 +94,80 @@
             return decodeURIComponent(results[2].replace(/\+/g, " "));
         }
 
-        function getParams() {
-            var errors = {};
-            var monsterId = getParameterByName('productId');
-            var monsterName = getParameterByName('productName');
-            var payPrice = getParameterByName('payPrice');
-            var network = getParameterByName('network');
+        function verifyAccount(addr) {
+          var valid = /^0x[0-9a-fA-F]{40}$/.test(addr)
 
-            if (!payPrice) payPrice = 0;
-            if (!network) network = "rinkeby";
-            if (!monsterId) errors["productID"] = "Product ID is required";
-
-            return { monsterId, monsterName, payPrice, network, errors }
+          return valid ? null : "invalid"
         }
+
+        function validateParams(productId, commissionID, callback, signer) {
+          var errors = {};
+
+          if (!productId) errors["productID"] = "Product ID is required";
+
+          if (commissionID && verifyAccount(commissionID)) {
+            errors["commissionID"] = "Commission address must be a valid ethereum address"
+          }
+
+          if (callback && !callback.startsWith("https://")) {
+            errors["callback"] = "Callback must be a https location"
+          }
+
+          if (signer) {
+            var invalidAddresses = []
+            var addressArr = signer.split("_")
+
+            addressArr.map(address => {
+              if (verifyAccount(address)) {
+                invalidAddresses.push(address)
+              }
+            });
+
+            if (invalidAddresses.length > 0) {
+              errors["signer"] = "Signer include invalid addresses"
+            }
+          }
+
+          return errors;
+        }
+
+        function adjustNetwork(network) {
+          switch (network) {
+            case "production":
+            case "mainnet":
+            case "staging":
+              return "mainnet";
+            default:
+              return "rinkeby";
+          }
+        }
+
+        function getAppParams() {
+          var productId = getParameterByName('productId');
+          var productName = getParameterByName('productName');
+          var payPrice = getParameterByName('payPrice');
+          var network = getParameterByName('network');
+          var productAvatar = getParameterByName('productAvatar');
+          var callback = getParameterByName('callback');
+          var paramForwarding = getParameterByName('paramForwarding');
+          var signer = getParameterByName('signer');
+          var commissionID = getParameterByName('commissionID');
+          var pinnedTokens = getParameterByName('pinnedTokens') || [];
+          var disabledTokens = getParameterByName('disabledTokens') || [];
+          var errors = validateParams(productId, commissionID, callback, signer);
+
+          if (!payPrice) payPrice = 0;
+          paramForwarding = paramForwarding === "true" || paramForwarding === true;
+          network = adjustNetwork(network);
+
+          return {
+            productId, productName, payPrice, network, errors, productAvatar, callback,
+            paramForwarding, signer, commissionID, pinnedTokens, disabledTokens
+          }
+        }
+
         window.onload = function () {
-            var params = getParams();
+            var params = getAppParams();
             var network = params.network;
             var configData = config[network];
             var url = configData.url;
@@ -120,9 +179,8 @@
                 appId: "kyber-widget",
                 wrapper: configData.wrapper,
                 getPrice: function () {
-                    var params = getParams()
                     return new Promise((resolve, reject) => {
-                        wapperEtheremon.methods.getMonsterPriceInETH(configData.etheremonAddr, params.monsterId, params.payPrice).call()
+                        wapperEtheremon.methods.getMonsterPriceInETH(configData.etheremonAddr, params.productId, params.payPrice).call()
                             .then(result => {
                                 const { monsterInETH, catchable } = result
                                 resolve(monsterInETH)
@@ -139,13 +197,11 @@
                         walletId = "0x" + Array(41).join("0")
                     }
 
-                    var params = getParams();
-
                     var data = wapperEtheremon.methods.catchMonster(
                         configData.kyber_network,
                         configData.etheremonAddr,
-                        params.monsterId,
-                        params.monsterName,
+                        params.productId,
+                        params.productName,
                         sourceToken,
                         sourceAmount,
                         maxDestAmount,
@@ -156,6 +212,7 @@
                         resolve({ value: 0, data,gasLimit: 800000, to: configData.wrapper })
                     })
                 },
+                params,
                 errors: params.errors
             })
         }
