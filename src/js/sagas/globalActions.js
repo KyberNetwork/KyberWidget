@@ -1,17 +1,11 @@
-import { take, put, call, fork, select, takeEvery, all } from 'redux-saga/effects'
+import { put, call, takeEvery } from 'redux-saga/effects'
 import * as actions from '../actions/globalActions'
 import * as actionsExchange from '../actions/exchangeActions'
-import * as actionsTransfer from '../actions/transferActions'
-import * as actionsUtils from '../actions/utilActions'
-import { closeImportLoading } from '../actions/accountActions'
 import { Rate } from "../services/rate"
 import { push } from 'react-router-redux';
-import { addTranslationForLanguage, setActiveLanguage, getActiveLanguage } from 'react-localize-redux';
+import { addTranslationForLanguage, setActiveLanguage } from 'react-localize-redux';
 import { getTranslate } from 'react-localize-redux';
-import { getLanguage } from "../services/language"
 import Language from "../../../lang"
-import constants from "../services/constants"
-
 import * as converter from "../utils/converter"
 import { store } from '../store'
 
@@ -23,19 +17,7 @@ export function* getLatestBlock(action) {
   }catch(e){
     console.log(e)
   }
-  
 }
-
-// export function* updateHistoryExchange(action) {
-//   try{
-//     const { ethereum, page, itemPerPage, isAutoFetch } = action.payload
-//     var latestBlock = yield call([ethereum, ethereum.call], "getLatestBlock")
-//     const newLogs = yield call([ethereum, ethereum.call], "getLog")
-//     yield put(actions.updateHistory(newLogs, latestBlock, page, isAutoFetch))
-//   }catch(e){
-//     console.log(e)
-//   }
-// }
 
 export function* goToRoute(action) {
   yield put(push(action.payload));
@@ -43,7 +25,6 @@ export function* goToRoute(action) {
 
 export function* clearSession(action) {
   yield put(actions.clearSessionComplete())
-  //yield put(actions.goToRoute(constants.BASE_HOST));
 }
 
 export function* updateAllRate(action) {
@@ -56,17 +37,16 @@ export function* updateAllRate(action) {
     yield put(actions.updateAllRateComplete(rates, rateUSD))
   }
   catch (err) {
-    //get rate from blockchain
     console.log(err.message)
   }
 }
 
 export function* updateRateUSD(action) {
-  const { ethereum, tokens } = action.payload
+  const { ethereum } = action.payload
   try {
     const rates = yield call([ethereum, ethereum.call],"getAllRatesUSD")
     yield put(actions.updateAllRateUSDComplete(rates))
-    yield put(actions.showBalanceUSD())        
+    yield put(actions.showBalanceUSD())
   }
   catch (err) {
     yield put(actions.hideBalanceUSD())
@@ -76,33 +56,18 @@ export function* updateRateUSD(action) {
 
 
 export function* checkConnection(action) {
-  var { ethereum, count, maxCount, isCheck } = action.payload
+  var { ethereum, count, maxCount } = action.payload
   try {
     const isConnected = yield call([ethereum, ethereum.call], "isConnectNode")
     if (isConnected){
       yield put(actions.setNetworkError(""))
       yield put(actions.updateCountConnection(0))
     }
-    // if (!isCheck) {
-    //   yield put(actions.updateIsCheck(true))
-    //   yield put(actions.updateCountConnection(0))
-    // }
   }catch(err){
     console.log(err)
-    //if (isCheck) {
-      // if (count > maxCount) {
-      //   yield put(actions.updateIsCheck(false))
-      //   yield put(actions.updateCountConnection(0))
-      //   return
-      // }
       if (count >= maxCount) {
         let translate = getTranslate(store.getState().locale)
         yield put(actions.setNetworkError(translate('error.network_error') || 'Cannot connect to node right now. Please check your network!'))
-
-        // let titleModal = translate('error.error_occurred') || 'Error occurred'
-        // let contentModal = translate('error.network_error') || 'Cannot connect to node right now. Please check your network!'
-        // yield put(actionsUtils.openInfoModal(titleModal, contentModal))
-        // yield put(closeImportLoading())
         yield put(actions.updateCountConnection(++count))
         return
       }
@@ -161,9 +126,7 @@ function getGasExchange(safeLowGas, standardGas, fastGas, defaultGas, maxGas){
 
 export function* setGasPrice(action) {
   var safeLowGas, standardGas, fastGas, defaultGas
-  var state = store.getState()
-
-  var maxGasPrice = yield call(getMaxGasPrice)   
+  var maxGasPrice = yield call(getMaxGasPrice)
 
   try {
     const ethereum = action.payload
@@ -180,8 +143,6 @@ export function* setGasPrice(action) {
       defaultGas = gasPrice.fast
       selectedGas = 'f'
     }
-
-  //  yield put(actionsTransfer.setGasPriceTransferComplete(safeLowGas, standardGas, fastGas, defaultGas, selectedGas))
 
     var gasExchange = getGasExchange(safeLowGas, standardGas, fastGas, defaultGas, maxGasPrice)
     yield put(actionsExchange.setGasPriceSwapComplete(gasExchange.safeLowGas, gasExchange.standardGas, gasExchange.fastGas, gasExchange.defaultGas, selectedGas))
@@ -216,18 +177,12 @@ export function* changelanguage(action) {
 
 export function* watchGlobal() {
   yield takeEvery("GLOBAL.NEW_BLOCK_INCLUDED_PENDING", getLatestBlock)
-
   yield takeEvery("GLOBAL.GO_TO_ROUTE", goToRoute)
   yield takeEvery("GLOBAL.CLEAR_SESSION", clearSession)
-
-  //yield takeEvery("GLOBAL.UPDATE_HISTORY_EXCHANGE", updateHistoryExchange)
   yield takeEvery("GLOBAL.CHANGE_LANGUAGE", changelanguage)
   yield takeEvery("GLOBAL.CHECK_CONNECTION", checkConnection)
   yield takeEvery("GLOBAL.SET_GAS_PRICE", setGasPrice)
-
   yield takeEvery("GLOBAL.RATE_UPDATE_ALL_PENDING", updateAllRate)
   yield takeEvery("GLOBAL.UPDATE_RATE_USD_PENDING", updateRateUSD)
-
-
   yield takeEvery("GLOBAL.SET_MAX_GAS_PRICE", setMaxGasPrice)
 }

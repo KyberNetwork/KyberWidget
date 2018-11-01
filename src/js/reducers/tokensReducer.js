@@ -1,5 +1,3 @@
-import { REHYDRATE } from 'redux-persist/lib/constants'
-import Rate from "../services/rate"
 import * as BLOCKCHAIN_INFO from "../../../env"
 import constants from "../services/constants"
 
@@ -7,29 +5,8 @@ import * as converter from "../utils/converter"
 
 
 function initTokens() {
-  //var network = network ? network: "ropsten"
   let tokens = {}
-  
-  // var length = pinTokens? pinTokens.length: 0
-  // var index = 0
 
-  // Object.keys(BLOCKCHAIN_INFO[network].tokens).forEach((key) => {
-  //   tokens[key] = BLOCKCHAIN_INFO[network].tokens[key]
-  //   tokens[key].rate = 0
-  //   tokens[key].minRate = 0
-  //   tokens[key].rateEth = 0
-  //   tokens[key].minRateEth = 0
-  //   tokens[key].balance = 0
-  //   tokens[key].rateUSD = 0
-  //   if (pinTokens){
-  //     if(pinTokens.includes(key)){
-  //       tokens[key].priority = true;
-  //       tokens[key].index = pinTokens.indexOf(key);
-  //     }else{
-  //       tokens[key].priority = false
-  //     }
-  //   }
-  // })
   return {
     tokens: tokens,
     count: { storageKey: constants.STORAGE_KEY }
@@ -40,44 +17,6 @@ const initState = initTokens()
 
 const tokens = (state = initState, action) => {
   switch (action.type) {
-    // case REHYDRATE: {
-    //   if (action.key === "tokens") {
-    //     var payload = action.payload
-    //     var tokens = {}
-    //     if (payload) {
-    //       // check load from loaclforage or initstate
-    //       var loadedTokens = payload.tokens
-    //       if (payload.count && payload.count.storageKey !== constants.STORAGE_KEY) {
-    //         loadedTokens = initState.tokens
-    //       }
-
-    //       Object.keys(loadedTokens).forEach((id) => {
-    //         var tokenMap = loadedTokens[id]
-    //         var token = new Rate(
-    //           tokenMap.name,
-    //           tokenMap.symbol,
-    //           tokenMap.icon,
-    //           tokenMap.address,
-    //           tokenMap.decimal,
-    //           tokenMap.rate ? tokenMap.rate : 0,
-    //           tokenMap.minRate ? tokenMap.minRate : 0,
-    //           0,
-    //           tokenMap.rateEth ? tokenMap.rateEth : 0,
-    //           tokenMap.minRateEth ? tokenMap.minRateEth : 0,
-    //           tokenMap.rateUSD ? tokenMap.rateUSD : 0
-    //         )
-    //         tokens[id] = token
-    //       })
-    //       return Object.assign({}, state, {
-    //         tokens: tokens,
-    //         count: { storageKey: constants.STORAGE_KEY }
-    //       })
-    //     } else {
-    //       return state;
-    //     }
-    //   }
-    //   return state
-    // }
     case 'GLOBAL.ALL_RATE_UPDATED_FULFILLED': {
       var tokens = { ...state.tokens }
       var rates = action.payload.rates
@@ -147,22 +86,8 @@ const tokens = (state = initState, action) => {
         var token = tokens[key]
         token.balance = balances[key]
         tokens[key] = token
-        //newTokens[key] = token
       })
 
-      //var balances = action.payload.balances
-
-      // var mapBalance = {}
-      // balances.map(balance=>{
-      //   mapBalance[balance.symbol] = balance.balance
-      // })
-
-      // var newTokens = {}
-      // Object.keys(tokens).map(key => {
-      //   var token = tokens[key]
-      //   token.balance = mapBalance[token.symbol]
-      //   newTokens[key] = token
-      // })
       return Object.assign({}, state, { tokens: tokens }) 
     }
 
@@ -231,14 +156,6 @@ const tokens = (state = initState, action) => {
         tokens[key].minRateEth = 0
         tokens[key].balance = 0
         tokens[key].rateUSD = 0
-        // if (pinTokens){
-        //   if(pinTokens.includes(key)){
-        //     tokens[key].priority = true;
-        //     tokens[key].index = pinTokens.indexOf(key);
-        //   }else{
-        //     tokens[key].priority = false
-        //   }
-        // }
       })
       return Object.assign({}, state, { tokens: tokens }) 
     }

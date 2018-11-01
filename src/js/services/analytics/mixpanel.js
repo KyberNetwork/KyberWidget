@@ -1,4 +1,3 @@
-
 import * as common from "../../utils/common"
 
 export default class Mixpanel {

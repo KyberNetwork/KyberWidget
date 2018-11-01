@@ -1,20 +1,13 @@
-import { take, put, call, fork, select, takeEvery, all, apply, cancel } from 'redux-saga/effects'
+import { take, put, call, fork, takeEvery, cancel } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
-
 import * as actions from '../actions/exchangeActions'
 import * as globalActions from "../actions/globalActions"
-
 import { setConnection } from "../actions/connectionActions"
-
 import EthereumService from "../services/ethereum/ethereum"
 import NotiService from "../services/noti_service/noti_service"
 import * as web3Package from "../services/web3"
-
 import * as common from "./common"
-import * as validators from "../utils/validators"
-import * as analytics from "../utils/analytics"
 import * as commonFunc from "../utils/common"
-
 import { updateAccount, incManualNonceAccount } from '../actions/accountActions'
 import { addTx } from '../actions/txActions'
 import * as utilActions from '../actions/utilActions'
@@ -22,24 +15,9 @@ import constants from "../services/constants"
 import * as converter from "../utils/converter"
 import * as ethUtil from 'ethereumjs-util'
 import Tx from "../services/tx"
-import { getTranslate, getActiveLanguage } from 'react-localize-redux';
+import { getTranslate } from 'react-localize-redux';
 import { store } from '../store'
 import BLOCKCHAIN_INFO from "../../../env"
-import bowser from 'bowser'
-
-// function* broadCastTx(action) {
-//   const { ethereum, tx, account, data } = action.payload
-//   try {
-//     yield put(actions.prePareBroadcast())
-//     const hash = yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", tx)
-//     yield call(runAfterBroadcastTx, ethereum, tx, hash, account, data)
-
-//   }
-//   catch (e) {
-//     console.log(e)
-//     yield call(doTransactionFail, ethereum, account, e.message)
-//   }
-// }
 
 function* approveTx(action) {
   try {
@@ -61,14 +39,11 @@ function* swapToken(action){
 
 function* selectToken(action) {
   const { symbol, address, type, ethereum } = action.payload
+
   yield put.sync(actions.selectToken(symbol, address, type))
   yield put(utilActions.hideSelectToken())
-
   yield put(actions.checkSelectToken())
 
-
-
-  //const {gasUsed, gasApproved} = yield call(estimateGasUsed)
   var state = store.getState()
   var exchange = state.exchange
 
@@ -78,10 +53,6 @@ function* selectToken(action) {
     yield call(estimateGasUsed, exchange.sourceTokenSymbol, symbol)
   }
 
-
-  // console.log("exchange_token")
-  // console.log(exchange.sourceTokenSymbol)
-  // console.log(exchange.destTokenSymbol)
   if (exchange.sourceTokenSymbol === exchange.destTokenSymbol) {
     yield put(actions.selectTokenComplete())
     return
@@ -97,8 +68,7 @@ function* selectToken(action) {
     } else {
       var tokens = state.tokens.tokens
       var destValue = converter.calculateDest(exchange.destAmount, tokens[exchange.destTokenSymbol].rate, 6)
-      // console.log("destination_amount")
-      // console.log(destValue)
+
       if (parseFloat(destValue) > constants.MAX_AMOUNT_RATE_HANDLE) {
         yield put(actions.throwErrorHandleAmount())
         return
@@ -108,21 +78,7 @@ function* selectToken(action) {
   } else {
     yield call(ethereum.fetchRateExchange, true)
   }
-
-  //yield call(ethereum.fetchRateExchange, true)
-
-
-
-
-
-  //yield call(fetchGas)
-  //calculate gas use
-  // yield call(updateGasUsed)
 }
-
-// export function* validateLargeAmount(){
-
-// }
 
 export function* estimateGasUsed(source, dest) {
   const state = store.getState();
@@ -148,7 +104,6 @@ export function* estimateGasUsed(source, dest) {
     gasUsed = yield call(getMaxGasExchange, source, dest)
     if (source !== "ETH") {
       gasApproved = yield call(getMaxGasApprove, source)
-      //gasUsed += gasApprove
     }
   }
   yield put(actions.setEstimateGas(gasUsed, gasApproved))
@@ -169,26 +124,14 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   }
 
   //track complete trade
-
   var state = store.getState()
   var exchange = state.exchange
   var analytics = state.global.analytics
 
   analytics.callTrack("completeTransaction", exchange.sourceTokenSymbol, exchange.destTokenSymbol)
-  // analytics.completeTrade(hash, "kyber", "exchange")
 
-  //submit callback
-  // console.log("account___")
-  // console.log(account)
-  // if(account.type === 'metamask'){
-  //   yield fork(common.submitCallback, hash)
-  // }
   yield fork(common.submitCallback, hash)
-  //var response = yield call(common.submitCallback, hash)
 
-
-
-  //console.log({txRaw, hash, account, data})
   const tx = new Tx(
     hash, account.address, ethUtil.bufferToInt(txRaw.gas),
     converter.weiToGwei(ethUtil.bufferToInt(txRaw.gasPrice)),
@@ -199,62 +142,14 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   yield put(actions.doTransactionComplete(hash))
   yield put(actions.finishExchange())
   yield put(actions.resetSignError())
-
-
-  // try{
-  //   var state = store.getState()
-  //   var notiService = state.global.notiService
-  //   notiService.callFunc("setNewTx",{hash: hash})
-  // }catch(e){
-  //   console.log(e)
-  // }
-
-
-
-  //estimate time for tx
-  // var state = store.getState()
-  // var gasInfo = state.exchange.gasPriceSuggest
-  // var gasPrice = state.exchange.gasPrice
-  // estimateTime = estimateTimeTx(...gasInfo, gasPrice)
-  // console.log(estimateTime)
 }
 
 function* getInfo(hash) {
   var state = store.getState()
   var ethereum = state.connection.ethereum
-  // var timestamp = Date.now()
-  // var language = getActiveLanguage(state.locale).code
-  // var device = state.account.account.type
-  // var sender = state.account.account.address
 
-  // var exchange = state.exchange.snapshot
-  // var minRate = exchange.minConversionRate
-  // var offeredRate = exchange.offeredRate
-  // var sourceToken = exchange.sourceToken
-  // var sourceTokenSymbol = exchange.sourceTokenSymbol
-  // var sourceAmount = exchange.sourceAmount
-  // var maxDestAmount = exchange.maxDestAmount
-  // var destTokenSymbol = exchange.destTokenSymbol
-  // var destToken = exchange.destToken
-  // var gasPrice = exchange.gasPrice
-  // var gas = exchange.gas
-  // var browserName = bowser.name
   yield call([ethereum, ethereum.call], "getInfo", { hash })
-
-  // yield call([ethereum, ethereum.call], "getInfo", {hash, timestamp, language, device, sender, minRate, 
-  //                                 offeredRate, sourceToken, sourceTokenSymbol, sourceAmount, maxDestAmount, destTokenSymbol, destToken, gasPrice, gas, browserName})
 }
-
-
-// function* doTransactionFail(ethereum, account, e) {
-//   yield put(actions.doTransactionFail(e))
-//   yield put(updateAccount(ethereum, account))
-// }
-
-// function* doApproveTransactionFail(ethereum, account, e) {
-//   yield put(actions.doApprovalTransactionFail(e))
-//   yield put(updateAccount(ethereum, account))
-// }
 
 function* doTxFail(ethereum, account, e) {
   var state = store.getState()
@@ -268,7 +163,6 @@ function* doTxFail(ethereum, account, e) {
     error = translate("error.broadcast_tx", { link: link }) || "Potentially Failed! We likely couldn't broadcast the transaction to the blockchain. Please check on Etherscan to verify."
   }
   yield put(actions.setBroadcastError(error))
-  //yield put(updateAccount(ethereum, account))
 }
 
 
@@ -281,11 +175,7 @@ function isApproveTxPending() {
 }
 
 export function* checkTokenBalanceOfColdWallet(action) {
-  const { formId, ethereum, address, sourceToken,
-    sourceAmount, destToken, destAddress,
-    maxDestAmount, minConversionRate,
-    throwOnFailure, nonce, gas,
-    gasPrice, keystring, type, password, account, data, keyService } = action.payload
+  const { ethereum, address, sourceToken, sourceAmount } = action.payload
   let translate = getTranslate(store.getState().locale)
   const isPayMode = checkIsPayMode();
 
@@ -294,12 +184,9 @@ export function* checkTokenBalanceOfColdWallet(action) {
     const remain = converter.hexToBigNumber(remainStr)
     const sourceAmountBig = converter.hexToBigNumber(sourceAmount)
 
-
     if (!remain.isGreaterThanOrEqualTo(sourceAmountBig) && !isApproveTxPending()) {
       yield put(actions.showApprove())
       yield call(fetchGasApproveSnapshot)
-      //fetch gas approve
-
     } else {
       yield put(actions.showConfirm())
       yield call(fetchGasConfirmSnapshot)
@@ -309,12 +196,10 @@ export function* checkTokenBalanceOfColdWallet(action) {
     let content = translate("error.network_error") || "Cannot connect to node right now. Please check your network!"
     yield put(utilActions.openInfoModal(title, content))
   }
-
 }
 
 function* processApprove(action) {
-  const { ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-    keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload
+  const { accountType } = action.payload
 
   yield put(actions.resetSignError());
 
@@ -334,7 +219,6 @@ export function* processApproveByColdWallet(action) {
     keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload
 
   var networkId = common.getNetworkId()
-  //try {
   let rawApprove
   const isPayMode = checkIsPayMode();
 
@@ -390,11 +274,7 @@ export function* processApproveByMetamask(action) {
 }
 
 export function* processExchange(action) {
-  const { formId, ethereum, address, sourceToken,
-    sourceAmount, destToken, destAddress,
-    maxDestAmount, minConversionRate,
-    throwOnFailure, nonce, gas,
-    gasPrice, keystring, type, password, account, data, keyService, balanceData, sourceTokenSymbol, blockNo } = action.payload;
+  const { type } = action.payload;
 
   yield put(actions.resetSignError());
 
@@ -434,24 +314,20 @@ export function* processExchange(action) {
 }
 
 export function* doBeforeMakeTransaction(txRaw) {
-
   yield put(actions.goToStep(4))
 
   var state = store.getState()
   var ethereum = state.connection.ethereum
-  var hash = yield call([ethereum, ethereum.call], "getTxHash", txRaw)
+  yield call([ethereum, ethereum.call], "getTxHash", txRaw)
 
-//  console.log(hash)
-//var response = yield call(common.submitCallback, hash)
-//  console.log("submit hash success")
   return true
 }
 
 export function* exchangeETHtoTokenKeystore(action) {
   const {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-    throwOnFailure, nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    sourceTokenSymbol, blockNo, paymentData, hint } = action.payload;
+    nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
+    blockNo, paymentData, hint } = action.payload;
 
   var networkId = common.getNetworkId()
   var txRaw;
@@ -485,8 +361,8 @@ export function* exchangeETHtoTokenKeystore(action) {
 export function* exchangeETHtoTokenPrivateKey(action) {
   const {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-    throwOnFailure, nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    sourceTokenSymbol, blockNo, paymentData, hint } = action.payload;
+    nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
+    blockNo, paymentData, hint } = action.payload;
 
   var networkId = common.getNetworkId()
 
@@ -521,8 +397,8 @@ export function* exchangeETHtoTokenPrivateKey(action) {
 export function* exchangeETHtoTokenColdWallet(action) {
   const {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-    throwOnFailure, nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    sourceTokenSymbol, blockNo, paymentData, hint } = action.payload;
+    nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
+    blockNo, paymentData, hint } = action.payload;
 
   var networkId = common.getNetworkId()
 
@@ -562,8 +438,8 @@ export function* exchangeETHtoTokenColdWallet(action) {
 function* exchangeETHtoTokenMetamask(action) {
   const {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-    throwOnFailure, nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    sourceTokenSymbol, blockNo, paymentData, hint } = action.payload
+    nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
+    blockNo, paymentData, hint } = action.payload
 
   var networkId = common.getNetworkId()
 
@@ -592,7 +468,7 @@ function* exchangeETHtoTokenMetamask(action) {
 function* exchangeTokentoETHKeystore(action) {
   var {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-    throwOnFailure, nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
+    nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
     sourceTokenSymbol, blockNo, paymentData, hint } = action.payload;
 
   var networkId = common.getNetworkId()
@@ -614,7 +490,7 @@ function* exchangeTokentoETHKeystore(action) {
     }
     try {
       yield put(actions.prePareBroadcast(balanceData))
-      var hashApprove, txRaw
+      var txRaw
       try {
         var hashApprove = yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", rawApprove);
 
@@ -679,7 +555,7 @@ function* exchangeTokentoETHKeystore(action) {
 export function* exchangeTokentoETHPrivateKey(action) {
   var {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-    throwOnFailure, nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
+    nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
     sourceTokenSymbol, blockNo, paymentData, hint } = action.payload;
 
   var networkId = common.getNetworkId()
@@ -701,7 +577,7 @@ export function* exchangeTokentoETHPrivateKey(action) {
       }
 
       yield put(actions.prePareBroadcast(balanceData))
-      var hashApprove
+
       try {
         var hashApprove = yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", rawApprove)
         yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol))
@@ -745,8 +621,8 @@ export function* exchangeTokentoETHPrivateKey(action) {
 function* exchangeTokentoETHColdWallet(action) {
   const {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-    throwOnFailure, nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    sourceTokenSymbol, blockNo, paymentData, hint } = action.payload;
+    nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
+    blockNo, paymentData, hint } = action.payload;
 
   var networkId = common.getNetworkId()
 
@@ -787,8 +663,8 @@ function* exchangeTokentoETHColdWallet(action) {
 export function* exchangeTokentoETHMetamask(action) {
   const {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-    throwOnFailure, nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    sourceTokenSymbol, blockNo, paymentData, hint } = action.payload
+    nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
+    blockNo, paymentData, hint } = action.payload
 
   var networkId = common.getNetworkId()
 
@@ -841,11 +717,9 @@ function* callService(
 }
 
 function* getRate(ethereum, source, dest, sourceAmount) {
-  //console.log({source, dest, sourceAmount})
   try {
     //get latestblock
     const lastestBlock = yield call([ethereum, ethereum.call], "getLatestBlock")
-    // console.log(lastestBlock)
     const rate = yield call([ethereum, ethereum.call], "getRateAtSpecificBlock", source, dest, sourceAmount, lastestBlock)
     const expectedPrice = rate.expectedPrice ? rate.expectedPrice : "0"
     const slippagePrice = rate.slippagePrice ? rate.slippagePrice : "0"
@@ -854,12 +728,8 @@ function* getRate(ethereum, source, dest, sourceAmount) {
   catch (err) {
     console.log(err)
     return { status: "fail" }
-    //yield put.sync(actions.updateRateExchangeComplete(rateInit, "0", "0", 0))
-    //yield put(actions.setRateSystemError())
   }
 }
-
-
 
 function* getSourceAmount(sourceTokenSymbol, sourceAmount) {
   var state = store.getState()
@@ -892,7 +762,6 @@ function* updateRatePending(action) {
   const { source, dest, sourceAmount, sourceTokenSymbol, isManual } = action.payload
   var state = store.getState()
   var ethereum = state.connection.ethereum
-  // var exchangeSnapshot = state.exchange.snapshot
   var translate = getTranslate(state.locale)
 
 
@@ -900,17 +769,14 @@ function* updateRatePending(action) {
   var sourceAmoutRefined = yield call(getSourceAmount, sourceTokenSymbol, sourceAmount)
   var sourceAmoutZero = yield call(getSourceAmountZero, sourceTokenSymbol)
   console.log({ sourceAmoutRefined, sourceAmoutZero })
-  //console.log("is_manual: " + isManual)
   if (isManual) {
     var rateRequest = yield call(common.handleRequest, getRate, ethereum, source, dest, sourceAmoutRefined)
-    // console.log("rate_request_manual: " + JSON.stringify(rateRequest))
     if (rateRequest.status === "success") {
       var { expectedPrice, slippagePrice, lastestBlock } = rateRequest.data
       var rateInit = expectedPrice.toString()
       if (expectedPrice.toString() === "0") {
         var rateRequestZeroAmount = yield call(common.handleRequest, getRate, ethereum, source, dest, sourceAmoutZero)
 
-        //console.log(rateRequestZeroAmount.data)
         if (rateRequestZeroAmount.status === "success") {
           rateInit = rateRequestZeroAmount.data.expectedPrice
         }
@@ -926,15 +792,7 @@ function* updateRatePending(action) {
         }
       }
       yield put.sync(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true))
-      // if (expectedPrice === "0") {
-      //   yield put(actions.setRateSystemError())
-      // }else{
-      //   yield put(actions.caculateAmount())
-      // }
     }
-    // else{
-    //   yield put.sync(actions.updateRateExchangeComplete(rateInit, "0", "0", 0, isManual, false))
-    // }
 
     if (rateRequest.status === "timeout") {
       yield put(utilActions.openInfoModal(translate("error.error_occurred") || "Error occurred",
@@ -944,23 +802,14 @@ function* updateRatePending(action) {
       yield put(utilActions.openInfoModal(translate("error.error_occurred") || "Error occurred",
         translate("error.network_error") || "Cannot connect to node right now. Please check your network!"))
     }
-
-    // if ((rateRequest.status === "timeout") || (rateRequest.status === "fail")) {
-
-    //   yield put(utilActions.openInfoModal("Error", "There are some problems with nodes. Please try again in a while"))
-    // }
-
   } else {
     const rateRequest = yield call(getRate, ethereum, source, dest, sourceAmoutRefined)
-    // console.log("rate_request_manual_not: " + JSON.stringify(rateRequest))
     if (rateRequest.status === "success") {
       var { expectedPrice, slippagePrice, lastestBlock } = rateRequest.res
-      //  console.log(rateRequest.res)
       var rateInit = expectedPrice.toString()
       if (expectedPrice.toString() === "0") {
         var rateRequestZeroAmount = yield call(common.handleRequest, getRate, ethereum, source, dest, sourceAmoutZero)
 
-        //   console.log(rateRequestZeroAmount.data)
         if (rateRequestZeroAmount.status === "success") {
           rateInit = rateRequestZeroAmount.data.expectedPrice
         }
@@ -977,42 +826,7 @@ function* updateRatePending(action) {
       }
 
       yield put.sync(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true))
-
-      // if (expectedPrice.toString() !== "0"){
-      //   yield put.sync(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true))
-      // }
-
-
     }
-    else {
-      //yield put.sync(actions.updateRateExchangeComplete(rateInit, "0", "0", 0, isManual, false))
-
-      //yield put(actions.setRateFailError())
-    }
-
-    // const { expectedPrice, slippagePrice, lastestBlock } = rates.res
-    // yield put.sync(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock))
-    // if (lastestBlock === 0) {
-    //   yield put(actions.setRateSystemError())
-    // }else{
-    //   yield put(actions.caculateAmount())
-    // }
-
-    // try {
-    //   //get latestblock
-    //   const lastestBlock = yield call([ethereum, ethereum.call],"getLatestBlock")
-    //  // console.log(lastestBlock)
-    //   const rate = yield call([ethereum, ethereum.call], "getRateAtSpecificBlock", source, dest, sourceAmount, lastestBlock)
-    //   const expectedPrice = rate.expectedPrice ? rate.expectedPrice : "0"
-    //   const slippagePrice = rate.slippagePrice ? rate.slippagePrice : "0"
-    //   yield put.sync(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock))
-    //   yield put(actions.caculateAmount())
-    // }
-    // catch (err) {
-    //   console.log(err)
-    //   yield put.sync(actions.updateRateExchangeComplete(rateInit, "0", "0", 0))
-    //   yield put(actions.setRateSystemError())
-    // }
   }
 }
 
@@ -1035,25 +849,23 @@ function* updateRateSnapshot(action) {
   try {
     var source = exchangeSnapshot.sourceToken
     var dest = exchangeSnapshot.destToken
-    var destTokenSymbol = exchangeSnapshot.destTokenSymbol
-
     var sourceAmount
+
     if (exchangeSnapshot.isHaveDestAmount) {
       sourceAmount = converter.caculateSourceAmount(exchangeSnapshot.destAmount, exchangeSnapshot.offeredRate, 6)
     } else {
       sourceAmount = exchangeSnapshot.sourceAmount
     }
-    //var sourceAmount = exchangeSnapshot.sourceAmount
+
     var sourceDecimal = exchangeSnapshot.sourceDecimal
     var sourceAmountHex = converter.stringToHex(sourceAmount, sourceDecimal)
     var rateInit = 0
-
     var rateRequest = yield call(common.handleRequest, getRateSnapshot, ethereum, source, dest, sourceAmountHex)
+
     if (rateRequest.status === "success") {
       var rate = rateRequest.data
       var expectedPrice = rate.expectedRate ? rate.expectedRate : "0"
       var slippagePrice = rate.slippageRate ? rate.slippageRate : "0"
-      // expectedPrice = "0"
       if (expectedPrice == 0) {
         yield put(utilActions.openInfoModal(translate("error.error_occurred") || "Error occurred",
           translate("error.node_error") || "There are some problems with nodes. Please try again in a while."))
@@ -1079,23 +891,11 @@ function* updateRateSnapshot(action) {
       content = translate("error.network_error") || "Cannot connect to node right now. Please check your network!"
       yield put(utilActions.openInfoModal(title, content))
     }
-
-    // const rate = yield call([ethereum, ethereum.call], "getRate", source, dest, sourceAmountHex)
-    // const expectedPrice = rate.expectedRate ? rate.expectedRate : "0"
-    // const slippagePrice = rate.slippageRate ? rate.slippageRate : "0"
-
-    // yield put.sync(actions.updateRateSnapshotComplete(rateInit, expectedPrice, slippagePrice))
-    // yield put(actions.caculateAmountInSnapshot())
   }
   catch (err) {
     console.log("===================")
     console.log(err)
   }
-}
-
-function* fetchGas() {
-  //yield call(estimateGas)
-
 }
 
 function* estimateGas() {
@@ -1121,11 +921,6 @@ function* estimateGas() {
 
     yield put(actions.setEstimateGas(gas, gas_approve))
   }
-}
-
-function* fetchGasSnapshot() {
-  yield call(estimateGasSnapshot)
-  yield put(actions.fetchGasSuccessSnapshot())
 }
 
 function* estimateGasSnapshot() {
@@ -1156,7 +951,6 @@ function* estimateGasSnapshot() {
 
 function* fetchGasConfirmSnapshot() {
   var state = store.getState()
-  const exchange = state.exchange
   var gas
   var gas_approve = 0
 
@@ -1176,8 +970,6 @@ function* fetchGasConfirmSnapshot() {
 }
 
 function* fetchGasApproveSnapshot() {
-  var state = store.getState()
-  const exchange = state.exchange
   var gas = yield call(getMaxGasExchange)
   var gas_approve
 
@@ -1224,18 +1016,14 @@ function* getGasConfirm() {
   const ethereum = state.connection.ethereum
   const exchange = state.exchange
   const kyber_address = BLOCKCHAIN_INFO.network
-
   const maxGas = yield call(getMaxGasExchange)
-
   var gas = maxGas
-  var gas_approve = 0
-
   var account = state.account.account
   var address = account.address
-
   var tokens = state.tokens.tokens
   var sourceDecimal = 18
   var sourceTokenSymbol = exchange.sourceTokenSymbol
+
   if (tokens[sourceTokenSymbol]) {
     sourceDecimal = tokens[sourceTokenSymbol].decimals
   }
@@ -1271,18 +1059,10 @@ function* getGasConfirm() {
     data: data,
     value: value
   }
-  // var gasRequest = yield call(common.handleRequest, api.estimateGas, ethereum, txObj)
-  // if (gasRequest.status === "success"){
-  //   gas = gasRequest.data
-  // }
-  // if (gasRequest.status === "timeout"){
-  //   console.log("timeout")
-  // }
+
   try {
     gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
-    //  console.log("gas ne: " + gas)
     gas = Math.round(gas * 120 / 100)
-    //console.log("gas ne: " + gas)
     if (gas > maxGas) {
       gas = maxGas
     }
@@ -1334,25 +1114,20 @@ function* getGasUsed() {
   const ethereum = state.connection.ethereum
   const exchange = state.exchange
   const kyber_address = BLOCKCHAIN_INFO[exchange.network].network
-
-
   const maxGas = yield call(getMaxGasExchange)
-
-  //console.log("max gas exchange:" + maxGas)
-
   const maxGasApprove = yield call(getMaxGasApprove)
   var gas = maxGas
   var gas_approve = 0
-
   var account = state.account.account
   var address = account.address
-
   var tokens = state.tokens.tokens
   var sourceDecimal = 18
   var sourceTokenSymbol = exchange.sourceTokenSymbol
+
   if (tokens[sourceTokenSymbol]) {
     sourceDecimal = tokens[sourceTokenSymbol].decimals
   }
+
   try {
     const sourceToken = exchange.sourceToken
     const sourceAmount = converter.stringToHex(exchange.sourceAmount, sourceDecimal)
@@ -1406,17 +1181,10 @@ function* getGasUsed() {
       data: data,
       value: value
     }
-    // var gasRequest = yield call(common.handleRequest, api.estimateGas, ethereum, txObj)
-    // if (gasRequest.status === "success"){
-    //   gas = gasRequest.data
-    // }
-    // if (gasRequest.status === "timeout"){
-    //   console.log("timeout")
-    // }
+
     gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
     console.log("get_gas:" + gas)
     gas = Math.round(gas * 120 / 100)
-    //console.log("gas ne: " + gas)
     if (gas > maxGas) {
       gas = maxGas
     }
@@ -1427,36 +1195,25 @@ function* getGasUsed() {
     console.log(e)
     return { status: "fail", err: e }
   }
-  //console.log(gas, gas_approve)
-  //yield put(actions.setEstimateGas(gas, gas_approve))
 }
 
 function* analyzeError(action) {
   const { ethereum, txHash } = action.payload
-  //yield put(globalActions.openAnalyze(txHash))
   try {
-    //var txHash = exchange.txHash
-    //console.log(txHash)
     var tx = yield call([ethereum, ethereum.call], "getTx", txHash)
-    //  console.log(tx)
-    console.log(tx.input)
-    // console.log(tx)
     var value = tx.value
     var owner = tx.from
     var gas_price = tx.gasPrice
     var blockNumber = tx.blockNumber
-
     var result = yield call([ethereum, ethereum.call], "exactTradeData", tx.input)
     var source = result[0].value
     var srcAmount = result[1].value
-
     var dest = result[2].value
     var destAddress = result[3].value
     var maxDestAmount = result[4].value
     var minConversionRate = result[5].value
     var walletID = result[6].value
     var reserves = yield call([ethereum, ethereum.call], "getListReserve")
-
     var receipt = yield call([ethereum, ethereum.call], 'txMined', txHash)
     var transaction = {
       gasUsed: receipt.gasUsed,
@@ -1470,18 +1227,14 @@ function* analyzeError(action) {
 
     console.log(input)
     yield call(debug, input, blockNumber, ethereum)
-    //check gas price
   } catch (e) {
     console.log(e)
     yield put(actions.setAnalyzeError({}, txHash))
-    //yield put(globalActions.setAnalyzeError({}, {}, txHash))
   }
 }
 
 function* debug(input, blockno, ethereum) {
-  // console.log({input, blockno})
   var networkIssues = {}
-  // var reserveIssues = {}
   var translate = getTranslate(store.getState().locale)
   var gasCap = yield call([ethereum, ethereum.call], "wrapperGetGasCap", blockno)
 
@@ -1526,23 +1279,14 @@ function* debug(input, blockno, ethereum) {
   var rates = yield call([ethereum, ethereum.call], "getRateAtSpecificBlock", input.source, input.dest, input.srcAmount, blockno)
   if (converter.compareTwoNumber(rates.expectedPrice, 0) === 0) {
     var reasons = yield call([ethereum, ethereum.call], "wrapperGetReasons", input.reserves[0], input, blockno)
-    ///reserveIssues["reason"] = reasons
     networkIssues["rateError"] = reasons
   } else {
-    //var chosenReserve = yield call([ethereum, ethereum.call("wrapperGetChosenReserve")], input, blockno)
-    // var reasons = yield call([ethereum, ethereum.call("wrapperGetReasons")], chosenReserve, input, blockno)
     console.log(rates)
     console.log(input.minConversionRate)
     if (converter.compareTwoNumber(input.minConversionRate, rates.expectedPrice) === 1) {
-      //      reserveIssues["reason"] = translate('error.min_rate_too_high') || "Your min rate is too high!"
-
       networkIssues["rateZero"] = translate('error.min_rate_too_high') || "Your min rate is too high!"
     }
   }
-  console.log("_________________________")
-  //console.log(reserveIssues)
-  console.log(networkIssues)
-  //yield put(globalActions.setAnalyzeError(networkIssues, reserveIssues, input.txHash))
 
   yield put(actions.setAnalyzeError(networkIssues, input.txHash))
 }
@@ -1562,17 +1306,11 @@ function* checkKyberEnable() {
 
 function* verifyExchange() {
   var state = store.getState()
-
-  //const ethereum = state.connection.ethereum
   const exchange = state.exchange
   const tokens = state.tokens.tokens
   const translate = getTranslate(state.locale)
-
   var srcAmount
   var sourceTokenSymbol = exchange.sourceTokenSymbol
-
-  console.log("src_amount")
-  console.log(sourceTokenSymbol)
 
   if (sourceTokenSymbol !== "ETH") {
     if (tokens[sourceTokenSymbol].rate == 0) {
@@ -1581,9 +1319,7 @@ function* verifyExchange() {
     }
   }
 
-
   if (exchange.isHaveDestAmount) {
-    var destAmount = exchange.destAmount
     var offeredRate = exchange.offeredRate
     srcAmount = converter.caculateSourceAmount(exchange.destAmount, offeredRate, 6)
     srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimals)
@@ -1647,17 +1383,12 @@ export function* getExchangeEnable() {
 
 export function* initParamsExchange(action) {
   var state = store.getState()
-  //var tokens = state.tokens.tokens
   var exchange = state.exchange
-
   var sourceTokenSymbol = exchange.sourceTokenSymbol
   var source = exchange.sourceToken
 
+  const { receiveToken, tokenAddr, receiveAmount, network, type, defaultPairArr, tokens } = action.payload
 
-  const { receiveAddr, receiveToken, tokenAddr, receiveAmount, network, type, defaultPairArr, tokens } = action.payload
-
-  //var tokens = BLOCKCHAIN_INFO[network].tokens
-  //var ethereum = state.connection.ethereum
   var ethereum = new EthereumService({ network })
 
 
@@ -1669,15 +1400,7 @@ export function* initParamsExchange(action) {
     yield put.sync(actions.changeDefaultTokens(sourceTokenSymbol, source, destSymbol, destAddress))
   }
 
-  // console.log("source_toke")
-  // console.log(sourceTokenSymbol)
-  // console.log(receiveToken)
-
   yield put.sync(setConnection(ethereum))
-
-
-
- 
 
   if (type === 'buy') {
     if (receiveToken === 'ETH') {
@@ -1687,30 +1410,11 @@ export function* initParamsExchange(action) {
     }
   }
 
-
-
   yield call(estimateGasUsed, sourceTokenSymbol, receiveToken)
-
-
-
-
-
-
-  //var tokenAddr = tokens[receiveToken].address
-
-  //save data exchange
-  //yield put(actions.saveInitParams(receiveAddr, receiveToken, receiveAmount, tokenAddr))
-
-  //fetch rate
-
-
   var dest = tokenAddr
-
 
   if (receiveAmount) {
     try {
-
-
       if (receiveToken === "ETH") {
         if (parseFloat(receiveAmount) > constants.MAX_AMOUNT_RATE_HANDLE) {
           yield put(actions.throwErrorHandleAmount())
@@ -1725,15 +1429,10 @@ export function* initParamsExchange(action) {
         }
       }
 
-
-
-
       if (sourceTokenSymbol !== receiveToken) {
         var rate = yield call([ethereum, ethereum.call], "getRate", source, dest, "0x0")
 
         var sourceAmount = converter.caculateSourceAmount(receiveAmount, rate.expectedRate, 6)
-        // console.log("src_amount")
-        // console.log(sourceAmount)
         yield put(actions.updateRateExchange(source, dest, sourceAmount, sourceTokenSymbol, true))
       }
 
@@ -1750,8 +1449,6 @@ export function* initParamsExchange(action) {
 
 
   const web3Service = web3Package.newWeb3Instance()
-  // console.log("web3_data")
-  // console.log(web3Service.isHaveWeb3())
   if(web3Service !== false){
     const watchMetamask = yield fork(watchMetamaskAccount, ethereum, web3Service, network)
     yield take('GLOBAL.INIT_SESSION')
@@ -1760,33 +1457,12 @@ export function* initParamsExchange(action) {
     yield put(globalActions.throwErrorMematamask("Metamask is not installed"))
   }
 
-
-
-  // if (typeof web3 === "undefined") {
-  //   yield put(globalActions.throwErrorMematamask("Metamask is not installed"))
-  // } else {
-  //   const web3Service = new Web3Service(web3)
-  //   const watchMetamask = yield fork(watchMetamaskAccount, ethereum, web3Service, network)
-
-  //   yield take('GLOBAL.INIT_SESSION')
-  //   yield cancel(watchMetamask)
-  // }
-
-
   var notiService = new NotiService({ type: "session" })
   yield put(globalActions.setNotiHandler(notiService))
-
-  //store.dispatch(updateRateExchange(source, dest, sourceAmount, sourceTokenSymbol, isManual))
-
-  //estimate gas
-
 }
 
 
 function* watchMetamaskAccount(ethereum, web3Service, network) {
-  // var state = store.getState()
-  // var exchange = state.exchange
-  //check
   var translate = getTranslate(store.getState().locale)
   while (true) {
     try {
@@ -1796,12 +1472,6 @@ function* watchMetamaskAccount(ethereum, web3Service, network) {
       }
       const account = state.account.account
       if (account === false) {
-
-        // if (state.router && state.router.location) {
-        //   var pathname = state.router.location.pathname
-        //   if (pathname === constants.BASE_HOST) {
-
-        //test network id
         const currentId = yield call([web3Service, web3Service.getNetworkId])
         const networkId = BLOCKCHAIN_INFO[network].networkId
         if (parseInt(currentId, 10) !== networkId) {
@@ -1811,7 +1481,6 @@ function* watchMetamaskAccount(ethereum, web3Service, network) {
           return
         }
 
-        //test address
         try {
           const coinbase = yield call([web3Service, web3Service.getCoinbase])
           const balanceBig = yield call([ethereum, ethereum.call], "getBalanceAtLatestBlock", coinbase)
@@ -1821,8 +1490,6 @@ function* watchMetamaskAccount(ethereum, web3Service, network) {
           console.log(e)
           yield put(globalActions.throwErrorMematamask(translate("error.cannot_connect_metamask") || `Cannot get metamask account. You probably did not login in Metamask`))
         }
-
-
       }
     } catch (e) {
       console.log(e)
@@ -1844,9 +1511,7 @@ function checkIsPayMode() {
 }
 
 export function* watchExchange() {
-  //yield takeEvery("EXCHANGE.TX_BROADCAST_PENDING", broadCastTx)
   yield takeEvery("EXCHANGE.APPROVAL_TX_BROADCAST_PENDING", approveTx)
-
   yield takeEvery("EXCHANGE.PROCESS_EXCHANGE", processExchange)
   yield takeEvery("EXCHANGE.PROCESS_APPROVE", processApprove)
   yield takeEvery("EXCHANGE.CHECK_TOKEN_BALANCE_COLD_WALLET", checkTokenBalanceOfColdWallet)
@@ -1854,18 +1519,10 @@ export function* watchExchange() {
   yield takeEvery("EXCHANGE.UPDATE_RATE_SNAPSHOT", updateRateSnapshot)
   yield takeEvery("EXCHANGE.ESTIMATE_GAS_USED", estimateGasUsed)
   yield takeEvery("EXCHANGE.ANALYZE_ERROR", analyzeError)
-
   yield takeEvery("EXCHANGE.SELECT_TOKEN_ASYNC", selectToken)
-  //yield takeEvery("EXCHANGE.INPUT_CHANGE", fetchGas)
-  //yield takeEvery("EXCHANGE.FETCH_GAS", fetchGasManual)
-  //yield takeEvery("EXCHANGE.FETCH_GAS_SNAPSHOT", fetchGasSnapshot)
-
   yield takeEvery("EXCHANGE.CHECK_KYBER_ENABLE", checkKyberEnable)
   yield takeEvery("EXCHANGE.VERIFY_EXCHANGE", verifyExchange)
-
   yield takeEvery("EXCHANGE.FETCH_EXCHANGE_ENABLE", fetchExchangeEnable)
-
   yield takeEvery("EXCHANGE.INIT_PARAMS_EXCHANGE", initParamsExchange)
-
   yield takeEvery("EXCHANGE.SWAP_TOKEN", swapToken)
 }

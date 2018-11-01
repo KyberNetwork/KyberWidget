@@ -10,16 +10,6 @@ const ExchangeBodyLayout = (props) => {
     if (check) props.input.sourceAmount.onChange(e)
   }
 
-  function handleChangeDest(e) {
-    var check = filterInputNumber(e, e.target.value, props.input.destAmount.value)
-    if (check) props.input.destAmount.onChange(e)
-  }
-
-  // var errorSelectSameToken = props.errors.selectSameToken && props.errors.selectSameToken !== '' ? props.translate(props.errors.selectSameToken) : ''
-  // var errorSelectTokenToken = props.errors.selectTokenToken && props.errors.selectTokenToken !== '' ? props.translate(props.errors.selectTokenToken) : ''
-  // var errorToken = errorSelectSameToken + errorSelectTokenToken
-
-  var maxCap = props.maxCap
   var errorSource = []
   var errorExchange = false
   Object.keys(props.exchange.errors).map(key => {
@@ -63,9 +53,6 @@ const ExchangeBodyLayout = (props) => {
                   </div>
                 )}
 
-                {/* <div className="payment-gateway__step-title payment-gateway__step-title--1">
-              {props.translate("transaction.choose_your_payment") || "Choose your payment method"}
-            </div> */}
                 {props.exchange.type === 'swap' && (
                   <div className={addPrefixClass('swap-layout'+(errorExchange ? " error" : ""))}>
                     <div className={addPrefixClass('swap-item swap-item-first')}>
@@ -93,8 +80,6 @@ const ExchangeBodyLayout = (props) => {
                                 <strong>{props.exchange.sourceAmount} {props.exchange.sourceTokenSymbol}</strong>
                               </div>
                             </div>
-                          
-                          // <div className="swap-info">You are about to swap <strong>{props.exchange.sourceAmount} {props.exchange.sourceTokenSymbol}</strong> for <strong>{props.exchange.destAmount} {props.exchange.destTokenSymbol}</strong></div>
                         )}
 
                       </div>
@@ -106,9 +91,7 @@ const ExchangeBodyLayout = (props) => {
                       <div className={addPrefixClass("cell large-2 exchange-icon")}>
                         <span data-tip={props.translate('transaction.click_to_swap') || 'Click to swap'} data-for="swap" currentitem="false">
                           <img src={require("../../../assets/img/arrow_swap.svg")} onClick={(e) => props.swapToken(e)}/>
-                          {/* <i className="k k-exchange k-3x cur-pointer" onClick={(e) => props.swapToken(e)}></i> */}
                         </span>
-                        {/* <ReactTooltip place="bottom" id="swap" type="light" /> */}
                       </div>
                     )}
                     

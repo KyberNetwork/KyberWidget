@@ -1,7 +1,5 @@
 import React from "react"
 import { connect } from "react-redux"
-import { push } from 'react-router-redux'
-import constants from "../../services/constants"
 import AddressGenerator from "../../services/device/addressGenerator";
 import { ImportByDeviceView } from "../../components/ImportAccount"
 import {

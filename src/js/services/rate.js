@@ -1,5 +1,3 @@
-import constants from "../services/constants"
-
 export default class Rate {
   constructor(name, symbol, icon, address, decimals, rate = 0, minRate = 0, 
                       balance = 0, rateEth = 0, minRateEth = 0, rateUSD = 0) {

@@ -1,7 +1,6 @@
 import React from "react"
 import { InfoModal, ChangeLanguage } from "../Header"
 
-
 export default class InfoLink extends React.Component {
   render() {
     return (
