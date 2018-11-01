@@ -4,7 +4,7 @@ import { watchGlobal } from './globalActions';
 import { watchExchange } from './exchangeActions';
 import { watchTransfer } from './transferActions';
 import { watchTx } from './txActions';
-import { watchConnection } from './connectionActions'
+//import { watchConnection } from './connectionActions'
 import { watchMarket } from './marketActions'
 // function* watchAndLog() {
 //   yield takeEvery('*', function* logger(action) {
@@ -22,7 +22,7 @@ export default function* root() {
     fork(watchExchange),
     fork(watchTransfer),
     fork(watchTx),
-    fork(watchConnection),
+    //fork(watchConnection),
     fork(watchMarket)
   ])
 }
