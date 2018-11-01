@@ -6,30 +6,30 @@ import constants from "../services/constants"
 import * as converter from "../utils/converter"
 
 
-function initTokens(network, pinTokens) {
-  var network = network ? network: "ropsten"
+function initTokens() {
+  //var network = network ? network: "ropsten"
   let tokens = {}
   
   // var length = pinTokens? pinTokens.length: 0
   // var index = 0
 
-  Object.keys(BLOCKCHAIN_INFO[network].tokens).forEach((key) => {
-    tokens[key] = BLOCKCHAIN_INFO[network].tokens[key]
-    tokens[key].rate = 0
-    tokens[key].minRate = 0
-    tokens[key].rateEth = 0
-    tokens[key].minRateEth = 0
-    tokens[key].balance = 0
-    tokens[key].rateUSD = 0
-    if (pinTokens){
-      if(pinTokens.includes(key)){
-        tokens[key].priority = true;
-        tokens[key].index = pinTokens.indexOf(key);
-      }else{
-        tokens[key].priority = false
-      }
-    }
-  })
+  // Object.keys(BLOCKCHAIN_INFO[network].tokens).forEach((key) => {
+  //   tokens[key] = BLOCKCHAIN_INFO[network].tokens[key]
+  //   tokens[key].rate = 0
+  //   tokens[key].minRate = 0
+  //   tokens[key].rateEth = 0
+  //   tokens[key].minRateEth = 0
+  //   tokens[key].balance = 0
+  //   tokens[key].rateUSD = 0
+  //   if (pinTokens){
+  //     if(pinTokens.includes(key)){
+  //       tokens[key].priority = true;
+  //       tokens[key].index = pinTokens.indexOf(key);
+  //     }else{
+  //       tokens[key].priority = false
+  //     }
+  //   }
+  // })
   return {
     tokens: tokens,
     count: { storageKey: constants.STORAGE_KEY }
@@ -167,9 +167,36 @@ const tokens = (state = initState, action) => {
     }
 
     case 'EXCHANGE.INIT_PARAMS_EXCHANGE':{
-      const {network, pinTokens} = action.payload
-      var newState = initTokens(network, pinTokens)
-      return Object.assign({}, state, JSON.parse(JSON.stringify(newState))) 
+      const {tokens, network, pinTokens} = action.payload
+      var newTokens = JSON.parse(JSON.stringify(tokens))
+
+      for (var symbol in newTokens) {
+        newTokens[symbol].rate = 0;
+        newTokens[symbol].minRate = 0;
+        newTokens[symbol].rateEth = 0;
+        newTokens[symbol].minRateEth = 0;
+        newTokens[symbol].rateUSD = 0;
+      }
+
+      //add gaslimit in token
+      if (BLOCKCHAIN_INFO[network].tokens_gas){
+        Object.keys(BLOCKCHAIN_INFO[network].tokens_gas).map(key => {
+          if (newTokens[key]){
+            newTokens[key].gasLimit = BLOCKCHAIN_INFO[network].tokens_gas[key]
+          }
+        })
+      }
+
+      if (pinTokens.length > 0) {
+        for (let symbol in newTokens) {
+          if (pinTokens.includes(symbol)) {
+            newTokens[symbol].priority = true;
+            newTokens[symbol].index = pinTokens.indexOf(symbol);
+          }
+        }
+      }
+
+      return Object.assign({}, state, { tokens: newTokens });
     }
 
     case 'GLOBAL.CLEAR_SESSION_FULFILLED': {
@@ -191,6 +218,28 @@ const tokens = (state = initState, action) => {
       const {symbol} = action.payload
       var tokens = { ...state.tokens }
       delete tokens[symbol].approveTx
+      return Object.assign({}, state, { tokens: tokens }) 
+    }
+    case 'TOKEN.INIT_LIST_TOKEN':{
+      const {network} = action.payload
+      var tokens = {}
+      Object.keys(BLOCKCHAIN_INFO[network].tokens).forEach((key) => {
+        tokens[key] = BLOCKCHAIN_INFO[network].tokens[key]
+        tokens[key].rate = 0
+        tokens[key].minRate = 0
+        tokens[key].rateEth = 0
+        tokens[key].minRateEth = 0
+        tokens[key].balance = 0
+        tokens[key].rateUSD = 0
+        // if (pinTokens){
+        //   if(pinTokens.includes(key)){
+        //     tokens[key].priority = true;
+        //     tokens[key].index = pinTokens.indexOf(key);
+        //   }else{
+        //     tokens[key].priority = false
+        //   }
+        // }
+      })
       return Object.assign({}, state, { tokens: tokens }) 
     }
     default: return state

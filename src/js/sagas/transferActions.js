@@ -100,18 +100,18 @@ export function* processTransfer(action) {
     token, amount,
     destAddress, nonce, gas,
     gasPrice, keystring, type, password, account, data, keyService, balanceData } = action.payload
-  var callService = token == constants.ETHER_ADDRESS ? "sendEtherFromAccount" : "sendTokenFromAccount"
+
   switch (type) {
     case "keystore":
-      yield call(transferKeystore, action, callService)
+      yield call(transferKeystore, action)
       break
     case "privateKey":
     case "trezor":
     case "ledger":
-      yield call(transferColdWallet, action, callService)
+      yield call(transferColdWallet, action)
       break
     case "metamask":
-      yield call(transferMetamask, action, callService)
+      yield call(transferMetamask, action)
       break
   }
 }
@@ -130,19 +130,17 @@ function* doBeforeMakeTransaction(txRaw) {
   return true
 }
 
-function* transferKeystore(action, callService) {
-  const { formId, ethereum, address,
-    token, amount,
-    destAddress, nonce, gas,
-    gasPrice, keystring, type, password, account, data, keyService, balanceData } = action.payload
+function* transferKeystore(action) {
+  const {
+    formId, ethereum, address, token, amount, destAddress, nonce, gas, gasPrice, keystring, type, password,
+    account, data, keyService, balanceData, commissionID, paymentData, hint } = action.payload;
 
-  var networkId  = common.getNetworkId()  
+  var networkId  = common.getNetworkId();
+  var rawTx;
 
   try {
-    var rawTx = yield call(keyService.callSignTransaction, callService, formId, ethereum, address,
-      token, amount,
-      destAddress, nonce, gas,
-      gasPrice, keystring, type, password, networkId)
+    rawTx = yield callService(keyService, formId, ethereum, address, token, amount, destAddress, nonce,
+      gas, gasPrice, keystring, type, password, networkId, commissionID, paymentData, hint);
   } catch (e) {
     yield put(exchangeActions.throwPassphraseError(e.message))
     return
@@ -161,21 +159,17 @@ function* transferKeystore(action, callService) {
 
 }
 
-function* transferColdWallet(action, callService) {
-  const { formId, ethereum, address,
-    token, amount,
-    destAddress, nonce, gas,
-    gasPrice, keystring, type, password, account, data, keyService, balanceData } = action.payload
+function* transferColdWallet(action) {
+  const { formId, ethereum, address, token, amount, destAddress, nonce, gas, gasPrice, keystring, type, password,
+    account, data, keyService, balanceData, commissionID, paymentData, hint } = action.payload;
 
-  var networkId  = common.getNetworkId()  
+  var networkId  = common.getNetworkId()
 
   try {
     var rawTx
     try {
-      rawTx = yield call(keyService.callSignTransaction, callService, formId, ethereum, address,
-        token, amount,
-        destAddress, nonce, gas,
-        gasPrice, keystring, type, password, networkId)
+      rawTx = yield callService(keyService, formId, ethereum, address, token, amount, destAddress, nonce,
+        gas, gasPrice, keystring, type, password, networkId, commissionID, paymentData, hint);
     } catch (e) {
       let msg = ''
       if(isLedgerError(type, e)){
@@ -204,27 +198,24 @@ function* transferColdWallet(action, callService) {
   }
 }
 
-function* transferMetamask(action, callService) {
-  const { formId, ethereum, address,
-    token, amount,
-    destAddress, nonce, gas,
-    gasPrice, keystring, type, password, account, data, keyService, balanceData } = action.payload
+function* transferMetamask(action) {
+  const {
+    formId, ethereum, address, token, amount, destAddress, nonce, gas, gasPrice, keystring, type, password,
+    account, data, keyService, balanceData, commissionID, paymentData, hint } = action.payload;
 
     var networkId  = common.getNetworkId()  
 
   try {
     var hash
     try {
-      hash = yield call(keyService.callSignTransaction, callService, formId, ethereum, address,
-        token, amount,
-        destAddress, nonce, gas,
-        gasPrice, keystring, type, password, networkId)
+      hash = yield callService(keyService, formId, ethereum, address, token, amount, destAddress, nonce,
+        gas, gasPrice, keystring, type, password, networkId, commissionID, paymentData, hint);
     } catch (e) {
       console.log(e)
       yield put(exchangeActions.setSignError(e))
       return
     }
-    
+
     yield put(exchangeActions.prePareBroadcast(balanceData))
     const rawTx = {gas, gasPrice, nonce}
     yield call(runAfterBroadcastTx, ethereum, rawTx, hash, account, data)
@@ -236,6 +227,28 @@ function* transferMetamask(action, callService) {
   }
 }
 
+function* callService(keyService, formId, ethereum, address, token, amount, destAddress, nonce,
+    gas, gasPrice, keystring, type, password, networkId, commissionID, paymentData, hint) {
+  let service;
+  let toContract;
+
+  if (checkIsPayMode()) {
+    toContract = common.getPayWrapperAddress();
+    service = token == constants.ETHER_ADDRESS ? "sendEtherPayment" : "sendTokenPayment";
+
+    return yield call(
+      keyService.callSignTransaction, service, formId, ethereum, address, token, amount, destAddress,
+      nonce, gas, gasPrice, keystring, type, password, networkId, toContract, commissionID, paymentData, hint
+    );
+  } else {
+    service = token == constants.ETHER_ADDRESS ? "sendEtherFromAccount" : "sendTokenFromAccount"
+
+    return yield call(
+      keyService.callSignTransaction, service, formId, ethereum, address, token,
+      amount, destAddress, nonce, gas, gasPrice, keystring, type, password, networkId
+    );
+  }
+}
 
 function* getMaxGasTransfer(){
   var state = store.getState()
@@ -247,67 +260,6 @@ function* getMaxGasTransfer(){
   }
 }
 
-function* estimateGasUsed(action){
-  var state = store.getState()
-  var transfer = state.transfer
-
-  var tokens = state.tokens.tokens
-  var decimal = 18
-  var tokenSymbol = state.transfer.tokenSymbol
-  if (tokens[tokenSymbol]) {
-    decimal = tokens[tokenSymbol].decimal
-  }
-
-  var account = state.account.account
-  var fromAddr = account.address
-
-  var gasRequest = yield call(common.handleRequest, calculateGasUse, fromAddr, transfer.tokenSymbol, transfer.token, decimal, transfer.amount)
-  if (gasRequest.status === "success"){
-    const gas = gasRequest.data
-    yield put(actions.setGasUsed(gas))
-  }
-  if ((gasRequest.status === "timeout") || (gasRequest.status === "fail")){
-    //var state = store.getState()
-    //var transfer = state.transfer
-    var gasLimit = yield call(getMaxGasTransfer)
-    yield put(actions.setGasUsed(gasLimit))
-  }
-//  yield call(calculateGasUse, fromAddr, transfer.tokenSymbol, transfer.token, decimal, transfer.amount)
-}
-
-
-
-function* estimateGasUsedWhenSelectToken(action){
-  const { symbol, address } = action.payload
-
-  var state = store.getState()
-  var transfer = state.transfer
-
-  var tokens = state.tokens.tokens
-  var decimal = 18
-  var tokenSymbol = symbol
-  if (tokens[tokenSymbol]) {
-    decimal = tokens[tokenSymbol].decimal
-  }
-
-  var account = state.account.account
-  var fromAddr = account.address
-
-  var gasRequest = yield call(common.handleRequest, calculateGasUse, fromAddr, tokenSymbol, address, decimal, transfer.amount)
-  if (gasRequest.status === "success"){
-    const gas = gasRequest.data
-    yield put(actions.setGasUsed(gas))
-  }
-  if ((gasRequest.status === "timeout") || (gasRequest.status === "fail")){
-    // var state = store.getState()
-    // var transfer = state.transfer
-    // var gasLimit = transfer.gas_limit
-    var gasLimit = yield call(getMaxGasTransfer)
-    yield put(actions.setGasUsed(gasLimit))
-  }
-
-  //yield call(calculateGasUse, fromAddr, tokenSymbol, address, decimal, transfer.amount)
-}
 
 function* estimateGasUsedWhenChangeAmount(action){
   var amount = action.payload
@@ -319,7 +271,7 @@ function* estimateGasUsedWhenChangeAmount(action){
   var decimal = 18
   var tokenSymbol = transfer.tokenSymbol
   if (tokens[tokenSymbol]) {
-    decimal = tokens[tokenSymbol].decimal
+    decimal = tokens[tokenSymbol].decimals
   }
 
   var account = state.account.account
@@ -342,37 +294,6 @@ function* estimateGasUsedWhenChangeAmount(action){
 }
 
 
-// function* fetchGas(){
-//   var state = store.getState()
-//   var transfer = state.transfer
-//   var tokens = state.tokens.tokens
-
-//   var decimal = 18
-//   var tokenSymbol = transfer.tokenSymbol
-//   if (tokens[tokenSymbol]) {
-//     decimal = tokens[tokenSymbol].decimal
-//   }
-
-//   var account = state.account.account
-//   var fromAddr = account.address
-
-
-
-//   var gasRequest = yield call(common.handleRequest, calculateGasUse, fromAddr, tokenSymbol, transfer.token, decimal, transfer.amount)
-//   if (gasRequest.status === "success"){
-//     const gas = gasRequest.data
-//     yield put(actions.setGasUsed(gas))
-//   }
-//   if ((gasRequest.status === "timeout") || (gasRequest.status === "fail")){
-//     var state = store.getState()
-//     var transfer = state.transfer
-//     var gasLimit = transfer.gas_limit
-//     yield put(actions.setGasUsed(gasLimit))
-//   }
-
-//   //yield call(calculateGasUse, fromAddr, tokenSymbol, transfer.token, decimal, transfer.amount)
-//   yield put(actions.fetchGasSuccess())
-// }
 
 function* fetchGasSnapshot(){
   var state = store.getState()
@@ -480,12 +401,18 @@ function isLedgerError(accountType, error) {
   return accountType === "ledger" && error.hasOwnProperty("native");
 }
 
+function checkIsPayMode() {
+  const state = store.getState();
+
+  return !state.exchange.isSwap;
+}
+
 export function* watchTransfer() {
   //yield takeEvery("TRANSFER.TX_BROADCAST_PENDING", broadCastTx)
   yield takeEvery("TRANSFER.PROCESS_TRANSFER", processTransfer)
 
-  yield takeEvery("TRANSFER.ESTIMATE_GAS_USED", estimateGasUsed)
-  yield takeEvery("TRANSFER.SELECT_TOKEN", estimateGasUsedWhenSelectToken)
+  // yield takeEvery("TRANSFER.ESTIMATE_GAS_USED", estimateGasUsed)
+  // yield takeEvery("TRANSFER.SELECT_TOKEN", estimateGasUsedWhenSelectToken)
   yield takeEvery("TRANSFER.TRANSFER_SPECIFY_AMOUNT", estimateGasUsedWhenChangeAmount)
   //yield takeEvery("TRANSFER.FETCH_GAS", fetchGas)
   yield takeEvery("TRANSFER.FETCH_GAS_SNAPSHOT", fetchGasSnapshot)

@@ -25,6 +25,7 @@ import { clearSession } from "../../actions/globalActions"
 import { ImportAccount } from "../ImportAccount"
 import { KeyStore, Trezor, Ledger, PrivateKey, Metamask } from "../../services/keys"
 import {addPrefixClass} from "../../utils/className"
+import { getAssetUrl } from "../../utils/common";
 
 //import {HeaderTransaction} from "../TransactionCommon"
 
@@ -129,7 +130,7 @@ export default class Payment extends React.Component {
       //const params = this.formParams()
       var token = this.props.exchange.destTokenSymbol
       var tokenAddress = this.props.tokens[token].address
-      var tokenDecimal = this.props.tokens[token].decimal
+      var tokenDecimal = this.props.tokens[token].decimals
       var tokenName = this.props.tokens[token].tokenName
 
       var amount
@@ -143,19 +144,21 @@ export default class Payment extends React.Component {
       var destAddress = this.props.exchange.receiveAddr
       var gas = converter.numberToHex(this.props.exchange.gas)
       var gasPrice = converter.numberToHex(converter.gweiToWei(this.props.exchange.gasPrice))
+      var commissionID = this.props.exchange.commissionID
+      var paymentData = this.props.exchange.paymentData
+      var hint = this.props.exchange.hint
 
       var balanceData = {
         //balance: this.props.form.balance.toString(),
         name: tokenName,
-        decimal: tokenDecimal,
+        decimals: tokenDecimal,
         tokenSymbol: token,
         amount: this.props.destAmount
       }
 
-      this.props.dispatch(transferActions.processTransfer(formId, ethereum, account.address,
-        tokenAddress, amount,
-        destAddress, nonce, gas,
-        gasPrice, account.keystring, account.type, password, account, data, this.props.keyService, balanceData))
+      this.props.dispatch(transferActions.processTransfer(formId, ethereum, account.address, tokenAddress, amount,
+        destAddress, nonce, gas, gasPrice, account.keystring, account.type, password, account, data,
+        this.props.keyService, balanceData, commissionID, paymentData, hint))
     } catch (e) {
       console.log(e)
       //this.props.dispatch(transferActions.throwPassphraseError(this.props.translate("error.passphrase_error")))
@@ -224,11 +227,14 @@ export default class Payment extends React.Component {
       // sourceAmount: this.props.form.balanceData.sourceAmount,
       // destAmount: this.props.form.balanceData.destAmount,
     }
+
+    var paymentData = this.props.exchange.paymentData
+    var hint = this.props.exchange.hint
+
     //var balanceData = {}
     return {
-      selectedAccount, sourceToken, sourceAmount, destToken,
-      minConversionRate, destAddress, maxDestAmount,
-      throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo
+      selectedAccount, sourceToken, sourceAmount, destToken, minConversionRate, destAddress, maxDestAmount,
+      throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo, paymentData, hint
     }
   }
 
@@ -283,11 +289,14 @@ export default class Payment extends React.Component {
       // sourceAmount: this.props.form.balanceData.sourceAmount,
       // destAmount: this.props.form.balanceData.destAmount,
     }
+
+    var paymentData = this.props.exchange.paymentData
+    var hint = this.props.exchange.hint
+
     //var balanceData = {}
     return {
-      selectedAccount, sourceToken, sourceAmount, destToken,
-      minConversionRate, destAddress, maxDestAmount,
-      throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo
+      selectedAccount, sourceToken, sourceAmount, destToken, minConversionRate, destAddress, maxDestAmount,
+      throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo, paymentData, hint
     }
   }
   processExchangeTx = () => {
@@ -318,14 +327,12 @@ export default class Payment extends React.Component {
       // console.log("params: ")
       // console.log(params)
 
-
-      this.props.dispatch(exchangeActions.processExchange(formId, ethereum, account.address, params.sourceToken,
-        params.sourceAmount, params.destToken, params.destAddress,
-        params.maxDestAmount, params.minConversionRate,
-        params.throwOnFailure, params.nonce, params.gas,
-        params.gasPrice, account.keystring, account.type, password, account, data, this.props.keyService, params.balanceData, params.sourceTokenSymbol, params.blockNo))
-
-
+      this.props.dispatch(exchangeActions.processExchange(
+        formId, ethereum, account.address, params.sourceToken, params.sourceAmount, params.destToken, params.destAddress,
+        params.maxDestAmount, params.minConversionRate, params.throwOnFailure, params.nonce, params.gas, params.gasPrice,
+        account.keystring, account.type, password, account, data, this.props.keyService, params.balanceData,
+        params.sourceTokenSymbol, params.blockNo, params.paymentData, params.hint
+      ))
     } catch (e) {
       console.log(e)
       //   this.setState({passwordError : this.props.translate("error.passphrase_error") || "Key derivation failed - possibly wrong password" })
@@ -369,29 +376,29 @@ export default class Payment extends React.Component {
   getAccountBgk = () => {
     const sourceTokenSymbol = this.props.exchange.sourceTokenSymbol;
     const sourceBalance = this.props.tokens[sourceTokenSymbol].balance;
-    const sourceDecimal = this.props.tokens[sourceTokenSymbol].decimal;
+    const sourceDecimal = this.props.tokens[sourceTokenSymbol].decimals;
     const ethBalance = this.props.tokens["ETH"].balance;
     let icon, method;
 
     switch (this.props.account.type) {
       case "metamask":
-        icon = 'metamask_active.svg';
+        icon = 'metamask.svg';
         method = "Metamask";
         break;
       case "keystore":
-        icon = 'keystore_active.svg';
+        icon = 'keystore.svg';
         method = "Json";
         break;
       case "privateKey":
-        icon = 'privatekey_active.svg';
+        icon = 'privatekey.svg';
         method = "Private key";
         break;
       case "trezor":
-        icon = 'trezor_active.svg';
+        icon = 'trezor.svg';
         method = "Trezor";
         break;
       case "ledger":
-        icon = 'ledger_active.svg';
+        icon = 'ledger.svg';
         method = "Ledger";
         break;
       default:
@@ -400,7 +407,7 @@ export default class Payment extends React.Component {
 
     return <div className={addPrefixClass("import-account-content__info import-account-content__info--center")}>
       <div className={addPrefixClass("import-account-content__info-type")}>
-        <img className={addPrefixClass("import-account-content__info-type-image")} src={require(`../../../assets/img/landing/${icon}`)} />
+        <img className={addPrefixClass("import-account-content__info-type-image")} src={getAssetUrl(`wallets/${icon}`)}/>
         <div className={addPrefixClass("import-account-content__info-type-text")}>{method}</div>
       </div>
       <div className={addPrefixClass("import-account-content__info-text")}>

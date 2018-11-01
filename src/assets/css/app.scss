@@ -3,30 +3,11 @@
 @import "util";
 
 @font-face{
-  font-family: 'My-Montserrat';
-  font-style: normal;
-  font-weight: 400;
-  src: url(../fonts/Montserrat-Regular.ttf);
-}
-@font-face{
-  font-family: 'My-Montserrat';
-  font-style: normal;
-  font-weight: 500;
-  src: url(../fonts/Montserrat-Medium.ttf);
-}
-@font-face{
-  font-family: 'My-Montserrat';
-  font-style: normal;
-  font-weight: 600;
-  src: url(../fonts/Montserrat-SemiBold.ttf);
-}
-@font-face{
   font-family: 'text-security-disc';
   font-style: normal;
   font-weight: normal;
   //src: url(../fonts/text-security-disc.ttf);
   src: url(../fonts/text-security-disc.ttf);
-        
 }
 
 $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);

@@ -1,9 +1,9 @@
 import React from "react"
 import { connect } from "react-redux"
-import { PostExchangeWithKey, MinRate, AccountBalance } from "../Exchange"
+import { MinRate, AccountBalance } from "../Exchange"
 import { TransactionConfig } from "../../components/Transaction"
 import { ExchangeBodyLayout } from "../../components/Exchange"
-import { TokenSelector } from "../TransactionCommon"
+import { TokenSelector } from "../Exchange"
 import * as validators from "../../utils/validators"
 import * as common from "../../utils/common"
 import * as converter from "../../utils/converter"
@@ -12,6 +12,7 @@ import constansts from "../../services/constants"
 import { getTranslate } from 'react-localize-redux'
 import { default as _ } from 'underscore'
 import {addPrefixClass} from "../../utils/className"
+import { getTokenUrl } from "../../utils/common";
 
 @connect((store, props) => {
 
@@ -31,7 +32,7 @@ import {addPrefixClass} from "../../utils/className"
   var rateSourceToEth = 0
   if (tokens[sourceTokenSymbol]) {
     sourceBalance = tokens[sourceTokenSymbol].balance
-    sourceDecimal = tokens[sourceTokenSymbol].decimal
+    sourceDecimal = tokens[sourceTokenSymbol].decimals
     sourceName = tokens[sourceTokenSymbol].name
     rateSourceToEth = tokens[sourceTokenSymbol].rate
   }
@@ -42,7 +43,7 @@ import {addPrefixClass} from "../../utils/className"
   var destName = "Kybernetwork"
   if (tokens[destTokenSymbol]) {
     destBalance = tokens[destTokenSymbol].balance
-    destDecimal = tokens[destTokenSymbol].decimal
+    destDecimal = tokens[destTokenSymbol].decimals
     destName = tokens[destTokenSymbol].name
   }
 
@@ -180,7 +181,7 @@ export default class ExchangeBody extends React.Component {
     //var minRate = 0
     var tokens = this.props.tokens
     if (tokens[sourceTokenSymbol]) {
-      sourceDecimal = tokens[sourceTokenSymbol].decimal
+      sourceDecimal = tokens[sourceTokenSymbol].decimals
       //minRate = tokens[sourceTokenSymbol].minRate
     }
 
@@ -284,7 +285,7 @@ export default class ExchangeBody extends React.Component {
     var tokenDestSelect = this.props.global.params.receiveToken && this.props.tokens[this.props.global.params.receiveToken] ? (
       <div className={addPrefixClass("token-chooser token-dest")}>
         <div className={addPrefixClass("focus-item")}>
-          <img src={require("../../../assets/img/tokens/" + this.props.tokens[this.props.global.params.receiveToken].icon)} />
+          <img src={getTokenUrl(this.props.tokens[this.props.global.params.receiveToken].symbol)}/>
           <div className={addPrefixClass("focus-balance")}>
             <span className={addPrefixClass("token-symbol")}>{this.props.global.params.receiveToken}</span>
           </div>
@@ -327,19 +328,21 @@ export default class ExchangeBody extends React.Component {
       }
     }
 
-    var exchangeButton = (
-      <PostExchangeWithKey />
-    )
+    // var exchangeButton = (
+    //   <PostExchangeWithKey />
+    // )
 
 
-    var addressBalance = ""
-    var token = this.props.tokens[this.props.exchange.sourceTokenSymbol]
-    if (token) {
-      addressBalance = {
-        value: converter.toT(token.balance, token.decimal),
-        roundingValue: converter.roundingNumber(converter.toT(token.balance, token.decimal))
-      }
-    }
+   // var addressBalance = ""
+    //var token = this.props.tokens[this.props.exchange.sourceTokenSymbol]
+    // console.log("exchange_tokens")
+    // console.log(token)
+    // if (token) {
+    //   addressBalance = {
+    //     value: converter.toT(token.balance, token.decimals),
+    //     roundingValue: converter.roundingNumber(converter.toT(token.balance, token.decimals))
+    //   }
+    // }
 
     var accountBalance = ""
     if (this.props.account.account !== false) {
