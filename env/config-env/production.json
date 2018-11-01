@@ -25,6 +25,7 @@
     "api_tokens": "https://api.kyber.network/currencies",
     "tokens_gas": {
       "ETH": 0,
+      "DAI": 450000,
       "DGX": 750000
     },
     "tokens": {
