@@ -180,6 +180,11 @@
       div:first-child {
         width: 115px;
       }
+
+      div:last-child {
+        word-break: break-word;
+        max-width: 300px;
+      }
     }
     &.kyber-product-name {
       .info-2__content {
