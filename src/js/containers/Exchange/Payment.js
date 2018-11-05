@@ -447,11 +447,7 @@ export default class Payment extends React.Component {
     var tokenSymbol = this.props.exchange.sourceTokenSymbol
     var gasApprove = this.props.tokens[tokenSymbol].gasApprove
     if (gasApprove) return gasApprove
-    if (source !== 'DGX') {
-      return 100000
-    } else {
-      return 120000
-    }
+    return this.props.exchange.max_gas_approve
   }
   
   render() {
