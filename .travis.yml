@@ -56,6 +56,18 @@ deploy:
     on:
       branch: develop
 
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: widget.kyber.network
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: widget/config
+    upload-dir: widget/config
+    skip_cleanup: true
+    on:
+      branch: master
+
   # etheremon-widget 
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY_ID
@@ -67,6 +79,17 @@ deploy:
     skip_cleanup: true
     on:
       branch: develop_etheremon
+
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: etheremon.kyber.network
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: dist/native
+    skip_cleanup: true
+    on:
+      branch: master_etheremon
 
   # widget-wrapper
   - provider: s3
@@ -81,6 +104,18 @@ deploy:
     on:
       branch: develop_wrapper
 
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: widget.kyber.network
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: dist/native
+    upload-dir: wrapper
+    skip_cleanup: true
+    on:
+      branch: master_wrapper
+
   # examples
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY_ID
@@ -93,3 +128,15 @@ deploy:
     skip_cleanup: true
     on:
       branch: develop_wrapper
+
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: widget.kyber.network
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: examples
+    upload-dir: examples
+    skip_cleanup: true
+    on:
+      branch: master_wrapper
