@@ -67,13 +67,13 @@
 ## 4. Examples of integration:
    - ***Daonomic***: 
    
-       +) Source code: https://github.com/KyberNetwork/KyberWidget/blob/master_wrapper/dapps/daonomic/index.html
+       +) Source code: /dapps/daonomic/index.html
        
        +) Live demo: https://widget.kyber.network/dapps/daonomic/
                
    - ***Etheremon***: 
    
-       +) Source code: https://github.com/KyberNetwork/KyberWidget/tree/master_wrapper/dapps/etheremon
+       +) Source code: /dapps/etheremon/index.html
        
        +) Live demo: https://widget.kyber.network/dapps/etheremon/?network=rinkeby&productId=105
    
