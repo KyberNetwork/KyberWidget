@@ -11,6 +11,7 @@ node_js:
 
 env:
   - WIDGET_VERSION=v0.2
+  - DAPP_LIBS_VERSION=v0.1
 script: 
   - echo "npm test temporarily disabled"
 
@@ -56,6 +57,18 @@ deploy:
     on:
       branch: develop
 
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: widget.kyber.network
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: widget/config
+    upload-dir: widget/config
+    skip_cleanup: true
+    on:
+      branch: master
+
   # etheremon-widget 
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY_ID
@@ -67,6 +80,17 @@ deploy:
     skip_cleanup: true
     on:
       branch: develop_etheremon
+
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: etheremon.kyber.network
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: dist/native
+    skip_cleanup: true
+    on:
+      branch: master_etheremon
 
   # widget-wrapper
   - provider: s3
@@ -81,15 +105,64 @@ deploy:
     on:
       branch: develop_wrapper
 
-  # examples
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: widget.kyber.network
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: dist/native
+    upload-dir: wrapper
+    skip_cleanup: true
+    on:
+      branch: master_wrapper
+
+  # dapps
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY_ID
     secret_access_key: $AWS_SECRET_ACCESS_KEY
     bucket: dev-widget.knstats.com
     region: ap-southeast-1
     acl: public_read
-    local_dir: examples
-    upload-dir: examples
+    local_dir: dapps
+    upload-dir: dapps
     skip_cleanup: true
     on:
       branch: develop_wrapper
+
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: widget.kyber.network
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: dapps
+    upload-dir: dapps
+    skip_cleanup: true
+    on:
+      branch: master_wrapper
+
+  # dapp-libs
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: dev-widget.knstats.com
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: dist/native
+    upload-dir: dapp-libs
+    skip_cleanup: true
+    on:
+      branch: develop_wrapper
+
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: widget.kyber.network
+    region: ap-southeast-1
+    acl: public_read
+    local_dir: dist/native
+    upload-dir: dapp-libs/$DAPP_LIBS_VERSION
+    skip_cleanup: true
+    on:
+      branch: master_wrapper
