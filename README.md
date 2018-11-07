@@ -14,7 +14,15 @@
 ## 3. Params to pass to the Widget
 - ***appId*** (string) - **required** - Id of html tag, which redering widget.
 - ***wrapper*** (string) - **required** - Address of smartcontract wrapper, which integrating with Kyber.
-- ***getPrice*** (function): This function return a Promise, calculates a price of the asset by ETH and displays ETH price in widget. Example: ```function() { return new Promise((resolve, reject) => {resolve(productionPrice)}}```    
+- ***getPrice*** (function): This function return a Promise, calculates a price of the asset by ETH and displays ETH price in widget. Example: 
+            ```
+            
+            function() { 
+            
+              return new Promise((resolve, reject) => {resolve(productionPrice)}
+              
+            }
+           
 - ***getTxData*** (function) - This function return a Promise, calculates txObject will send to blockchain. Example:
             ```
             
@@ -35,7 +43,7 @@
                 return new Promise((resolve, reject) => {resolve(txObj)}}
                 
             }
-            ```
+     
 - ***errors*** (Object{key => value}) - List errors will display in widget (in case wrong parmas, network issues, etc.)
 - ***params*** (string) - List of optional param with purpose as below:    
       - pinnedTokens (string) - default: "ETH_KNC_DAI". This param help to show priority tokens in list select token.
