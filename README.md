@@ -1,5 +1,4 @@
 # Dapp widget
-Payment button (widget) to allow users to pay for monster in etheremon with tokens
 
 ## 1. Usercase of Dapp widget:
   - Merchant has a smartcontract, which allow their users buy digital assets 
