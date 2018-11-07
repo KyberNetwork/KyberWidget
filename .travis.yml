@@ -11,7 +11,7 @@ node_js:
 
 env:
   - WIDGET_VERSION=v0.2
-  - DAPP_LIBS_VERSION=v0.1
+    DAPP_LIBS_VERSION=v0.1
 script: 
   - echo "npm test temporarily disabled"
 
