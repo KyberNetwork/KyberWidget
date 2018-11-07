@@ -602,10 +602,16 @@ export function closeImportAccountExchange(){
     type: "EXCHANGE.CLOSE_IMPORT_ACCOUNT"
   }
 }
-export function initParamsExchange(productId, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, listPinTokens, getPrice, getTxData, wrapper, tokens){
+export function initParamsExchange(
+  productId, productName, productAvatar, callback, network, paramForwarding, signer,
+  commissionID, listPinTokens, disabledTokens, getPrice, getTxData, wrapper, tokens
+) {
   return {
     type: "EXCHANGE.INIT_PARAMS_EXCHANGE",
-    payload: {productId, productName, productAvatar, callback, network, paramForwarding, signer, commissionID, listPinTokens, getPrice, getTxData, wrapper, tokens}
+    payload: {
+      productId, productName, productAvatar, callback, network, paramForwarding, signer,
+      commissionID, listPinTokens, disabledTokens, getPrice, getTxData, wrapper, tokens
+    }
   }
 }
 
