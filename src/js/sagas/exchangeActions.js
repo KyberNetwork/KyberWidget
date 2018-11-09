@@ -1686,8 +1686,9 @@ export function* initParamsExchange(action) {
   yield put.sync(setConnection(ethereum))
 
   try {
+   // console.log(getPrice)
     var productPrice = yield call(getPrice)
-
+   // console.log(productPrice)
     yield put.sync(actions.updateProductInfo(productPrice))
 
     const {expectedRate, slippageRate} = yield call(getProductRateInToken, exchange.sourceTokenSymbol, productPrice, tokens);

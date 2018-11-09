@@ -55,24 +55,25 @@ function getListTokens(network) {
 }
 
 function initParams(appId, wrapper, getPrice, getTxData, params, errors) {
-  var widgetParent = document.getElementById(appId)
-  var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
-  var query = {}
+  // var widgetParent = document.getElementById(appId)
+  // var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
+  // var query = {}
 
-  if (attributeWidget === true || attributeWidget === 'true') {
-    for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++) {
-      var nodeName = atts[i].nodeName
-      if (nodeName.includes('data-widget')) {
-        var key = nodeName.replace('data-widget-', '');
+  // if (attributeWidget === true || attributeWidget === 'true') {
+  //   for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++) {
+  //     var nodeName = atts[i].nodeName
+  //     if (nodeName.includes('data-widget')) {
+  //       var key = nodeName.replace('data-widget-', '');
 
-        key = common.lineToCamel(key)
+  //       key = common.lineToCamel(key)
 
-        query[key] = atts[i].nodeValue
-      }
-    }
-  } else {
-    query = common.getQueryParams(window.location.search)
-  }
+  //       query[key] = atts[i].nodeValue
+  //     }
+  //   }
+  // } else {
+  //   query = common.getQueryParams(window.location.search)
+  // }
+  var query = {...params}
 
   getListTokens(params.network).then(tokens => {
     query.appId = appId
