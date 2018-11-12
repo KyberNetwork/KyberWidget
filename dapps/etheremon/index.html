@@ -77,15 +77,16 @@
                 url: 'https://rinkeby.infura.io/DtzEYY0Km2BA3YwyJcBG',
                 kyber_network: '0x39CC6802cF1625C30548B57D885932CB381EB4a4',
                 wrapper: '0xf1f149ee80118c909d970b5cd39a11b2d5498c6e',
-                etheremonAddr: '0x966f00aad48a182dbaa0c040f267d62713ecb699'
+                etheremonAddr: '0x966f00aad48a182dbaa0c040f267d62713ecb699',
+                disabledTokens: []
             },
             mainnet: {
                 url: 'https://mainnet.infura.io',
                 kyber_network: '0x39CC6802cF1625C30548B57D885932CB381EB4a4',
                 wrapper: '0xffa4bee0b9cd2c2e4eacb8d8f11096baa3e6c55d',
-                etheremonAddr: '0x5f480ca354304aae88d7dd66cd4735c59d543af0'
-            },
-            disabledTokens: ["OMG", "ADX", "PAY", "MTL", "SUB", "BNB", "DAT", "DGX"],
+                etheremonAddr: '0x5f480ca354304aae88d7dd66cd4735c59d543af0',
+                disabledTokens: ["OMG", "ADX", "PAY", "MTL", "SUB", "BNB", "DAT", "DGX"]
+            }
         }
 
         function getParameterByName(name, url) {
@@ -150,14 +151,14 @@
           var productId = getParameterByName('monsterId');
           var productName = getParameterByName('monsterName');
           var payPrice = getParameterByName('payPrice');
-          var network = getParameterByName('network');
+          var network = adjustNetwork(getParameterByName('network'));
           var productAvatar = getParameterByName('monsterAvatar');
           var callback = getParameterByName('callback');
           var paramForwarding = getParameterByName('paramForwarding');
           var signer = getParameterByName('signer');
           var commissionID = getParameterByName('commissionID');
           var pinnedTokens = getParameterByName('pinnedTokens') || [];
-          var disabledTokens = config.disabledTokens;
+          var disabledTokens = config[network].disabledTokens;
           var errors = validateParams(productId, commissionID, callback, signer);
 
           if (!payPrice) {
@@ -166,7 +167,6 @@
                 payPrice = Math.floor(payPrice*1000000000000000000)
             }
           paramForwarding = paramForwarding === "true" || paramForwarding === true;
-          network = adjustNetwork(network);
 
           return {
             productId, productName, payPrice, network, errors, productAvatar, callback,
