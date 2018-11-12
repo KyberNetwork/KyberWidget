@@ -29,7 +29,6 @@ const AdvanceConfigLayout = (props) => {
         </div>
       </div>
       <div className={addPrefixClass("advance-config")}>
-        {/* <div className="title advance-title-desktop">{props.translate("transaction.advanced") || "Advanced"}</div> */}
         <div id="advance-content">
           <div className={addPrefixClass("advance-content")}>
             <div>

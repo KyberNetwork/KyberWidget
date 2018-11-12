@@ -1,34 +1,14 @@
 import React from "react"
 import { connect } from "react-redux"
-import { ExchangeBody, MinRate } from "../Exchange"
-//import {GasConfig} from "../TransactionCommon"
-import { AdvanceConfigLayout, GasConfig } from "../../components/TransactionCommon"
-
-
-
-
-//import {TransactionLayout} from "../../components/TransactionCommon"
 import { getTranslate } from 'react-localize-redux'
-
 import * as converter from "../../utils/converter"
 import * as validators from "../../utils/validators"
 import * as exchangeActions from "../../actions/exchangeActions"
-
 import * as transferActions from "../../actions/transferActions"
-
 import * as accountActions from "../../actions/accountActions"
-
-
-import { default as _ } from 'underscore'
-import { clearSession } from "../../actions/globalActions"
-
-import { ImportAccount } from "../ImportAccount"
 import { KeyStore, Trezor, Ledger, PrivateKey, Metamask } from "../../services/keys"
 import {addPrefixClass} from "../../utils/className"
 import { getAssetUrl } from "../../utils/common";
-
-//import {HeaderTransaction} from "../TransactionCommon"
-
 
 function getKeyService(type) {
   var keyService
@@ -81,7 +61,6 @@ export default class Payment extends React.Component {
     super()
     this.state = {
       showPassword: false,
-      //  passwordError: ""
     }
   }
 
@@ -93,8 +72,6 @@ export default class Payment extends React.Component {
   }
 
   approveToken = () => {
-    // const params = this.formParamOfSnapshot()
-    // console.log(params)
     var params
     if (this.props.exchange.isHaveDestAmount) {
       params = this.formParamOfSnapshotMaxDest()
@@ -117,9 +94,6 @@ export default class Payment extends React.Component {
         document.getElementById("passphrase").value = ''
       }
 
-      var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
-
-
       // sending by wei
       var account = this.props.account
       var nonce = validators.verifyNonce(this.props.account.getUsableNonce())
@@ -127,7 +101,6 @@ export default class Payment extends React.Component {
       var formId = "transfer"
       var data = ""
 
-      //const params = this.formParams()
       var token = this.props.exchange.destTokenSymbol
       var tokenAddress = this.props.tokens[token].address
       var tokenDecimal = this.props.tokens[token].decimals
@@ -149,7 +122,6 @@ export default class Payment extends React.Component {
       var hint = this.props.exchange.hint
 
       var balanceData = {
-        //balance: this.props.form.balance.toString(),
         name: tokenName,
         decimals: tokenDecimal,
         tokenSymbol: token,
@@ -161,13 +133,10 @@ export default class Payment extends React.Component {
         this.props.keyService, balanceData, commissionID, paymentData, hint))
     } catch (e) {
       console.log(e)
-      //this.props.dispatch(transferActions.throwPassphraseError(this.props.translate("error.passphrase_error")))
-      // this.setState({passwordError : this.props.translate("error.passphrase_error") || "Key derivation failed - possibly wrong password" })
     }
   }
 
   getSourceAmount = () => {
-    //var sourceAmount = converter.stringToHex(this.props.snapshot.sourceAmount, this.props.snapshot.sourceDecimal)
     var minConversionRate = converter.toTWei(this.props.snapshot.minConversionRate)
 
     var sourceAmount = converter.caculateSourceAmount(this.props.snapshot.destAmount, minConversionRate, 6)
@@ -218,20 +187,14 @@ export default class Payment extends React.Component {
       sourceName: this.props.snapshot.sourceName,
       sourceSymbol: this.props.snapshot.sourceTokenSymbol,
       sourceDecimal: this.props.snapshot.sourceDecimal,
-      // source: this.props.snapshot.sourceBalance.toString(),
       destName: this.props.snapshot.destName,
       destDecimal: this.props.snapshot.destDecimal,
       destSymbol: this.props.snapshot.destTokenSymbol,
-      //  dest: this.props.snapshot.destBalance.toString(),
-
-      // sourceAmount: this.props.form.balanceData.sourceAmount,
-      // destAmount: this.props.form.balanceData.destAmount,
     }
 
     var paymentData = this.props.exchange.paymentData
     var hint = this.props.exchange.hint
 
-    //var balanceData = {}
     return {
       selectedAccount, sourceToken, sourceAmount, destToken, minConversionRate, destAddress, maxDestAmount,
       throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo, paymentData, hint
@@ -280,34 +243,27 @@ export default class Payment extends React.Component {
       sourceName: this.props.snapshot.sourceName,
       sourceSymbol: this.props.snapshot.sourceTokenSymbol,
       sourceDecimal: this.props.snapshot.sourceDecimal,
-      // source: this.props.snapshot.sourceBalance.toString(),
       destName: this.props.snapshot.destName,
       destDecimal: this.props.snapshot.destDecimal,
       destSymbol: this.props.snapshot.destTokenSymbol,
-      //  dest: this.props.snapshot.destBalance.toString(),
-
-      // sourceAmount: this.props.form.balanceData.sourceAmount,
-      // destAmount: this.props.form.balanceData.destAmount,
     }
 
     var paymentData = this.props.exchange.paymentData
     var hint = this.props.exchange.hint
 
-    //var balanceData = {}
     return {
       selectedAccount, sourceToken, sourceAmount, destToken, minConversionRate, destAddress, maxDestAmount,
       throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo, paymentData, hint
     }
   }
   processExchangeTx = () => {
-    // var errors = {}
     try {
       var password = ""
       if (this.props.account.type === "keystore") {
         password = document.getElementById("passphrase").value
         document.getElementById("passphrase").value = ''
       }
-      //const params = this.formParams()
+
       var params
       if (this.props.exchange.isHaveDestAmount) {
         params = this.formParamOfSnapshotMaxDest()
@@ -316,16 +272,10 @@ export default class Payment extends React.Component {
       }
 
       //check nonce
-      var nonce = this.props.account.getUsableNonce()
-
       var account = this.props.account
       var ethereum = this.props.ethereum
-
       var formId = "exchange"
       var data = ""
-
-      // console.log("params: ")
-      // console.log(params)
 
       this.props.dispatch(exchangeActions.processExchange(
         formId, ethereum, account.address, params.sourceToken, params.sourceAmount, params.destToken, params.destAddress,
@@ -335,9 +285,6 @@ export default class Payment extends React.Component {
       ))
     } catch (e) {
       console.log(e)
-      //   this.setState({passwordError : this.props.translate("error.passphrase_error") || "Key derivation failed - possibly wrong password" })
-
-      //  this.props.dispatch(exchangeActions.throwPassphraseError(this.props.translate("error.passphrase_error")))
     }
   }
 
@@ -362,15 +309,6 @@ export default class Payment extends React.Component {
       return ""
     })
     return <ul>{errorItem}</ul>
-  }
-
-
-  getValueYoupay = () => {
-    if (this.props.exchange.sourceSymbol === this.props.exchange.destTokenSymbol) {
-      return this.props.destAmount
-    } else {
-      return converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)
-    }
   }
 
   getAccountBgk = () => {
@@ -468,10 +406,8 @@ export default class Payment extends React.Component {
 
 
     var classError = ""
-    var isHaveError = false
     if (validators.anyErrors(this.props.exchange.errors)) {
       classError += " error"
-      isHaveError = true
     }
 
     var classDisable = ""
@@ -488,10 +424,6 @@ export default class Payment extends React.Component {
 
     return (
       <div id="exchange" className={addPrefixClass("widget-exchange k-frame payment_confirm" + classError)}>
-
-        {/* <div className="payment-gateway__step-title payment-gateway__step-title--3">
-          {this.props.translate("transaction.confirm_transaction") || "Confirm Transaction"}
-        </div> */}
 
         {this.getAccountBgk()}
 

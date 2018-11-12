@@ -15,7 +15,6 @@ export function* handleRequest(sendRequest, ...args) {
     })
         
 	if (timeout) {     
-        //console.log("timeout")
         yield cancel(task)
         return {status: "timeout"}   
     }
@@ -25,17 +24,6 @@ export function* handleRequest(sendRequest, ...args) {
     }else{
         return { status: "fail", data: res.err }    
     }
-   // return { status: "success", data: res }
-
-    // console.log(res)
-	// if (res.err) {
-    //     return new Promise(resolve => {
-    //         resolve ({
-    //             status: "error",
-    //             data: res.err
-    //         })
-    //     })
-	// }
 }
 
 export function getNetworkId(){
@@ -65,7 +53,6 @@ export function* submitCallback(hash){
       var submitUrl = exchange.callback 
       var params = {
         tx: hash,
-       // network: global.params.network
       }
       if (exchange.paramForwarding !== false && exchange.paramForwarding !== 'false'){
         Object.keys(global.params).map(key=>{
@@ -108,56 +95,6 @@ export function* retrySubmit(path, params, method, timeout){
   }
 
   throw Error("Cannot submit data to callback URL, please contact the merchant for more information");
-}
-
-
-export function* submitData(path, params, method, timeout){
-  var maxTry = 3
-  console.log("retry_callback")
-  for (var i = 0; i < maxTry; i++){
-    console.log("callback_times: " + i)
-    try{
-       var response = yield call(commonFunc.submitUrlEncoded, path, params, method, timeout)
-       console.log(response)
-       if (response.success){
-         return true
-       }
-    }catch(e){
-      console.log(e)    
-    }
-    
-    try{
-      var response = yield call(commonFunc.submitForm, path, params, method, timeout)
-      console.log(response)
-      if (response.success){
-        return true
-      }
-    }catch(e){
-      console.log(e)    
-    }
-
-    try{
-      var response = yield call(commonFunc.submitPayloadOption, path, params, method, timeout)
-      console.log(response)
-      if (response.success){
-        return true
-      }
-    }catch(e){
-      console.log(e)    
-    }
-
-    try{
-      var response = yield call(commonFunc.submitPayload, path, params, method, timeout)
-      console.log(response)
-      if (response.success){
-        return true
-      }
-    }catch(e){
-      console.log(e)    
-    }
-
-  }
-  return false
 }
 
 export function* estimateEthTransfer(address) {

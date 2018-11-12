@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from "react-redux"
-import { MinRate, AccountBalance } from "../Exchange"
+import { AccountBalance } from "../Exchange"
 import { TransactionConfig } from "../../components/Transaction"
 import { ExchangeBodyLayout } from "../../components/Exchange"
 import { TokenSelector } from "../Exchange"
@@ -21,7 +21,6 @@ import { getTokenUrl } from "../../utils/common";
 
   const ethereum = store.connection.ethereum
   const account = store.account
-  const exchange = store.exchange
   const tokens = store.tokens.tokens
   const translate = getTranslate(store.locale)
 
@@ -71,9 +70,7 @@ export default class ExchangeBody extends React.Component {
 
   acceptedTerm = () => {
     var checked = document.getElementById('term-agree').checked
-    // console.log("term_value")
-    // console.log(checked)console.log("term_value")
-    // console.log(checked)
+
     if (checked) {
       this.setState({ acceptedTerm: true })
     } else {
@@ -90,7 +87,6 @@ export default class ExchangeBody extends React.Component {
     }
 
     var isValidate = true
-    //validate errors
 
     if (!this.props.exchange.kyber_enabled) {
       this.props.dispatch(exchangeActions.thowErrorSourceAmount("Kyber swap is not enabled"))
@@ -118,8 +114,7 @@ export default class ExchangeBody extends React.Component {
       if (this.props.exchange.sourceTokenSymbol !== "ETH") {
         srcAmount = converter.calculateDest(srcAmount, this.props.exchange.rateSourceToEth, 6)
       }
-      // console.log("converter_sourceamount")
-      // console.log(srcAmount)
+
       if (parseFloat(srcAmount) < parseFloat(converter.toEther(constansts.EPSILON))) {
         var minAmount = converter.toEther(constansts.EPSILON)
         this.props.dispatch(exchangeActions.thowErrorSourceAmount(this.props.translate("error.source_amount_too_small", { minAmount: minAmount }) || `Source amount is too small. Minimum amount is ${minAmount} ETH equivalent.`))
@@ -136,7 +131,6 @@ export default class ExchangeBody extends React.Component {
     } else {
       if (gasPrice > this.props.exchange.maxGasPrice) {
         this.props.dispatch(exchangeActions.throwErrorExchange("gasPriceError", this.props.translate("error.gas_price_limit", { maxGas: this.props.exchange.maxGasPrice }) || "Gas price exceeds limit"))
-        //this.props.dispatch(exchangeActions.thowErrorGasPrice("error.gas_price_limit"))
         isValidate = false
       }
     }
@@ -178,18 +172,9 @@ export default class ExchangeBody extends React.Component {
     if (this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol) {
       return
     }
-    //var minRate = 0
-    var tokens = this.props.tokens
-    if (tokens[sourceTokenSymbol]) {
-      sourceDecimal = tokens[sourceTokenSymbol].decimals
-      //minRate = tokens[sourceTokenSymbol].minRate
-    }
 
-    var ethereum = this.props.ethereum
     var source = this.props.exchange.sourceToken
     var dest = this.props.exchange.destToken
-    var destTokenSymbol = this.props.exchange.destTokenSymbol
-
 
     this.props.dispatch(exchangeActions.updateRateExchange(source, dest, sourceValue, sourceTokenSymbol, true))
   }
@@ -251,13 +236,6 @@ export default class ExchangeBody extends React.Component {
   swapToken = () => {
     this.props.dispatch(exchangeActions.swapToken(this.props.exchange.sourceTokenSymbol, this.props.exchange.destTokenSymbol))
     this.props.ethereum.fetchRateExchange(true)
-
-    // var path = constansts.BASE_HOST + "/swap/" + this.props.exchange.destTokenSymbol.toLowerCase() + "_" + this.props.exchange.sourceTokenSymbol.toLowerCase()
-    // path = common.getPath(path, constansts.LIST_PARAMS_SUPPORTED)
-    // if (this.props.currentLang !== "en"){
-    //   path += "?lang=" + this.props.currentLang
-    // }
-    //this.props.dispatch(globalActions.goToRoute(path))
   }
 
   render() {
@@ -328,22 +306,6 @@ export default class ExchangeBody extends React.Component {
       }
     }
 
-    // var exchangeButton = (
-    //   <PostExchangeWithKey />
-    // )
-
-
-   // var addressBalance = ""
-    //var token = this.props.tokens[this.props.exchange.sourceTokenSymbol]
-    // console.log("exchange_tokens")
-    // console.log(token)
-    // if (token) {
-    //   addressBalance = {
-    //     value: converter.toT(token.balance, token.decimals),
-    //     roundingValue: converter.roundingNumber(converter.toT(token.balance, token.decimals))
-    //   }
-    // }
-
     var accountBalance = ""
     if (this.props.account.account !== false) {
       accountBalance = <AccountBalance
@@ -351,11 +313,8 @@ export default class ExchangeBody extends React.Component {
       />
     }
 
-    // console.log("is_select_token")
-    // console.log(this.props.exchange.isSelectToken)
     var classNamePaymentbtn
     if (!validators.anyErrors(this.props.exchange.errors) && this.state.acceptedTerm && !this.props.exchange.isSelectToken) {
-      //className += " animated infinite pulse next"
       classNamePaymentbtn = addPrefixClass("button accent next")
     } else {
       classNamePaymentbtn = addPrefixClass("button accent disable")
