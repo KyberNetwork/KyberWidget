@@ -65,7 +65,7 @@
         }
     </style>
     <!-- <script type="text/javascript" src="https://widget.kyber.network/dapp-libs/v0.1/app.min.js?v=1538453945568"></script> -->
-    <script type="text/javascript" src="https://dev-widget.knstats.com/dapp-libs/app.min.js?v=1538453945568"></script>    
+    <script type="text/javascript" src="https://dev-widget.knstats.com/dapp-libs/app.min.js?v=1538453945568"></script>
     <!-- <script type="text/javascript" src="https://widget.kyber.network/dapp-libs/v0.1/app.min.js?v=1538453945568"></script> -->
     <!-- <script type="text/javascript" src="http://192.168.2.29:8081/app.min.js?v=1538453945553"></script> -->
     <!-- <script type="text/javascript" src="http://0.0.0.0:3002/app.min.js?v=1538453945553"></script> -->
@@ -84,7 +84,8 @@
                 kyber_network: '0x39CC6802cF1625C30548B57D885932CB381EB4a4',
                 wrapper: '0xffa4bee0b9cd2c2e4eacb8d8f11096baa3e6c55d',
                 etheremonAddr: '0x5f480ca354304aae88d7dd66cd4735c59d543af0'
-            }
+            },
+            disabledTokens: ["OMG", "ADX", "PAY", "MTL", "SUB", "BNB", "DAT", "DGX"],
         }
 
         function getParameterByName(name, url) {
@@ -156,7 +157,7 @@
           var signer = getParameterByName('signer');
           var commissionID = getParameterByName('commissionID');
           var pinnedTokens = getParameterByName('pinnedTokens') || [];
-          var disabledTokens = getParameterByName('disabledTokens') || [];
+          var disabledTokens = config.disabledTokens;
           var errors = validateParams(productId, commissionID, callback, signer);
 
           if (!payPrice) {
