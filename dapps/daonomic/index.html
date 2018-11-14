@@ -106,7 +106,7 @@
           return valid ? null : "invalid"
         }
 
-        function validateParams(commissionID, callback, signer) {
+        function validateParams(commissionID, callback, signer, saleAddr, amount) {
           var errors = {};
 
           if (commissionID && verifyAccount(commissionID)) {
@@ -128,9 +128,17 @@
             });
 
             if (invalidAddresses.length > 0) {
-              errors["signer"] = "Signer include invalid addresses"
+              errors["signer"] = "Signer include invalid addresse"
             }
           }
+
+          if (!saleAddr || verifyAccount(saleAddr)) {
+                errors["saleAddr"] = "saleAddr is invalid addresses"
+            }
+            
+        if (!amount){
+            errors["amount"] = "Amount is invalid"
+        }
 
           return errors;
         }
@@ -159,14 +167,19 @@
           var commissionID = getParameterByName('commissionID');
           var pinnedTokens = getParameterByName('pinnedTokens') || [];
           var disabledTokens = getParameterByName('disabledTokens') || [];
-          var errors = validateParams(commissionID, callback, signer);
+
+          var saleAddr = getParameterByName('saleAddr');
+          var amount = getParameterByName('amount');
+          var errors = validateParams(commissionID, callback, signer, saleAddr, amount);
+
+          
 
           paramForwarding = paramForwarding === "true" || paramForwarding === true;
           network = adjustNetwork(network);
 
           return {
             productId, productName, network, errors, productAvatar, callback,
-            paramForwarding, signer, commissionID, pinnedTokens, disabledTokens
+            paramForwarding, signer, commissionID, pinnedTokens, disabledTokens, saleAddr, amount
           }
         }
 
@@ -183,14 +196,17 @@
                 wrapper: configData.wrapper,
                 getPrice: function () {
                     return new Promise((resolve, reject) => {
-                        wapperContract.methods.getETHPrice(configData.saleAddr).call()
-                            .then(result => {
-                                var ethPrice = result
-                                resolve(ethPrice)
-                            }).catch(e => {
-                                console.log(e)
-                                reject(e)
-                            })
+                        var price = params.amount*Math.pow(10,18)
+                        console.log(price)
+                        resolve(price);
+                        // wapperContract.methods.getETHPrice(configData.saleAddr).call()
+                        //     .then(result => {
+                        //         var ethPrice = result
+                        //         resolve(ethPrice)
+                        //     }).catch(e => {
+                        //         console.log(e)
+                        //         reject(e)
+                        //     })
                     })
 
                 },
