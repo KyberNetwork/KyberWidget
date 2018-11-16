@@ -28,7 +28,7 @@ function getListTokens(network) {
       return response.json()
     })
       .then((result) => {
-        if (result.error === false) {
+        if (result.success) {
           //check listing time
           var now = Math.round(new Date().getTime() / 1000)
           var tokens = {}

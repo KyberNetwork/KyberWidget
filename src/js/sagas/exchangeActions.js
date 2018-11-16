@@ -77,6 +77,8 @@ function* selectToken(action) {
 }
 
 export function* estimateGasUsed(source, dest) {
+  const state = store.getState();
+  const tokens = state.tokens.tokens;
   var gasUsed
   var gasApproved = 0
 
@@ -95,8 +97,7 @@ export function* estimateGasUsed(source, dest) {
   } else {
     gasUsed = yield call(getMaxGasExchange, source, dest)
     if (source !== "ETH") {
-      gasApproved = yield call(getMaxGasApprove, source)
-      //gasUsed += gasApprove
+      gasApproved = yield call(getMaxGasApprove, tokens[source].gasApprove);
     }
   }
   yield put(actions.setEstimateGas(gasUsed, gasApproved))
@@ -1214,12 +1215,8 @@ function* getMaxGasExchange(source, dest){
   }
 }
 
-function* getMaxGasApprove(source) {
-  if (source !== 'DGX') {
-    return 100000
-  } else {
-    return 120000
-  }
+function* getMaxGasApprove(tokenGasApprove) {
+  return tokenGasApprove ? tokenGasApprove : 100000;
 }
 
 function* getGasConfirm() {
