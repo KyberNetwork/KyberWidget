@@ -275,7 +275,7 @@ export function* processApproveByMetamask(action) {
 }
 
 export function* processExchange(action) {
-  const { type } = action.payload;
+  const { type, sourceToken } = action.payload;
 
   yield put(actions.resetSignError());
 
