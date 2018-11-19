@@ -28,7 +28,7 @@ function getListTokens(network) {
       return response.json()
     })
       .then((result) => {
-        if (result.error === false) {
+        if (result.success) {
           //check listing time
           var now = Math.round(new Date().getTime() / 1000)
           var tokens = {}
@@ -55,9 +55,9 @@ function getListTokens(network) {
 }
 
 function initParams(appId, wrapper, getPrice, getTxData, params, errors) {
-  var widgetParent = document.getElementById(appId)
-  //var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
-  var query = {...params}
+  // var widgetParent = document.getElementById(appId)
+  // var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
+  // var query = {}
 
   // if (attributeWidget === true || attributeWidget === 'true') {
   //   for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++) {
@@ -73,6 +73,7 @@ function initParams(appId, wrapper, getPrice, getTxData, params, errors) {
   // } else {
   //   query = common.getQueryParams(window.location.search)
   // }
+  var query = {...params}
 
   getListTokens(params.network).then(tokens => {
     query.appId = appId

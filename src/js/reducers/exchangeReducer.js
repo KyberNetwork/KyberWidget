@@ -695,12 +695,13 @@ const exchange = (state = initState, action) => {
       resetState.destToken = newState.destToken;
       resetState.type = newState.type;
 
-      resetState.monsterId = newState.monsterId;
-      resetState.catchable = newState.catchable;
-      resetState.monsterInETH = newState.monsterInETH;
+      resetState.productId = newState.productId;
+      //resetState.catchable = newState.catchable;
+      resetState.productPrice = newState.productPrice;
       resetState.expectedRate = newState.expectedRate;
-      resetState.etheremonAddr = newState.etheremonAddr;
-      resetState.monsterName = newState.monsterName;
+      //resetState.etheremonAddr = newState.etheremonAddr;
+      resetState.productName = newState.productName;
+      resetState.productAvatar = newState.productAvatar;
 
       return resetState;
     }
