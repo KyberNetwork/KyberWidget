@@ -41,7 +41,7 @@
   <script type="text/javascript" src="widget.js"></script> -->
 
     <link rel="shortcut icon" href="favicon.png">
-    <link href="https://widget.kyber.network/dapp-libs/v0.1/app.bundle.css?v=1538453945568" rel="stylesheet">
+    <link href="https://widget.kyber.network/dapp-libs/v0.1/app.bundle.css?v=1538453945569" rel="stylesheet">
     <!-- <link href="http://192.168.2.29:8081/app.bundle.css?v=1538453945553" rel="stylesheet"> -->
     <!-- <link href="http://0.0.0.0:3002/app.bundle.css?v=1538453945553" rel="stylesheet"> -->
 </head>
@@ -63,7 +63,7 @@
             border-right: 1px solid #eee;
         }
     </style>
-    <script type="text/javascript" src="https://widget.kyber.network/dapp-libs/v0.1/app.min.js?v=1538453945568"></script>
+    <script type="text/javascript" src="https://widget.kyber.network/dapp-libs/v0.1/app.min.js?v=1538453945569"></script>
     <!-- <script type="text/javascript" src="http://192.168.2.29:8081/app.min.js?v=1538453945553"></script> -->
     <!-- <script type="text/javascript" src="http://0.0.0.0:3002/app.min.js?v=1538453945553"></script> -->
 
@@ -73,14 +73,14 @@
             rinkeby: {
                 url: 'https://rinkeby.infura.io/DtzEYY0Km2BA3YwyJcBG',
                 kyber_network: '0x39CC6802cF1625C30548B57D885932CB381EB4a4',
-                wrapper: '0xf1f149ee80118c909d970b5cd39a11b2d5498c6e',
-                etheremonAddr: '0x966f00aad48a182dbaa0c040f267d62713ecb699'
+                wrapper: '0xf1f149ee80118c909d970b5cd39a11b2d5498c6e'
+                //etheremonAddr: '0x966f00aad48a182dbaa0c040f267d62713ecb699'
             },
             mainnet: {
                 url: 'https://mainnet.infura.io',
                 kyber_network: '0x39CC6802cF1625C30548B57D885932CB381EB4a4',
-                wrapper: '0xffa4bee0b9cd2c2e4eacb8d8f11096baa3e6c55d',
-                etheremonAddr: '0x5f480ca354304aae88d7dd66cd4735c59d543af0'
+                wrapper: '0xffa4bee0b9cd2c2e4eacb8d8f11096baa3e6c55d'
+                //etheremonAddr: '0x5f480ca354304aae88d7dd66cd4735c59d543af0'
             }
         }
 
@@ -100,13 +100,17 @@
           return valid ? null : "invalid"
         }
 
-        function validateParams(productId, commissionID, callback, signer) {
+        function validateParams(productId, commissionID, callback, signer, etheremonAddr) {
           var errors = {};
 
           if (!productId) errors["productID"] = "Product ID is required";
 
           if (commissionID && verifyAccount(commissionID)) {
             errors["commissionID"] = "Commission address must be a valid ethereum address"
+          }
+
+          if (etheremonAddr && verifyAccount(etheremonAddr)) {
+            errors["etheremonAddr"] = "etheremonAddr must be a valid ethereum address"
           }
 
           if (callback && !callback.startsWith("https://")) {
@@ -143,18 +147,20 @@
         }
 
         function getAppParams() {
-          var productId = getParameterByName('productId');
-          var productName = getParameterByName('productName');
+          var productId = getParameterByName('monsterId');
+          var productName = getParameterByName('monsterName');
           var payPrice = getParameterByName('payPrice');
           var network = getParameterByName('network');
-          var productAvatar = getParameterByName('productAvatar');
+          var productAvatar = getParameterByName('monsterAvatar');
           var callback = getParameterByName('callback');
           var paramForwarding = getParameterByName('paramForwarding');
           var signer = getParameterByName('signer');
           var commissionID = getParameterByName('commissionID');
           var pinnedTokens = getParameterByName('pinnedTokens') || [];
           var disabledTokens = getParameterByName('disabledTokens') || [];
-          var errors = validateParams(productId, commissionID, callback, signer);
+          var etheremonAddr = getParameterByName('etheremonAddr');
+          var errors = validateParams(productId, commissionID, callback, signer, etheremonAddr);
+          
 
           if (!payPrice) payPrice = 0;
           paramForwarding = paramForwarding === "true" || paramForwarding === true;
@@ -162,7 +168,7 @@
 
           return {
             productId, productName, payPrice, network, errors, productAvatar, callback,
-            paramForwarding, signer, commissionID, pinnedTokens, disabledTokens
+            paramForwarding, signer, commissionID, pinnedTokens, disabledTokens, etheremonAddr
           }
         }
 
@@ -175,14 +181,21 @@
             var ETHEREMON_ABI = [{ "constant": true, "inputs": [{ "name": "_kyberProxy", "type": "address" }, { "name": "token", "type": "address" }, { "name": "monsterInETH", "type": "uint256" }], "name": "getMonsterRates", "outputs": [{ "name": "expectedRate", "type": "uint256" }, { "name": "slippageRate", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_KyberNetwork", "type": "address" }], "name": "setKyberNetwork", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "token", "type": "address" }, { "name": "expectedRate", "type": "uint256" }, { "name": "monsterInETH", "type": "uint256" }], "name": "getMonsterPriceInTokens", "outputs": [{ "name": "monsterInTokens", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "newAdmin", "type": "address" }], "name": "transferAdmin", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "_etheremon", "type": "address" }, { "name": "_classId", "type": "uint32" }, { "name": "_payPrice", "type": "uint256" }], "name": "getMonsterPriceInETH", "outputs": [{ "name": "catchable", "type": "bool" }, { "name": "monsterInETH", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "newOperator", "type": "address" }], "name": "addOperator", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "KyberNetwork", "outputs": [{ "name": "", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "operator", "type": "address" }], "name": "removeOperator", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_kyberProxy", "type": "address" }, { "name": "_etheremon", "type": "address" }, { "name": "_classId", "type": "uint32" }, { "name": "_name", "type": "string" }, { "name": "token", "type": "address" }, { "name": "tokenQty", "type": "uint256" }, { "name": "maxDestQty", "type": "uint256" }, { "name": "minRate", "type": "uint256" }, { "name": "walletId", "type": "address" }], "name": "catchMonster", "outputs": [{ "name": "monsterId", "type": "uint256" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "name": "token", "type": "address" }, { "name": "user", "type": "address" }], "name": "getBalance", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "admin", "outputs": [{ "name": "", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "uint256" }], "name": "operatorsGroup", "outputs": [{ "name": "", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [{ "name": "_KyberNetwork", "type": "address" }], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "payable": true, "stateMutability": "payable", "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "startTokenBalance", "type": "uint256" }, { "indexed": false, "name": "change", "type": "uint256" }], "name": "SwapTokenChange", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "sender", "type": "address" }, { "indexed": false, "name": "monsterId", "type": "uint256" }, { "indexed": false, "name": "token", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" }], "name": "CaughtWithToken", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "sender", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" }], "name": "ETHReceived", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "newAdmin", "type": "address" }], "name": "TransferAdmin", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "newOperator", "type": "address" }, { "indexed": false, "name": "isAdd", "type": "bool" }], "name": "OperatorAdded", "type": "event" }]
             var wapperEtheremon = new web3.eth.Contract(ETHEREMON_ABI, configData.wrapper)
 
+            //console.log(params)
+            if (params.payPrice){
+                params.payPrice = params.payPrice * Math.pow(10,18)
+            }
             window.kyberWidgetInstance.render({
                 appId: "kyber-widget",
                 wrapper: configData.wrapper,
                 getPrice: function () {
                     return new Promise((resolve, reject) => {
-                        wapperEtheremon.methods.getMonsterPriceInETH(configData.etheremonAddr, params.productId, params.payPrice).call()
+                        wapperEtheremon.methods.getMonsterPriceInETH(params.etheremonAddr, params.productId, params.payPrice).call()
                             .then(result => {
-                                const { monsterInETH, catchable } = result
+                                var { monsterInETH, catchable } = result
+                                // monsterInETH = monsterInETH * Math.pow(10,18)
+
+                                // console.log(monsterInETH)
                                 resolve(monsterInETH)
                             }).catch(e => {
                                 console.log(e)
@@ -199,7 +212,7 @@
 
                     var data = wapperEtheremon.methods.catchMonster(
                         configData.kyber_network,
-                        configData.etheremonAddr,
+                        params.etheremonAddr,
                         params.productId,
                         params.productName,
                         sourceToken,
