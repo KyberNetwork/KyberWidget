@@ -75,7 +75,7 @@
    
        +) Source code: /dapps/etheremon/index.html
        
-       +) Live demo: https://widget.kyber.network/dapps/etheremon/?network=rinkeby&productId=105
+       +) Live demo: https://widget.kyber.network/dapps/etheremon/?mode=dom&etheremonAddr=0x966f00aad48a182dbaa0c040f267d62713ecb699&monsterId=35&monsterName=Ether%20Monster&payPrice=0.03012&monsterAvatar=https://www.etheremon.com/assets/images/mons_origin/035.png&network=rinkeby
    
    
 
