@@ -69,7 +69,7 @@
    
        +) Source code: /dapps/daonomic/index.html
        
-       +) Live demo: https://widget.kyber.network/dapps/daonomic/
+       +) Live demo: https://widget.kyber.network/dapps/daonomic/?saleAddr=0x5b0582823cd14b56070ddab7c6426930190d1bb0&amount=0.2
                
    - ***Etheremon***: 
    
