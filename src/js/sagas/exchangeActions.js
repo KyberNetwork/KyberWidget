@@ -89,24 +89,48 @@ export function* estimateGasUsed(source, dest) {
   var gasUsed
   var gasApproved = 0
 
-  if (source === dest) {
-    switch (source) {
-      case "ETH":
-        gasUsed = isPayMode ? constants.PAYMENT_ETH_TRANSFER_GAS : 21000;
-        break
-      case "DGX":
-        gasUsed = 250000
-        break
-      default:
-        gasUsed = isPayMode ? constants.PAYMENT_TOKEN_TRANSFER_GAS : 100000;
-        break
-    }
-  } else {
-    gasUsed = yield call(getMaxGasExchange, source, dest)
-    if (source !== "ETH") {
+  if (exchange.type === "pay"){
+    if (source === dest) {
+      switch (source) {
+        case "ETH":
+          gasUsed = constants.PAYMENT_ETH_TRANSFER_GAS
+          break
+        case "DGX":
+          gasUsed = 250000
+          gasApproved = 120000
+          break
+        default:
+          gasUsed = constants.PAYMENT_TOKEN_TRANSFER_GAS;
+          gasApproved = 120000;
+          break
+      }
+    } else {
+      gasUsed = yield call(getMaxGasExchange, source, dest)      
       gasApproved = yield call(getMaxGasApprove, tokens[source].gasApprove)
     }
+  }else{
+    if (source === dest) {
+      switch (source) {
+        case "ETH":
+          gasUsed = 21000
+          break
+        case "DGX":
+          gasUsed = 250000
+          break
+        default:
+          gasUsed = 120000;
+          break
+      }
+      gasApproved = 0
+    } else {
+      gasUsed = yield call(getMaxGasExchange, source, dest)
+      if (source !== "ETH") {
+        gasApproved = yield call(getMaxGasApprove, tokens[source].gasApprove)
+      }
+    }
   }
+  console.log("estimate_gase")
+  console.log({gasUsed, gasApproved})
   yield put(actions.setEstimateGas(gasUsed, gasApproved))
 }
 
@@ -1004,7 +1028,7 @@ function* getMaxGasExchange(source, dest) {
   return sourceGasLimit + destGasLimit
 }
 
-function* getMaxGasApprove(tokenGasApprove) {
+function* getMaxGasApprove(tokenGasApprove) {  
   return tokenGasApprove ? tokenGasApprove : 100000;
 }
 

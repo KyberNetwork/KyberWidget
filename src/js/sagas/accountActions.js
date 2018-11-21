@@ -253,6 +253,8 @@ function* fetchingGas(address) {
   const exchange = state.exchange;
   const isETHSource = exchange.sourceTokenSymbol === "ETH";
   let gas;
+  let gasApprove = exchange.gas_approve
+
 
   //temporarily hard-code for exchange gas limit
   if (exchange.sourceTokenSymbol !== exchange.destTokenSymbol) {
@@ -267,7 +269,7 @@ function* fetchingGas(address) {
     gas = constants.PAYMENT_TOKEN_TRANSFER_GAS;
   }
 
-  yield put(exchangeActions.setEstimateGas(gas, 0));
+  yield put(exchangeActions.setEstimateGas(gas, gasApprove));
   yield put(exchangeActions.fetchGasSuccess());
 }
 
