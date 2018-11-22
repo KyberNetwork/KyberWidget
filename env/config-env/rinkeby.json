@@ -55,6 +55,12 @@
             "decimals": 12,
             "icon": "zil.svg",
             "usd_id": "zilliqa"
+        },
+        "MANA": {
+            "name": "Mana Decentralized",
+            "address": "0xfea1141e988c1919a9b04b262b92f24adcdd8e9d",
+            "symbol": "MANA",
+            "decimals": 18            
         }
     },
     "ethScanUrl": "https://rinkeby.etherscan.io/",    
