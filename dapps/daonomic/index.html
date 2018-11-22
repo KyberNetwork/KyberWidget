@@ -196,9 +196,8 @@
                 wrapper: configData.wrapper,
                 getPrice: function () {
                     return new Promise((resolve, reject) => {
-                        var price = params.amount*Math.pow(10,18)
-                        console.log(price)
-                        resolve(price);
+                        var price = web3.utils.toWei(params.amount);
+                        resolve(price.toString());
                         // wapperContract.methods.getETHPrice(configData.saleAddr).call()
                         //     .then(result => {
                         //         var ethPrice = result
