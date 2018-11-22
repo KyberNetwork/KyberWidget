@@ -13,6 +13,7 @@ var css = fs.readFileSync(file, 'utf8').toString();
 var out = postcss()
     .use(classPrfx('kyber_widget-', { ignore: [
         "kyber_widget",
+        "ReactModalPortal",
         "dropdown",
         "dropdown--active",
         "dropdown__trigger",
