@@ -38,6 +38,7 @@ export function caculateSourceAmount(destAmount, offeredRate, precision) {
   if (!destAmount || !offeredRate || acceptableTyping(destAmount) || acceptableTyping(offeredRate)) {
     return "0"
   }
+  if (offeredRate == 0) return "0"
   var bigDest = new BigNumber(destAmount)
   var bigOfferedRate = new BigNumber(offeredRate)
 

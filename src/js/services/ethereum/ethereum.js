@@ -312,6 +312,7 @@ export default class EthereumService extends React.Component {
   fetchRateExchange = (isManual = false) => {
     var state = store.getState()
     var exchange = state.exchange
+    var tokens = state.tokens.tokens
     //var ethereum = state.connection.ethereum    
     //var tokens = state.tokens.tokens
     
@@ -325,7 +326,17 @@ export default class EthereumService extends React.Component {
     var sourceAmount
 
     if (exchange.isHaveDestAmount){
-      sourceAmount = converter.caculateSourceAmount(exchange.destAmount, exchange.offeredRate, 6)
+      //get rate source by eth
+      var rateSource = 1
+      if (exchange.sourceTokenSymbol !== "ETH"){
+        rateSource = tokens[exchange.sourceTokenSymbol].rate
+      }
+      var rateDest = 1 
+      if (exchange.destTokenSymbol !== "ETH"){
+        rateDest = tokens[exchange.destTokenSymbol].rateEth
+      }
+      var rate = rateSource * rateDest / Math.pow(10,18)      
+      sourceAmount = converter.caculateSourceAmount(exchange.destAmount, rate.toString(), 6)
 
       //validate source amount too large
     }else{
