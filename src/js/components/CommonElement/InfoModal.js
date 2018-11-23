@@ -22,8 +22,8 @@ const InfoModal = (props) => {
     <Modal
       className={
       {
-        base: addPrefixClass('reveal tiny'),
-        afterOpen: addPrefixClass('reveal tiny')
+        base: 'reveal tiny',
+        afterOpen: 'reveal tiny'
       }}
       content={content}
       isOpen={props.isOpen}
