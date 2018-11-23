@@ -327,11 +327,11 @@ export default class EthereumService extends React.Component {
 
     if (exchange.isHaveDestAmount){
       //get rate source by eth
-      var rateSource = 1
+      var rateSource = Math.pow(10,18)     
       if (exchange.sourceTokenSymbol !== "ETH"){
         rateSource = tokens[exchange.sourceTokenSymbol].rate
       }
-      var rateDest = 1 
+      var rateDest = Math.pow(10,18)     
       if (exchange.destTokenSymbol !== "ETH"){
         rateDest = tokens[exchange.destTokenSymbol].rateEth
       }
