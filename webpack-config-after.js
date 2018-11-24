@@ -14,6 +14,7 @@ var out = postcss()
     .use(classPrfx('kyber_widget-', { ignore: [
         "kyber_widget",
         "dropdown",
+        "ReactModalPortal",
         "dropdown--active",
         "dropdown__trigger",
         "dropdown__content",
