@@ -679,31 +679,8 @@ const exchange = (state = initState, action) => {
     }
 
     case "GLOBAL.CLEAR_SESSION_FULFILLED":{
-      var resetState = {...initState};
-
-      resetState.sourceToken = newState.sourceToken;
-      resetState.sourceTokenSymbol = newState.sourceTokenSymbol;
-      resetState.destTokenSymbol = newState.destTokenSymbol;
-      resetState.sourceAmount = newState.sourceAmount;
-      resetState.destAmount = newState.destAmount;
-      resetState.isHaveDestAmount = newState.isHaveDestAmount;
-      resetState.receiveAddr = newState.receiveAddr;
-      resetState.gas = newState.gas;
-      resetState.gasPrice = newState.gasPrice;
-      resetState.selectedGas = newState.selectedGas;
-      resetState.isEditGasPrice = newState.isEditGasPrice;
-      resetState.destToken = newState.destToken;
-      resetState.type = newState.type;
-
-      resetState.productId = newState.productId;
-      //resetState.catchable = newState.catchable;
-      resetState.productPrice = newState.productPrice;
-      resetState.expectedRate = newState.expectedRate;
-      //resetState.etheremonAddr = newState.etheremonAddr;
-      resetState.productName = newState.productName;
-      resetState.productAvatar = newState.productAvatar;
-
-      return resetState;
+      newState.step = 1;
+      return newState;
     }
     
     case "EXCHANGE.UNSET_CONFIRMING": {
