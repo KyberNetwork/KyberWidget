@@ -172,7 +172,7 @@ const ETH = {
   address: ETHER_ADDRESS
 };
 
-const IDLE_TIME_OUT = 60
+const IDLE_TIME_OUT = 900
 
 const HISTORY_EXCHANGE = {
   page: 0,
