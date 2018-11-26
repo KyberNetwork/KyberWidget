@@ -314,7 +314,7 @@ export default class EthereumService extends React.Component {
     var exchange = state.exchange
     var tokens = state.tokens.tokens
     //var ethereum = state.connection.ethereum    
-    //var tokens = state.tokens.tokens
+    var tokens = state.tokens.tokens
     
 
     if (exchange.sourceTokenSymbol === exchange.destTokenSymbol){
