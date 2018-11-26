@@ -64,7 +64,7 @@ const ExchangeBodyLayout = (props) => {
                             <div>
                               <input id="inputSource" className={addPrefixClass("source-input")} min="0" step="0.000001"
                                 placeholder="0" autoFocus
-                                type="text" maxLength="50" autoComplete="off"
+                                type="number" maxLength="50" autoComplete="off"
                                 value={props.input.sourceAmount.value || ''}
                                 onFocus={props.input.sourceAmount.onFocus}
                                 onBlur={props.input.sourceAmount.onBlur}
