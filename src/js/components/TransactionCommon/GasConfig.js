@@ -43,7 +43,7 @@ const GasConfig = (props) => {
       <div className={addPrefixClass(!props.gasPriceError ? "" : "error")}>
         <div className={addPrefixClass("gas-change")}>
           <div className={addPrefixClass("gas_input")}>
-            <input type="text" min="0" max="99" className={addPrefixClass("gas-price-input")} step="0.1" value={props.gasPrice} onChange={handleChangeGasPrice} maxLength="20" autoComplete="off" onFocus={(e) => props.analytics.callTrack("customNewGas")} />
+            <input type="number" min="0" max="99" className={addPrefixClass("gas-price-input")} step="0.1" value={props.gasPrice} onChange={handleChangeGasPrice} maxLength="20" autoComplete="off" onFocus={(e) => props.analytics.callTrack("customNewGas")} />
           </div>
           <div className={addPrefixClass("gas_input-label-container")}>
             <div className={addPrefixClass("gas_input-lable")}>Gwei</div>
