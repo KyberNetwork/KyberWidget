@@ -93,5 +93,6 @@ The widget supports following params:
 - ***commissionId*** - Ethereum address - your Ethereum wallet to get commission of the fees for the transaction. Your wallet must be whitelisted by KyberNetwork (the permissionless registration will be available soon) in order to get the commission, otherwise it will be ignored.
 - ***productName*** - String - Name of product
 - ***productAvatar*** - String - Avatar of product
+- ***paymentData*** - String - A piece of additional information attached to the payment after broadcasted on the blockchain (*Note: This param only takes effect when type=pay)
 ## Supported tokens
 See all supported tokens [here](https://tracker.kyber.network/#/tokens)
