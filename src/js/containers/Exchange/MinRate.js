@@ -81,7 +81,7 @@ export default class MinRate extends React.Component {
     percent = Math.round(parseFloat(percent))
     if (isNaN(percent)) percent = 0
     return (
-      <div className={addPrefixClass("min-rate")}>
+      <div className={addPrefixClass(`min-rate ${this.props.exchange.type === "pay" ? 'disabled' : ''}`)}>
         <div className = {!this.props.exchange.errors.rateError? "": addPrefixClass("error")}>
           <span  className={addPrefixClass("sub_title")}>{this.props.translate("transaction.min_acceptable_rate") || "MIN ACCEPTABLE RATE"}</span>
           <Slider value={percent} 
