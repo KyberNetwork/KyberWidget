@@ -293,6 +293,16 @@ $radio-color: #5D9E7A;
         box-shadow: none;
       }
     }
+
+    &.disabled {
+      .rc-slider {
+        pointer-events: none;
+      }
+
+      .rc-slider-track {
+        background-color: #ccc !important;
+      }
+    }
   }
 
   .gas-config{
