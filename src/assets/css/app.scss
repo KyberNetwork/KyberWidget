@@ -1,12 +1,10 @@
 @import '../bower/animate.css/animate.css';
 @import 'settings';
-@import "util";
 
 @font-face{
   font-family: 'text-security-disc';
   font-style: normal;
   font-weight: normal;
-  //src: url(../fonts/text-security-disc.ttf);
   src: url(../fonts/text-security-disc.ttf);
 }
 
@@ -25,14 +23,11 @@ $alert-color: #ff5d00;
   color: $base-color;
   font-family: $font-openSans;
   background-color: #F8F8F8;
-  line-height:  1.5;
 
-  @import 'common';
   @import 'elements';
   @import 'broadcast';
   @import 'modals';
   @import 'addresses';
-  @import 'tokens';
   @import 'custom';
   @import "token_select";
   @import "icon";
@@ -40,10 +35,15 @@ $alert-color: #ff5d00;
   @import "exchange";
   @import "import_account";
   @import "cold_wallet";
-  @import "animation";
   @import "payment_gateway";
   @import "payment_confirm";
   @import "error_payment";
+
+  .widget-container {
+    max-width: $container-max-width;
+    padding: 0 20px;
+    margin: 0 auto;
+  }
   
   .info-menu {
     font-size: 0.8rem;
@@ -88,40 +88,6 @@ $alert-color: #ff5d00;
       }
     }
   }
-
-  .kyber-payment-logo-container{
-    display: flex;
-    align-items: center;
-    .k-version{
-      background-color: #eee;
-      padding: 2px 10px;
-      border-radius: 4px;
-      font-size: 13px;
-    }
-  }
-  .kyber-payment-logo {
-    width: 161px;
-    height: 49px;
-    background-image: url($image-path + '/widget/kyber-widget.svg');
-    background-repeat: no-repeat;
-    @include screen-max-width(medium) {
-      margin-left: 10px;
-    }
-  
-    &-container {
-      padding: 10px 15px;
-      max-width: 405px;
-      margin: 0 auto;
-      box-sizing: border-box;
-      background: white;
-      border: 1px solid #eee;
-      border-bottom-color: #ccc;
-  
-      @include screen-max-width(mid-small) {
-        padding-left: 0;
-      }
-    }
-  }
   
   .step-breadcrumb {
     border-left: 1px solid #eee;
@@ -135,16 +101,6 @@ $alert-color: #ff5d00;
 
     @include screen-max-width(medium) {
       padding: 12px 10px;
-    }
-
-    .arrow-right {
-      width: 7px;
-      height: 7px;
-      border: 1px solid;
-      transform: rotate(45deg);
-      border-left: none;
-      border-bottom: none;
-      margin-right: 5px;
     }
   
     &__item {

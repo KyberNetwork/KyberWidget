@@ -195,7 +195,6 @@
 }
 
 .widget-exchange {
-  max-width: $container-max-width;
   background: white;
   margin: 0 auto;
   box-sizing: border-box;
@@ -267,16 +266,6 @@
 .rate-token {
   font-size: 14px;
   color: #666666;
-}
-
-.token-input {
-  .info {
-    height: auto;
-    transition: width .4s ease-in-out;
-  }
-  input {
-    transition: width .4s ease-in-out;
-  }
 }
 
 label{

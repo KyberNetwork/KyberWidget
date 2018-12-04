@@ -50,23 +50,6 @@ $animation-time: 0.5s;
   }
 }
 
-.widget-import-account {
-  .k-container {
-    position: relative;
-    background-color: white;
-    transition: all .3s;
-    padding: 10px 20px 50px;
-    box-sizing: border-box;
-    border: 1px solid #eee;
-    border-top: none;
-    @include screen-max-width(medium) {
-      padding-left: 20px;
-      padding-right: 20px;
-      padding-top: 15px;
-    }
-  }
-}
-
 .import-account {
   display: flex;
   position: relative;

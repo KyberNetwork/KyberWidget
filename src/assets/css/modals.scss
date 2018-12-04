@@ -665,12 +665,6 @@ $divider-color: darken($title-background-color, 5);
   border: 1px solid #eee;
   box-sizing: border-box;
   border-top: none;
-  @include screen-max-width(medium) {
-    display: block;
-    .k-container {
-      padding: 10px 20px 30px;
-    }
-  }
 
   .k-title {
     font-weight: 600;

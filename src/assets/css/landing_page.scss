@@ -1,12 +1,4 @@
 #landing_page {
-//  min-height: 450px;
-
-  // @include screen-max-width(large){
-  //   margin-bottom: 80px;
-  //   min-height: 600px !important;
-  // }
-  
- // margin-bottom: 80px;
   position: relative;
 
   .landing-background {
@@ -16,8 +8,6 @@
     position: absolute;
     top: 0;
     left: 0;
-    // background: url($image-path + 'landing/landing_swap_1.png') center center no-repeat;
-    // background-size: cover;
 
     &:after {
       content: '';
@@ -25,8 +15,6 @@
       width: 100%;
       height: 100%;
       background-image: linear-gradient(to left, #fac77d, #eeb43d);
-      //background-color: #FAC77D
-   //   opacity: 0.8;
       position: absolute;
     }
   }
@@ -400,47 +388,3 @@
     padding: 0 20px;
   }
 }
-
-/* Accept Terms and Con: */
-// #comming-soon {
-//   background-image: url(../img/landing/landing.png);
-//   background-repeat: no-repeat;
-//   background-size: cover;
-//   background-position: center;
-//   .notification {
-//     color: $white;
-//     text-align: center;
-//     h1{
-//       font-size: 40px;
-//       padding-top: 10rem;
-//     }
-//     // h4 {
-//     //   color: #ddd;
-//     // }
-//   }
-//   .notice {
-//     margin-top: 5rem;
-//     text-align: center;
-//     color: $white;
-//     background-color: rgba(0, 0, 0, 0.4);
-//     p {
-//       padding: 15px;
-//       text-align: center;
-//       color: #ddd;
-//       font-family: "Montserrat", "My-Montserrat", sans-serif;
-//       @media screen and (max-width: 40em) {
-//         font-size: 15px;
-//       }
-//       a {
-//         color: $white;
-//         padding: 3px 0;
-//         margin-left: 6px;
-//         font-weight: bold;
-//         border-bottom: 1px solid #00D8A0;
-//         &:hover {
-//           color: $white;
-//         }
-//       }
-//     }
-//   }
-// }
