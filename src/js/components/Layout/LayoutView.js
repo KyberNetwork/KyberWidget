@@ -14,7 +14,7 @@ const LayoutView = (props) => {
     Object.keys(params).map(key => {
       defaultPathExchange += `&${key}=${params[key]}`
     })
-  }else{
+  } else {
     var index = 0
     Object.keys(params).map(key => {
       if (index === 0){
@@ -30,7 +30,7 @@ const LayoutView = (props) => {
     <ConnectedRouter history={props.history}>
       <div>
         <Route/>
-        <section id="content">
+        <section className={`widget-container ${props.theme}`}>
           {props.paymentHeader}
 
           <Switch>

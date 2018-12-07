@@ -42,7 +42,7 @@
     "back_to_website": "Back to Website",
     "approve": "Approve",
     "confirm_transaction": "Confirm Transaction",
-    "enter_amount": "ENTER AMOUNT YOU WILL PAY",
+    "enter_amount": "Enter amount you will pay",
     "confirm": "Confirm",
 
     "exchange": "Exchange",
@@ -369,9 +369,9 @@
   },
 
   "payment_header": {
-    "step_method": "Payment method",
-    "step_import": "Address import",
-    "step_confirm": "Confirmation"
+    "step_method": "Payment Method",
+    "step_import": "Unlock Wallet",
+    "step_confirm": "Confirm"
   },
 
   "home": "Home",

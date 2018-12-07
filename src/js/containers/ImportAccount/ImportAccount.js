@@ -12,7 +12,7 @@ import { goToStep } from "../../actions/exchangeActions"
 
   Object.keys(tokens).forEach((key) => {
     supportTokens.push(tokens[key])
-  })
+  });
   
   return {
     ...store.account,
@@ -39,7 +39,7 @@ export default class ImportAccount extends React.Component {
     return addresses.filter(function(item, pos) {
       return addresses.indexOf(item) == pos
     })
-  }
+  };
 
   openImportAccount(type) {
     this.props.dispatch(openImportAccount(type));
@@ -59,20 +59,19 @@ export default class ImportAccount extends React.Component {
 
   render() {
     return (
-      <div id="landing_page">
-        <ImportAccountView
-          isLoading={this.props.loading}
-          firstKey={<ImportByMetamask screen={this.props.screen}/>}
-          signerAddresses={this.getSignerAddresses()}
-          onOpenImportAccount={this.openImportAccount.bind(this)}
-          onCloseImportAccount={this.closeImportAccount.bind(this)}
-          chosenImportAccount={this.props.chosenImportAccount}
-          backToFirstStep={this.backToFirstStep.bind(this)}
-          translate={this.props.translate}
-          screen={this.props.screen}
-          error={this.props.error}
-        />
-      </div>
+      <ImportAccountView
+        isLoading={this.props.loading}
+        firstKey={<ImportByMetamask screen={this.props.screen}/>}
+        signerAddresses={this.getSignerAddresses()}
+        onOpenImportAccount={this.openImportAccount.bind(this)}
+        onCloseImportAccount={this.closeImportAccount.bind(this)}
+        chosenImportAccount={this.props.chosenImportAccount}
+        backToFirstStep={this.backToFirstStep.bind(this)}
+        translate={this.props.translate}
+        screen={this.props.screen}
+        error={this.props.error}
+        orderDetails={this.props.orderDetails}
+      />
     )
   }
 }

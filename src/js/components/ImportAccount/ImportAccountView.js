@@ -23,7 +23,7 @@ const ImportAccountView = (props) => {
           translate={props.translate}
           error={props.error}
           onCloseImportAccount={props.onCloseImportAccount}
-        />;
+        />
       break;
     case constants.IMPORT_ACCOUNT_TYPE.privateKey:
       importComponent = <ImportByPrivateKey onCloseImportAccount={props.onCloseImportAccount}/>;
@@ -37,7 +37,7 @@ const ImportAccountView = (props) => {
   }
 
   return (
-    <div id="import-account" className={addPrefixClass("widget-import-account")}>
+    <div className={addPrefixClass("widget-import-account")}>
       <div className={addPrefixClass("k-container")}>
         {props.signerAddresses.length !== 0 &&
           <SignerAddress signerAddresses={props.signerAddresses}/>

@@ -6,6 +6,12 @@ export function selectTokenAsync(symbol, address, type, ethereum) {
     payload: { symbol, address, type, ethereum }
   }
 }
+export function setLoadingSelectToken(isLoading = true) {
+  return {
+    type: "EXCHANGE.SET_LOADING_SELECT_TOKEN",
+    payload: isLoading
+  }
+}
 export function selectToken(symbol, address, type) {
   return {
     type: "EXCHANGE.SELECT_TOKEN",
@@ -409,12 +415,24 @@ export function throwErrorHandleAmount(){
   }
 }
 
-export function initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
-    callback, network, paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr, paymentData, hint, tokens) {
+export function resetHandleAmountError(){
+  return {
+    type: "EXCHANGE.RESET_HANDLE_AMOUNT_ERROR"
+  }
+}
+
+
+export function initParamsExchange(
+  receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
+  productQty, callback, network, paramForwarding, signer, commissionID, isSwap,
+  type, pinTokens, defaultPairArr, paymentData, hint, tokens, theme
+) {
   return {
     type: "EXCHANGE.INIT_PARAMS_EXCHANGE",
-    payload: {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, network,
-      paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr, paymentData, hint, tokens}
+    payload: {
+      receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, productQty, network,
+      paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr, paymentData, hint, tokens, theme
+    }
   }
 }
 

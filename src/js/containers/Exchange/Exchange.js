@@ -9,10 +9,9 @@ import * as validators from "../../utils/validators"
 import * as exchangeActions from "../../actions/exchangeActions"
 import { default as _ } from 'underscore'
 import { ImportAccount } from "../ImportAccount"
-import {addPrefixClass} from "../../utils/className"
+import OrderDetails from "../../components/CommonElement/OrderDetails";
 
 @connect((store, props) => {
-
   const account = store.account.account
   const translate = getTranslate(store.locale)
   const tokens = store.tokens.tokens
@@ -22,10 +21,8 @@ import {addPrefixClass} from "../../utils/className"
   return {
     translate, exchange, tokens, account, ethereum,
     params: { ...props.match.params }, global: store.global
-
   }
 })
-
 
 export default class Exchange extends React.Component {
 
@@ -37,42 +34,59 @@ export default class Exchange extends React.Component {
       this.props.dispatch(exchangeActions.thowErrorEthBalance("error.eth_balance_not_enough_for_fee"))
       return
     }
-  }
+  };
+
   lazyValidateTransactionFee = _.debounce(this.validateTxFee, 500)
 
   specifyGas = (event) => {
     var value = event.target.value
     this.props.dispatch(exchangeActions.specifyGas(value))
-  }
+  };
 
   specifyGasPrice = (value) => {
     this.props.dispatch(exchangeActions.specifyGasPrice(value + ""))
     if (this.props.account !== false) {
       this.lazyValidateTransactionFee(value)
     }
-  }
+  };
 
   inputGasPriceHandler = (value) => {
     this.specifyGasPrice(value)
-  }
+  };
 
   selectedGasHandler = (value, level) => {
 
     this.props.dispatch(exchangeActions.seSelectedGas(level))
     this.specifyGasPrice(value)
-  }
+  };
 
   render() {
+    const orderDetails = (
+      <OrderDetails
+        exchange={this.props.exchange}
+        global={this.props.global}
+        translate={this.props.translate}
+      />
+    );
+
     if (this.props.global.haltPayment){
-      return <ErrorPayment />
+      return <ErrorPayment/>
     }
 
     if (this.props.exchange.step === 1) {
+      return <ExchangeBody orderDetails={orderDetails}/>;
+    }
 
-      var gasPrice = converter.stringToBigNumber(converter.gweiToEth(this.props.exchange.gasPrice))
-      var totalGas = gasPrice.multipliedBy(this.props.exchange.gas + this.props.exchange.gas_approve)
-      var page = "exchange"
-      var gasConfig = (
+    if (this.props.exchange.step === 2) {
+      return <ImportAccount screen="exchange" orderDetails={orderDetails}/>
+    }
+
+    if (this.props.exchange.step === 3) {
+      let minRate = "";
+      const gasPrice = converter.stringToBigNumber(converter.gweiToEth(this.props.exchange.gasPrice));
+      const totalGas = gasPrice.multipliedBy(this.props.exchange.gas + this.props.exchange.gas_approve);
+
+      const gasConfig = (
         <GasConfig
           gas={this.props.exchange.gas + this.props.exchange.gas_approve}
           gasPrice={this.props.exchange.gasPrice}
@@ -85,41 +99,36 @@ export default class Exchange extends React.Component {
           translate={this.props.translate}
           gasPriceSuggest={this.props.exchange.gasPriceSuggest}
           selectedGas={this.props.exchange.selectedGas}
-          page={page}
+          page="exchange"
           analytics={this.props.global.analytics}
         />
       )
 
-      var minRate = ""
       if (this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol){
         minRate = <MinRate />
       }
 
-      var advanceConfig = <AdvanceConfigLayout totalGas={totalGas.toString()} minRate={minRate} gasConfig={gasConfig} translate={this.props.translate} analytics={this.props.global.analytics}/>
-      var exchangeBody = <ExchangeBody advanceLayout={advanceConfig} />
+      const advanceConfig = (
+        <AdvanceConfigLayout
+          totalGas={totalGas.toString()}
+          minRate={minRate}
+          gasConfig={gasConfig}
+          translate={this.props.translate}
+          analytics={this.props.global.analytics}
+        />
+      );
 
-      return (
-        <div className={addPrefixClass("k-frame exchange-frame")}>
-          <div className={addPrefixClass("row")}>
-            {exchangeBody}
-          </div>
-        </div>
-      )
+      return <Payment advanceConfig={advanceConfig} orderDetails={orderDetails}/>
     }
 
-    if (this.props.exchange.step === 2) {
-      return <ImportAccount screen="exchange" />
-    }
-
-    if (this.props.exchange.step === 3) {
-      return <Payment />
-    }
     if (this.props.exchange.step === 4) {
-          return  <TransactionLoading
-        tx={this.props.exchange.txHash}
-        broadcasting={this.props.exchange.broadcasting}
-        broadcastingError={this.props.exchange.broadcastError}
-      />
+      return  (
+        <TransactionLoading
+          tx={this.props.exchange.txHash}
+          broadcasting={this.props.exchange.broadcasting}
+          broadcastingError={this.props.exchange.broadcastError}
+        />
+      )
     }
   }
 }
