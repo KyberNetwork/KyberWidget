@@ -29,13 +29,13 @@ const DropFile = (props) => {
   }
 
   return (
-    <div className={addPrefixClass("import-account__item")} onDrop={(e) => props.onDrop(e)} onClick={(e) => props.onDrop(e)}>
+    <div className={addPrefixClass("import-account__item theme-icon-hover")} onDrop={(e) => props.onDrop(e)} onClick={(e) => props.onDrop(e)}>
       <Dropzone onDrop={(e) => props.onDrop(e)} disablePreview={true} className={addPrefixClass("column column-block import-account__json")}>
         <div className={addPrefixClass("importer json")}>
           <div className={addPrefixClass("importer__symbol")}>
             {/* <img src={require('../../../../assets/img/landing/keystore_disable.png')} /> */}
-            <div className={addPrefixClass("importer__icon")} style={{backgroundImage: 'url(' + getAssetUrl(`wallets/keystore.svg`) + ')'}}></div>
-            <div className={addPrefixClass("importer__name")}>{props.translate("import.json") || "JSON"}</div>
+            <div className={addPrefixClass("importer__icon keystore")}/>
+            <div className={addPrefixClass("importer__name")}>{props.translate("import.json") || "Keystore"}</div>
           </div>
         </div>
       </Dropzone>

@@ -1,0 +1,69 @@
+&.theme-emerald {
+  &::after {
+    background-image: $theme-emerald-gradient;
+  }
+
+  .theme-text {
+    color: $theme-emerald-regular;
+  }
+
+  .theme-text-light {
+    color: $theme-emerald-light;
+  }
+
+  .theme-text-hover:hover {
+    color: $theme-emerald-hover;
+  }
+
+  .theme-bg {
+    color: white;
+    background-color: $theme-emerald-regular;
+  }
+
+  .theme-checkbox:checked ~.common__checkbox-icon {
+    background-color: $theme-emerald-regular;
+    border-color: $theme-emerald-regular;
+  }
+
+  .theme-icon-hover:hover {
+    box-shadow: $theme-emerald-shadow-icon;
+    border-color: $theme-emerald-border;
+  }
+
+  .theme-bg-light {
+    background-color: $theme-emerald-light;
+  }
+
+  .theme-bg-hover:hover {
+    background-color: $theme-emerald-hover;
+  }
+
+  .theme-shadow-large {
+    box-shadow: $theme-emerald-shadow-container;
+  }
+
+  .theme-shadow-small {
+    box-shadow: $theme-emerald-shadow-header;
+  }
+
+  .theme-border {
+    border-color: $theme-emerald-border;
+  }
+
+  .theme-button {
+    border-color: $theme-emerald-border;
+
+    &:hover {
+      color: white;
+      background-color: $theme-emerald-regular;
+    }
+  }
+
+  .theme-border-top {
+    border-top-color: $theme-emerald-regular;
+  }
+
+  .theme-gradient {
+    background-image: $theme-emerald-gradient;
+  }
+}

@@ -1,7 +1,5 @@
 import React from "react"
 import { connect } from "react-redux"
-import { push } from 'react-router-redux'
-import constants from "../../services/constants"
 import AddressGenerator from "../../services/device/addressGenerator";
 import { ImportByDeviceView } from "../../components/ImportAccount"
 import {
@@ -279,7 +277,6 @@ export default class ImportByDevice extends React.Component {
         choosePath={this.choosePath.bind(this)}
         getAddress={this.getAddress.bind(this)}
         translate={this.props.translate}
-        onCloseImportAccount={this.props.onCloseImportAccount}
         chosenImportAccount={this.props.account.chosenImportAccount}
       />
     )

@@ -312,6 +312,7 @@ export default class EthereumService extends React.Component {
   fetchRateExchange = (isManual = false) => {
     var state = store.getState()
     var exchange = state.exchange
+    var tokens = state.tokens.tokens
     //var ethereum = state.connection.ethereum    
     var tokens = state.tokens.tokens
     
@@ -325,6 +326,7 @@ export default class EthereumService extends React.Component {
     var sourceAmount
 
     if (exchange.isHaveDestAmount){
+      //get rate source by eth
       var rateSource = Math.pow(10,18)     
       if (exchange.sourceTokenSymbol !== "ETH"){
         rateSource = tokens[exchange.sourceTokenSymbol].rate

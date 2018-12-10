@@ -27,7 +27,7 @@ const DropFile = (props)=> {
       </p>
     }
   }
-  //console.log(keystring)
+
   return (
     <Dropzone onDrop={props.onDrop}>
       {message}

@@ -63,11 +63,9 @@
 @import '../bower/foundation-sites/scss/util/util';
 
 // 0. Custom design
-//$design-background-frame-color: #2a4552;
 
 // 1. Global
 // ---------
-
 $global-font-size: 100%;
 $global-width: rem-calc(1280px);
 $global-lineheight: 1.5;
@@ -79,7 +77,7 @@ $foundation-palette: (
   alert: #E50000,
 );
 
-$base-color: #666;
+$base-color: #606d7b;
 $swap-color: #EF8102;
 $color-swap-light: #F2A657;
 $light-gray: #BBDAD5;
@@ -103,6 +101,15 @@ $k-gray: #f4f4f4;
 $theme-color-default: #31cb9e;
 $theme-color-default-light: #38e0ad;
 
+$theme-emerald-regular: #00a2bc;
+$theme-emerald-light: #0faaa2;
+$theme-emerald-hover: #02e0bb;
+$theme-emerald-shadow-container: 0 10px 20px 0 rgba(11, 104, 126, 0.21);
+$theme-emerald-shadow-header: 0 4px 32px 0 rgba(11, 104, 126, 0.21);
+$theme-emerald-shadow-icon: 0 9px 30px 0 rgba(143, 165, 188, 0.38);
+$theme-emerald-border: #d4e1ef;
+$theme-emerald-gradient: linear-gradient(160deg, #00f2cd, #0074b3);
+
 $body-font-family:'Montserrat', sans-serif;
 $body-antialiased: true;
 $global-margin: 1rem;
@@ -120,10 +127,7 @@ $global-button-cursor: auto;
 $global-color-pick-contrast-tolerance: 0;
 $print-transparent-backgrounds: true;
 
-$container-max-width: 405px;
-$container-side-padding: 25px;
-$container-vertical-padding: 30px;
-
+$container-max-width: 800px;
 $image-path: '../img/';
 $box-shadow-tab: 0 10px 20px 0 rgba(135, 136, 136, 0.26), 0 6px 6px 0 rgba(173, 177, 176, 0.26);
 
@@ -165,18 +169,12 @@ $block-grid-max: 8;
 
 // 4. Base Typography
 // ------------------
-
-// $header-font-family: 'Muli', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
-// $header-font-weight: $global-weight-normal;
-// $header-font-style: normal;
-// $font-family-monospace: 'Roboto Mono', Consolas, 'Liberation Mono', Courier, monospace;
-
-$header-font-family: 'Montserrat', sans-serif;
 $header-font-weight: $global-weight-normal;
 $header-font-style: normal;
 
 $font-cera: 'Cera', 'Open Sans', sans-serif;
 $font-openSans: 'Open Sans', sans-serif;
+$font-montserrat: 'Montserrat', sans-serif;
 
 $header-color: inherit;
 $header-lineheight: 1.4;

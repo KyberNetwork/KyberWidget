@@ -2,9 +2,7 @@ import React from "react"
 import BLOCKCHAIN_INFO from "../../../../env"
 import ReactTooltip from 'react-tooltip'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-
 import {addPrefixClass} from "../../utils/className"
-
 import * as widgetOptions from "../../utils/widget-options"
 
 const TransactionLoadingView = (props) => {

@@ -1,12 +1,10 @@
 import React from "react"
 import { connect } from "react-redux"
 import { ImportAccountView } from '../../components/ImportAccount'
-import { ImportByMetamask} from "../ImportAccount"
 import { getTranslate } from 'react-localize-redux'
-import { importAccountMetamask, openImportAccount, closeImportAccount } from "../../actions/accountActions"
-import BLOCKCHAIN_INFO from "../../../../env"
-//import Web3Service from "../../services/web3"
+import {openImportAccount, closeImportAccount, importNewAccount, throwPKeyError} from "../../actions/accountActions"
 import { goToStep } from "../../actions/exchangeActions"
+import { addressFromPrivateKey } from "../../utils/keys"
 
 @connect((store, props) => {
   var tokens = store.tokens.tokens;
@@ -14,7 +12,7 @@ import { goToStep } from "../../actions/exchangeActions"
 
   Object.keys(tokens).forEach((key) => {
     supportTokens.push(tokens[key])
-  })
+  });
   
   return {
     ...store.account,
@@ -31,21 +29,6 @@ import { goToStep } from "../../actions/exchangeActions"
 })
 
 export default class ImportAccount extends React.Component {
-  // componentDidMount = () => {
-
-  //   if (this.props.termOfServiceAccepted){
-  //     var web3Service = new Web3Service();
-      
-  //     if (web3Service.isHaveWeb3()) {
-  //       //var web3Service = new Web3Service(web3)
-  //       var walletType = web3Service.getWalletType()
-  //       if (walletType !== "metamask") {
-  //         this.props.dispatch(importAccountMetamask(web3Service, BLOCKCHAIN_INFO[this.props.network].networkId))
-  //       }
-  //     }
-  //   }
-  // }
-
   getSignerAddresses = ()  => {
     if (!this.props.exchange.signer) {
       return [];
@@ -56,7 +39,7 @@ export default class ImportAccount extends React.Component {
     return addresses.filter(function(item, pos) {
       return addresses.indexOf(item) == pos
     })
-  }
+  };
 
   openImportAccount(type) {
     this.props.dispatch(openImportAccount(type));
@@ -74,22 +57,36 @@ export default class ImportAccount extends React.Component {
     this.props.analytics.callTrack("clickToBack", 1)
   }
 
+  handleSubmitPrivateKey() {
+    let privateKey = document.getElementById("private_key").value;
+
+    try {
+      if (privateKey.match(/^0[x | X].{3,}$/)) {
+        privateKey = privateKey.substring(2)
+      }
+      let address = addressFromPrivateKey(privateKey)
+      this.props.dispatch(importNewAccount(address, "privateKey", privateKey))
+    }
+    catch (e) {
+      this.props.dispatch(throwPKeyError(this.props.translate("error.invalid_private_key") || 'Invalid private key'))
+    }
+  }
+
   render() {
     return (
-      <div id="landing_page">
-        <ImportAccountView
-          isLoading={this.props.loading}
-          firstKey={<ImportByMetamask screen={this.props.screen}/>}
-          signerAddresses={this.getSignerAddresses()}
-          onOpenImportAccount={this.openImportAccount.bind(this)}
-          onCloseImportAccount={this.closeImportAccount.bind(this)}
-          chosenImportAccount={this.props.chosenImportAccount}
-          backToFirstStep={this.backToFirstStep.bind(this)}
-          translate={this.props.translate}
-          screen={this.props.screen}
-          error={this.props.error}
-        />
-      </div>
+      <ImportAccountView
+        isLoading={this.props.loading}
+        signerAddresses={this.getSignerAddresses()}
+        onOpenImportAccount={this.openImportAccount.bind(this)}
+        onCloseImportAccount={this.closeImportAccount.bind(this)}
+        chosenImportAccount={this.props.chosenImportAccount}
+        backToFirstStep={this.backToFirstStep.bind(this)}
+        translate={this.props.translate}
+        screen={this.props.screen}
+        error={this.props.error}
+        orderDetails={this.props.orderDetails}
+        handleSubmitPrivateKey={this.handleSubmitPrivateKey.bind(this)}
+      />
     )
   }
 }

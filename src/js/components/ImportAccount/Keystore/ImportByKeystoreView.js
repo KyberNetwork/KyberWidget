@@ -21,12 +21,6 @@ const ImportByKeystoreView = (props) => {
         </div>
 
         <div className={addPrefixClass("import-account-content__error")}>{props.error}</div>
-
-        <div className={addPrefixClass("import-account-content__button-container")}>
-          <div className={addPrefixClass("import-account-content__button payment-gateway__button--back")} onClick={props.onCloseImportAccount}>
-            {props.translate("transaction.back") || "Back"}
-          </div>
-        </div>
       </div>
     </div>
   )

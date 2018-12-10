@@ -28,32 +28,22 @@ const TokenSelectorView = (props) => {
 
   var getListToken = () => {
 
-    //const destRateEth = props.listItem[props.exchange.destTokenSymbol].rateEth;
-
     return Object.keys(listShow).map((key) => {
       if (key === props.focusItem) {
         return;
       }
-      
-      var item = listShow[key];
 
+      var item = listShow[key];
       var sourceSymbol = props.type === 'source'?item.symbol:props.exchange.sourceTokenSymbol
       var destSymbol = props.type === 'source'?props.exchange.destTokenSymbol: item.symbol
-
-
-      // console.log("token_rate")
-      // console.log(props.tokens)    
       const sourceRate = sourceSymbol === "ETH" ? 1 : converter.toT(props.tokens[sourceSymbol].rate, 18);
       const destRate = destSymbol === "ETH" ? 1 : converter.toT(props.tokens[destSymbol].rateEth, 18);
-
-
       const rate = sourceSymbol === destSymbol ? 1 : converter.roundingNumber(sourceRate * destRate);
 
       return (
         <div
           key={key}
           onClick={(e) => props.selectItem(e, item.symbol, item.address)}
-          // className={"token-item-container " + (rate == 0 ? "token-item-container--inactive" : "payment-gateway__hover-color")}>
           className={addPrefixClass("token-item-container payment-gateway__hover-color")}>
           <div className={addPrefixClass("token-item-content")}>
             <div className={addPrefixClass("token-item")}>
@@ -76,18 +66,10 @@ const TokenSelectorView = (props) => {
     <div className={addPrefixClass("token-chooser")}>
       <Dropdown className={addPrefixClass("token-dropdown")} onShow = {(e) => props.showTokens(e)} onHide = {(e) => props.hideTokens(e)} active={props.open}>
         <DropdownTrigger className={addPrefixClass("notifications-toggle token-dropdown__trigger")}>
-          <div className={addPrefixClass("focus-item d-flex")}>
-            <div className={addPrefixClass("d-flex")}>
-              <div className={addPrefixClass("icon")}>
-                <img src={getTokenUrl(focusItem.symbol)} />
-              </div>
-              <div>
-                <div className={addPrefixClass("focus-balance")}>
-                  <span className={addPrefixClass("token-symbol")}>{focusItem.symbol}</span>
-                </div>
-              </div>
-            </div>
-            <div><i className={addPrefixClass('k k-angle ' + (props.open ? 'up' : 'down'))}></i></div>
+          <div className={addPrefixClass("token-chooser__selector theme-border")}>
+            <img className={addPrefixClass("token-chooser__token-icon")} src={getTokenUrl(focusItem.symbol)} />
+            <div className={addPrefixClass("token-chooser__token-symbol")}>{focusItem.symbol}</div>
+            <div className={addPrefixClass('common__triangle theme-border-top ' + (props.open ? 'up' : ''))}/>
           </div>
         </DropdownTrigger>
         <DropdownContent className={addPrefixClass("token-dropdown__content")}>

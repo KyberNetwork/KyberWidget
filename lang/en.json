@@ -42,7 +42,7 @@
     "back_to_website": "Back to Website",
     "approve": "Approve",
     "confirm_transaction": "Confirm Transaction",
-    "enter_amount": "ENTER AMOUNT YOU WILL PAY",
+    "enter_amount": "Enter amount you will pay",
     "confirm": "Confirm",
 
     "exchange": "Exchange",
@@ -255,12 +255,12 @@
   "import": {
     "from_metamask": "METAMASK",
     "from_keystore": "KEYSTORE",
-    "json": "JSON",
+    "json": "Keystore",
     "from_trezor": "TREZOR",
     "from_ledger": "LEDGER",
     "from_private_key": "PRIVATE KEY",
-    "from_private_key_input_title": "Enter your private key",
-    "from_private_key_input_title_placehoder": "Enter your private key",
+    "from_private_key_input_title": "Enter your Private Key",
+    "from_private_key_input_title_placehoder": "Enter your Private Key",
     "from_json_title": "Choose your JSON file",
     "connect": "Connect",
     "address": "Address",
@@ -369,9 +369,9 @@
   },
 
   "payment_header": {
-    "step_method": "Payment method",
-    "step_import": "Address import",
-    "step_confirm": "Confirmation"
+    "step_method": "Payment Method",
+    "step_import": "Unlock Wallet",
+    "step_confirm": "Confirm"
   },
 
   "home": "Home",

@@ -94,10 +94,6 @@ const ImportByDeviceView = (props) => {
       }
 
       <div className={addPrefixClass("import-account-content__button-container")}>
-        <div className={addPrefixClass("import-account-content__button payment-gateway__button--back")} onClick={props.onCloseImportAccount}>
-          {props.translate("transaction.back") || "Back"}
-        </div>
-
         {!props.hasError &&
         <div className={addPrefixClass("import-account-content__button payment-gateway__button")} onClick={props.getAddress}>
           {props.translate("transaction.next") || "Next"}

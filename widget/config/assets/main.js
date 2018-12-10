@@ -1,7 +1,6 @@
 (function () {
   var excludedInput = ["button_theme", "version"];
-  var versionElement = document.querySelector("select[name=version]");
-  var defaultVersion = document.getElementById("widget-config-version").value;
+  var defaultVersion = document.getElementById("selected-version").innerText;
   var NO_VERSION = "no";
 
   function getUrlParam(name) {
@@ -154,15 +153,6 @@
       }, 3000);
     });
 
-    versionElement.addEventListener("change", function() {
-      var version = versionElement.options[versionElement.selectedIndex].value;
-      var params = new URLSearchParams(location.search);
-
-      params.set("version", version);
-
-      window.location.search = params.toString();
-    });
-
     // For Modal
     document.querySelector("[data-modal-id]").addEventListener("click", openModal);
     document.querySelector(".kyber-modal__close-btn").addEventListener("click", function() {
@@ -176,21 +166,38 @@
       if(e.target.nodeName.toLowerCase() === "a") return;
       e.stopPropagation();
     });
+
+    document.querySelectorAll(".widget-config__select.version").forEach(function (item) {
+      item.addEventListener("click", function () {
+        this.classList.toggle("active");
+      })
+    });
+
+    document.querySelectorAll(".widget-config__select.version .widget-config__select-item").forEach(function (item) {
+      item.addEventListener("click", function () {
+        var version = this.getAttribute("data-version");
+        var params = new URLSearchParams(location.search);
+
+        params.set("version", version);
+
+        window.location.search = params.toString();
+      })
+    });
   }
 
   var generateTag = debounce(function () {
     var formData = grabForm();
-    var codeBtn = document.querySelector(".widget-config__code-btn");
+    var codeBtn = document.querySelector(".widget-config__btn");
 
     if (formData.error && formData.error.length) {
       document.getElementById("widget").innerHTML = "<div class='error'>" +
         formData.error.join("<br>") + "</div>";
       document.getElementById("sourceHtml").textContent = "";
-      codeBtn.classList.add("widget-config__code-btn--disabled");
+      codeBtn.classList.add("widget-config__btn--disabled");
       return;
     }
 
-    codeBtn.classList.remove("widget-config__code-btn--disabled");
+    codeBtn.classList.remove("widget-config__btn--disabled");
 
     var mode = document.querySelector("form").mode.value || "tab";
     var buttonTheme = document.querySelector('input[name=button_theme]:checked').value;
@@ -245,7 +252,7 @@
     if (widgetUrlParam && version === NO_VERSION) {
       document.getElementById("version-selector").style.display = "none";
     } else {
-      versionElement.value = version || defaultVersion;
+      document.getElementById("selected-version").innerText = version || defaultVersion;
     }
   }
 

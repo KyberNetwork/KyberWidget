@@ -107,34 +107,6 @@ a.disabled{
     }
 }
 
-@include breakpoint(medium){
-    @media screen and (max-height: 790px){
-        .token-input{
-            margin-top: 5px!important;
-            min-height: auto;
-            input{
-                height: 50px;
-            }
-            .info:before{
-                height: 40px;
-                top: 59%;
-            }
-        }
-        #transfer-screen{
-            label{
-                margin-bottom: 0;
-                input.hash{
-                    margin-bottom: 15px;
-                    margin-top: 5px;
-                }
-            }
-            // .address-balance{
-            //     margin-top: 5px;
-            // }
-        }
-    }
-}
-
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
