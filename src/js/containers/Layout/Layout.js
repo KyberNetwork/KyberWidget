@@ -92,12 +92,15 @@ export default class Layout extends React.Component {
 
   render() {
     var currentLanguage = common.getActiveLanguage(this.props.locale.languages)
-    var paymentHeader =  <PaymentHeader 
-    translate={this.props.translate}
-    step={this.props.exchange.step}
-    haltPayment={this.props.haltPayment}
-    type = {this.props.exchange.type}
-  />
+    var paymentHeader =  (
+      <PaymentHeader
+        translate={this.props.translate}
+        step={this.props.exchange.step}
+        haltPayment={this.props.haltPayment}
+        type = {this.props.exchange.type}
+      />
+    );
+
     return (
       <LayoutView
         history={history}

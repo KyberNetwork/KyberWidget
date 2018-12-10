@@ -4,6 +4,7 @@ import { ConnectedRouter } from 'react-router-redux'
 import { Processing, InfoModal } from "../../containers/CommonElements/"
 import constant from "../../services/constants"
 import * as common from "../../utils/common"
+import {addPrefixClass} from "../../utils/className"
 
 const LayoutView = (props) => {
   var defaultPathExchange = constant.BASE_HOST + constant.PAYMENT_PATH
@@ -41,6 +42,9 @@ const LayoutView = (props) => {
 
           <Processing />
         </section>
+
+        <div className={addPrefixClass("widget-footer")}/>
+
         <section id="modals">
           <InfoModal />
         </section>

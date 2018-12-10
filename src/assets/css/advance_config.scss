@@ -166,7 +166,7 @@ $radio-color: #5D9E7A;
         .select-item{
           font-size: 12px;
         }
-      }		       
+      }
     }
   }
   .select-item{
@@ -187,7 +187,7 @@ $radio-color: #5D9E7A;
       }
     }
   }
-  .k-title {      
+  .k-title {
     font-size: 16px;
     color: #31CB9E;
     // position: relative;
@@ -323,7 +323,7 @@ $radio-color: #5D9E7A;
       .gas-price, .min-rate{
         margin: 0 auto;
         label{
-          text-align: left;              
+          text-align: left;
           color: $white;
           margin-top: 7px;
           font-size: inherit;
@@ -392,15 +392,15 @@ $radio-color: #5D9E7A;
     float: left;
     width: 100%;
   }
-    
+
   ul li input[type=radio]{
     position: absolute;
     visibility: hidden;
   }
-  
+
   ul li label{
     display: block;
-    position: relative;      
+    position: relative;
     font-size: 0.8em;
     padding: 5px 0px 0px 20px;
     color: #A2A2AE;
@@ -434,15 +434,15 @@ $radio-color: #5D9E7A;
     transition: background 0.25s linear;
     -webkit-transition: background 0.25s linear;
   }
-  
+
   input[type=radio]:checked ~ .check {
     border: none;
   }
-  
+
   input[type=radio]:checked ~ .check::before{
     background-image: url("../img/checked.svg")
   }
-  
+
   input[type=radio]:checked ~ label{
     color: $radio-color;
   }

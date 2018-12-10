@@ -67,6 +67,13 @@
   @import "theme";
 }
 
+.widget-footer {
+  width: 139px;
+  height: 32px;
+  background-image: url($image-path + 'footer-logo.svg');
+  margin: 35px auto 0;
+}
+
 .step-breadcrumb {
   border-left: 1px solid #eee;
   border-right: 1px solid #eee;
@@ -294,6 +301,20 @@
       opacity: 0.5;
       pointer-events: none;
     }
+
+    &.hollow {
+      background: transparent;
+      text-transform: initial;
+      box-shadow: none;
+      color: #677c94;
+      font-size: 16px;
+      border: solid 1px #d4e1ef;
+
+      &:hover {
+        background-color: $theme-emerald-regular;
+        color: white;
+      }
+    }
   }
 
   &__input-panel {
@@ -354,6 +375,38 @@
 
     &::placeholder {
       opacity: 0.4;
+    }
+
+    &.security {
+      font-size: 23px;
+      font-family: 'text-security-disc', sans-serif;
+    }
+  }
+
+  &__text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #394b5e;
+
+    &-bold {
+      font-size: 24px;
+      font-weight: 600;
+      color: #404a4f;
+    }
+
+    &-light {
+      font-size: 14px;
+      font-weight: 500;
+      color: #9ea8b3;
+    }
+
+    &-container {
+      margin-bottom: 20px;
+    }
+
+    &-container-bold {
+      margin-top: 20px;
+      margin-bottom: 25px;
     }
   }
 

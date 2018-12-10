@@ -277,7 +277,6 @@ export default class ImportByDevice extends React.Component {
         choosePath={this.choosePath.bind(this)}
         getAddress={this.getAddress.bind(this)}
         translate={this.props.translate}
-        onCloseImportAccount={this.props.onCloseImportAccount}
         chosenImportAccount={this.props.account.chosenImportAccount}
       />
     )

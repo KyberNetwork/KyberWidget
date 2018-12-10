@@ -1,10 +1,10 @@
 import React from "react"
 import { connect } from "react-redux"
 import { ImportAccountView } from '../../components/ImportAccount'
-import { ImportByMetamask} from "../ImportAccount"
 import { getTranslate } from 'react-localize-redux'
-import { openImportAccount, closeImportAccount } from "../../actions/accountActions"
+import {openImportAccount, closeImportAccount, importNewAccount, throwPKeyError} from "../../actions/accountActions"
 import { goToStep } from "../../actions/exchangeActions"
+import { addressFromPrivateKey } from "../../utils/keys"
 
 @connect((store, props) => {
   var tokens = store.tokens.tokens;
@@ -57,11 +57,25 @@ export default class ImportAccount extends React.Component {
     this.props.analytics.callTrack("clickToBack", 1)
   }
 
+  handleSubmitPrivateKey() {
+    let privateKey = document.getElementById("private_key").value;
+
+    try {
+      if (privateKey.match(/^0[x | X].{3,}$/)) {
+        privateKey = privateKey.substring(2)
+      }
+      let address = addressFromPrivateKey(privateKey)
+      this.props.dispatch(importNewAccount(address, "privateKey", privateKey))
+    }
+    catch (e) {
+      this.props.dispatch(throwPKeyError(this.props.translate("error.invalid_private_key") || 'Invalid private key'))
+    }
+  }
+
   render() {
     return (
       <ImportAccountView
         isLoading={this.props.loading}
-        firstKey={<ImportByMetamask screen={this.props.screen}/>}
         signerAddresses={this.getSignerAddresses()}
         onOpenImportAccount={this.openImportAccount.bind(this)}
         onCloseImportAccount={this.closeImportAccount.bind(this)}
@@ -71,6 +85,7 @@ export default class ImportAccount extends React.Component {
         screen={this.props.screen}
         error={this.props.error}
         orderDetails={this.props.orderDetails}
+        handleSubmitPrivateKey={this.handleSubmitPrivateKey.bind(this)}
       />
     )
   }

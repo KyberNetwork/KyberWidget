@@ -25,6 +25,11 @@
     border-color: $theme-emerald-regular;
   }
 
+  .theme-icon-hover:hover {
+    box-shadow: $theme-emerald-shadow-icon;
+    border-color: $theme-emerald-border;
+  }
+
   .theme-bg-light {
     background-color: $theme-emerald-light;
   }
@@ -43,6 +48,15 @@
 
   .theme-border {
     border-color: $theme-emerald-border;
+  }
+
+  .theme-button {
+    border-color: $theme-emerald-border;
+
+    &:hover {
+      color: white;
+      background-color: $theme-emerald-regular;
+    }
   }
 
   .theme-border-top {

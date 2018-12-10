@@ -101,7 +101,8 @@ const account = (state = initState, action) => {
         ...state,
         chosenImportAccount: null,
         error: '',
-        showError: false
+        showError: false,
+        pKey: {error: "", isOpen: false}
       };
     }
     case "ACCOUNT.SET_WALLET": {

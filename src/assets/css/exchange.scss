@@ -127,6 +127,14 @@
     padding: 30px 40px;
   }
 
+  &__body {
+    background-color: white;
+
+    &.small-padding {
+      padding-bottom: 5px;
+    }
+  }
+
   &__bot {
     background-color: #f9fcff;
   }
@@ -137,11 +145,13 @@
     margin-bottom: 15px;
   }
 
-  &__pay {
+  &__column {
     display: flex;
     justify-content: space-between;
 
     &-item {
+      position: relative;
+
       &:first-child {
         width: 45%;
       }
@@ -166,7 +176,12 @@
     }
 
     &-body {
-      padding: 30px 25px;
+      padding: 25px 25px 0;
+    }
+
+    &-amount {
+      position: relative;
+      bottom: 11px;
     }
 
     &-text {
@@ -193,29 +208,22 @@
       color: #616877;
     }
 
-    &-name,
-    &-image,
-    &-amount,
-    &-address {
+    &-text-small {
+      font-size: 14px;
+      font-weight: 500;
+      text-align: right;
+      margin-top: 5px;
+    }
+
+    &-box {
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-
-    &-name {
-      margin-bottom: 30px;
-    }
-
-    &-image {
-
-    }
-
-    &-amount {
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
     &-address {
-      padding-top: 20px;
+      padding-top: 25px;
       border-top: 1px dashed $theme-emerald-border;
     }
   }

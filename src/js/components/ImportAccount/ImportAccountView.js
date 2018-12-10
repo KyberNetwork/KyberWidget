@@ -3,6 +3,7 @@ import ImportByPKeyView from "./PrivateKey/ImportByPKeyView";
 import ImportByLedgerView from "./Ledger/ImportByLedgerView";
 import ImportByTrezorView from "./Trezor/ImportByTrezorView";
 import ImportByKeystoreView from "./Keystore/ImportByKeystoreView";
+import { ImportByMetamask } from "../../containers/ImportAccount";
 import {
   ImportByPrivateKey,
   ImportByDeviceWithLedger,
@@ -18,44 +19,60 @@ const ImportAccountView = (props) => {
 
   switch (props.chosenImportAccount) {
     case constants.IMPORT_ACCOUNT_TYPE.keystore:
-      importComponent =
-        <ImportByKeystoreView
-          translate={props.translate}
-          error={props.error}
-          onCloseImportAccount={props.onCloseImportAccount}
-        />
+      importComponent = <ImportByKeystoreView translate={props.translate} error={props.error}/>
       break;
     case constants.IMPORT_ACCOUNT_TYPE.privateKey:
-      importComponent = <ImportByPrivateKey onCloseImportAccount={props.onCloseImportAccount}/>;
+      importComponent = <ImportByPrivateKey/>;
       break;
     case constants.IMPORT_ACCOUNT_TYPE.ledger:
-      importComponent = <ImportByDeviceWithLedger onCloseImportAccount={props.onCloseImportAccount} screen={props.screen}/>;
+      importComponent = <ImportByDeviceWithLedger screen={props.screen}/>;
       break;
     case constants.IMPORT_ACCOUNT_TYPE.trezor:
-      importComponent = <ImportByDeviceWithTrezor onCloseImportAccount={props.onCloseImportAccount} screen={props.screen}/>;
+      importComponent = <ImportByDeviceWithTrezor screen={props.screen}/>;
       break;
   }
 
   return (
-    <div className={addPrefixClass("widget-import-account")}>
-      <div className={addPrefixClass("k-container")}>
-        {props.signerAddresses.length !== 0 &&
-          <SignerAddress signerAddresses={props.signerAddresses}/>
-        }
+    <div className={addPrefixClass("widget-exchange")}>
+      <div className={addPrefixClass("widget-exchange__body small-padding")}>
+        <div className={addPrefixClass("widget-exchange__column")}>
+          <div className={addPrefixClass("widget-exchange__column-item")}>
+            <div className={addPrefixClass("widget-exchange__text theme-text")}>Unlock your Wallet</div>
 
-        <div className={addPrefixClass("import-account")}>
-          {props.firstKey}
-          <ImportByTrezorView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
-          <ImportKeystore onOpenImportAccount={props.onOpenImportAccount} screen={props.screen} translate={props.translate}/>
-          <ImportByPKeyView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
-          <ImportByLedgerView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
+            {props.signerAddresses.length !== 0 && (
+              <SignerAddress signerAddresses={props.signerAddresses}/>
+            )}
+
+            <div className={addPrefixClass("import-account")}>
+              <ImportByMetamask screen={props.screen}/>
+              <ImportByLedgerView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
+              <ImportByTrezorView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
+              <ImportKeystore onOpenImportAccount={props.onOpenImportAccount} screen={props.screen} translate={props.translate}/>
+              <ImportByPKeyView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
+            </div>
+
+            <div className={addPrefixClass("import-account-content " + (props.chosenImportAccount && props.isLoading === false ? 'import-account-content--active' : ''))}>
+              {importComponent}
+            </div>
+          </div>
+          <div className={addPrefixClass("widget-exchange__column-item")}>
+            {props.orderDetails}
+          </div>
+        </div>
+      </div>
+      <div className={addPrefixClass("widget-exchange__bot common__flexbox between")}>
+        <div
+          className={addPrefixClass("common__button hollow theme-button")}
+          onClick={props.chosenImportAccount ? props.onCloseImportAccount : props.backToFirstStep}
+        >
+          {props.translate("transaction.back") || "Back"}
         </div>
 
-        <div className={addPrefixClass("payment-gateway__hollow-button")} onClick={props.backToFirstStep}>{props.translate("transaction.back") || "Back"}</div>
-
-        <div className={addPrefixClass("import-account-content " + (props.chosenImportAccount && props.isLoading === false ? 'import-account-content--active' : ''))}>
-          {importComponent}
-        </div>
+        {props.chosenImportAccount && (
+          <div className={addPrefixClass(`common__button theme-gradient ${props.error ? 'disabled' : ''}`)} onClick={props.handleSubmitPrivateKey}>
+            {props.translate("modal.import") || "Import"}
+          </div>
+        )}
       </div>
     </div>
   )

@@ -207,8 +207,8 @@ const ExchangeBodyLayout = (props) => {
         )}
 
         {props.exchange.type === 'pay' && (
-          <div className={addPrefixClass('widget-exchange__pay')}>
-            <div className={addPrefixClass("widget-exchange__pay-item")}>
+          <div className={addPrefixClass('widget-exchange__column')}>
+            <div className={addPrefixClass("widget-exchange__column-item")}>
               <div className={addPrefixClass("widget-exchange__text theme-text")}>Choose your Token:</div>
               <div className={addPrefixClass("common__input-panel")}>
                 <TokenSelector
@@ -241,7 +241,7 @@ const ExchangeBodyLayout = (props) => {
                   </div>
                   <div className={addPrefixClass("common__input-panel")}>
                     <input
-                      className={addPrefixClass("common__input")}
+                      className={addPrefixClass("common__input theme-border")}
                       min="0"
                       step="0.000001"
                       placeholder="0"
@@ -270,7 +270,7 @@ const ExchangeBodyLayout = (props) => {
               {errorShow}
             </div>
 
-            <div className={addPrefixClass("widget-exchange__pay-item")}>
+            <div className={addPrefixClass("widget-exchange__column-item")}>
               {props.orderDetails}
             </div>
           </div>

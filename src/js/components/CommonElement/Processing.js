@@ -23,6 +23,6 @@ const ProcessingModal = (props) => {
       : ''}
     </div>
   )
-
 }
+
 export default ProcessingModal
