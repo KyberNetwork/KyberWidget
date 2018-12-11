@@ -84,7 +84,7 @@ export default class ImportAccount extends React.Component {
         translate={this.props.translate}
         screen={this.props.screen}
         error={this.props.error}
-        orderDetails={this.props.orderDetails}
+        detailBox={this.props.detailBox}
         handleSubmitPrivateKey={this.handleSubmitPrivateKey.bind(this)}
       />
     )

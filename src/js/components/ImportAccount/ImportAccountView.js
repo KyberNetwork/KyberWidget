@@ -56,7 +56,7 @@ const ImportAccountView = (props) => {
             </div>
           </div>
           <div className={addPrefixClass("widget-exchange__column-item")}>
-            {props.orderDetails}
+            {props.detailBox}
           </div>
         </div>
       </div>

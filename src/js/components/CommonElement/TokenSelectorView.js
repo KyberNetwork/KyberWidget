@@ -44,7 +44,7 @@ const TokenSelectorView = (props) => {
         <div
           key={key}
           onClick={(e) => props.selectItem(e, item.symbol, item.address)}
-          className={addPrefixClass("token-item-container payment-gateway__hover-color")}>
+          className={addPrefixClass("token-item-container theme-text-hover")}>
           <div className={addPrefixClass("token-item-content")}>
             <div className={addPrefixClass("token-item")}>
               <img className={addPrefixClass("token-item__icon")} src={getTokenUrl(item.symbol)}/>

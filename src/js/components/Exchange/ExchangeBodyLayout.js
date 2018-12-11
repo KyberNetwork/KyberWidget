@@ -24,10 +24,8 @@ const ExchangeBodyLayout = (props) => {
     return <div className={addPrefixClass("common__error")} key={index}>{value}</div>
   })
 
-  var classSource = "";
-  var haveProductName = props.exchange.productName && props.exchange.productName !== "" ? true : false
-  var haveProductAvatar = props.exchange.productAvatar && props.exchange.productAvatar !== "" ? true : false
   const isSourceEqualtoDestToken = props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol;
+  const rateSwap = converter.toT(props.exchange.offeredRate, 18, 3);
 
   return (
     <div className={addPrefixClass("widget-exchange")}>
@@ -40,68 +38,47 @@ const ExchangeBodyLayout = (props) => {
         )}
 
         {props.exchange.type === 'swap' && (
-          <div className={addPrefixClass('swap-layout'+(errorExchange ? " error" : ""))}>
-            <div className={addPrefixClass('swap-item swap-item-first')}>
-              {/* <span class="transaction-label">FROM</span> */}
-              <div className={addPrefixClass("select-token-panel")}>
-                {props.tokenSourceSelect}
-                {!props.exchange.isHaveDestAmount && (
-                  <div className={addPrefixClass(classSource)}>
+          <div>
+            <div className={addPrefixClass("widget-exchange__title")}>Your are performing token conversion, Please choose</div>
+            <div className={addPrefixClass("widget-exchange__swap-container")}>
+              <div className={addPrefixClass("widget-exchange__swap-item")}>
+                <div className={addPrefixClass("widget-exchange__text theme-text")}>From Token</div>
+                <div className={addPrefixClass(`select-token-panel common__input-panel short-margin ${errorExchange ? "error" : ""}`)}>
+                  {props.tokenSourceSelect}
+                  <div className={addPrefixClass("common__input-panel-label input-container")}>
                     <div>
                       <input
-                        id="inputSource"
-                        className={addPrefixClass("source-input")}
-                        min="0"
-                        step="0.000001"
-                        placeholder="0" autoFocus
-                        type="number" maxLength="50" autoComplete="off"
-                        value={props.input.sourceAmount.value || ''}
-                        onFocus={props.input.sourceAmount.onFocus}
-                        onBlur={props.input.sourceAmount.onBlur}
-                        onChange={handleChangeSource}
+                        min="0" step="0.000001" placeholder="0" autoFocus type="text"
+                        maxLength="50" autoComplete="off" value={props.input.sourceAmount.value || ''}
+                        onFocus={props.input.sourceAmount.onFocus} onBlur={props.input.sourceAmount.onBlur}
+                        onChange={handleChangeSource} className={addPrefixClass("widget-exchange__input")}
                       />
                     </div>
                   </div>
-                )}
-                {props.exchange.isHaveDestAmount && (
-                  <div className={addPrefixClass('dest-amount amount-input')}>
-                    <div>Estimate source amount:</div>
-                    <div>
-                      <strong>{props.exchange.sourceAmount} {props.exchange.sourceTokenSymbol}</strong>
-                    </div>
-                  </div>
-                )}
-
+                </div>
+                {errorShow}
               </div>
-              {errorShow}
-            </div>
-            {!props.global.params.receiveToken && (
-              <div className={addPrefixClass("cell large-2 exchange-icon")}>
+
+              <div className={addPrefixClass("widget-exchange__swap-button-container")}>
                 <span data-tip={props.translate('transaction.click_to_swap') || 'Click to swap'} data-for="swap" currentitem="false">
-                  <img src={require("../../../assets/img/arrow_swap.svg")} onClick={(e) => props.swapToken(e)}/>
+                  <div className={"widget-exchange__swap-button swap"} onClick={(e) => props.swapToken(e)}/>
                 </span>
               </div>
-            )}
 
-            <div className={addPrefixClass('swap-item')}>
-              <div className={addPrefixClass("select-token-panel")}>
-                {props.tokenDestSelect}
-                <div className={addPrefixClass('dest-amount amount-input')}>
-                  {props.exchange.isHaveDestAmount && (
-                    <div>
-                      Receive Amount:
-                    </div>
-                  )}
-                  {!props.exchange.isHaveDestAmount && (
-                    <div>
-                      Estimate dest amount:
-                    </div>
-                  )}
-                  <div>
-                    <strong>
-                      {props.exchange.destAmount} {props.destTokenSymbol}
-                    </strong>
+              <div className={addPrefixClass("widget-exchange__swap-item")}>
+                <div className={addPrefixClass("widget-exchange__text theme-text")}>To Token</div>
+                <div className={addPrefixClass("select-token-panel common__input-panel short-margin")}>
+                  {props.tokenDestSelect}
+                  <div className={addPrefixClass("common__input-panel-label")}>
+                    {props.exchange.isSelectToken ? "Loading..." : `${props.exchange.destAmount} ${props.destTokenSymbol}`}
                   </div>
+                </div>
+                <div className={addPrefixClass("widget-exchange__swap-text")}>
+                  <span>1 {props.sourceTokenSymbol}</span>
+                  <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
+                  <span>{rateSwap} {props.destTokenSymbol}</span>
+                  <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
+                  <span>? USD</span>
                 </div>
               </div>
             </div>
@@ -161,7 +138,7 @@ const ExchangeBodyLayout = (props) => {
                       <span className={addPrefixClass("transaction-label amount-enter-label")}>
                         {props.translate("transaction.enter_amount") || "ENTER AMOUNT YOU WILL PAY"}
                       </span>
-                      <div className={addPrefixClass(classSource)}>
+                      <div>
                         <div>
                           <input
                             id="inputSource"
@@ -271,7 +248,7 @@ const ExchangeBodyLayout = (props) => {
             </div>
 
             <div className={addPrefixClass("widget-exchange__column-item")}>
-              {props.orderDetails}
+              {props.detailBox}
             </div>
           </div>
         )}

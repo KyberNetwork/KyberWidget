@@ -339,6 +339,10 @@
             opacity: .5;
           }
         }
+
+        &:hover {
+          color: $theme-emerald-regular;
+        }
       }
 
       &-content {

@@ -54,7 +54,7 @@ export default class Selector extends React.Component {
                             </div>
                             {/* <div><i className={'k k-angle ' + (this.state.open ? 'up' : 'down')}></i></div> */}
                             <div>
-                                <img src={require('../../../assets/img/landing/arrow_down.svg')} />
+                                {/*<img src={require('../../../assets/img/landing/arrow_down.svg')} />*/}
                             </div>                            
                         </div>
                     </DropdownTrigger>

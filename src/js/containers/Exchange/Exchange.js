@@ -10,6 +10,7 @@ import * as exchangeActions from "../../actions/exchangeActions"
 import { default as _ } from 'underscore'
 import { ImportAccount } from "../ImportAccount"
 import OrderDetails from "../../components/CommonElement/OrderDetails";
+import TransactionDetails from "../../components/CommonElement/TransactionDetails";
 
 @connect((store, props) => {
   const account = store.account.account
@@ -34,7 +35,7 @@ export default class Exchange extends React.Component {
 
   toggleAdvConfig = () => {
     this.setState({isAdvConfigActive: !this.state.isAdvConfigActive});
-    this.props.analytics.callTrack("clickToAdvance", this.state.isAdvConfigActive);
+    this.props.global.analytics.callTrack("clickToAdvance", this.state.isAdvConfigActive);
   };
 
   validateTxFee = (gasPrice) => {
@@ -59,7 +60,7 @@ export default class Exchange extends React.Component {
   selectedGasHandler = (value, level, levelString) => {
     this.props.dispatch(exchangeActions.seSelectedGas(level));
     this.specifyGasPrice(value);
-    this.props.analytics.callTrack("chooseGas", levelString, value);
+    this.props.global.analytics.callTrack("chooseGas", levelString, value);
   };
 
   handleSlippageRateChanged = (e, isInput = false) => {
@@ -75,29 +76,32 @@ export default class Exchange extends React.Component {
     const minRate = converter.caculatorRateToPercentage(value, offeredRate);
 
     this.props.dispatch(exchangeActions.setMinRate(minRate.toString()));
-    this.props.analytics.callTrack("setNewMinRate", value);
+    this.props.global.analytics.callTrack("setNewMinRate", value);
   };
 
   render() {
-    const orderDetails = (
-      <OrderDetails
-        step={this.props.exchange.step}
-        exchange={this.props.exchange}
-        global={this.props.global}
-        translate={this.props.translate}
-      />
-    );
+    let detailBox = <TransactionDetails exchange={this.props.exchange}/>;
+
+    if (this.props.exchange.type === "pay") {
+      detailBox = (
+        <OrderDetails
+          exchange={this.props.exchange}
+          global={this.props.global}
+          translate={this.props.translate}
+        />
+      );
+    }
 
     if (this.props.global.haltPayment){
       return <ErrorPayment/>
     }
 
     if (this.props.exchange.step === 1) {
-      return <ExchangeBody orderDetails={orderDetails}/>;
+      return <ExchangeBody detailBox={detailBox}/>;
     }
 
     if (this.props.exchange.step === 2) {
-      return <ImportAccount screen="exchange" orderDetails={orderDetails}/>
+      return <ImportAccount screen="exchange" detailBox={detailBox}/>
     }
 
     if (this.props.exchange.step === 3) {
@@ -113,7 +117,7 @@ export default class Exchange extends React.Component {
         />
       );
 
-      return <Payment advanceConfig={advanceConfig} orderDetails={orderDetails}/>
+      return <Payment advanceConfig={advanceConfig} detailBox={detailBox}/>
     }
 
     if (this.props.exchange.step === 4) {

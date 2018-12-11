@@ -20,7 +20,6 @@
       right: 12px;
       top: 50%;
       margin-top: -4px;
-      background-image: url($image-path + 'exchange/arrow-down-swap.svg');
       transform: rotate(180deg);
       transition: all .3s;
     }
@@ -66,6 +65,11 @@
     left: 0;
     background-image: $theme-emerald-gradient;
     z-index: -1;
+  }
+
+  &.swap,
+  &.buy {
+    max-width: $container-max-width-swap;
   }
 
   @import "theme";
@@ -338,6 +342,10 @@
     position: relative;
     margin-bottom: 30px;
 
+    &.short-margin {
+      margin-bottom: 15px;
+    }
+
     &-label {
       position: absolute;
       top: 0;
@@ -349,6 +357,33 @@
       &.small {
         font-size: 18px;
         top: 3px;
+      }
+
+      &.input-container {
+        z-index: 2;
+        width: 50%;
+
+        input {
+          border: none;
+          outline: none;
+          text-align: right;
+          padding: 0;
+          font-size: 24px;
+          font-weight: 500;
+          color: #727b8f;
+          width: 100%;
+        }
+      }
+    }
+
+    &.error {
+      .token-chooser__selector {
+        border-color: $error-color;
+      }
+
+      .widget-exchange__input,
+      .widget-exchange__input::placeholder {
+        color: $error-color;
       }
     }
   }
@@ -367,16 +402,11 @@
   }
 
   &__error {
-    color: #F1637D;
     font-size: 14px;
-    font-weight: bold;
-    margin-top: 15px;
-    line-height: 1.6;
-    border: 1px solid #f1637d;
-    padding: 10px;
-    border-radius: 3px;
+    font-weight: 500;
+    color: $error-color;
     opacity: 0;
-    text-align: center;
+    transform: translateY(10px);
     transition: all .3s;
     animation: fade-in 0.3s forwards;
   }
@@ -425,12 +455,6 @@
     &-container-bold {
       margin-top: 20px;
       margin-bottom: 25px;
-    }
-  }
-
-  @keyframes fade-in {
-    to {
-      opacity: 1;
     }
   }
 }

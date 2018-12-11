@@ -388,7 +388,7 @@ export default class Payment extends React.Component {
               </div>
             </div>
             <div className={addPrefixClass("widget-exchange__column-item")}>
-              {this.props.orderDetails}
+              {this.props.detailBox}
             </div>
           </div>
         </div>

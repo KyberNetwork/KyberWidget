@@ -7,7 +7,6 @@ const OrderDetails = (props) => {
   const haveProductAvatar = props.exchange.productAvatar && props.exchange.productAvatar !== "";
   let isError = false;
   let gasUsed = props.exchange.gas;
-
   if (props.exchange.isNeedApprove) {
     gasUsed += props.exchange.gas_approve
   }
@@ -20,7 +19,7 @@ const OrderDetails = (props) => {
 
   return (
     <div className={addPrefixClass("widget-exchange__order theme-border")}>
-      <div className={addPrefixClass("widget-exchange__order-header")}>Order details</div>
+      <div className={addPrefixClass("widget-exchange__order-header")}>Order Details</div>
 
       <div className={addPrefixClass("widget-exchange__order-body")}>
         {haveProductName && (
@@ -65,7 +64,7 @@ const OrderDetails = (props) => {
           </div>
         </div>
 
-        {props.step === 3 && (
+        {props.exchange.step === 3 && (
           <div className={"widget-exchange__order-box"}>
             <div className={addPrefixClass("widget-exchange__order-text")}>
               {props.translate("transaction.transaction_fee") || "Transaction fee"}:

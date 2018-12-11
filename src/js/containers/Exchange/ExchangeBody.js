@@ -257,6 +257,15 @@ export default class ExchangeBody extends React.Component {
       tokenDest[key] = { ...this.props.tokens[key], isNotSupport: isNotSupport }
     })
 
+    var tokenSourceSelect = (
+      <TokenSelector
+        type="source"
+        focusItem={this.props.exchange.sourceTokenSymbol}
+        listItem={this.props.tokens}
+        chooseToken={this.chooseToken}
+      />
+    );
+
     var tokenDestSelect = this.props.global.params.receiveToken && this.props.tokens[this.props.global.params.receiveToken] ? (
       <div className={addPrefixClass("token-chooser token-dest")}>
         <div className={addPrefixClass("focus-item")}>
@@ -318,7 +327,9 @@ export default class ExchangeBody extends React.Component {
     }
 
     return (
-      <ExchangeBodyLayout step={this.props.exchange.step}
+      <ExchangeBodyLayout
+        step={this.props.exchange.step}
+        tokenSourceSelect={tokenSourceSelect}
         tokenDestSelect={tokenDestSelect}
         errors={errors}
         input={input}
@@ -338,7 +349,7 @@ export default class ExchangeBody extends React.Component {
         global={this.props.global}
         tokens={this.props.tokens}
         onChooseToken={this.chooseToken}
-        orderDetails={this.props.orderDetails}
+        detailBox={this.props.detailBox}
       />
     )
   }

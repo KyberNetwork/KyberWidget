@@ -33,7 +33,8 @@ export default class AddressSelector extends React.Component {
             </div>
             <div className={addPrefixClass("address-selector__item-balance")}>
               {address.balance == '-1' ?
-                <img src={require('../../../assets/img/waiting-white.svg')} />
+                ""
+                // <img src={require('../../../assets/img/waiting-white.svg')} />
                 : roundingNumber(address.balance)
               } ETH
             </div>
@@ -60,12 +61,12 @@ export default class AddressSelector extends React.Component {
 
               <div className={addPrefixClass("address-list-navigation")}>
                   <img
-                    src={require('../../../assets/img/import-account/arrows_left_icon.svg')}
+                    // src={require('../../../assets/img/import-account/arrows_left_icon.svg')}
                     className={addPrefixClass("payment-gateway__background " + (this.props.isFirstList ? 'disabled' : ''))}
                     onClick={this.props.getPreAddress}/>
                   <img
+                    // src={require('../../../assets/img/import-account/arrows_right_icon.svg')}
                     className={addPrefixClass("payment-gateway__background")}
-                    src={require('../../../assets/img/import-account/arrows_right_icon.svg')}
                     onClick={this.props.getMoreAddress}/>
               </div>
             </div>
