@@ -373,7 +373,7 @@ export default class Payment extends React.Component {
                 </div>
                 <div className={"common__text-container"}>
                   <span className={"common__text-light"}>Your address: </span>
-                  <span className={"common__text"}>{this.props.translate("transaction.address") || "Address"}: {this.props.account.address.slice(0, 8)}...{this.props.account.address.slice(-6)}</span>
+                  <span className={"common__text"}>{this.props.account.address.slice(0, 12)}...{this.props.account.address.slice(-10)}</span>
                 </div>
               </div>
 

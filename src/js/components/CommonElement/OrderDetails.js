@@ -65,14 +65,16 @@ const OrderDetails = (props) => {
           </div>
         </div>
 
-        <div className={"widget-exchange__order-box"}>
-          <div className={addPrefixClass("widget-exchange__order-text")}>
-            {props.translate("transaction.transaction_fee") || "Transaction fee"}:
+        {props.step === 3 && (
+          <div className={"widget-exchange__order-box"}>
+            <div className={addPrefixClass("widget-exchange__order-text")}>
+              {props.translate("transaction.transaction_fee") || "Transaction fee"}:
+            </div>
+            <div className={addPrefixClass("widget-exchange__order-text-bold")}>
+              {props.exchange.isFetchingGas ? "Loading..." : converter.calculateGasFee(props.exchange.gasPrice, gasUsed)}
+            </div>
           </div>
-          <div className={addPrefixClass("widget-exchange__order-text-bold")}>
-            {props.exchange.isFetchingGas ? "Loading..." : converter.calculateGasFee(props.exchange.gasPrice, gasUsed)}
-          </div>
-        </div>
+        )}
 
         <div className={addPrefixClass("widget-exchange__order-box widget-exchange__order-address theme-border")}>
           <div className={addPrefixClass("widget-exchange__order-text-light")}>

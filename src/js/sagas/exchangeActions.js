@@ -105,7 +105,7 @@ export function* estimateGasUsed(source, dest) {
           break
       }
     } else {
-      gasUsed = yield call(getMaxGasExchange, source, dest)      
+      gasUsed = yield call(getMaxGasExchange, source, dest)
       gasApproved = yield call(getMaxGasApprove, tokens[source].gasApprove)
     }
   }else{

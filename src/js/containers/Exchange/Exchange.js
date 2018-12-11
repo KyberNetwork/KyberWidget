@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
-import { ExchangeBody, MinRate, Payment, ErrorPayment } from "../Exchange"
-import { AdvanceConfigLayout, GasConfig } from "../../components/TransactionCommon"
+import { ExchangeBody, Payment, ErrorPayment } from "../Exchange"
+import { AdvanceConfigLayout } from "../../components/TransactionCommon"
 import {TransactionLoading} from "../CommonElements"
 import { getTranslate } from 'react-localize-redux'
 import * as converter from "../../utils/converter"
@@ -23,8 +23,19 @@ import OrderDetails from "../../components/CommonElement/OrderDetails";
     params: { ...props.match.params }, global: store.global
   }
 })
-
 export default class Exchange extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      isAdvConfigActive: false
+    }
+  }
+
+  toggleAdvConfig = () => {
+    this.setState({isAdvConfigActive: !this.state.isAdvConfigActive});
+    this.props.analytics.callTrack("clickToAdvance", this.state.isAdvConfigActive);
+  };
 
   validateTxFee = (gasPrice) => {
     var validateWithFee = validators.verifyBalanceForTransaction(this.props.tokens['ETH'].balance, this.props.exchange.sourceTokenSymbol,
@@ -38,11 +49,6 @@ export default class Exchange extends React.Component {
 
   lazyValidateTransactionFee = _.debounce(this.validateTxFee, 500)
 
-  specifyGas = (event) => {
-    var value = event.target.value
-    this.props.dispatch(exchangeActions.specifyGas(value))
-  };
-
   specifyGasPrice = (value) => {
     this.props.dispatch(exchangeActions.specifyGasPrice(value + ""))
     if (this.props.account !== false) {
@@ -50,19 +56,32 @@ export default class Exchange extends React.Component {
     }
   };
 
-  inputGasPriceHandler = (value) => {
-    this.specifyGasPrice(value)
+  selectedGasHandler = (value, level, levelString) => {
+    this.props.dispatch(exchangeActions.seSelectedGas(level));
+    this.specifyGasPrice(value);
+    this.props.analytics.callTrack("chooseGas", levelString, value);
   };
 
-  selectedGasHandler = (value, level) => {
+  handleSlippageRateChanged = (e, isInput = false) => {
+    const offeredRate  = this.props.exchange.offeredRate;
+    let value = isInput ? 100 - e.currentTarget.value : e.currentTarget.value;
 
-    this.props.dispatch(exchangeActions.seSelectedGas(level))
-    this.specifyGasPrice(value)
+    if (value > 100) {
+      value = 100;
+    } else if (value < 0) {
+      value = 0;
+    }
+
+    const minRate = converter.caculatorRateToPercentage(value, offeredRate);
+
+    this.props.dispatch(exchangeActions.setMinRate(minRate.toString()));
+    this.props.analytics.callTrack("setNewMinRate", value);
   };
 
   render() {
     const orderDetails = (
       <OrderDetails
+        step={this.props.exchange.step}
         exchange={this.props.exchange}
         global={this.props.global}
         translate={this.props.translate}
@@ -82,37 +101,13 @@ export default class Exchange extends React.Component {
     }
 
     if (this.props.exchange.step === 3) {
-      let minRate = "";
-      const gasPrice = converter.stringToBigNumber(converter.gweiToEth(this.props.exchange.gasPrice));
-      const totalGas = gasPrice.multipliedBy(this.props.exchange.gas + this.props.exchange.gas_approve);
-
-      const gasConfig = (
-        <GasConfig
-          gas={this.props.exchange.gas + this.props.exchange.gas_approve}
-          gasPrice={this.props.exchange.gasPrice}
-          maxGasPrice={this.props.exchange.maxGasPrice}
-          gasHandler={this.specifyGas}
-          inputGasPriceHandler={this.inputGasPriceHandler}
-          selectedGasHandler={this.selectedGasHandler}
-          gasPriceError={this.props.exchange.errors.gasPriceError}
-          gasError={this.props.exchange.errors.gasError}
-          translate={this.props.translate}
-          gasPriceSuggest={this.props.exchange.gasPriceSuggest}
-          selectedGas={this.props.exchange.selectedGas}
-          page="exchange"
-          analytics={this.props.global.analytics}
-        />
-      )
-
-      if (this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol){
-        minRate = <MinRate />
-      }
-
       const advanceConfig = (
         <AdvanceConfigLayout
-          totalGas={totalGas.toString()}
-          minRate={minRate}
-          gasConfig={gasConfig}
+          isAdvConfigActive={this.state.isAdvConfigActive}
+          toggleAdvConfig={this.toggleAdvConfig}
+          exchange={this.props.exchange}
+          onSlippageRateChanged={this.handleSlippageRateChanged}
+          selectedGasHandler={this.selectedGasHandler}
           translate={this.props.translate}
           analytics={this.props.global.analytics}
         />

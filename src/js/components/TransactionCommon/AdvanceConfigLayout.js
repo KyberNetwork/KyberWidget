@@ -1,54 +1,41 @@
 import React from "react";
 import { addPrefixClass } from "../../utils/className";
+import SlideDown, { SlideDownTrigger, SlideDownContent } from "../../containers/CommonElements/SlideDown";
+import { MinRate } from "../../containers/Exchange"
+import GasConfig from "./GasConfig"
 
 const AdvanceConfigLayout = (props) => {
-
-  var toggleShowAdvance = (e) => {
-    var advanceContent = document.getElementById("advance-content");
-    var advanceArrow = document.getElementById("advance-arrow");
-    var advanceTitle = document.getElementById("title-advanced");
-    if (advanceContent.className === addPrefixClass("show-advance")) {
-        advanceContent.className = "";
-        advanceArrow.className = "";
-        advanceTitle.className = addPrefixClass("title-advanced")
-        props.analytics.callTrack("clickToAdvance", "hide")
-    } else {
-        advanceContent.className = addPrefixClass("show-advance");
-        advanceArrow.className = addPrefixClass("advance-arrow-up");
-        props.analytics.callTrack("clickToAdvance", "show")
-        advanceTitle.className = addPrefixClass("title-advanced show-content")
-    }
-  }
   return (
-    <div className={addPrefixClass("advance-config-wrapper")} id="advance-config-wrapper">
-      <div className={addPrefixClass("advance-title-mobile title")} onClick={(e) => toggleShowAdvance()}>
-        <div className={addPrefixClass("title-advanced")} id="title-advanced">
-          <img src={require("../../../assets/img/widget/dropdown-advance.svg")} id="advance-arrow"/>
-          {props.translate("transaction.advanced") || "Advanced"}
-          <div className={addPrefixClass("border-advance")}></div>
-        </div>
-      </div>
-      <div className={addPrefixClass("advance-config")}>
-        <div id="advance-content">
-          <div className={addPrefixClass("advance-content")}>
-            <div>
-                {props.gasConfig}
-            </div>
+    <div className={addPrefixClass("advance-config theme-border")}>
+      <SlideDown active={props.isAdvConfigActive}>
+        <SlideDownTrigger onToggleContent={() => props.toggleAdvConfig()}>
+          <div className={addPrefixClass("advance-config__title")}>Advanced (Optional)</div>
+        </SlideDownTrigger>
 
-            <div>
-              {props.minRate}
-            </div>
+        <SlideDownContent>
+          <div className={"advance-config__content"}>
+            <div className={"advance-config__close-button"} onClick={() => props.toggleAdvConfig()}>&times;</div>
 
-            <div className={addPrefixClass("transaction-fee")}>
-              <div className={addPrefixClass("title-fee")}>
-                {props.translate("transaction.transaction_fee") || "Transaction Fee"}
-              </div>
-              <div>{props.totalGas} ETH</div>
-            </div>
+            {(props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol) && (
+              <MinRate
+                minConversionRate={props.exchange.minConversionRate}
+                offeredRate={props.exchange.offeredRate}
+                onSlippageRateChanged={props.onSlippageRateChanged}
+                sourceTokenSymbol={props.exchange.sourceTokenSymbol}
+                destTokenSymbol={props.exchange.destTokenSymbol}
+              />
+            )}
+
+            <GasConfig
+              selectedGas={props.exchange.selectedGas}
+              gasPriceSuggest={props.exchange.gasPriceSuggest}
+              selectedGasHandler={props.selectedGasHandler}
+            />
           </div>
-        </div>
-      </div>
+        </SlideDownContent>
+      </SlideDown>
     </div>
   )
-}
+};
+
 export default AdvanceConfigLayout
