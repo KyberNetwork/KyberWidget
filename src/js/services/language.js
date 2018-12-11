@@ -15,7 +15,8 @@ function getParameterByName(name, url) {
 }
 
 export function initLanguage(store){
-  let languagePack, packName
+  var packName = "en"
+  let languagePack
   try {
     packName = getParameterByName('lang')
     if (packName){
