@@ -56,6 +56,27 @@
         width: 50%;
       }
     }
+
+    &.buy,
+    &.swap {
+      .import-account {
+        justify-content: flex-start;
+      }
+
+      .import-account__item {
+        margin-right: 15px;
+      }
+
+      .widget-exchange__column-item {
+        &:first-child {
+          width: 54%;
+        }
+
+        &:last-child {
+          width: 41%;
+        }
+      }
+    }
   }
 
   &__order {
@@ -138,6 +159,27 @@
     &-item {
       width: 40%;
       margin-bottom: 15px;
+
+      &.disabled {
+        .token-chooser {
+          cursor: initial;
+        }
+
+        .token-chooser__token-symbol,
+        .common__input-panel-label,
+        .widget-exchange__text {
+          color: #959daf;
+        }
+
+        .common__input-panel-label {
+          z-index: 2;
+        }
+
+        .common__triangle,
+        .token-dropdown__content {
+          display: none;
+        }
+      }
     }
 
     &-button {

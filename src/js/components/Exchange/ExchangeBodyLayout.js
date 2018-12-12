@@ -5,7 +5,6 @@ import {addPrefixClass} from "../../utils/className";
 import { TokenSelector } from "../../containers/Exchange";
 
 const ExchangeBodyLayout = (props) => {
-
   function handleChangeSource(e) {
     var check = filterInputNumber(e, e.target.value, props.input.sourceAmount.value)
     if (check) props.input.sourceAmount.onChange(e)
@@ -25,7 +24,7 @@ const ExchangeBodyLayout = (props) => {
   })
 
   const isSourceEqualtoDestToken = props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol;
-  const rateSwap = converter.toT(props.exchange.offeredRate, 18, 3);
+  const rateSwap = isSourceEqualtoDestToken ? 1 : converter.toT(props.exchange.offeredRate, 18, 6);
 
   return (
     <div className={addPrefixClass("widget-exchange")}>
@@ -86,100 +85,61 @@ const ExchangeBodyLayout = (props) => {
         )}
 
         {props.exchange.type === 'buy' && (
-          <div className={addPrefixClass('widget-layout')}>
-            {props.exchange.isHaveDestAmount && (
-              <div>
-                <div className={addPrefixClass("pay-info")}>
-                  <div className={addPrefixClass("info-1")}>
-                    {props.translate("transaction.you_about_to_buy") || "You are about to buy"}
-                  </div>
-                  <div className={addPrefixClass("info-2")}>
-                    <div className={addPrefixClass("info-2__content")}>
-                      <div>{props.translate("transaction.amount") || "Amount"}:</div>
-                      <div>{('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount} {props.exchange.destTokenSymbol}</div>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div className={addPrefixClass("choose-payment")}>
-                    <span className={addPrefixClass("transaction-label")}>
-                      {props.translate("transaction.exchange_paywith") || "PAY WITH"}
-                    </span>
-                    <div className={addPrefixClass(errorExchange ? "error select-token-panel" : "select-token-panel")}>
-                      {props.tokenSourceSelect}
-                      <div className={addPrefixClass("amount-pay")}>
-                        <div>{props.translate("transaction.estimate_value_should_pay") || "Estimate value you should pay"}</div>
+          <div>
+            <div className={addPrefixClass("widget-exchange__title")}>
+              Your are buying {props.global.params.receiveAmount} {props.exchange.destTokenSymbol}, Please select your token for the payment
+            </div>
+            <div className={addPrefixClass("widget-exchange__swap-container")}>
+              <div className={addPrefixClass("widget-exchange__swap-item")}>
+                <div className={addPrefixClass("widget-exchange__text theme-text")}>From Token</div>
+                <div className={addPrefixClass(`select-token-panel common__input-panel short-margin ${errorExchange ? "error" : ""}`)}>
+                  {props.tokenSourceSelect}
 
-                        {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
-                          <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)} {props.exchange.sourceTokenSymbol} </div>
-                        )}
-                        {props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol && (
-                          <div>{('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount} {props.exchange.sourceTokenSymbol} </div>
-                        )}
-                      </div>
+                  {props.exchange.isHaveDestAmount && (
+                    <div className={addPrefixClass("common__input-panel-label")}>
+                      {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
+                        <div>{props.exchange.offeredRate == "0" ? 0 : props.exchange.isSelectToken ? "Loading..." : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)}</div>
+                      )}
+                      {props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol && (
+                        <div>{('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount}</div>
+                      )}
                     </div>
-                    <div className={addPrefixClass(errorExchange ? "error" : "")}>
-                      {errorShow}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+                  )}
 
-            {!props.exchange.isHaveDestAmount && (
-              <div>
-                <div>
-                  <div className={addPrefixClass("choose-payment")}>
-                    <span className={addPrefixClass("transaction-label")}>
-                      {props.translate("transaction.exchange_paywith") || "PAY WITH"}
-                    </span>
-                    <div className={addPrefixClass(errorExchange ? "error select-token-panel" : "select-token-panel")}>
-                      {props.tokenSourceSelect}
-                      <span className={addPrefixClass("transaction-label amount-enter-label")}>
-                        {props.translate("transaction.enter_amount") || "ENTER AMOUNT YOU WILL PAY"}
-                      </span>
-                      <div>
-                        <div>
-                          <input
-                            id="inputSource"
-                            className={addPrefixClass("source-input")}
-                            min="0"
-                            step="0.000001"
-                            placeholder="0" autoFocus
-                            type="text" maxLength="50" autoComplete="off"
-                            value={props.input.sourceAmount.value}
-                            onFocus={props.input.sourceAmount.onFocus}
-                            onBlur={props.input.sourceAmount.onBlur}
-                            onChange={handleChangeSource}
-                          />
-                        </div>
-                        <div>
-                          <span>{props.sourceTokenSymbol}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={addPrefixClass(errorExchange ? "error" : "")}>
-                      {errorShow}
-                    </div>
-                  </div>
-                  {!props.global.params.receiveToken && (
-                    <div className={addPrefixClass("choose-payment")}>
-                      <span className={addPrefixClass("transaction-label")}>
-                        {props.translate("transaction.exchange_receive_token") || "RECEIVE TOKEN"}
-                      </span>
-                      <div className={addPrefixClass("select-token-panel")}>
-                        {props.tokenDestSelect}
-                      </div>
+                  {!props.exchange.isHaveDestAmount && (
+                    <div className={addPrefixClass("common__input-panel-label input-container")}>
+                      <input
+                        id="inputSource" className={addPrefixClass("source-input")} min="0" step="0.000001" placeholder="0"
+                        autoFocus type="text" maxLength="50" autoComplete="off" value={props.input.sourceAmount.value}
+                        onFocus={props.input.sourceAmount.onFocus} onBlur={props.input.sourceAmount.onBlur} onChange={handleChangeSource}
+                      />
                     </div>
                   )}
                 </div>
-                {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
-                  <div className={addPrefixClass("estimate-dest-value")}>
-                    Estimate dest amount: {props.exchange.offeredRate == "0" ? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}
-                  </div>
-                )}
+                {errorShow}
               </div>
-            )}
+
+              <div className={addPrefixClass("widget-exchange__swap-button-container")}>
+                <div className={"widget-exchange__swap-button buy"}/>
+              </div>
+
+              <div className={addPrefixClass("widget-exchange__swap-item disabled")}>
+                <div className={addPrefixClass("widget-exchange__text theme-text")}>To Token</div>
+                <div className={addPrefixClass("select-token-panel common__input-panel short-margin")}>
+                  {props.tokenDestSelect}
+                  <div className={addPrefixClass("common__input-panel-label")}>
+                    {('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount}
+                  </div>
+                </div>
+                <div className={addPrefixClass("widget-exchange__swap-text")}>
+                  <span>1 {props.sourceTokenSymbol}</span>
+                  <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
+                  <span>{rateSwap} {props.destTokenSymbol}</span>
+                  <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
+                  <span>? USD</span>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 

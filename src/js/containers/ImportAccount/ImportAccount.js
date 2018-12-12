@@ -75,6 +75,7 @@ export default class ImportAccount extends React.Component {
   render() {
     return (
       <ImportAccountView
+        exchangeType={this.props.exchange.type}
         isLoading={this.props.loading}
         signerAddresses={this.getSignerAddresses()}
         onOpenImportAccount={this.openImportAccount.bind(this)}

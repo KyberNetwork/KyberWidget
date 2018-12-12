@@ -266,23 +266,14 @@ export default class ExchangeBody extends React.Component {
       />
     );
 
-    var tokenDestSelect = this.props.global.params.receiveToken && this.props.tokens[this.props.global.params.receiveToken] ? (
-      <div className={addPrefixClass("token-chooser token-dest")}>
-        <div className={addPrefixClass("focus-item")}>
-          <img src={getTokenUrl(this.props.tokens[this.props.global.params.receiveToken].symbol)}/>
-          <div className={addPrefixClass("focus-balance")}>
-            <span className={addPrefixClass("token-symbol")}>{this.props.global.params.receiveToken}</span>
-          </div>
-        </div>
-      </div>
-    ) : (
-        <TokenSelector type="des"
-          focusItem={this.props.exchange.destTokenSymbol}
-          listItem={this.props.tokens}
-          chooseToken={this.chooseToken}
-        />
-      )
-    //--------End
+    var tokenDestSelect = (
+      <TokenSelector
+        type="des"
+        focusItem={this.props.exchange.destTokenSymbol}
+        listItem={this.props.tokens}
+        chooseToken={this.chooseToken}
+      />
+    );
 
     var errors = {
       selectSameToken: this.props.exchange.errors.selectSameToken || '',

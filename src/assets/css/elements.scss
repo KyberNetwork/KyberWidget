@@ -406,6 +406,7 @@
     font-weight: 500;
     color: $error-color;
     opacity: 0;
+    line-height: 1.5;
     transform: translateY(10px);
     transition: all .3s;
     animation: fade-in 0.3s forwards;
@@ -441,11 +442,24 @@
       color: #404a4f;
     }
 
+    &-semibold {
+      font-size: 24px;
+      font-weight: 500;
+      color: #616877;
+    }
+
     &-light {
       font-size: 14px;
       color: #9ea8b3;
       margin-right: 8px;
       font-weight: 500;
+    }
+
+    &-small {
+      font-size: 14px;
+      font-weight: 500;
+      color: #394b5e;
+      margin: 0 7px;
     }
 
     &-container {

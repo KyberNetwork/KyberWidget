@@ -29,15 +29,15 @@ export default class TokenSelector extends React.Component {
   changeWord = (e) => {
     var value = e.target.value.toLowerCase()
     this.setState({ searchWord: value })
-  }
+  };
 
   showTokens = (e) => {
     this.setState({ open: true })
-  }
+  };
 
   hideTokens = (e) => {
     this.setState({ open: false })
-  }
+  };
 
   selectItem = (event, symbol, address, suggest) => {
     this.props.chooseToken(symbol, address, this.props.type);
@@ -47,7 +47,7 @@ export default class TokenSelector extends React.Component {
     } else {
       this.props.analytics.callTrack("chooseToken", symbol, this.props.type)
     }
-  }
+  };
 
   render() {
     return (
@@ -56,7 +56,6 @@ export default class TokenSelector extends React.Component {
         searchWord={this.state.searchWord}
         listItem={this.props.listItem}
         focusItem={this.props.focusItem}
-        toggleOpen={this.toggleOpen}
         changeWord={this.changeWord}
         selectItem={this.selectItem}
         translate={this.props.translate}

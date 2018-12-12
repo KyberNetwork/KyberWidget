@@ -35,7 +35,7 @@ const ImportAccountView = (props) => {
   return (
     <div className={addPrefixClass("widget-exchange")}>
       <div className={addPrefixClass("widget-exchange__body small-padding")}>
-        <div className={addPrefixClass("widget-exchange__column")}>
+        <div className={addPrefixClass(`widget-exchange__column ${props.exchangeType}`)}>
           <div className={addPrefixClass("widget-exchange__column-item")}>
             <div className={addPrefixClass("widget-exchange__text theme-text")}>Unlock your Wallet</div>
 

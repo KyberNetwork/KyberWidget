@@ -29,7 +29,7 @@ const AdvanceConfigLayout = (props) => {
             <GasConfig
               selectedGas={props.exchange.selectedGas}
               gasPriceSuggest={props.exchange.gasPriceSuggest}
-              selectedGasHandler={props.selectedGasHandler}
+              handleGasChanged={props.handleGasChanged}
             />
           </div>
         </SlideDownContent>

@@ -485,6 +485,14 @@ const exchange = (state = initState, action) => {
       newState.snapshot = {...snapshot}
       return newState
     }
+    case "EXCHANGE.SET_SNAPSHOT_GAS_PRICE": {
+      newState.snapshot.gasPrice = action.payload;
+      return newState
+    }
+    case "EXCHANGE.SET_SNAPSHOT_MIN_CONVERSION_RATE": {
+      newState.snapshot.minConversionRate = action.payload;
+      return newState
+    }
     case "EXCHANGE.THROW_NOT_POSSESS_KGT_ERROR": {
       newState.errorNotPossessKgt = action.payload
       return newState

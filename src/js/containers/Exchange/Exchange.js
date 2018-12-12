@@ -51,13 +51,14 @@ export default class Exchange extends React.Component {
   lazyValidateTransactionFee = _.debounce(this.validateTxFee, 500)
 
   specifyGasPrice = (value) => {
-    this.props.dispatch(exchangeActions.specifyGasPrice(value + ""))
+    this.props.dispatch(exchangeActions.specifyGasPrice(value))
     if (this.props.account !== false) {
       this.lazyValidateTransactionFee(value)
     }
   };
 
-  selectedGasHandler = (value, level, levelString) => {
+  handleGasChanged = (value, level, levelString) => {
+    this.props.dispatch(exchangeActions.setSnapshotGasPrice(value));
     this.props.dispatch(exchangeActions.seSelectedGas(level));
     this.specifyGasPrice(value);
     this.props.global.analytics.callTrack("chooseGas", levelString, value);
@@ -76,6 +77,7 @@ export default class Exchange extends React.Component {
     const minRate = converter.caculatorRateToPercentage(value, offeredRate);
 
     this.props.dispatch(exchangeActions.setMinRate(minRate.toString()));
+    this.props.dispatch(exchangeActions.setSnapshotMinConversionRate(minRate.toString()));
     this.props.global.analytics.callTrack("setNewMinRate", value);
   };
 
@@ -111,7 +113,7 @@ export default class Exchange extends React.Component {
           toggleAdvConfig={this.toggleAdvConfig}
           exchange={this.props.exchange}
           onSlippageRateChanged={this.handleSlippageRateChanged}
-          selectedGasHandler={this.selectedGasHandler}
+          handleGasChanged={this.handleGasChanged}
           translate={this.props.translate}
           analytics={this.props.global.analytics}
         />
