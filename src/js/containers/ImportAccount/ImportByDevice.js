@@ -9,7 +9,7 @@ import {
   throwError,
   checkTimeImportLedger,
   resetCheckTimeImportLedger,
-  setWallet
+  setWallet, setDPath
 } from "../../actions/accountActions"
 import { toEther } from "../../utils/converter"
 import { getTranslate } from 'react-localize-redux'
@@ -49,7 +49,7 @@ export default class ImportByDevice extends React.Component {
       { path: "m/0'/0'/0'", desc: 'SingularDTV', notSupport: true },
       { path: "m/44'/1'/0'/0", desc: 'Network: Testnets' },
       { path: "m/44'/40'/0'/0", desc: 'Network: Expanse', notSupport: true },
-      { path: 0, desc: 'modal.custom_path', defaultP: "m/44'/60'/1'/0", custom: false },
+      { path: 0, desc: 'Custom Path', defaultP: "m/44'/60'/1'/0", custom: false },
     ]
   }
 
@@ -82,8 +82,11 @@ export default class ImportByDevice extends React.Component {
     }
     this.props.deviceService.getPublicKey(selectedPath, this.state.modalOpen)
       .then((result) => {
-        this.dPath = (dpath != 0) ? result.dPath : dpath;
+        const dPath = (dpath != 0) ? result.dPath : dpath
+        this.dPath = dPath;
         this.generateAddress(result);
+
+        this.props.dispatch(setDPath(dPath));
         this.props.dispatch(closeImportLoading());
       })
       .catch((err) => {
@@ -191,23 +194,8 @@ export default class ImportByDevice extends React.Component {
     }
   }
 
-  getAddress() {
-    this.props.dispatch(importNewAccount(
-      this.props.account.wallet.address,
-      this.walletType,
-      this.dPath + '/' + this.props.account.wallet.index
-    ))
-  }
-
   setWallet(index, address, balance, type) {
-    const wallet = {
-      index: index,
-      address: address,
-      balance: roundingNumber(balance),
-      type: type
-    }
-
-    this.props.dispatch(setWallet(wallet));
+    this.props.dispatch(setWallet(index, address, roundingNumber(balance), type));
   }
 
   choosePath(selectedPath, dpath) {
@@ -275,7 +263,6 @@ export default class ImportByDevice extends React.Component {
         currentAddresses={this.state.currentAddresses}
         walletType={this.walletType}
         choosePath={this.choosePath.bind(this)}
-        getAddress={this.getAddress.bind(this)}
         translate={this.props.translate}
         chosenImportAccount={this.props.account.chosenImportAccount}
       />

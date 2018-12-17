@@ -1,5 +1,31 @@
 $animation-time: 0.5s;
 
+.importer__icon {
+  height: 30px;
+  background: center no-repeat;
+  transition: 0.5s;
+
+  &.metamask {
+    background-image: url($image-path + 'import-account/import-metamask.svg');
+  }
+
+  &.ledger {
+    background-image: url($image-path + 'import-account/import-ledger.svg');
+  }
+
+  &.trezor {
+    background-image: url($image-path + 'import-account/import-trezor.svg');
+  }
+
+  &.keystore {
+    background-image: url($image-path + 'import-account/import-keystore.svg');
+  }
+
+  &.private-key {
+    background-image: url($image-path + 'import-account/import-private-key.svg');
+  }
+}
+
 .signer-address {
   &__title {
     font-family: $font-cera;
@@ -148,32 +174,6 @@ $animation-time: 0.5s;
         font-weight: 500;
       }
 
-      .importer__icon {
-        height: 30px;
-        background: center no-repeat;
-        transition: 0.5s;
-
-        &.metamask {
-          background-image: url($image-path + 'import-account/import-metamask.svg');
-        }
-
-        &.ledger {
-          background-image: url($image-path + 'import-account/import-ledger.svg');
-        }
-
-        &.trezor {
-          background-image: url($image-path + 'import-account/import-trezor.svg');
-        }
-
-        &.keystore {
-          background-image: url($image-path + 'import-account/import-keystore.svg');
-        }
-
-        &.private-key {
-          background-image: url($image-path + 'import-account/import-private-key.svg');
-        }
-      }
-
       &.metamask {
         display: flex;
         justify-content: center;
@@ -216,15 +216,71 @@ $animation-time: 0.5s;
     }
 
     &__error {
-      color: $error-color;
       font-size: 14px;
-      margin-top: 10px;
+      font-weight: 500;
+      color: $error-color;
+      margin-top: 15px;
+      line-height: 1.4;
     }
 
     &--active {
       opacity: 1;
       visibility: visible;
       transform: translateX(0);
+    }
+
+    &__info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .title {
+        font-size: 14px;
+        color: #9ea8b3;
+      }
+
+      .address {
+        font-size: 14px;
+        font-weight: 500;
+        color: #394b5e;
+      }
+    }
+
+    &__info-type {
+      width: 135px;
+      height: 115px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      border: solid 1px $theme-emerald-border;
+      line-height: 1.4;
+
+      &.error {
+        border-color: $error-color !important;
+      }
+    }
+
+    &__info-text {
+      width: calc(100% - 135px);
+      padding-left: 20px;
+    }
+
+    &__info-type-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: #677c94;
+      text-transform: uppercase;
+      margin-top: 10px;
+    }
+
+    &__info-text-address,
+    &__info-text-balance {
+      line-height: 1.4;
+    }
+
+    &__info-text-address {
+      margin-bottom: 10px;
     }
   }
 }
