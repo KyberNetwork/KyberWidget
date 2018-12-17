@@ -274,16 +274,22 @@ export default class Payment extends React.Component {
 
   getError = () => {
     let errors = this.props.exchange.errors;
+    let isError = false;
 
     const errorItems = Object.keys(errors).map(key => {
       if (errors[key] && errors[key] !== "") {
-        return <div key={key} className={addPrefixClass("common__error")}>{this.props.translate(errors[key]) || errors[key]}</div>
+        isError = true;
+        return <div key={key}>{this.props.translate(errors[key]) || errors[key]}</div>
       }
 
-      return ""
+      return "";
     });
 
-    return <div>{errorItems}</div>
+    if (!isError) {
+      return false;
+    }
+
+    return <div className={addPrefixClass("common__error box")}>{errorItems}</div>
   };
 
   getWalletType = () => {
@@ -326,8 +332,6 @@ export default class Payment extends React.Component {
         <div className={addPrefixClass("widget-exchange__body")}>
           <div className={addPrefixClass(`widget-exchange__column ${this.props.exchange.type}`)}>
             <div className={addPrefixClass("widget-exchange__column-item")}>
-              <div className={addPrefixClass("common__error")}>{this.getError()}</div>
-
               <div className={addPrefixClass("widget-exchange__text theme-text")}>
                 {this.props.exchange.type === 'swap' && (
                   <div>You are about to swap</div>
@@ -379,6 +383,55 @@ export default class Payment extends React.Component {
               <div>
                 {this.props.advanceConfig}
               </div>
+
+              <div className={addPrefixClass("widget-exchange__info")}>
+                {this.getError() && (
+                  <div className={addPrefixClass("common__error box")}>{this.getError()}</div>
+                )}
+
+                {txError !== "" && (
+                  <div className={addPrefixClass("common__error box")}>
+                    {txError}
+                  </div>
+                )}
+
+                {this.props.exchange.isNeedApprove && (
+                  <div className={addPrefixClass("approve-intro")}>
+                    {this.props.translate("modal.approve_exchange", { token: this.props.exchange.sourceTokenSymbol })
+                    || `You need to grant permission for Kyber Payment to interact with ${this.props.exchange.sourceTokenSymbol} with this address`}
+                  </div>
+                )}
+
+                {this.props.account.type === "keystore" && (
+                  <div id="import-account">
+                    <div className={addPrefixClass("widget-exchange__text theme-text")}>Enter your Password</div>
+                    <div className={addPrefixClass("common__input-panel")}>
+                      <input
+                        className={addPrefixClass(`common__input theme-border ${this.state.showPassword ? "" : "security"}`)}
+                        id="passphrase"
+                        type="text"
+                        autoFocus
+                        autoComplete="off"
+                        spellCheck="false"
+                        onKeyPress={this.resetPasswordError}
+                        onFocus={(e) => this.props.global.analytics.callTrack("clickFocusToInputJSONPws")}
+                      />
+                      <div className={addPrefixClass("common__input-panel-label small")}>
+                        <div className={addPrefixClass(`import-account__eye-icon ${this.state.showPassword ? "unlock" : ""}`)} onClick={this.toogleShowPassword}/>
+                      </div>
+                    </div>
+                    {(this.props.exchange.passwordError) && (
+                      <div className={addPrefixClass("common__error box")}>
+                        {this.props.exchange.passwordError}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
+                  <div className={addPrefixClass("confirm-message")}>{this.props.account.type !== "keystore" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}</div>
+                )}
+              </div>
             </div>
             <div className={addPrefixClass("widget-exchange__column-item")}>
               {this.props.detailBox}
@@ -387,47 +440,6 @@ export default class Payment extends React.Component {
         </div>
 
         <div className={addPrefixClass("widget-exchange__bot")}>
-          {txError !== "" && (
-            <div className={addPrefixClass("common__error")}>
-              {txError}
-            </div>
-          )}
-
-          {this.props.exchange.isNeedApprove && (
-            <div className={addPrefixClass("approve-intro")}>
-              {this.props.translate("modal.approve_exchange", { token: this.props.exchange.sourceTokenSymbol })
-              || `You need to grant permission for Kyber Payment to interact with ${this.props.exchange.sourceTokenSymbol} with this address`}
-            </div>
-          )}
-
-          {this.props.account.type === "keystore" && (
-            <div id="import-account">
-              <div className={addPrefixClass("import-account-content__private-key" + (this.state.showPassword ? ' unlock' : ''))}>
-                <input
-                  className={addPrefixClass(this.state.showPassword ? "import-account-content__private-key-input" : "import-account-content__private-key-input security")}
-                  id="passphrase"
-                  type="text"
-                  autoFocus
-                  autoComplete="off"
-                  spellCheck="false"
-                  onKeyPress={this.resetPasswordError}
-                  onFocus={(e) => this.props.global.analytics.callTrack("clickFocusToInputJSONPws")}
-                />
-                <div className={addPrefixClass("import-account-content__private-key-toggle")} onClick={this.toogleShowPassword}></div>
-                <div className={addPrefixClass("import-account-content__private-key-icon")}></div>
-              </div>
-              {(this.props.exchange.passwordError) && (
-                <div className={addPrefixClass("common__error")}>
-                  {this.props.exchange.passwordError}
-                </div>
-              )}
-            </div>
-          )}
-
-          {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
-            <div className={addPrefixClass("confirm-message")}>{this.props.account.type !== "keystore" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}</div>
-          )}
-
           <div className={addPrefixClass("common__flexbox between")}>
             <div className={addPrefixClass("common__button hollow theme-button" + (this.props.exchange.isConfirming || this.props.transfer.isConfirming ? " disable" : ""))} onClick={this.reImportAccount}>
               {this.props.translate("transaction.back") || "Back"}

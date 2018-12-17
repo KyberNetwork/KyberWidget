@@ -60,7 +60,7 @@ const OrderDetails = (props) => {
               <div>{('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount || 0} {props.exchange.destTokenSymbol}</div>
             )}
 
-            <div className={"widget-exchange__order-text-small"}>≈ 1.068 ETH</div>
+            <div className={"widget-exchange__order-text-small"}>≈ ? ETH</div>
           </div>
         </div>
 
