@@ -72,9 +72,18 @@ export default class ImportAccount extends React.Component {
     }
   }
 
+  handleImportDevice() {
+    this.props.dispatch(importNewAccount(
+      this.props.wallet.address,
+      this.props.wallet.type,
+      this.props.wallet.dPath + '/' + this.props.wallet.index
+    ))
+  }
+
   render() {
     return (
       <ImportAccountView
+        exchangeType={this.props.exchange.type}
         isLoading={this.props.loading}
         signerAddresses={this.getSignerAddresses()}
         onOpenImportAccount={this.openImportAccount.bind(this)}
@@ -84,8 +93,9 @@ export default class ImportAccount extends React.Component {
         translate={this.props.translate}
         screen={this.props.screen}
         error={this.props.error}
-        orderDetails={this.props.orderDetails}
+        detailBox={this.props.detailBox}
         handleSubmitPrivateKey={this.handleSubmitPrivateKey.bind(this)}
+        handleImportDevice={this.handleImportDevice.bind(this)}
       />
     )
   }

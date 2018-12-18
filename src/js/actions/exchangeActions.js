@@ -383,6 +383,20 @@ export function setSnapshot(data){
   }
 }
 
+export function setSnapshotGasPrice(gasPrice) {
+  return {
+    type: "EXCHANGE.SET_SNAPSHOT_GAS_PRICE",
+    payload: gasPrice
+  }
+}
+
+export function setSnapshotMinConversionRate(minConversionRate) {
+  return {
+    type: "EXCHANGE.SET_SNAPSHOT_MIN_CONVERSION_RATE",
+    payload: minConversionRate
+  }
+}
+
 export function verifyExchange(){
   return {
     type: "EXCHANGE.VERIFY_EXCHANGE",

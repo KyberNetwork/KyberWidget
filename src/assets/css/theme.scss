@@ -20,7 +20,8 @@
     background-color: $theme-emerald-regular;
   }
 
-  .theme-checkbox:checked ~.common__checkbox-icon {
+  .theme-checkbox:checked ~.common__checkbox-icon,
+  .theme-radio:checked ~.common__radio-icon {
     background-color: $theme-emerald-regular;
     border-color: $theme-emerald-regular;
   }

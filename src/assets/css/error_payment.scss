@@ -1,9 +1,13 @@
 .error-payment {
   border: 1px solid #eee;
   display: inline-block;
+  width: 100%;
+  background: white;
+
   ul{
     padding-left: 10px;
   }
+
   &-container {
     text-align: center;
   }
@@ -37,7 +41,6 @@
       line-height: 1.43;
       color: #666666;
       margin-bottom: 20px;
-      display: inline-block;
       text-align: left;
 
       &--bold {

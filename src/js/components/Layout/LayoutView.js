@@ -31,7 +31,7 @@ const LayoutView = (props) => {
     <ConnectedRouter history={props.history} store ={store}>
       <div>
         <Route/>
-        <section className={addPrefixClass(`widget-container ${props.theme}`)}>
+        <section className={addPrefixClass(`widget-container ${props.exchange.type} ${props.exchange.theme}`)}>
           {props.paymentHeader}
 
           <Switch>

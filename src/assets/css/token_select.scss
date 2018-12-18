@@ -100,6 +100,7 @@
       }
     }
   }
+
   .select-item{
     position: absolute;
     transition: 0.2s;
@@ -200,7 +201,7 @@
 
   &__token-symbol {
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 600;
     color: #222222;
     margin: 0 13px 0 10px;
   }
@@ -339,6 +340,10 @@
             opacity: .5;
           }
         }
+
+        &:hover {
+          color: $theme-emerald-regular;
+        }
       }
 
       &-content {
@@ -362,6 +367,7 @@
 
       &__rate {
         font-size: 12px;
+        font-weight: 500;
       }
     }
   }

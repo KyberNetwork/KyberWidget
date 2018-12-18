@@ -96,6 +96,7 @@ $k-success: #3ee6c1;
 $k-divider: #243c47;
 $k-divider-light: rgba(254, 254, 254, 0.12);
 $k-gray: #f4f4f4;
+$error-color: #f96363;
 
 // Theme colors
 $theme-color-default: #31cb9e;
@@ -128,6 +129,7 @@ $global-color-pick-contrast-tolerance: 0;
 $print-transparent-backgrounds: true;
 
 $container-max-width: 800px;
+$container-max-width-swap: 920px;
 $image-path: '../img/';
 $box-shadow-tab: 0 10px 20px 0 rgba(135, 136, 136, 0.26), 0 6px 6px 0 rgba(173, 177, 176, 0.26);
 
@@ -135,8 +137,6 @@ $box-shadow-tab: 0 10px 20px 0 rgba(135, 136, 136, 0.26), 0 6px 6px 0 rgba(173, 
 
 // 2. Breakpoints
 // --------------
-
-
 $break-point-large: 1024px;
 $break-point-medium: 768px;
 $break-point-small: 640px;
@@ -156,7 +156,6 @@ $breakpoint-classes: (small medium large);
 
 // 3. The Grid
 // -----------
-
 $grid-row-width: $global-width;
 $grid-column-count: 12;
 $grid-column-gutter: (
@@ -919,6 +918,3 @@ $xy-block-grid-max: 8;
     @content;
   }
 }
-
-
-$error-color: #F1637D;

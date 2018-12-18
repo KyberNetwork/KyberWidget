@@ -1,6 +1,6 @@
 import React from "react"
 import * as converter from "../../utils/converter"
-import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
+import Dropdown, { DropdownTrigger, DropdownContent } from "react-simple-dropdown";
 import {addPrefixClass} from "../../utils/className"
 import { default as _ } from "underscore";
 import { getTokenUrl } from "../../utils/common";
@@ -27,7 +27,6 @@ const TokenSelectorView = (props) => {
   priorityTokens = _.sortBy(priorityTokens, function(token) { return token.index; });
 
   var getListToken = () => {
-
     return Object.keys(listShow).map((key) => {
       if (key === props.focusItem) {
         return;
@@ -44,7 +43,7 @@ const TokenSelectorView = (props) => {
         <div
           key={key}
           onClick={(e) => props.selectItem(e, item.symbol, item.address)}
-          className={addPrefixClass("token-item-container payment-gateway__hover-color")}>
+          className={addPrefixClass("token-item-container theme-text-hover")}>
           <div className={addPrefixClass("token-item-content")}>
             <div className={addPrefixClass("token-item")}>
               <img className={addPrefixClass("token-item__icon")} src={getTokenUrl(item.symbol)}/>
@@ -99,6 +98,6 @@ const TokenSelectorView = (props) => {
       </Dropdown>
     </div>
   )
+};
 
-}
 export default TokenSelectorView

@@ -50,7 +50,6 @@ function getKeyService(type) {
   }
 })
 
-
 export default class Payment extends React.Component {
   constructor() {
     super()
@@ -275,14 +274,20 @@ export default class Payment extends React.Component {
 
   getError = () => {
     let errors = this.props.exchange.errors;
+    let isError = false;
 
     const errorItems = Object.keys(errors).map(key => {
       if (errors[key] && errors[key] !== "") {
+        isError = true;
         return <div key={key}>{this.props.translate(errors[key]) || errors[key]}</div>
       }
 
-      return ""
+      return "";
     });
+
+    if (!isError) {
+      return false;
+    }
 
     return <div>{errorItems}</div>
   };
@@ -314,35 +319,19 @@ export default class Payment extends React.Component {
     this.props.dispatch(transferActions.throwPassphraseError(""))
   }
 
-  getDestPay = () => {
-    if (this.props.exchange.isHaveDestAmount) {
-      return this.props.exchange.destAmount
-    } else {
-      if (this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol) {
-        return this.props.exchange.sourceAmount
-      } else {
-        return converter.calculateDest(this.props.exchange.sourceAmount, this.props.exchange.offeredRate, 6)
-      }
-    }
-  }
-
   render() {
     var classDisable = ""
+    var txError = this.props.exchange.signError + this.props.exchange.broadcastError;
+
     if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming || this.props.exchange.isFetchingGas) {
       classDisable += " disabled"
     }
 
-    var signExchangeError = this.props.exchange.signError ? this.props.exchange.signError : ""
-    var broadcastExchangeError = this.props.exchange.broadcastError ? this.props.exchange.broadcastError : ""
-    var txError = signExchangeError + broadcastExchangeError
-
     return (
       <div id="exchange" className={addPrefixClass("widget-exchange")}>
         <div className={addPrefixClass("widget-exchange__body")}>
-          <div className={addPrefixClass("widget-exchange__column")}>
+          <div className={addPrefixClass(`widget-exchange__column ${this.props.exchange.type}`)}>
             <div className={addPrefixClass("widget-exchange__column-item")}>
-              <div>{this.getError()}</div>
-
               <div className={addPrefixClass("widget-exchange__text theme-text")}>
                 {this.props.exchange.type === 'swap' && (
                   <div>You are about to swap</div>
@@ -356,85 +345,101 @@ export default class Payment extends React.Component {
               </div>
 
               <div>
-                <div className={"common__text-container-bold common__text-bold"}>
-                  {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
-                    <div>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</div>
+                <div className={addPrefixClass("common__text-container-bold")}>
+                  {this.props.exchange.type === 'pay' && (
+                    <div className={addPrefixClass("common__text-bold")}>
+                      {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
+                        <div>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</div>
+                      )}
+                      {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol && (
+                        <div>{('' + this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</div>
+                      )}
+                      {!this.props.exchange.isHaveDestAmount && (
+                        <div>{('' + this.props.exchange.sourceAmount).length > 8 ? converter.roundingNumber(this.props.exchange.sourceAmount) : this.props.exchange.sourceAmount} {this.props.exchange.sourceTokenSymbol}</div>
+                      )}
+                    </div>
                   )}
-                  {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol && (
-                    <div>{('' + this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</div>
-                  )}
-                  {!this.props.exchange.isHaveDestAmount && (
-                    <div>{('' + this.props.exchange.sourceAmount).length > 8 ? converter.roundingNumber(this.props.exchange.sourceAmount) : this.props.exchange.sourceAmount} {this.props.exchange.sourceTokenSymbol}</div>
+
+                  {(this.props.exchange.type === 'swap' || this.props.exchange.type === 'buy') && (
+                    <div className={addPrefixClass("common__text-semibold")}>
+                      <span>{this.props.exchange.sourceAmount} {this.props.exchange.sourceTokenSymbol}</span>
+                      <span className={addPrefixClass("common__text-small")}> to </span>
+                      <span>{this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</span>
+                    </div>
                   )}
                 </div>
-                <div className={"common__text-container"}>
-                  <span className={"common__text-light"}>Your wallet: </span>
-                  <span className={"common__text"}>{this.getWalletType()}</span>
+                <div className={addPrefixClass("common__text-container")}>
+                  <span className={addPrefixClass("common__text-light")}>Your wallet: </span>
+                  <span className={addPrefixClass("common__text")}>{this.getWalletType()}</span>
                 </div>
-                <div className={"common__text-container"}>
-                  <span className={"common__text-light"}>Your address: </span>
-                  <span className={"common__text"}>{this.props.translate("transaction.address") || "Address"}: {this.props.account.address.slice(0, 8)}...{this.props.account.address.slice(-6)}</span>
+                <div className={addPrefixClass("common__text-container")}>
+                  <span className={addPrefixClass("common__text-light")}>Your address: </span>
+                  <span className={addPrefixClass("common__text")}>
+                    {this.props.account.address.slice(0, 12)}...{this.props.account.address.slice(-10)}
+                  </span>
                 </div>
               </div>
-
-              {/*SWAP*/}
-              {/*<strong>{this.props.exchange.snapshot.sourceAmount} {this.props.exchange.sourceTokenSymbol}</strong> for <strong>{this.getDestPay()} {this.props.exchange.destTokenSymbol}</strong>*/}
-
-              {/*BUY*/}
-              {/*{('' + this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}*/}
 
               <div>
                 {this.props.advanceConfig}
               </div>
+
+              <div className={addPrefixClass("widget-exchange__info")}>
+                {this.props.account.type === "keystore" && (
+                  <div id="import-account">
+                    <div className={addPrefixClass("widget-exchange__text theme-text")}>Enter your Password</div>
+                    <div className={addPrefixClass("common__input-panel")}>
+                      <input
+                        className={addPrefixClass(`common__input theme-border ${this.state.showPassword ? "" : "security"}`)}
+                        id="passphrase"
+                        type="text"
+                        autoFocus
+                        autoComplete="off"
+                        spellCheck="false"
+                        onKeyPress={this.resetPasswordError}
+                        onFocus={(e) => this.props.global.analytics.callTrack("clickFocusToInputJSONPws")}
+                      />
+                      <div className={addPrefixClass("common__input-panel-label small")}>
+                        <div className={addPrefixClass(`import-account__eye-icon ${this.state.showPassword ? "unlock" : ""}`)} onClick={this.toogleShowPassword}/>
+                      </div>
+                    </div>
+                    {(this.props.exchange.passwordError) && (
+                      <div className={addPrefixClass("common__error box")}>
+                        {this.props.exchange.passwordError}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {this.props.exchange.isNeedApprove && (
+                  <div className={addPrefixClass("common__confirm")}>
+                    *{this.props.translate("modal.approve_exchange", { token: this.props.exchange.sourceTokenSymbol })
+                  || `You need to grant permission for Kyber Payment to interact with ${this.props.exchange.sourceTokenSymbol} with this address`}
+                  </div>
+                )}
+
+                {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
+                  <div className={addPrefixClass("common__confirm")}>
+                    *{this.props.account.type !== "keystore" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}
+                  </div>
+                )}
+
+                {this.getError() && (
+                  <div className={addPrefixClass("common__error box")}>{this.getError()}</div>
+                )}
+
+                {txError !== "" && (
+                  <div className={addPrefixClass("common__error box")}>{txError}</div>
+                )}
+              </div>
             </div>
             <div className={addPrefixClass("widget-exchange__column-item")}>
-              {this.props.orderDetails}
+              {this.props.detailBox}
             </div>
           </div>
         </div>
 
         <div className={addPrefixClass("widget-exchange__bot")}>
-          {txError !== "" && (
-            <div className={addPrefixClass("error-message")}>
-              {txError}
-            </div>
-          )}
-
-          {this.props.exchange.isNeedApprove && (
-            <div className={addPrefixClass("approve-intro")}>
-              {this.props.translate("modal.approve_exchange", { token: this.props.exchange.sourceTokenSymbol })
-              || `You need to grant permission for Kyber Payment to interact with ${this.props.exchange.sourceTokenSymbol} with this address`}
-            </div>
-          )}
-
-          {this.props.account.type === "keystore" && (
-            <div id="import-account">
-              <div className={addPrefixClass("import-account-content__private-key" + (this.state.showPassword ? ' unlock' : ''))}>
-                <input
-                  className={addPrefixClass(this.state.showPassword ? "import-account-content__private-key-input" : "import-account-content__private-key-input security")}
-                  id="passphrase"
-                  type="text"
-                  autoFocus
-                  autoComplete="off"
-                  spellCheck="false"
-                  onKeyPress={this.resetPasswordError}
-                  onFocus={(e) => this.props.global.analytics.callTrack("clickFocusToInputJSONPws")}
-                />
-                <div className={addPrefixClass("import-account-content__private-key-toggle")} onClick={this.toogleShowPassword}></div>
-                <div className={addPrefixClass("import-account-content__private-key-icon")}></div>
-              </div>
-              {(this.props.exchange.passwordError) && (
-                <div className={addPrefixClass("error-password")}>
-                  {this.props.exchange.passwordError}
-                </div>
-              )}
-            </div>
-          )}
-
-          {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
-            <div className={addPrefixClass("confirm-message")}>{this.props.account.type !== "keystore" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}</div>
-          )}
-
           <div className={addPrefixClass("common__flexbox between")}>
             <div className={addPrefixClass("common__button hollow theme-button" + (this.props.exchange.isConfirming || this.props.transfer.isConfirming ? " disable" : ""))} onClick={this.reImportAccount}>
               {this.props.translate("transaction.back") || "Back"}

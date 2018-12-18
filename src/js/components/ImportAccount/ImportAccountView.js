@@ -16,6 +16,7 @@ import {addPrefixClass} from "../../utils/className"
 
 const ImportAccountView = (props) => {
   let importComponent = "";
+  let handleImportWallet = false;
 
   switch (props.chosenImportAccount) {
     case constants.IMPORT_ACCOUNT_TYPE.keystore:
@@ -23,19 +24,22 @@ const ImportAccountView = (props) => {
       break;
     case constants.IMPORT_ACCOUNT_TYPE.privateKey:
       importComponent = <ImportByPrivateKey/>;
+      handleImportWallet = props.handleSubmitPrivateKey;
       break;
     case constants.IMPORT_ACCOUNT_TYPE.ledger:
       importComponent = <ImportByDeviceWithLedger screen={props.screen}/>;
+      handleImportWallet = props.handleImportDevice;
       break;
     case constants.IMPORT_ACCOUNT_TYPE.trezor:
       importComponent = <ImportByDeviceWithTrezor screen={props.screen}/>;
+      handleImportWallet = props.handleImportDevice;
       break;
   }
 
   return (
     <div className={addPrefixClass("widget-exchange")}>
       <div className={addPrefixClass("widget-exchange__body small-padding")}>
-        <div className={addPrefixClass("widget-exchange__column")}>
+        <div className={addPrefixClass(`widget-exchange__column ${props.exchangeType}`)}>
           <div className={addPrefixClass("widget-exchange__column-item")}>
             <div className={addPrefixClass("widget-exchange__text theme-text")}>Unlock your Wallet</div>
 
@@ -56,7 +60,7 @@ const ImportAccountView = (props) => {
             </div>
           </div>
           <div className={addPrefixClass("widget-exchange__column-item")}>
-            {props.orderDetails}
+            {props.detailBox}
           </div>
         </div>
       </div>
@@ -69,7 +73,7 @@ const ImportAccountView = (props) => {
         </div>
 
         {props.chosenImportAccount && (
-          <div className={addPrefixClass(`common__button theme-gradient ${props.error ? 'disabled' : ''}`)} onClick={props.handleSubmitPrivateKey}>
+          <div className={addPrefixClass(`common__button theme-gradient ${props.error ? 'disabled' : ''}`)} onClick={handleImportWallet}>
             {props.translate("modal.import") || "Import"}
           </div>
         )}

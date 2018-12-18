@@ -11,8 +11,6 @@ import * as exchangeActions from "../../actions/exchangeActions"
 import constansts from "../../services/constants"
 import { getTranslate } from 'react-localize-redux'
 import { default as _ } from 'underscore'
-import {addPrefixClass} from "../../utils/className"
-import { getTokenUrl } from "../../utils/common";
 
 @connect((store, props) => {
 
@@ -257,23 +255,23 @@ export default class ExchangeBody extends React.Component {
       tokenDest[key] = { ...this.props.tokens[key], isNotSupport: isNotSupport }
     })
 
-    var tokenDestSelect = this.props.global.params.receiveToken && this.props.tokens[this.props.global.params.receiveToken] ? (
-      <div className={addPrefixClass("token-chooser token-dest")}>
-        <div className={addPrefixClass("focus-item")}>
-          <img src={getTokenUrl(this.props.tokens[this.props.global.params.receiveToken].symbol)}/>
-          <div className={addPrefixClass("focus-balance")}>
-            <span className={addPrefixClass("token-symbol")}>{this.props.global.params.receiveToken}</span>
-          </div>
-        </div>
-      </div>
-    ) : (
-        <TokenSelector type="des"
-          focusItem={this.props.exchange.destTokenSymbol}
-          listItem={this.props.tokens}
-          chooseToken={this.chooseToken}
-        />
-      )
-    //--------End
+    var tokenSourceSelect = (
+      <TokenSelector
+        type="source"
+        focusItem={this.props.exchange.sourceTokenSymbol}
+        listItem={this.props.tokens}
+        chooseToken={this.chooseToken}
+      />
+    );
+
+    var tokenDestSelect = (
+      <TokenSelector
+        type="des"
+        focusItem={this.props.exchange.destTokenSymbol}
+        listItem={this.props.tokens}
+        chooseToken={this.chooseToken}
+      />
+    );
 
     var errors = {
       selectSameToken: this.props.exchange.errors.selectSameToken || '',
@@ -318,7 +316,9 @@ export default class ExchangeBody extends React.Component {
     }
 
     return (
-      <ExchangeBodyLayout step={this.props.exchange.step}
+      <ExchangeBodyLayout
+        step={this.props.exchange.step}
+        tokenSourceSelect={tokenSourceSelect}
         tokenDestSelect={tokenDestSelect}
         errors={errors}
         input={input}
@@ -337,8 +337,9 @@ export default class ExchangeBody extends React.Component {
         isStepValid={isStepValid}
         global={this.props.global}
         tokens={this.props.tokens}
+        sourceToken={this.props.tokens[this.props.exchange.sourceTokenSymbol]}
         onChooseToken={this.chooseToken}
-        orderDetails={this.props.orderDetails}
+        detailBox={this.props.detailBox}
       />
     )
   }

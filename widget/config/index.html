@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="assets/styles.css?v=31">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600" rel="stylesheet">
 </head>
-<body class="body theme-emerald">
+<body class="widget-config__body theme-emerald">
 <div class="colored-block"></div>
 <div id="wrapper">
   <h1 class="widget-config__header">KyberWidget Configuration</h1>
@@ -21,7 +21,7 @@
       </div>
 
       <div class="widget-config__header-item">
-        <div class="widget-config__btn widget-config__select version" id="version-selector">
+        <div class="widget-config__btn widget-config__select version click-outside" id="version-selector">
           <div class="widget-config__select-title">Version v<span id="selected-version">0.3</span></div>
           <div class="widget-config__select-container">
             <div class="widget-config__select-item" data-version="0.1">Version v0.1</div>
@@ -30,7 +30,7 @@
           </div>
         </div>
 
-        <div class="widget-config__btn" data-modal-id="code-modal">HTML Source</div>
+        <div class="widget-config__btn" data-modal-id="code-modal" id="widget-html-source">HTML Source</div>
       </div>
     </div>
 
@@ -81,18 +81,13 @@
             </div>
           </div>
           <div class="item border-item">
-            <label class="item-name">Widget Button Theme</label>
-            <div class="widget-config__option-container">
-              <label class="widget-config__option">
-                <span class="widget-config__option-text">Dark</span>
-                <input class="widget-config__radio" type="radio" name="button_theme" value="dark" checked/>
-                <span class="widget-config__checkmark"/>
-              </label>
-              <label class="widget-config__option">
-                <span class="widget-config__option-text">Light</span>
-                <input class="widget-config__radio" type="radio" name="button_theme" value="light"/>
-                <span class="widget-config__checkmark"/>
-              </label>
+            <label class="item-name">Widget Theme</label>
+            <div class="widget-config__theme-container">
+              <div class="widget-config__theme-item emerald active" data-theme="theme-emerald"></div>
+              <div class="widget-config__theme-item violet" data-theme="theme-violet"></div>
+              <div class="widget-config__theme-item dark" data-theme="theme-dark"></div>
+              <div class="widget-config__theme-item soil" data-theme="theme-soil"></div>
+              <div class="widget-config__theme-item ocean" data-theme="theme-ocean"></div>
             </div>
           </div>
         </section>
