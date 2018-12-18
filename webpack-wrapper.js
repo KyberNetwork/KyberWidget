@@ -1,5 +1,6 @@
+
 const path = require('path');
-const webpack = require('webpack');
+//const webpack = require('webpack');
 //const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -13,6 +14,11 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 //const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin')
+
+var BLOCKCHAIN_INFO = require("./env")
+const fetch = require("node-fetch");
+var fs = require('fs');
+var sass = require('node-sass');
 
 
 
@@ -34,7 +40,7 @@ function recursiveIssuer(m) {
 }
 
 //module.exports = env => {
-var getConfig =  env => {
+var getConfig = env => {
     //console.log(env)
     //const outputPath = env.chain ? 'dist/' + env.chain : '/src';
     const folder = env.folder ? env.folder : ""
@@ -43,9 +49,7 @@ var getConfig =  env => {
     const timestamp = Date.now();
 
     let entry = {
-        app: ['babel-polyfill', path.resolve(__dirname, 'src/js/client.js'), path.resolve(__dirname, 'src/assets/css/app.scss')],
-        // css: path.resolve(__dirname, ),
-        //themes:  path.resolve(__dirname, '/assets/css/themes')
+        app: ['babel-polyfill', path.resolve(__dirname, 'src/js/client.js'), path.resolve(__dirname, 'src/assets/css/app.scss')]
     };
     let plugins = [
         new webpack.ProgressPlugin(),
@@ -68,15 +72,15 @@ var getConfig =  env => {
         // ])       
 
     ];
-   // if (env && env.logger === 'true') {
-        //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
-        // plugins.push(new webpack.DefinePlugin({
-        //     //'env': JSON.stringify(env.chain),
-        //     'process.env': {
-        //         'logger': 'true'
-        //     }
-        // }));
-        
+    // if (env && env.logger === 'true') {
+    //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
+    // plugins.push(new webpack.DefinePlugin({
+    //     //'env': JSON.stringify(env.chain),
+    //     'process.env': {
+    //         'logger': 'true'
+    //     }
+    // }));
+
     //}
     if (env && env.build !== 'true') {
         //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
@@ -91,10 +95,16 @@ var getConfig =  env => {
         plugins.push(
             new WebpackShellPlugin(
                 {
-                  onBuildEnd:[`FOLDER=${folder} node webpack-config-after.js`]
+                    onBuildEnd: [`FOLDER=${folder} node webpack-config-after.js`]
                 }
-              )
+            )
         )
+        // plugins.push(
+        //     new MiniCssExtractPlugin({
+        //         filename: "/src/assets/css/themes/dark.scss",
+        //         chunkFilename: "dark.css"
+        //     })
+        // )
         plugins.push(new CleanPlugin([outputPath + '/app.*', outputPath + '/libary.*']))
         // plugins.push(new UglifyJsPlugin({
         //     uglifyOptions: {
@@ -128,29 +138,22 @@ var getConfig =  env => {
         mode: env.build !== 'true' ? 'development' : 'production',
         entry: entry,
         optimization: {
-            // splitChunks: {
-            //     cacheGroups: {
-            //         themesStyles: {
-            //             name: 'themes',
-            //             test: (m, c, entry = 'themes') => m.constructor.name === 'CssModule' && recursiveIssuer(m) === entry,
-            //             chunks: 'all',
-            //             enforce: true
-            //         }
-            //     }
-            // },
+            splitChunks: {
+                chunks: 'all'
+            },
             minimizer: [
                 new TerserPlugin({
                     parallel: true,
                     //comments: false,
                     terserOptions: {
-                      ecma: 6,
-                      compress: {
-                        drop_console: true,
-                        warnings: false
+                        ecma: 6,
+                        compress: {
+                            drop_console: true,
+                            warnings: false
                         }
-                    }                  
-                  }),
-        
+                    }
+                }),
+
             ]
         },
         // optimization: {
@@ -191,7 +194,7 @@ var getConfig =  env => {
                                 importLoaders: 2,
                                 sourceMap: true
                             }
-                        },                        
+                        },
                         {
                             loader: 'sass-loader',
                             options: {
@@ -252,28 +255,125 @@ var getConfig =  env => {
         plugins: plugins
     }
 };
+
 //console.log(getConfig({build: 'true', folder:'native'}))
 
+async function getTokenApi(network) {
+    return new Promise((resolve, result) => {
+        fetch(BLOCKCHAIN_INFO[network].api_tokens, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            return response.json()
+        })
+            .then((result) => {
+                if (result.success) {
+                    var tokens = {}
+                    result.data.map(val => {
+                        tokens[val.symbol] = val
+                    })
+                    resolve(tokens)
+                }
+            }).catch((err) => {
+                console.log(err)
+                var tokens = BLOCKCHAIN_INFO[network].tokens
+                resolve(tokens)
+            })
+    })
+
+}
+
+async function renderThemeFiles(){
+    const themesFolder = path.resolve(__dirname, 'src/assets/css/themes');
+    const fs = require('fs');
+
+    fs.readdirSync(themesFolder).forEach(file => {
+        var fileName = file.split('.').slice(0, -1).join('.')
+        sass.render({
+            file: path.resolve(__dirname, 'src/assets/css/themes/' + fileName + ".scss"),        
+            //outFile: path.resolve(__dirname, 'dist/native/themes/dark.css'),
+            outputStyle: 'compressed'
+          }, function(error, result) { // node-style callback from v3.0.0 onwards
+            if (error) {
+              console.log(error)
+            }
+            else {
+                //console.log(result)
+                fs.writeFile(path.resolve(__dirname, 'dist/native/themes/' + fileName + ".css"), result.css, function(err){
+                    if(!err){
+                      //file written on disk
+                      console.log("generate theme " + fileName + " successfully")
+                    }
+                  });
+            }
+          });
+    })
+
+    
+}
 
 console.log(process.env.NODE_ENV)
 //var argv = require('minimist')(process.argv.slice(2));
 // process.argv.forEach((val, index) => {
 //     console.log(`${index}: ${val}`)
 //   })
-var config 
-switch(process.env.NODE_ENV)  {
-    case "production":
-        config = {
-            build: true,
-            folder: 'native'            
-        }
-        break
-    default: 
-        config = {
-            build: false,
-            folder: 'dev'
-        }
-        break
+
+
+//var ProgressPlugin = require('webpack/lib/ProgressPlugin')
+var webpack = require('webpack');
+
+
+async function saveBackupTokens() {
+    //get backup tokens
+    var listFiles = ["production", "rinkeby", "ropsten", "staging"]
+    for (var i = 0; i < listFiles.length; i++) {
+        var file = "./env/config-env/" + listFiles[i] + ".json"
+        var obj = JSON.parse(fs.readFileSync(file, 'utf8'));
+
+        var tokens = await getTokenApi(listFiles[i])
+        obj.tokens = tokens
+
+        fs.writeFileSync(file, JSON.stringify(obj, null, 4));
+
+    }
 }
 
-module.exports = getConfig(config)
+async function main() {
+
+    //await saveBackupTokens()
+
+    //read all endpoint
+
+    var config
+    switch (process.env.NODE_ENV) {
+        case "production":
+            config = {
+                build: true,
+                folder: 'native'
+            }
+            break
+        default:
+            config = {
+                build: false,
+                folder: 'dev'
+            }
+            break
+    }
+
+    var webpackConfig = await getConfig(config)  //require('./webpack.config.js');
+    // var compiler = await webpack(webpackConfig)
+    // compiler.run(function (err, stats) {
+    //     if (!err) {
+    //         console.log("success")
+    //     } else {
+    //         console.log("fail")
+    //         console.log(err)
+    //     }
+    // })
+    await renderThemeFiles()
+}
+
+main()

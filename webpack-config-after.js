@@ -8,7 +8,7 @@ var classPrfx = require('postcss-class-prefix');
 var folder = process.env.FOLDER
 
 console.log(folder)
-var file = `dist/${folder}/app.bundle.css`
+var file = `dist/${folder}/app.css`
 var css = fs.readFileSync(file, 'utf8').toString();
 var out = postcss()
     .use(classPrfx('kyber_widget-', { ignore: [

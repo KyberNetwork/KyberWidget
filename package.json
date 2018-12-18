@@ -33,6 +33,8 @@
     "history": "^4.7.2",
     "localforage": "^1.5.5",
     "lodash": "^4.17.4",
+    "minimist": "^1.2.0",
+    "node-fetch": "^2.3.0",
     "platform": "^1.3.4",
     "postcss-class-prefix": "^0.3.0",
     "precss": "^4.0.0",
@@ -98,11 +100,12 @@
     "lodash-webpack-plugin": "^0.11.4",
     "mini-css-extract-plugin": "^0.5.0",
     "mocha": "^5.0.0",
-    "node-sass": "^4.7.2",
+    "node-sass": "^4.11.0",
     "react-addons-test-utils": "^15.6.2",
     "redux-saga-test-plan": "^3.3.1",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
+    "terser-webpack-plugin": "^1.1.0",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "url-loader": "^1.1.2",
     "webpack": "^4.27.1",
@@ -110,11 +113,9 @@
     "webpack-shell-plugin": "^0.5.0"
   },
   "scripts": {
-    "build-native": "NODE_ENV=production webpack --env.build=true --config webpack.config.js --env.folder=native",
-    "build-dev": "NODE_ENV=production webpack --env.build=true --config webpack.config.js --env.folder=dev --env.logger=true",
-    "build-bundle": "NODE_ENV=production webpack --env.build=true --config webpack.config.bundle.js --env.folder=bundle",
     "dev": "webpack-dev-server --content-base src --inline --hot --history-api-fallback --host 0.0.0.0 --port 3002 --env.logger=true",
-    "devs": "webpack-dev-server --content-base src --https --inline --hot --history-api-fallback --host 0.0.0.0 --port 3002 --env.logger=true"
+    "devs": "webpack-dev-server --content-base src --https --inline --hot --history-api-fallback --host 0.0.0.0 --port 3002 --env.logger=true",
+    "build-native": "NODE_ENV=production node webpack-wrapper.js"
   },
   "jest": {
     "globals": {

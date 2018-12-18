@@ -81,13 +81,18 @@ $animation-time: 0.5s;
     text-align: center;
     width: calc(50% - 10px);
     margin: 0 0 20px;
-    padding: 20px 0;
+    // padding: 20px 0;
     border-radius: 3px;
     background-color: #ffffff;
     border: solid 1px transparent;
     cursor: pointer;
     transition: all .3s;
-
+    >div{
+      padding: 20px 0;
+      &:focus{
+        outline: none;
+      }
+    }
     &:hover {
       box-shadow: $theme-emerald-shadow-icon;
       border-color: $theme-emerald-border;
