@@ -39,6 +39,16 @@
       transition: background-color .3s;
       pointer-events: none;
     }
+
+    &.disabled {
+      .rc-slider {
+        pointer-events: none;
+      }
+
+      .rc-slider-track {
+        background-color: #ccc !important;
+      }
+    }
   }
 
   &__gas {

@@ -5,7 +5,7 @@ import { Processing, InfoModal } from "../../containers/CommonElements/"
 import constant from "../../services/constants"
 import * as common from "../../utils/common"
 import {addPrefixClass} from "../../utils/className"
-
+import { store } from '../../store'
 const LayoutView = (props) => {
   var defaultPathExchange = constant.BASE_HOST + constant.PAYMENT_PATH
 
@@ -28,10 +28,10 @@ const LayoutView = (props) => {
   }
 
   return (
-    <ConnectedRouter history={props.history}>
+    <ConnectedRouter history={props.history} store ={store}>
       <div>
         <Route/>
-        <section className={`widget-container ${props.exchange.type} ${props.exchange.theme}`}>
+        <section className={addPrefixClass(`widget-container ${props.exchange.type} ${props.exchange.theme}`)}>
           {props.paymentHeader}
 
           <Switch>
