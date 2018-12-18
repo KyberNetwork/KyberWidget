@@ -5,7 +5,7 @@ html {
     font-size: 14px;
 }
 
-.body {
+.widget-config__body {
   font-family: 'Montserrat', sans-serif;
   background-color: #f7f7f7;
   color: #666666;
@@ -105,8 +105,14 @@ label.required::after, [data-widget-type='pay'] label.required-type-pay::after, 
 }
 
 input:invalid, input.invalid {
-    background-color: #ffd8b8;
+  color: white;
+  background-color: #f2938e;
 }
+
+input:invalid::placeholder, input.invalid::placeholder {
+  color: #edece8 !important;
+}
+
 select {
     height: 2rem;
     text-indent: 0.1rem;
@@ -241,6 +247,7 @@ label input, select, .pointer {
   top: 0;
   left: 0;
   z-index: -1;
+  transition: all .3s;
 }
 
 .widget-config__select-default {
@@ -300,8 +307,13 @@ label input, select, .pointer {
 }
 
 .widget-config__btn--disabled {
-  opacity: 0.7;
+  opacity: 0.6;
   pointer-events: none;
+  box-shadow: none !important;
+}
+
+.widget-config__btn--disabled .widget-config__select-container {
+  display: none;
 }
 
 .widget-config__btn:hover {
@@ -443,6 +455,11 @@ label input, select, .pointer {
   transform: rotate(45deg);
 }
 
+.widget-config__checkbox-input:checked ~.widget-config__checkbox-substitute {
+  border-color: #ef8102;
+  background-color: #ef8102;
+}
+
 .widget-config__checkbox-input:checked ~.widget-config__checkbox-substitute::after {
   content: '';
 }
@@ -558,6 +575,7 @@ label input, select, .pointer {
   transform: translateY(20px);
   transition: all .3s;
   z-index: 3;
+  pointer-events: none;
 }
 
 .widget-config__select.active {
@@ -567,6 +585,7 @@ label input, select, .pointer {
 .widget-config__select.active .widget-config__select-container {
   opacity: 1;
   transform: translateY(0);
+  pointer-events: initial;
 }
 
 .widget-config__select-item {
@@ -585,12 +604,103 @@ label input, select, .pointer {
 
 }
 
+.kyber-widget-button {
+  text-indent: -999px;
+  overflow: hidden;
+  width: 153px;
+  position: relative;
+}
+
+.kyber-widget-button::after {
+  content: 'Preview';
+  display: block;
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  text-indent: 0;
+}
+
+.widget-config__theme-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.widget-config__theme-item {
+  width: 50px;
+  height: 45px;
+  cursor: pointer;
+  background-size: contain;
+  position: relative;
+}
+
+.widget-config__theme-item::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 4px;
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  border-radius: 30px;
+  transition: all .3s;
+}
+
+.emerald.widget-config__theme-item::after {
+  background: #34BB99;
+}
+
+.violet.widget-config__theme-item::after {
+  background: #807DD6;
+}
+
+.dark.widget-config__theme-item::after {
+  background: #000000;
+}
+
+.soil.widget-config__theme-item::after {
+  background: #D2A800;
+}
+
+.ocean.widget-config__theme-item::after {
+  background: #2A95D5;
+}
+
+.widget-config__theme-item:hover::after,
+.widget-config__theme-item.active::after{
+  width: 100%;
+}
+
+.widget-config__theme-item.emerald {
+  background-image: url("images/theme-emerald.png");
+}
+
+.widget-config__theme-item.violet {
+  background-image: url("images/theme-violet.png");
+}
+
+.widget-config__theme-item.dark {
+  background-image: url("images/theme-dark.png");
+}
+
+.widget-config__theme-item.soil {
+  background-image: url("images/theme-soil.png");
+}
+
+.widget-config__theme-item.ocean {
+  background-image: url("images/theme-ocean.png");
+}
+
+
 .theme-emerald .widget-config__container {
   box-shadow: 0 10px 20px 0 rgba(11, 104, 126, 0.21);
 }
 
 .theme-emerald .colored-block {
-  background-image: linear-gradient(145deg, #00bf9f, #00a2bc);
+  background-image: linear-gradient(130deg, #00f2cd, #0074b3);
 }
 
 .theme-emerald h1 {

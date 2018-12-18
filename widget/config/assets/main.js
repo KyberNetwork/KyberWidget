@@ -1,7 +1,8 @@
 (function () {
-  var excludedInput = ["button_theme", "version"];
+  var excludedInput = ["version"];
   var defaultVersion = document.getElementById("selected-version").innerText;
   var NO_VERSION = "no";
+  var activeTheme = "theme-emerald";
 
   function getUrlParam(name) {
     return new URLSearchParams(location.search).get(name);
@@ -47,6 +48,7 @@
       receiveToken = form.receiveToken,
       buttonText = "Swap tokens";
     var data = [], error = [], msg, name, value;
+
     form.querySelectorAll("input, select").forEach(function (node) {
       name = node.getAttribute("name");
 
@@ -108,6 +110,8 @@
         error.push(msg);
       }
     }
+
+    data.push("theme=" + activeTheme);
 
     return {
       error: error,
@@ -183,6 +187,22 @@
         window.location.search = params.toString();
       })
     });
+
+    document.querySelectorAll(".widget-config__theme-item").forEach(function (item) {
+      item.addEventListener("click", function () {
+        var theme = this.getAttribute("data-theme");
+        var body = document.querySelector(".widget-config__body");
+
+        document.querySelector(".widget-config__theme-item.active").classList.remove("active");
+        this.classList.add("active");
+        body.className = "widget-config__body " + theme;
+        activeTheme = theme;
+      })
+    });
+
+    document.getElementById("widget-html-source").addEventListener("click", function () {
+      generateTag();
+    });
   }
 
   var generateTag = debounce(function () {
@@ -200,16 +220,13 @@
     codeBtn.classList.remove("widget-config__btn--disabled");
 
     var mode = document.querySelector("form").mode.value || "tab";
-    var buttonTheme = document.querySelector('input[name=button_theme]:checked').value;
-    buttonTheme = buttonTheme != "dark"  ? " kyber-widget-button--" + buttonTheme : '';
-
     var widgetBaseUrl = getWidgetUrl();
     var url = widgetBaseUrl + "/?" + formData.data;
     var cssUrl = widgetBaseUrl + '/widget.css';
     var jsUrl = widgetBaseUrl + '/widget.js';
     var tagHtml = "<!-- This is the '" + formData.buttonText + "' button, place it anywhere on your webpage -->\n";
     tagHtml += "<!-- You can add multiple buttons into a same page -->\n";
-    tagHtml += "<a href='" + url + "'\nclass='kyber-widget-button" + buttonTheme + "' ";
+    tagHtml += "<a href='" + url + "'\nclass='kyber-widget-button " + activeTheme + "' ";
     tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay with tokens'\n";
     tagHtml += "target='_blank'>" + formData.buttonText + "</a>";
 
@@ -236,12 +253,14 @@
     var link = document.createElement("link");
     link.type = "text/css";
     link.rel = "stylesheet";
-    link.href = widgetUrl + "/widget.css?t=" + Date.now();
+    // link.href = widgetUrl + "/widget.css?t=" + Date.now();
+    link.href = "v0.2/widget.css?t=" + Date.now();
     head.appendChild(link);
 
     var body = document.body;
     var script = document.createElement("script");
-    script.src = widgetUrl + "/widget.js?t=" + Date.now();
+    // script.src = widgetUrl + "/widget.js?t=" + Date.now();
+    script.src = "v0.2/widget.js?t=" + Date.now();
     body.appendChild(script);
   }
 
@@ -274,7 +293,7 @@
       document.documentElement.classList.add("standalone");
     }
   }
-  
+
   checkStandalone();
   insertWidgetFiles();
   generateTag();

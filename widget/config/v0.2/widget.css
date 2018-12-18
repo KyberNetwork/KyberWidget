@@ -1,0 +1,109 @@
+html:not([data-kyber-widget-edition='etheremon']) .kyber-widget-button {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    background-size: auto 26px;
+    font-family: Montserrat, sans-serif;
+    font-size: 15px;
+    border-radius: 30px;
+    font-weight: 500;
+    padding: 12px 37px;
+    height: 45px;
+    max-width: 100%;
+    text-transform: uppercase;
+    transition: background-color .3s;
+}
+
+html:not([data-kyber-widget-edition='etheremon']) .kyber-widget-button:active {
+    top: 1px;
+}
+
+.theme-emerald .kyber-widget-button {
+    background-color: #00a2bc;
+    color: #f8f8f8;
+}
+
+.theme-emerald .kyber-widget-button:hover {
+    background-color: #02c2e0;
+}
+
+html:not([data-kyber-widget-edition='etheremon']) .kyber-widget-button.kyber-widget-button--light {
+    background-color: white;
+    color: #222;
+    box-shadow: 0 3px 5px 0 #dbdbdb;
+}
+
+html[data-kyber-widget-edition='etheremon'] .kyber-widget-button {
+    padding-left: 36px;
+    background-position: 12px center;
+    background-size: 16px;
+}
+
+#kyber-widget {
+    position: absolute;
+    box-sizing: border-box;
+    transform: translateX(-50%) translateY(-50%);
+    left: 50%;
+    top: 50%;
+    max-height: 100%;
+    width: 100%;
+    max-width: 405px;
+}
+
+#kyber-widget-overlay {
+    background-color: rgba(0, 0, 0, .7);
+    position: fixed;
+    z-index: 99999;
+    overflow: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    animation: fadein .3s;
+}
+
+.hidden-overlay {
+    animation: fadeout .3s forwards !important;
+}
+
+@keyframes fadeout {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#kyber-widget-overlay::before {
+    content: "×";
+    position: absolute;
+    top: 16px;
+    right: 8px;
+    display: inline-block;
+    padding: 6px;
+    font-size: 36px;
+    color: #fff;
+    line-height: 0;
+    cursor: pointer;
+}
+
+#kyber-widget-iframe {
+    background-color: #fff;
+    position: absolute;
+    width: 405px;
+    height: 605px;
+    max-width: 90%;
+    max-height: 90%;
+    box-sizing: border-box;
+    transform: translateX(-50%) translateY(-50%);
+    left: 50%;
+    top: 50%;
+    border: 0;
+}
