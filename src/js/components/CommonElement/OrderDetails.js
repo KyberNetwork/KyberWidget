@@ -39,7 +39,7 @@ const OrderDetails = (props) => {
           </div>
           <div className={addPrefixClass("widget-exchange__order-text-bolder")}>
             {(!props.global.params.receiveToken || !props.global.params.receiveAmount) && (
-              <div>
+              <div className={addPrefixClass("widget-exchange__order-rate")}>
                 {props.exchange.isSelectToken && (
                   <div>Loading...</div>
                 )}
@@ -57,10 +57,12 @@ const OrderDetails = (props) => {
             )}
 
             {(props.global.params.receiveToken && props.global.params.receiveAmount) && (
-              <div>{('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount || 0} {props.exchange.destTokenSymbol}</div>
+              <div className={addPrefixClass("widget-exchange__order-rate")}>
+                {('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount || 0} {props.exchange.destTokenSymbol}
+              </div>
             )}
 
-            <div className={"widget-exchange__order-text-small"}>≈ ? ETH</div>
+            <div className={"widget-exchange__order-text-small"}>≈ {props.tokenRateToEth} ETH</div>
           </div>
         </div>
 

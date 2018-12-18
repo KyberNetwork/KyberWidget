@@ -84,6 +84,10 @@
     border: solid 1px $theme-emerald-border;
     background-color: white;
 
+    &-rate {
+      text-align: right;
+    }
+
     &-header {
       border-radius: 6px;
       background-color: #f8fbfd;

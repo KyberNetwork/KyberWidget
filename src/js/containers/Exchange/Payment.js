@@ -289,7 +289,7 @@ export default class Payment extends React.Component {
       return false;
     }
 
-    return <div className={addPrefixClass("common__error box")}>{errorItems}</div>
+    return <div>{errorItems}</div>
   };
 
   getWalletType = () => {
@@ -385,23 +385,6 @@ export default class Payment extends React.Component {
               </div>
 
               <div className={addPrefixClass("widget-exchange__info")}>
-                {this.getError() && (
-                  <div className={addPrefixClass("common__error box")}>{this.getError()}</div>
-                )}
-
-                {txError !== "" && (
-                  <div className={addPrefixClass("common__error box")}>
-                    {txError}
-                  </div>
-                )}
-
-                {this.props.exchange.isNeedApprove && (
-                  <div className={addPrefixClass("approve-intro")}>
-                    {this.props.translate("modal.approve_exchange", { token: this.props.exchange.sourceTokenSymbol })
-                    || `You need to grant permission for Kyber Payment to interact with ${this.props.exchange.sourceTokenSymbol} with this address`}
-                  </div>
-                )}
-
                 {this.props.account.type === "keystore" && (
                   <div id="import-account">
                     <div className={addPrefixClass("widget-exchange__text theme-text")}>Enter your Password</div>
@@ -428,8 +411,25 @@ export default class Payment extends React.Component {
                   </div>
                 )}
 
+                {this.props.exchange.isNeedApprove && (
+                  <div className={addPrefixClass("common__confirm")}>
+                    *{this.props.translate("modal.approve_exchange", { token: this.props.exchange.sourceTokenSymbol })
+                  || `You need to grant permission for Kyber Payment to interact with ${this.props.exchange.sourceTokenSymbol} with this address`}
+                  </div>
+                )}
+
                 {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
-                  <div className={addPrefixClass("confirm-message")}>{this.props.account.type !== "keystore" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}</div>
+                  <div className={addPrefixClass("common__confirm")}>
+                    *{this.props.account.type !== "keystore" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}
+                  </div>
+                )}
+
+                {this.getError() && (
+                  <div className={addPrefixClass("common__error box")}>{this.getError()}</div>
+                )}
+
+                {txError !== "" && (
+                  <div className={addPrefixClass("common__error box")}>{txError}</div>
                 )}
               </div>
             </div>

@@ -82,12 +82,6 @@
   margin: 35px auto 0;
 }
 
-.confirm-message {
-  font-size: 14px;
-  margin-bottom: 15px;
-  font-weight: 500;
-}
-
 .step-breadcrumb {
   border-left: 1px solid #eee;
   border-right: 1px solid #eee;
@@ -346,7 +340,7 @@
 
   &__input-panel {
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 
     &.short-margin {
       margin-bottom: 15px;
@@ -383,12 +377,16 @@
     }
 
     &.error {
-      .token-chooser__selector {
+      .token-chooser__selector,
+      .common__input {
         border-color: $error-color;
       }
 
       .widget-exchange__input,
-      .widget-exchange__input::placeholder {
+      .widget-exchange__input::placeholder,
+      .common__input-panel-label,
+      .common__input,
+      .common__input::placeholder {
         color: $error-color;
       }
     }
@@ -418,10 +416,17 @@
     animation: fade-in 0.3s forwards;
 
     &.box {
-      padding: 15px 25px;
+      padding: 15px 18px;
       border-radius: 6px;
       background-color: #ffeeee;
+      margin-top: 20px;
     }
+  }
+
+  &__confirm {
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 20px;
   }
 
   &__input {
@@ -539,5 +544,9 @@
     &.right {
       transform: rotate(-90deg);
     }
+  }
+
+  &__margin-top {
+    margin-top: 30px;
   }
 }

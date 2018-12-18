@@ -12,6 +12,7 @@ const ExchangeBodyLayout = (props) => {
 
   var errorSource = []
   var errorExchange = false
+
   Object.keys(props.exchange.errors).map(key => {
     if (props.exchange.errors[key] && props.exchange.errors[key] !== "") {
       errorSource.push(props.translate(props.exchange.errors[key]) || props.exchange.errors[key])
@@ -76,8 +77,12 @@ const ExchangeBodyLayout = (props) => {
                   <span>1 {props.sourceTokenSymbol}</span>
                   <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
                   <span>{rateSwap} {props.destTokenSymbol}</span>
-                  <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
-                  <span>? USD</span>
+                  {props.sourceToken && (
+                    <span>
+                      <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
+                      <span>{converter.roundingNumber(props.sourceToken.rateUSD)} USD</span>
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -109,7 +114,7 @@ const ExchangeBodyLayout = (props) => {
                   {!props.exchange.isHaveDestAmount && (
                     <div className={addPrefixClass("common__input-panel-label input-container")}>
                       <input
-                        id="inputSource" className={addPrefixClass("source-input")} min="0" step="0.000001" placeholder="0"
+                        id="inputSource" className={addPrefixClass("widget-exchange__input")} min="0" step="0.000001" placeholder="0"
                         autoFocus type="text" maxLength="50" autoComplete="off" value={props.input.sourceAmount.value}
                         onFocus={props.input.sourceAmount.onFocus} onBlur={props.input.sourceAmount.onBlur} onChange={handleChangeSource}
                       />
@@ -135,8 +140,12 @@ const ExchangeBodyLayout = (props) => {
                   <span>1 {props.sourceTokenSymbol}</span>
                   <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
                   <span>{rateSwap} {props.destTokenSymbol}</span>
-                  <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
-                  <span>? USD</span>
+                  {props.sourceToken && (
+                    <span>
+                      <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
+                      <span>{converter.roundingNumber(props.sourceToken.rateUSD)} USD</span>
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -147,7 +156,7 @@ const ExchangeBodyLayout = (props) => {
           <div className={addPrefixClass('widget-exchange__column')}>
             <div className={addPrefixClass("widget-exchange__column-item")}>
               <div className={addPrefixClass("widget-exchange__text theme-text")}>Choose your Token:</div>
-              <div className={addPrefixClass("common__input-panel")}>
+              <div className={addPrefixClass(`common__input-panel ${errorExchange ? 'error' : ''}`)}>
                 <TokenSelector
                   type="source"
                   focusItem={props.exchange.sourceTokenSymbol}
@@ -176,14 +185,16 @@ const ExchangeBodyLayout = (props) => {
                   <div className={addPrefixClass("widget-exchange__text theme-text")}>
                     {props.translate("transaction.enter_amount") || "Enter amount you will pay"}:
                   </div>
-                  <div className={addPrefixClass("common__input-panel")}>
+                  <div className={addPrefixClass(`common__input-panel ${errorExchange ? 'error' : ''}`)}>
                     <input
                       className={addPrefixClass("common__input theme-border")}
                       min="0"
                       step="0.000001"
                       placeholder="0"
                       autoFocus
-                      type="text" maxLength="50" autoComplete="off"
+                      type="text"
+                      maxLength="50"
+                      autoComplete="off"
                       value={props.input.sourceAmount.value}
                       onFocus={props.input.sourceAmount.onFocus}
                       onBlur={props.input.sourceAmount.onBlur}
@@ -193,11 +204,11 @@ const ExchangeBodyLayout = (props) => {
                   </div>
 
                   {!props.global.params.receiveToken && (
-                    <div>
+                    <div className={addPrefixClass("common__margin-top")}>
                       <div className={addPrefixClass("widget-exchange__text theme-text")}>
                         {props.translate("transaction.exchange_receive_token") || "Receive Token"}
                       </div>
-                      <div className={addPrefixClass("common__input-panel")}>
+                      <div className={addPrefixClass(`common__input-panel ${errorExchange ? 'error' : ''}`)}>
                         {props.tokenDestSelect}
                       </div>
                     </div>

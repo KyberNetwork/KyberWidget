@@ -81,17 +81,35 @@ export default class Exchange extends React.Component {
     this.props.global.analytics.callTrack("setNewMinRate", value);
   };
 
+  renderOrderDetailComponent = () => {
+    let symbol, amount, tokenEthRate, tokenRateToEth;
+
+    if (this.props.exchange.sourceAmount) {
+      symbol = this.props.exchange.sourceTokenSymbol;
+      amount = this.props.exchange.sourceAmount;
+    } else {
+      symbol = this.props.exchange.destTokenSymbol;
+      amount = this.props.exchange.destAmount;
+    }
+
+    tokenEthRate = converter.toT(this.props.tokens[symbol].rateEth, 18);
+    tokenRateToEth = tokenEthRate ? parseFloat((amount / tokenEthRate).toFixed(4)) : 0;
+
+    return (
+      <OrderDetails
+        tokenRateToEth={tokenRateToEth}
+        exchange={this.props.exchange}
+        global={this.props.global}
+        translate={this.props.translate}
+      />
+    );
+  };
+
   render() {
     let detailBox = <TransactionDetails exchange={this.props.exchange}/>;
 
     if (this.props.exchange.type === "pay") {
-      detailBox = (
-        <OrderDetails
-          exchange={this.props.exchange}
-          global={this.props.global}
-          translate={this.props.translate}
-        />
-      );
+      detailBox = this.renderOrderDetailComponent();
     }
 
     if (this.props.global.haltPayment){

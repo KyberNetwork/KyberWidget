@@ -11,8 +11,6 @@ import * as exchangeActions from "../../actions/exchangeActions"
 import constansts from "../../services/constants"
 import { getTranslate } from 'react-localize-redux'
 import { default as _ } from 'underscore'
-import {addPrefixClass} from "../../utils/className"
-import { getTokenUrl } from "../../utils/common";
 
 @connect((store, props) => {
 
@@ -339,6 +337,7 @@ export default class ExchangeBody extends React.Component {
         isStepValid={isStepValid}
         global={this.props.global}
         tokens={this.props.tokens}
+        sourceToken={this.props.tokens[this.props.exchange.sourceTokenSymbol]}
         onChooseToken={this.chooseToken}
         detailBox={this.props.detailBox}
       />
