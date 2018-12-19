@@ -505,3 +505,10 @@ export function changeDefaultTokens(sourceSymbol, sourceAddress, destSymbol, des
     payload: {sourceSymbol, sourceAddress, destSymbol, destAddress}
   }
 }
+
+export function setSourceAmount(amount){
+  return {
+    type: "EXCHANGE.SET_SOURCE_AMOUNT",
+    payload: amount
+  }
+}

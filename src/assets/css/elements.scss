@@ -72,6 +72,10 @@
     max-width: $container-max-width-swap;
   }
 
+  &.broadcasted {
+    max-width: $container-max-width-broadcasted;
+  }
+
   @import "theme";
 }
 
@@ -301,7 +305,7 @@
     width: 100%;
     max-width: 250px;
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 500;
     color: #f8f8f8;
     border-radius: 28px;
     box-shadow: 0 2px 4px 0 rgba(124, 164, 204, 0.37), 0 8px 12px 0 rgba(101, 124, 150, 0.14);
@@ -335,6 +339,13 @@
         background-color: $theme-emerald-regular;
         color: white;
       }
+    }
+
+    &.small {
+      max-width: 185px;
+      padding: 12px 0;
+      font-size: 15px;
+      font-weight: 500;
     }
   }
 

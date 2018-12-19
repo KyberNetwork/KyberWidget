@@ -169,7 +169,6 @@ const ExchangeBodyLayout = (props) => {
                     {props.exchange.isSelectToken && (
                       <div>Loading...</div>
                     )}
-                    <div></div>
                     {(!props.exchange.isSelectToken && !isSourceEqualtoDestToken) && (
                       <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 4)}</div>
                     )}
@@ -230,7 +229,7 @@ const ExchangeBodyLayout = (props) => {
           <span className={addPrefixClass("common__checkbox-text")}>
             <span>{props.translate("transaction.i_agree_to") || "Agree to"} </span>
             <a className={addPrefixClass("theme-text theme-text-hover")} href="https://files.kyber.network/tac.html" target="_blank" onClick={(e) => {if (props.global.analytics) props.global.analytics.callTrack("clickTermAndCondition")}}>
-              {props.translate("transaction.term_and_condition") || "Terms &amp; Conditions"}
+              {props.translate("transaction.term_and_condition") || "Terms & Conditions"}
             </a>
           </span>
           <input id="term-agree" className={addPrefixClass("common__checkbox-input theme-checkbox")} type="checkbox" onChange={props.acceptedTerm}/>

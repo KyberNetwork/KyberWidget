@@ -131,6 +131,8 @@ export default class Payment extends React.Component {
     var minConversionRate = converter.toTWei(this.props.snapshot.minConversionRate)
     var sourceAmount = converter.caculateSourceAmount(this.props.snapshot.destAmount, minConversionRate, 6)
 
+    this.props.dispatch(exchangeActions.setSourceAmount(sourceAmount));
+
     return converter.stringToHex(sourceAmount, this.props.snapshot.sourceDecimal)
   }
 

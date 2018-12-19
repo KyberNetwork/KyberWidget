@@ -4,10 +4,13 @@ import { ConnectedRouter } from 'react-router-redux'
 import { Processing, InfoModal } from "../../containers/CommonElements/"
 import constant from "../../services/constants"
 import * as common from "../../utils/common"
-import {addPrefixClass} from "../../utils/className"
+import { addPrefixClass } from "../../utils/className"
 import { store } from '../../store'
+
 const LayoutView = (props) => {
   var defaultPathExchange = constant.BASE_HOST + constant.PAYMENT_PATH
+  const isBroadCasted = props.exchange.step === 4;
+  const broadCastedClass = isBroadCasted ? "broadcasted" : "";
 
   var params = common.queryParamsString(window.location.href)
   if (props.currentLanguage !== "en"){
@@ -31,8 +34,10 @@ const LayoutView = (props) => {
     <ConnectedRouter history={props.history} store ={store}>
       <div>
         <Route/>
-        <section className={addPrefixClass(`widget-container ${props.exchange.type} ${props.exchange.theme}`)}>
-          {props.paymentHeader}
+        <section className={addPrefixClass(`widget-container ${props.exchange.type} ${props.exchange.theme} ${broadCastedClass}`)}>
+          {!isBroadCasted && (
+            props.paymentHeader
+          )}
 
           <Switch>
             <Route exact path={constant.BASE_HOST + constant.PAYMENT_PATH} component={props.Exchange} />

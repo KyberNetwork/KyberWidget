@@ -29,6 +29,8 @@
   },
 
   "transaction": {
+    "exchange_receive_token": "Receive Token",
+    "you_about_to_buy": "You are about to buy",
     "choose_your_payment": "Choose your payment method",
     "exchange_paywith": "PAY WITH",
     "estimate_value_should_pay": "Estimate value you should pay",
@@ -36,7 +38,7 @@
     "address": "Address",
     "estimate_dest_value": "You will get approximately",
     "i_agree_to": "Agree to",
-    "term_and_condition": "Terms &amp; Conditions",
+    "term_and_condition": "Terms & Conditions",
     "payment": "Purchase",
     "error": "Error",
     "back_to_website": "Back to Website",
@@ -44,11 +46,9 @@
     "confirm_transaction": "Confirm Transaction",
     "enter_amount": "Enter amount you will pay",
     "confirm": "Confirm",
-
     "exchange": "Exchange",
     "exchange_from": "From",
     "exchange_to": "To",
-
     "transfer": "Transfer",
     "transfer_to_address": "Transfer to address",
     "amount": "Amount",
@@ -87,7 +87,7 @@
     "broadcasted_title": "Transaction added to the blockchain",
     "close_browser_or_make_new_exchange": "You can now close your browser window or make another exchange",
     "close_browser_or_make_new_transfer": "You can now close your browser window or make another transfer",
-    "broadcasting_blockchain": "Broadcasting the transaction to the blockchain",
+    "broadcasting_blockchain": "Waiting for the transaction to be mined",
     "cound_not_broadcast": "Couldn't broadcast the transaction to the blockchain",
     "current_address_balance": "Current address balance",
 
@@ -371,7 +371,8 @@
   "payment_header": {
     "step_method": "Payment Method",
     "step_import": "Unlock Wallet",
-    "step_confirm": "Confirm"
+    "step_confirm": "Confirm",
+    "step_swap": "Swap"
   },
 
   "home": "Home",

@@ -84,7 +84,7 @@ export default class Exchange extends React.Component {
   renderOrderDetailComponent = () => {
     let symbol, amount, tokenEthRate, tokenRateToEth;
 
-    if (this.props.exchange.sourceAmount) {
+    if (this.props.exchange.type !== "pay") {
       symbol = this.props.exchange.sourceTokenSymbol;
       amount = this.props.exchange.sourceAmount;
     } else {

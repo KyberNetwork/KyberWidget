@@ -8,57 +8,13 @@ import * as widgetOptions from "../../utils/widget-options"
 const TransactionLoadingView = (props) => {
   var isBroadcasting = props.broadcasting;
   var broadcastError = props.error;
+  const isPayMode = props.exchange.type === "pay";
+  const isBuyMode = props.exchange.type === "buy";
+  const isSwapMode = props.exchange.type === "swap";
 
   var closeWidget = () => {
     widgetOptions.onClose()
     if (props.analytics) props.analytics.callTrack("backToWebsite")
-  }
-
-  if (isBroadcasting) {
-    return (
-      <div className={addPrefixClass("transaction-loading-container")}>
-        <div className={addPrefixClass("transaction-loading")}>
-          <div className={addPrefixClass("k-container")}>
-            <div className={addPrefixClass("k-title")}>
-              {broadcastError  &&
-              <div>
-                <div className={addPrefixClass("icon icon--failed")}></div>
-                <div className={addPrefixClass("title-status")}>{ props.translate('transaction.failed') || "Failed!" }</div>
-              </div>
-              }
-              {!broadcastError &&
-              <div>
-                <div className={addPrefixClass("icon icon--broadcasted")}></div>
-                <div className={addPrefixClass("title-status")}>{ props.translate('transaction.broadcasting') || "Broadcasting!" }</div>
-              </div>
-              }
-            </div>
-            <div className={addPrefixClass("content with-overlap tx-loading")}>
-              <ul className={addPrefixClass("broadcast-steps")}>
-                {!broadcastError &&
-                <li className={addPrefixClass("pending")}>
-                  <h4 className={addPrefixClass("font-w-b")}>{props.translate("transaction.broadcasting_blockchain") || "Broadcasting the transaction to the blockchain"}
-                  </h4>
-                </li>
-                }
-                {broadcastError &&
-                <li className={addPrefixClass("failed")}>
-                  <h4 className={addPrefixClass("font-w-b")}>{props.translate("transaction.cound_not_broadcast") || "Couldn't broadcast your transaction to the blockchain"}</h4>
-                  <div className={addPrefixClass("reason")}>{broadcastError}</div>
-                </li>
-                }
-              </ul>
-            </div>
-          </div>
-
-          <div className={addPrefixClass("k-container transaction-loading__button-container")}>
-            <div className={addPrefixClass("payment-gateway__hollow-button final-step-payment")} onClick={(e) => closeWidget()}>
-              {props.translate("transaction.back_to_website") || "Back to Website"}
-            </div>
-          </div>
-        </div>
-      </div>
-    )
   }
 
   var getTooltipCopy = () => {
@@ -67,41 +23,128 @@ const TransactionLoadingView = (props) => {
       (props.translate("transaction.copy_tx") || "Copy transaction hash")
   }
 
-  return (
-    <div className={addPrefixClass("transaction-loading-container")}>
-      <div className={addPrefixClass("transaction-loading")}>
-        <div className={addPrefixClass("k-container")}>
-          <div className={addPrefixClass("k-title")}>
-            <div>
-              <div className={addPrefixClass("icon icon--broadcasted")}></div>
-              <div className={addPrefixClass("k-title")}>{ props.translate('transaction.broadcasted') || "Broadcasted!" }</div>
+  if (isBroadcasting) {
+    return (
+      <div className={addPrefixClass("broadcast")}>
+        {broadcastError  &&
+        <div className={addPrefixClass("broadcast__header")}>
+          <div className={addPrefixClass("broadcast__icon failed")}/>
+          <div className={addPrefixClass("broadcast__title")}>{ props.translate('transaction.failed') || "Failed!" }</div>
+        </div>
+        }
+        {!broadcastError &&
+        <div className={addPrefixClass("broadcast__header")}>
+          <div className={addPrefixClass("broadcast__icon broadcast")}/>
+          <div className={addPrefixClass("broadcast__title")}>{ props.translate('transaction.broadcasting') || "Broadcasting!" }</div>
+        </div>
+        }
+
+        <div className={addPrefixClass("broadcast__body")}>
+          <div className={addPrefixClass("broadcast__body-item")}>
+            <div className={addPrefixClass("broadcast__text")}>{props.translate("transaction.transaction") || "Transaction hash"}:</div>
+
+            <div className={addPrefixClass("broadcast__content")}>
+              <a className={addPrefixClass("broadcast__text-bold link theme-text-hover")} href={BLOCKCHAIN_INFO[props.network].ethScanUrl + 'tx/' + props.txHash} target="_blank"
+                 title={props.translate("modal.view_on_etherscan") || "View on Etherscan"} onClick={(e) => props.analytics.callTrack("viewTxOnEtherscan")}>
+                {props.txHash}
+              </a>
+              <a className={addPrefixClass("broadcast__copy")} data-for='copy-tx-tip' data-tip=""
+                 onClick={props.handleCopy}
+                 onMouseLeave={props.resetCopy} >
+                <CopyToClipboard text={props.txHash}>
+                  <img src={require("../../../assets/img/icons/icon-copy.svg")} />
+                </CopyToClipboard>
+              </a>
+              <ReactTooltip getContent={[() => getTooltipCopy()]} place="right" id="copy-tx-tip" type="light" />
             </div>
           </div>
-          <div className={addPrefixClass("content with-overlap")}>
-            <div className={addPrefixClass("info tx-title")}>
-              <div className={addPrefixClass("tx-title-text")}>{props.translate("transaction.transaction") || "Transaction hash"}</div>
-              <div className={addPrefixClass("tx-hash")}>
-                <a className={addPrefixClass("text-light")} href={BLOCKCHAIN_INFO[props.network].ethScanUrl + 'tx/' + props.txHash} target="_blank"
-                   title={props.translate("modal.view_on_etherscan") || "View on Etherscan"} onClick={(e) => props.analytics.callTrack("viewTxOnEtherscan")}>
-                  {props.txHash}
-                </a>
-                <a className={addPrefixClass("copy-tx")} data-for='copy-tx-tip' data-tip=""
-                   onClick={props.handleCopy}
-                   onMouseLeave={props.resetCopy} >
-                  <CopyToClipboard text={props.txHash}>
-                    <img src={require("../../../assets/img/copy-address.svg")} />
-                  </CopyToClipboard>
-                </a>
-                <ReactTooltip getContent={[() => getTooltipCopy()]} place="right" id="copy-tx-tip" type="light" />
+
+          <div className={addPrefixClass("broadcast__body-item theme-border")}>
+            {!broadcastError &&
+              <div className={addPrefixClass("broadcast__content")}>
+                <img src={require("../../../assets/img/icons/icon-loading-circle.gif")} />
+                <div className={addPrefixClass("broadcast__text-light")}>{props.translate("transaction.broadcasting_blockchain") || "Waiting for the transaction to be mined"}</div>
               </div>
+            }
+            {broadcastError &&
+            <div>
+              <div className={addPrefixClass("common__error")}>{props.translate("transaction.cound_not_broadcast") || "Couldn't broadcast your transaction to the blockchain"}</div>
+              <div className={addPrefixClass("common__error box")}>{broadcastError}</div>
             </div>
+            }
           </div>
         </div>
 
-        <div className={addPrefixClass("k-container transaction-loading__button-container")}>
-          <div className={addPrefixClass("payment-gateway__hollow-button final-step-payment")} onClick={(e) => closeWidget()}>
-          {props.translate("transaction.back_to_website") || "Back to Website"}
+        <div className={addPrefixClass("widget-exchange__bot common__flexbox center")}>
+          <div className={addPrefixClass("common__button hollow small theme-button")} onClick={(e) => closeWidget()}>
+            {props.translate("transaction.back_to_website") || "Back to Website"}
+          </div>
         </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className={addPrefixClass("broadcast")}>
+      <div className={addPrefixClass("broadcast__header")}>
+        <div className={addPrefixClass("broadcast__icon success")}/>
+        <div className={addPrefixClass("broadcast__title")}>Done</div>
+      </div>
+
+      <div className={addPrefixClass("broadcast__body")}>
+        <div className={addPrefixClass("broadcast__body-item")}>
+          <div className={addPrefixClass("broadcast__text")}>{props.translate("transaction.transaction") || "Transaction hash"}:</div>
+
+          <div className={addPrefixClass("broadcast__content")}>
+            <a className={addPrefixClass("broadcast__text-bold link theme-text-hover")} href={BLOCKCHAIN_INFO[props.network].ethScanUrl + 'tx/' + props.txHash} target="_blank"
+               title={props.translate("modal.view_on_etherscan") || "View on Etherscan"} onClick={(e) => props.analytics.callTrack("viewTxOnEtherscan")}>
+              {props.txHash}
+            </a>
+            <a className={addPrefixClass("broadcast__copy")} data-for='copy-tx-tip' data-tip=""
+               onClick={props.handleCopy}
+               onMouseLeave={props.resetCopy} >
+              <CopyToClipboard text={props.txHash}>
+                <img src={require("../../../assets/img/icons/icon-copy.svg")} />
+              </CopyToClipboard>
+            </a>
+            <ReactTooltip getContent={[() => getTooltipCopy()]} place="right" id="copy-tx-tip" type="light" />
+          </div>
+        </div>
+
+        <div className={addPrefixClass("broadcast__body-item theme-border")}>
+          <div className={addPrefixClass("broadcast__text success theme-text")}>
+            {isPayMode && (
+              <div>Successfully paid:</div>
+            )}
+            {isBuyMode && (
+              <div>Successfully bought:</div>
+            )}
+            {isSwapMode && (
+              <div>Successfully swapped:</div>
+            )}
+          </div>
+          <div className={addPrefixClass("broadcast__text-bold")}>
+            {isPayMode && (
+              <div className={"common__flexbox center"}>
+                <span className={addPrefixClass("common__text-semibold")}>{props.exchange.sourceAmount} {props.exchange.sourceTokenSymbol} </span>
+                <span className={addPrefixClass("common__text-small")}> to </span>
+                <span className={addPrefixClass("broadcast__text-bold")}>{props.exchange.receiveAddr}</span>
+              </div>
+            )}
+            {(isBuyMode || isSwapMode) && (
+              <div>
+                <span className={addPrefixClass("common__text-semibold")}>{props.exchange.sourceAmount} {props.exchange.sourceTokenSymbol}</span>
+                <span className={addPrefixClass("common__text-small")}> to </span>
+                <span className={addPrefixClass("common__text-semibold")}>{props.exchange.destAmount} {props.exchange.destTokenSymbol}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className={addPrefixClass("widget-exchange__bot common__flexbox center")}>
+        <div className={addPrefixClass("common__button hollow small theme-button")} onClick={(e) => closeWidget()}>
+          {props.translate("transaction.back_to_website") || "Back to Website"}
         </div>
       </div>
     </div>

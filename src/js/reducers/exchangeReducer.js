@@ -604,6 +604,10 @@ const exchange = (state = initState, action) => {
       newState.destToken = destAddress
       return newState
     }
+    case "EXCHANGE.SET_SOURCE_AMOUNT": {
+      newState.sourceAmount = action.payload;
+      return newState;
+    }
   }
   return state
 }
