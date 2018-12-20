@@ -232,7 +232,7 @@
   "reserve": "0x0fc1cf3e7dd049f7b42e6823164a64f76fc06be0",
   "network": "0x818E6FECD516Ecc3849DAf6845e3EC868087B755",
   "wrapper": "0x665d34f192f4940da4e859ff7768c0a80ed3ae10",
-  "payWrapper": "0xd1946aeffc2d053b76fab96117b6f2c7bf395e32",
+  "payWrapper": "0x5211e6196d2a8e4ea7ee3dd961c8d667fbc4727c",
   "trade_topic":"0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
   "endpoint": "https://ropsten.infura.io/DtzEYY0Km2BA3YwyJcBG",
   "averageBlockTime": 6000,
