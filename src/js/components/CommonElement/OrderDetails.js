@@ -5,6 +5,8 @@ import {addPrefixClass} from "../../utils/className";
 const OrderDetails = (props) => {
   const haveProductName = props.exchange.productName && props.exchange.productName !== "";
   const haveProductAvatar = props.exchange.productAvatar && props.exchange.productAvatar !== "";
+  const isUnlockWalletStep = props.exchange.step === 2;
+  const isConfirmStep = props.exchange.step === 3;
   let isError = false;
   let gasUsed = props.exchange.gas;
   if (props.exchange.isNeedApprove) {
@@ -18,13 +20,13 @@ const OrderDetails = (props) => {
   });
 
   return (
-    <div className={addPrefixClass("widget-exchange__order theme-border")}>
+    <div className={addPrefixClass(`widget-exchange__order theme-border ${isUnlockWalletStep ? 'common__desktop-display' : ''}`)}>
       <div className={addPrefixClass("widget-exchange__order-header")}>Order Details</div>
 
       <div className={addPrefixClass("widget-exchange__order-body")}>
         {haveProductName && (
           <div className={addPrefixClass("widget-exchange__order-box")}>
-            <span className={addPrefixClass("widget-exchange__order-text")}>{props.exchange.productName}</span>
+            <span className={addPrefixClass("widget-exchange__order-text widget-exchange__order-product-name")}>{props.exchange.productName}</span>
             <span className={addPrefixClass("widget-exchange__order-text-bold")}>X{props.exchange.productQty}</span>
           </div>
         )}
@@ -66,7 +68,7 @@ const OrderDetails = (props) => {
           </div>
         </div>
 
-        {props.exchange.step === 3 && (
+        {isConfirmStep && (
           <div className={"widget-exchange__order-box"}>
             <div className={addPrefixClass("widget-exchange__order-text")}>
               {props.translate("transaction.transaction_fee") || "Transaction fee"}:
@@ -78,12 +80,8 @@ const OrderDetails = (props) => {
         )}
 
         <div className={addPrefixClass("widget-exchange__order-box widget-exchange__order-address theme-border")}>
-          <div className={addPrefixClass("widget-exchange__order-text-light")}>
-            {props.translate("transaction.address") || "Address"}:
-          </div>
-          <div className={addPrefixClass("widget-exchange__order-text")}>
-            {props.global.params.receiveAddr.slice(0, 19)} ... {props.global.params.receiveAddr.slice(-6)}
-          </div>
+          <div className={addPrefixClass("widget-exchange__order-text-light")}>{props.translate("transaction.address") || "Address"}:</div>
+          <div className={addPrefixClass("widget-exchange__order-text common__one-line")}>{props.global.params.receiveAddr.slice(0, 19)}...{props.global.params.receiveAddr.slice(-6)}</div>
         </div>
       </div>
     </div>

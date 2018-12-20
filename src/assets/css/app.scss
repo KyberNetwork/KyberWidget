@@ -39,4 +39,8 @@ $alert-color: #ff5d00;
   @import "payment";
   @import "error_payment";
   @import "slide-down";
+
+  @include screen-max-width(600px) {
+    padding: 80px 10px;
+  }
 }

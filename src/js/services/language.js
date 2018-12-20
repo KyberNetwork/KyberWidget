@@ -42,7 +42,8 @@ export function initLanguage(store){
     ],
     //translation: globalTranslations,
     options: {
-      renderToStaticMarkup: false
+      renderToStaticMarkup: false,
+      renderInnerHtml: true
     }
   }));
   store.dispatch(addTranslationForLanguage(languagePack, packName));

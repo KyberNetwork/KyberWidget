@@ -184,10 +184,6 @@ $animation-time: 0.5s;
         justify-content: center;
         align-items: center;
         padding: 0 0.9375rem;
-
-        @include screen-max-width(medium) {
-          padding: 0;
-        }
       }
 
       &__button {

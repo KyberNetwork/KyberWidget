@@ -141,6 +141,7 @@
     &.active {
       color: white;
       background-color: $theme-emerald-regular;
+      box-shadow: inset 0 3px 8px 0 rgba(0, 0, 0, 0.16);
     }
   }
 
@@ -149,9 +150,80 @@
     font-weight: 500;
     color: #5a5e67;
   }
+
+  @include screen-max-width(600px) {
+    padding: 15px;
+    align-items: flex-start;
+
+    &::after {
+      top: 33px;
+      width: calc(100% - 30px);
+    }
+
+    &__item {
+      width: 130px;
+      flex-direction: column;
+      background: transparent;
+
+      &:first-child {
+        align-items: flex-start;
+      }
+
+      &:nth-child(2) {
+        .step-breadcrumb__text {
+          text-align: center;
+        }
+      }
+
+      &:last-child {
+        align-items: flex-end;
+      }
+    }
+
+    &__step {
+      margin: 0 0 10px 0;
+      position: relative;
+
+      &::after {
+        content: '';
+        width: 60px;
+        height: 100%;
+        background: white;
+        display: block;
+        position: absolute;
+        z-index: -1;
+      }
+    }
+
+    &__text {
+      font-size: 12px;
+    }
+  }
 }
 
 .common {
+  &__desktop-display {
+    display: block;
+
+    @include screen-max-width(600px) {
+      display: none;
+    }
+  }
+
+  &__mobile-display {
+    display: none;
+
+    @include screen-max-width(600px) {
+      display: block;
+    }
+  }
+
+  &__one-line {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   &__flexbox {
     display: flex;
 

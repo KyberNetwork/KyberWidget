@@ -4,12 +4,7 @@ import ImportByLedgerView from "./Ledger/ImportByLedgerView";
 import ImportByTrezorView from "./Trezor/ImportByTrezorView";
 import ImportByKeystoreView from "./Keystore/ImportByKeystoreView";
 import { ImportByMetamask } from "../../containers/ImportAccount";
-import {
-  ImportByPrivateKey,
-  ImportByDeviceWithLedger,
-  ImportByDeviceWithTrezor,
-  ImportKeystore,
-} from "../../containers/ImportAccount";
+import { ImportByPrivateKey, ImportByDeviceWithLedger, ImportByDeviceWithTrezor, ImportKeystore } from "../../containers/ImportAccount";
 import SignerAddress from "./SignerAddress";
 import constants from "../../services/constants";
 import {addPrefixClass} from "../../utils/className"
@@ -64,7 +59,7 @@ const ImportAccountView = (props) => {
           </div>
         </div>
       </div>
-      <div className={addPrefixClass("widget-exchange__bot common__flexbox between")}>
+      <div className={addPrefixClass(`widget-exchange__bot common__flexbox between ${props.chosenImportAccount ? 'mobile-column-reverse' : ''}`)}>
         <div
           className={addPrefixClass("common__button hollow theme-button")}
           onClick={props.chosenImportAccount ? props.onCloseImportAccount : props.backToFirstStep}
@@ -73,7 +68,7 @@ const ImportAccountView = (props) => {
         </div>
 
         {props.chosenImportAccount && (
-          <div className={addPrefixClass(`common__button theme-gradient ${props.error ? 'disabled' : ''}`)} onClick={handleImportWallet}>
+          <div className={addPrefixClass(`widget-exchange__import common__button theme-gradient ${props.error ? 'disabled' : ''}`)} onClick={handleImportWallet}>
             {props.translate("modal.import") || "Import"}
           </div>
         )}

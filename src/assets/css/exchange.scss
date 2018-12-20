@@ -225,4 +225,58 @@
   &__info {
     margin-top: 25px;
   }
+
+  @include screen-max-width(600px) {
+    &__body {
+      padding: 30px 15px;
+    }
+
+    &__bot {
+      flex-direction: column;
+      padding: 30px 15px;
+
+      .common__checkbox {
+        margin-bottom: 20px;
+      }
+
+      &.mobile-column-reverse {
+        flex-direction: column-reverse;
+
+        .widget-exchange__import {
+          margin-bottom: 20px;
+        }
+      }
+    }
+
+    &__column {
+      flex-direction: column-reverse;
+
+      &-item {
+        &:first-child,
+        &:last-child {
+          width: 100%;
+        }
+      }
+    }
+
+    &__order {
+      margin-bottom: 35px;
+
+      &-product-name {
+        width: 75%;
+      }
+
+      &-header {
+        padding: 18px 15px;
+      }
+
+      &-body {
+        padding: 25px 15px 0;
+      }
+
+      &-text-light {
+        margin-right: 10px;
+      }
+    }
+  }
 }

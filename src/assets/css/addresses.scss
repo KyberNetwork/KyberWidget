@@ -79,13 +79,6 @@
             margin-left: 5px;
           }
         }
-        @include screen-min-width(medium) {
-          text-align: right;
-        }
-        @include screen-max-width(medium) {
-          float: left;
-          padding: 10px 0 10px 5px;
-        }
       }
       &:hover{
         .name label{
@@ -108,9 +101,6 @@
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          @include screen-min-width(medium) {
-            padding-right: 15px;
-          }
         }
       }
     }
