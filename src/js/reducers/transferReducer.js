@@ -1,8 +1,4 @@
-import { REHYDRATE } from 'redux-persist/lib/constants'
 import constants from "../services/constants"
-import { calculateDest } from "../utils/converter"
-
-//import { randomToken } from "../utils/random"
 
 const initFormState = constants.INIT_TRANSFER_FORM_STATE
 const initState = initFormState
@@ -10,10 +6,6 @@ const initState = initFormState
 const transfer = (state = initState, action) => {
   var newState = { ...state, errors: { ...state.errors } }
   switch (action.type) {
-    // case REHYDRATE: {
-    //   newState = initState;
-    //   return {...newState};
-    // }
     case "TRANSFER.SET_RANDOM_SELECTED_TOKEN":
       var transfer = { ...state }
       var random = action.payload
@@ -28,7 +20,6 @@ const transfer = (state = initState, action) => {
       newState.tokenSymbol = transfer.tokenSymbol
       newState.gasPrice = transfer.gasPrice
       newState.advanced = false
-    //  newState.isEditGasPrice = false
       return newState
     case "TRANSFER.SELECT_TOKEN":
       newState.tokenSymbol = action.payload.symbol
@@ -166,8 +157,6 @@ const transfer = (state = initState, action) => {
         tokenDecimal: action.payload.balanceData.decimals,
         tokenSymbol: action.payload.balanceData.tokenSymbol,
         amount: action.payload.balanceData.amount,
-        // prev: action.payload.balanceData.balance,
-        // next: 0
       }
       return newState
     }
@@ -175,11 +164,6 @@ const transfer = (state = initState, action) => {
       newState.errors.signTransaction = action.payload
       return newState
     }
-    // case "TRANSFER.PROCESS_TRANSFER": {
-    //   newState.isConfirming = true
-    //   newState.bcError = ""
-    //   return newState
-    // }
     case "TX.TX_ADDED": {
       newState.tempTx = action.payload
       return newState
@@ -191,7 +175,7 @@ const transfer = (state = initState, action) => {
       return newState
     }
     case "TRANSFER.UPDATE_CURRENT_BALANCE": {
-      const { tokenBalance, txHash } = action.payload
+      const { txHash } = action.payload
       if (newState.txHash === txHash) {
         newState.balanceData.next = action.payload.tokenBalance
       }

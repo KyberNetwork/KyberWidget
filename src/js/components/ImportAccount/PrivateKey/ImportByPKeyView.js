@@ -9,7 +9,6 @@ const ImportByPKeyView = (props) => {
       <div className={addPrefixClass("column")}>
         <div className={addPrefixClass("importer pkey")}>
           <div className={addPrefixClass("importer__symbol")}>
-            {/* <img src={require('../../../../assets/img/landing/privatekey_disable.png')} /> */}
             <div className={addPrefixClass("importer__icon")} style={{backgroundImage: "url(" + getAssetUrl(`wallets/privatekey.svg`) + ")"}}></div>
             <div className={addPrefixClass("importer__name")}>{props.translate("import.from_private_key") || "PRIVATE KEY"}</div>
           </div>

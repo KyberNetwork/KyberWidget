@@ -119,14 +119,6 @@ export function setWallet(wallet) {
   }
 }
 
-
-export function resetImportAccount(){
-  return {
-    type: "ACCOUNT.RESET_IMPORT_ACCOUNT"
-  }
-}
-
-
 export function clearWatchMetamask(){
   return {
     type: "ACCOUNT.CLEAR_WATCH_METAMASK"

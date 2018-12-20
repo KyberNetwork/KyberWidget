@@ -1,11 +1,10 @@
 import React from "react"
 import { connect } from "react-redux"
-import { Link } from 'react-router-dom'
-
 import { clearSession } from "../../actions/globalActions"
 import { AddressView } from "../../components/Header"
 import { Notify } from "../Header";
 import { getTranslate } from 'react-localize-redux'
+
 @connect((store, props) => {
   const path = props.path
   return {...store.account, 

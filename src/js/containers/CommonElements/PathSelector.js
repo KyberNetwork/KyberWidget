@@ -1,7 +1,6 @@
 import React from "react"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import { connect } from "react-redux"
-import { getTranslate } from 'react-localize-redux';
 import {addPrefixClass} from "../../utils/className"
 
 @connect((store, props) => {

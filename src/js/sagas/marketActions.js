@@ -1,21 +1,7 @@
-import { take, put, call, fork, select, takeEvery, all } from 'redux-saga/effects'
-// import * as actions from '../actions/globalActions'
-// import * as actionsExchange from '../actions/exchangeActions'
-// import * as actionsUtils from '../actions/utilActions'
+import { put, call, takeEvery } from 'redux-saga/effects'
 import * as marketActions from "../actions/marketActions"
 import * as globalActions from "../actions/globalActions"
-// import { closeImportLoading } from '../actions/accountActions'
-// import { Rate } from "../services/rate"
-// import { push } from 'react-router-redux';
-// import { addTranslationForLanguage, setActiveLanguage, getActiveLanguage } from 'react-localize-redux';
-// import { getTranslate } from 'react-localize-redux';
-// import { getLanguage } from "../services/language"
-// import Language from "../../../lang"
-// import constants from "../services/constants"
-
-// import * as converter from "../utils/converter"
- import { store } from '../store'
-
+import { store } from '../store'
 
 export function* getData(action) {
     var state = store.getState()
@@ -28,18 +14,6 @@ export function* getData(action) {
     }
 }
 
-// export function* getGeneralTokenInfo(action){
-//     var state = store.getState()
-//     var ethereum = state.connection.ethereum
-//     var rateUSD = state.tokens.tokens.ETH.rateUSD 
-//     try {
-//         var data = yield call([ethereum, ethereum.call], "getGeneralTokenInfo")
-//         yield put(marketActions.getGeneralTokenInfoComplete(data, rateUSD))
-//     }catch(e){
-//         console.log(e)
-//     }
-// }
-
 export function* getVolumn(){
     var state = store.getState()
     var ethereum = state.connection.ethereum
@@ -49,9 +23,6 @@ export function* getVolumn(){
         yield put.sync(globalActions.updateAllRateComplete(rates))
 
         const rateUSDETH = yield call([ethereum, ethereum.call],"getRateETH")
-
-        // var data = yield call([ethereum, ethereum.call], "getVolumnChart")
-        // yield put(marketActions.getVolumnSuccess(data))
 
         // use new cached api
         var newData = yield call([ethereum, ethereum.call], "getMarketInfo")
@@ -63,8 +34,5 @@ export function* getVolumn(){
 
 export function* watchMarket() {
   yield takeEvery("MARKET.GET_MARKET_DATA", getData)
-  //yield takeEvery("MARKET.GET_GENERAL_INFO_TOKENS", getGeneralTokenInfo)
   yield takeEvery("MARKET.GET_VOLUMN", getVolumn)
 }
-
-

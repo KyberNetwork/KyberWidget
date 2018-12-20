@@ -1,10 +1,5 @@
-import { REHYDRATE } from 'redux-persist/lib/constants'
 import constants from "../services/constants"
-//import { calculateDest, caculateDestAmount, caculateSourceAmount } from "../utils/converter"
 import * as converter from "../utils/converter"
-//import { randomToken, randomForExchange } from "../utils/random"
-//import BLOCKCHAIN_INFO from "../../../env"
-
 
 var initState = constants.INIT_EXCHANGE_FORM_STATE
 initState.snapshot = constants.INIT_EXCHANGE_FORM_STATE
@@ -27,14 +22,10 @@ const exchange = (state = initState, action) => {
       newState.destAmount = ""
       newState.errors = initState.errors
       newState.advanced = false
-      //newState.gasPrice = initState.gasPrice
       newState.bcError = ""
       newState.step = initState.step
       newState.minConversionRate = newState.slippageRate
-
       newState.isEditRate = false
-      //newState.isEditGasPrice = false
-
       newState.isAnalize = false
       newState.isAnalizeComplete = false
       return newState
@@ -47,59 +38,20 @@ const exchange = (state = initState, action) => {
       if (action.payload.type === "source") {
         newState.sourceTokenSymbol = action.payload.symbol
         newState.sourceToken = action.payload.address
-
-        
-        // if (newState.sourceTokenSymbol === 'ETH') {
-        //   if (newState.destTokenSymbol === 'ETH') {
-        //     newState.destTokenSymbol = 'KNC'
-        //     newState.destToken = BLOCKCHAIN_INFO.tokens['KNC'].address
-        //   }
-        // } else {
-        //   newState.destTokenSymbol = 'ETH'
-        //   newState.destToken = BLOCKCHAIN_INFO.tokens['ETH'].address
-        // }
       } else if (action.payload.type === "des") {
         newState.destTokenSymbol = action.payload.symbol
         newState.destToken = action.payload.address
-
-        // if (newState.destTokenSymbol === 'ETH') {
-        //   if (newState.sourceTokenSymbol === 'ETH') {
-        //     newState.sourceTokenSymbol = 'KNC'
-        //     newState.sourceToken = BLOCKCHAIN_INFO.tokens['KNC'].address
-        //   }
-        // } else {
-        //   newState.sourceTokenSymbol = 'ETH'
-        //   newState.sourceToken = BLOCKCHAIN_INFO.tokens['ETH'].address
-        // }
       }
 
-      //reset all error
       for (var key in newState.errors) {
         newState.errors[key] = ""
       }
-
-      
-      
-      //newState.sourceAmount = ""
-      //newState.destAmount = 0
 
       newState.selected = true
       newState.isEditRate = false
       return newState
     }
     case "EXCHANGE.CHECK_SELECT_TOKEN": {
-      // if (newState.sourceTokenSymbol === newState.destTokenSymbol) {
-      //   newState.errors.selectSameToken = "error.select_same_token"
-      //   newState.errors.selectTokenToken = ''
-      //   return newState
-      // }
-      // if ((newState.sourceTokenSymbol !== "ETH") &&
-      //   (newState.destTokenSymbol !== "ETH")) {
-      //   newState.errors.selectSameToken = ''
-      //   newState.errors.selectTokenToken = "error.select_token_token"
-      //   return newState
-      // }
-      //newState.errors.selectSameToken = ''
       newState.errors.selectTokenToken = ''
       newState.errors.sourceAmountError = ''
 
@@ -209,10 +161,8 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.UPDATE_RATE":{
-      const { rateInit, expectedPrice, slippagePrice, blockNo ,isManual, isSuccess} = action.payload
+      const { rateInit, expectedPrice, slippagePrice, blockNo, isSuccess} = action.payload
 
-     // console.log({rateInit, expectedPrice, slippagePrice, blockNo ,isManual, isSuccess})
-      
       if (!isSuccess) {
         newState.errors.rateSystem = "error.get_rate"
       }else{
@@ -229,8 +179,6 @@ const exchange = (state = initState, action) => {
     
       var slippageRate = slippagePrice === "0" ? converter.estimateSlippagerate(rateInit, 18) : converter.toT(slippagePrice, 18)
       var expectedRate = expectedPrice === "0" ? rateInit : expectedPrice
-
-
     
       newState.slippageRate = slippageRate
       newState.offeredRate = expectedRate
@@ -250,11 +198,7 @@ const exchange = (state = initState, action) => {
             newState.destAmount = expectedPrice === "0"?"0": converter.calculateDest(newState.sourceAmount, expectedRate, 6)
           }
         }
-        
       }
-
-      //newState.offeredRateBalance = action.payload.reserveBalance
-      // newState.offeredRateExpiryBlock = action.payload.expirationBlock
       if (!newState.isEditRate) {
         newState.minConversionRate = slippageRate
       }
@@ -274,8 +218,7 @@ const exchange = (state = initState, action) => {
       if (newState.sourceAmount !== "") {
         newState.snapshot.minDestAmount = converter.calculateDest(newState.snapshot.sourceAmount, expectedRate).toString(10)
       }
-      //newState.offeredRateBalance = action.payload.reserveBalance
-      // newState.offeredRateExpiryBlock = action.payload.expirationBlock
+
       if (!newState.isEditRate) {
         newState.snapshot.minConversionRate = slippageRate
       }
@@ -284,14 +227,6 @@ const exchange = (state = initState, action) => {
       return newState
 
     }
-    // case "EXCHANGE.SET_RATE_ERROR_SYSTEM":{
-    //   newState.errors.rateSystem = "Kyber exchange is under maintainance this pair"
-    //   return newState
-    // }
-    // case "EXCHANGE.SET_RATE_ERROR_FAIL":{
-    //   newState.errors.rateSystem = "Kyber exchange is under maintainance this pair"
-    //   return newState
-    // }
     case "EXCHANGE.OPEN_PASSPHRASE": {
       newState.passphrase = true
       return newState
@@ -341,30 +276,11 @@ const exchange = (state = initState, action) => {
       newState.passphrase = false
       newState.confirmColdWallet = false
       newState.confirmApprove = false
-      //newState.showConfirmApprove = false
       newState.isApproving = false
       newState.isConfirming = false
-     // newState.sourceAmount = ""
-      //newState.txRaw = ""
       newState.bcError = ""
-      //newState.step = 3
       newState.broadcasting = true
-      // newState.balanceData = {
-      //   sourceName: action.payload.balanceData.sourceName,
-      //   sourceDecimal: action.payload.balanceData.sourceDecimal,
-      //   sourceSymbol: action.payload.balanceData.sourceSymbol,
-      // //  prevSource: action.payload.balanceData.source,
-      //   //nextSource: 0,
 
-      //   destName: action.payload.balanceData.destName,
-      //   destDecimal: action.payload.balanceData.destDecimal,
-      //   destSymbol: action.payload.balanceData.destSymbol,
-
-      //   sourceAmount: action.payload.balanceData.sourceAmount,
-      //   destAmount: action.payload.balanceData.destAmount,
-      //  // prevDest: action.payload.balanceData.dest,
-      //  // nextDest: 0
-      // }
       return newState
     }
     case "EXCHANGE.PROCESS_APPROVE": {
@@ -404,11 +320,6 @@ const exchange = (state = initState, action) => {
         newState.snapshot.destAmount = converter.caculateDestAmount(state.snapshot.sourceAmount, state.snapshot.offeredRate, 6)
       }
 
-      // if (newState.snapshot.inputFocus == "dest") {
-      //   newState.snapshot.sourceAmount = converter.caculateSourceAmount(state.snapshot.destAmount, state.snapshot.offeredRate, 6)
-      // } else {
-      //   newState.snapshot.destAmount = converter.caculateDestAmount(state.snapshot.sourceAmount, state.snapshot.offeredRate, 6)
-      // }
       newState.snapshot.isFetchingRate = false
       return newState
     }
@@ -453,18 +364,6 @@ const exchange = (state = initState, action) => {
       newState.isEditRate = true
       return newState
     }
-    // case "EXCHANGE.ERROR_RATE_ZERO":{
-    //   newState.rateEqualZero = true
-    //   return newState
-    // }
-    // case "EXCHANGE.CLEAR_ERROR_RATE_ZERO":{
-    //   newState.rateEqualZero = false
-    //   newState.errors.rateEqualZero = ""
-    //   return newState
-    // }
-    // case "EXCHANGE.SET_RATE_ERROR_ZERO":{
-    //   newState.errors.rateEqualZero = "Cannot get rate from exchange"
-    // }
     case "EXCHANGE.RESET_MIN_RATE": {
       newState.minConversionRate = newState.offeredRate
       newState.isEditRate = true
@@ -624,10 +523,8 @@ const exchange = (state = initState, action) => {
       
       newState.destToken = tokenAddr
       newState.receiveAddr = receiveAddr
-
       newState.productName = productName
       newState.productAvatar = productAvatar
-
       newState.callback = callback
       newState.network = network
       newState.paramForwarding = paramForwarding
@@ -640,19 +537,6 @@ const exchange = (state = initState, action) => {
 
       return newState
     }
-    // case "EXCHANGE.SAVE_PARAMS_EXCHANGE":{
-    //   const {receiveAddr, receiveToken, receiveAmount, tokenAddr} = action.payload
-    //   newState.destTokenSymbol = receiveToken
-    //   newState.destAmount = receiveAmount
-    //   if (receiveAmount === null){
-    //     newState.isHaveDestAmount = false
-    //   }else{
-    //     newState.isHaveDestAmount = true
-    //   }
-    //   newState.destToken = tokenAddr
-    //   newState.receiveAddr = receiveAddr
-    //   return newState
-    // }
     case "EXCHANGE.SET_APPROVE":{
       const {isNeedApprove} = action.payload;
       newState.isNeedApprove = isNeedApprove;
@@ -679,23 +563,9 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "GLOBAL.CLEAR_SESSION_FULFILLED":{
-      var resetState = {...initState};
+      newState.step = 1;
 
-      resetState.sourceToken = newState.sourceToken;
-      resetState.sourceTokenSymbol = newState.sourceTokenSymbol;
-      resetState.destTokenSymbol = newState.destTokenSymbol;
-      resetState.sourceAmount = newState.sourceAmount;
-      resetState.destAmount = newState.destAmount;
-      resetState.isHaveDestAmount = newState.isHaveDestAmount;
-      resetState.receiveAddr = newState.receiveAddr;
-      resetState.gas = newState.gas;
-      resetState.gasPrice = newState.gasPrice;
-      resetState.selectedGas = newState.selectedGas;
-      resetState.isEditGasPrice = newState.isEditGasPrice;
-      resetState.destToken = newState.destToken;
-      resetState.type = newState.type;
-
-      return resetState;
+      return newState;
     }
     case "EXCHANGE.UNSET_CONFIRMING": {
       newState.isConfirming = false;

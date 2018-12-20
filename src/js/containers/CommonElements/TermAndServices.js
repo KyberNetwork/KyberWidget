@@ -1,5 +1,4 @@
 import React from "react"
-import { Modal } from "../../components/CommonElement"
 import { connect } from "react-redux"
 import { getTranslate } from 'react-localize-redux';
 
@@ -11,10 +10,6 @@ import { getTranslate } from 'react-localize-redux';
 })
 
 export default class TermAndServices extends React.Component {
-
-  // changeCheckbox = (e) => {
-  //   this.props.clickCheckbox()
-  // }
 
   content = () => {
     return (<div>
@@ -62,7 +57,6 @@ export default class TermAndServices extends React.Component {
       : require("../../../assets/img/checkmark-unselected.png")
     return (
       <div className="term-services">
-        {/* <img className="pr-2 cur-pointer" onClick={(e) => this.changeCheckbox(e)} src={src} width="14" /> */}
         <span className="term-text">
           <span className="cur-pointer"> 
             {this.props.translate("terms.accept") || "Accept"}

@@ -1,6 +1,3 @@
-import { REHYDRATE } from 'redux-persist/lib/constants'
-import Rate from "../services/rate"
-import BigNumber from "bignumber.js"
 import constants from '../services/constants';
 
 var initState = {
@@ -8,11 +5,9 @@ var initState = {
   showBalance: false,
   nodeName: "Infura Kovan",
   nodeURL: "https://kovan.infura.io/0BRKxQ0SFvAxGL72cbXi",
- // history: constants.HISTORY_EXCHANGE,
   count: {storageKey: constants.STORAGE_KEY},
   conn_checker: constants.CONNECTION_CHECKER,
   isVisitFirstTime: true,
-
   isOpenAnalyze: false,
   isAnalize: false,
   isAnalizeComplete: false,
@@ -34,21 +29,6 @@ var initState = {
 
 const global = (state = initState, action) => {
   switch (action.type) {
-    // case REHYDRATE: {
-    //   if (action.key === "global") {
-    //     if (action.payload){
-    //       return {...state,
-    //         count: {storageKey: constants.STORAGE_KEY}
-    //        }
-    //     }
-    //   }
-    //   return state
-    // }
-    // case "GLOBAL.NEW_BLOCK_INCLUDED_FULFILLED": {
-    //   var history = { ...state.history }
-    //   history.currentBlock = action.payload
-    //   return Object.assign({}, state, { history: history })
-    // }
     case "GLOBAL.TERM_OF_SERVICE_ACCEPTED": {
       return { ...state, termOfServiceAccepted: true }
     }
@@ -78,27 +58,6 @@ const global = (state = initState, action) => {
       newState.isAnalizeComplete = true
       return newState
     }
-
-    // case "GLOBAL.UPDATE_HISTORY_EXCHANGE": {
-    //   var history = { ...state.history }
-    //   const { ethereum, page, itemPerPage, isAutoFetch } = action.payload
-    //   if (!isAutoFetch) {
-    //     history.isFetching = true
-    //   }      
-    //   return Object.assign({}, state, { history: history })
-    //   break
-    // }
-    // case "GLOBAL.UPDATE_HISTORY": {
-    //   const { logs, latestBlock, page, isAutoFetch } = action.payload
-    //   var history = { ...state.history }
-
-    //   if(logs) history.logs = logs      
-    //   history.currentBlock = latestBlock
-    //   history.page = page
-    //   // history.eventsCount = eventsCount
-    //   history.isFetching = false
-    //   return { ...state,  history: {...history} }
-    // }
     case "GLOBAL.CONNECTION_UPDATE_IS_CHECK":{
       var conn_checker = { ...state.conn_checker }
       conn_checker.isCheck = action.payload

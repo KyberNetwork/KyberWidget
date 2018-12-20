@@ -10,7 +10,7 @@
     },
     "api_usd": "https://api.coinmarketcap.com",
     "api_url": "https://dev-api.knstats.com",
-    "api_tokens": "https://rinkeby-api.kyber.network/currencies",
+    "api_tokens": "https://rinkeby-api.kyber.network/internal/currencies",
     "tokens_gas": {
         "ETH": 0,
         "DGX": 750000
@@ -60,7 +60,7 @@
     "ethScanUrl": "https://rinkeby.etherscan.io/",
     "network": "0x39CC6802cF1625C30548B57D885932CB381EB4a4",
     "wrapper": "0xa4c7c9a74aeda3ffb9737a4fc1895c2cdebd42b8",
-    "payWrapper": "0xa22428aB98C85c18cd8E8E21D522a40336887562",
+    "payWrapper": "0x50e3ebb0203688a09061e09889f72a6ff5fbded8",
     "trade_topic": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
     "endpoint": "https://rinkeby.infura.io/DtzEYY0Km2BA3YwyJcBG",
     "averageBlockTime": 6000,

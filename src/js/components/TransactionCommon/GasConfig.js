@@ -1,6 +1,4 @@
-
 import React from "react"
-import ReactTooltip from 'react-tooltip'
 import { filterInputNumber } from "../../utils/validators";
 import GasOption from './GasOption';
 import {addPrefixClass} from "../../utils/className"
@@ -38,12 +36,11 @@ const GasConfig = (props) => {
     <div className={addPrefixClass("gas-config")}>
       <div>
         <span className={addPrefixClass("sub_title")}>{props.translate("transaction.gas_price") || "GAS PRICE"}</span>
-        {/* <p className={addPrefixClass("sub_title">(inclusive in the rate)</p> */}
       </div>
       <div className={addPrefixClass(!props.gasPriceError ? "" : "error")}>
         <div className={addPrefixClass("gas-change")}>
           <div className={addPrefixClass("gas_input")}>
-            <input type="text" min="0" max="99" className={addPrefixClass("gas-price-input")} step="0.1" value={props.gasPrice} onChange={handleChangeGasPrice} maxLength="20" autoComplete="off" onFocus={(e) => props.analytics.callTrack("customNewGas")} />
+            <input type="number" min="0" max="99" className={addPrefixClass("gas-price-input")} step="0.1" value={props.gasPrice} onChange={handleChangeGasPrice} maxLength="20" autoComplete="off" onFocus={(e) => props.analytics.callTrack("customNewGas")} />
           </div>
           <div className={addPrefixClass("gas_input-label-container")}>
             <div className={addPrefixClass("gas_input-lable")}>Gwei</div>
@@ -52,7 +49,6 @@ const GasConfig = (props) => {
             </div>
           </div>
         </div>
-        {/* {props.gasPriceError && <div class="error-text mb-1">{props.translate(props.gasPriceError, { maxGas: props.maxGasPrice })}</div>} */}
         {props.page === "exchange" ?
           <div className={addPrefixClass("des-down")}>{props.translate("transaction.transaction_gasprice") 
             || "Higher gas price, faster transaction."}
