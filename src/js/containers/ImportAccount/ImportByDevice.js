@@ -2,15 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import AddressGenerator from "../../services/device/addressGenerator";
 import { ImportByDeviceView } from "../../components/ImportAccount"
-import {
-  importNewAccount,
-  importLoading,
-  closeImportLoading,
-  throwError,
-  checkTimeImportLedger,
-  resetCheckTimeImportLedger,
-  setWallet, setDPath
-} from "../../actions/accountActions"
+import { importLoading, closeImportLoading, throwError, checkTimeImportLedger, resetCheckTimeImportLedger, setWallet, setDPath } from "../../actions/accountActions"
 import { toEther } from "../../utils/converter"
 import { getTranslate } from 'react-localize-redux'
 import bowser from 'bowser';
@@ -228,11 +220,12 @@ export default class ImportByDevice extends React.Component {
   }
 
   showLoading(walletType) {
-    let browser = bowser.name;
+    const browser = bowser.getParser(window.navigator.userAgent);
+    const browserName = browser.getBrowserName();
     this.props.dispatch(resetCheckTimeImportLedger())
     if (walletType == 'ledger') {
-      if (browser != 'Chrome') {
-        let erroMsg = this.props.translate("error.browser_not_support_ledger", { browser: browser }) || `Ledger is not supported on ${browser}, you can use Chrome instead.`
+      if (browserName != 'Chrome') {
+        let erroMsg = this.props.translate("error.browser_not_support_ledger", { browser: browserName }) || `Ledger is not supported on ${browserName}, you can use Chrome instead.`
         this.props.dispatch(throwError(erroMsg));
         return;
       }

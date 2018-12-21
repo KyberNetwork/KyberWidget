@@ -441,24 +441,22 @@ export default class Payment extends React.Component {
           </div>
         </div>
 
-        <div className={addPrefixClass("widget-exchange__bot")}>
-          <div className={addPrefixClass("common__flexbox between")}>
-            <div className={addPrefixClass("common__button hollow theme-button" + (this.props.exchange.isConfirming || this.props.transfer.isConfirming ? " disable" : ""))} onClick={this.reImportAccount}>
-              {this.props.translate("transaction.back") || "Back"}
-            </div>
-
-            {this.props.exchange.isNeedApprove && (
-              <div className={addPrefixClass("common__button theme-gradient" + classDisable)} onClick={this.approveToken}>
-                {this.props.translate("transaction.approve") || "Approve"}
-              </div>
-            )}
-
-            {!this.props.exchange.isNeedApprove && (
-              <div className={addPrefixClass("common__button theme-gradient" + classDisable)} onClick={this.payment}>
-                {this.props.translate("transaction.confirm") || "Confirm"}
-              </div>
-            )}
+        <div className={addPrefixClass("widget-exchange__bot common__flexbox between mobile-column-reverse")}>
+          <div className={addPrefixClass("common__button hollow theme-button" + (this.props.exchange.isConfirming || this.props.transfer.isConfirming ? " disable" : ""))} onClick={this.reImportAccount}>
+            {this.props.translate("transaction.back") || "Back"}
           </div>
+
+          {this.props.exchange.isNeedApprove && (
+            <div className={addPrefixClass("common__button widget-exchange__import theme-gradient" + classDisable)} onClick={this.approveToken}>
+              {this.props.translate("transaction.approve") || "Approve"}
+            </div>
+          )}
+
+          {!this.props.exchange.isNeedApprove && (
+            <div className={addPrefixClass("common__button widget-exchange__import theme-gradient" + classDisable)} onClick={this.payment}>
+              {this.props.translate("transaction.confirm") || "Confirm"}
+            </div>
+          )}
         </div>
       </div>
     )

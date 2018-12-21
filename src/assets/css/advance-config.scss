@@ -81,4 +81,22 @@
     color: #d4e1ef;
     cursor: pointer;
   }
+
+  @include screen-max-width(600px) {
+    max-width: unset;
+  }
+
+  @include screen-max-width(380px) {
+    &__rate,
+    &__gas {
+      .common__flexbox,
+      .common__radio {
+        display: block;
+      }
+
+      .common__radio {
+        margin-bottom: 10px;
+      }
+    }
+  }
 }

@@ -33,12 +33,12 @@ const ImportByDeviceView = (props) => {
         {!props.hasError &&
         <div className={addPrefixClass("import-account-content__info-text")}>
           <div className={addPrefixClass("import-account-content__info-text-address")}>
-            <span className={addPrefixClass("title")}>{props.translate("transaction.address") || "Address"}: </span>
-            <span className={addPrefixClass("address")}>{props.wallet.address.slice(0, 12)}...{props.wallet.address.slice(-6)}</span>
+            <div className={addPrefixClass("title")}>{props.translate("transaction.address") || "Address"}: </div>
+            <div className={addPrefixClass("address common__one-line")}>{props.wallet.address.slice(0, 12)}...{props.wallet.address.slice(-6)}</div>
           </div>
           <div className={addPrefixClass("import-account-content__info-text-balance")}>
-            <span className={addPrefixClass("title")}>{props.translate("transaction.balance") || "Balance"}: </span>
-            <span className={addPrefixClass("address")}>{props.wallet.balance} ETH</span>
+            <div className={addPrefixClass("title")}>{props.translate("transaction.balance") || "Balance"}: </div>
+            <div className={addPrefixClass("address common__one-line")}>{props.wallet.balance} ETH</div>
           </div>
         </div>
         }

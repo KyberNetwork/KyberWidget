@@ -108,18 +108,19 @@ $animation-time: 0.5s;
     width: calc(50% - 10px);
     max-width: 135px;
     margin: 0 0 20px;
-    // padding: 20px 0;
     border-radius: 3px;
     background-color: #ffffff;
     border: solid 1px transparent;
     cursor: pointer;
     transition: all .3s;
+
     >div{
       padding: 20px 0;
       &:focus{
         outline: none;
       }
     }
+
     &:hover {
       box-shadow: $theme-emerald-shadow-icon;
       border-color: $theme-emerald-border;
@@ -205,6 +206,7 @@ $animation-time: 0.5s;
     transform: translateX(-50px);
     transition: transform .3s, opacity .3s;
     box-sizing: border-box;
+    z-index: 2;
 
     &__wrapper {
       margin-top: 35px;
@@ -228,6 +230,10 @@ $animation-time: 0.5s;
       opacity: 1;
       visibility: visible;
       transform: translateX(0);
+
+      ~ .import-account {
+        min-height: 340px;
+      }
     }
 
     &__info {
@@ -282,6 +288,33 @@ $animation-time: 0.5s;
 
     &__info-text-address {
       margin-bottom: 10px;
+    }
+  }
+
+  @include screen-max-width(600px) {
+    justify-content: unset;
+
+    &__item {
+      width: 30%;
+      max-width: unset;
+
+      &:nth-child(3n + 2) {
+        margin-left: 5%;
+        margin-right: 5%;
+      }
+    }
+  }
+
+  @include screen-max-width(380px) {
+    justify-content: space-between;
+
+    &__item {
+      width: 45%;
+
+      &:nth-child(3n + 2) {
+        margin-left: 0;
+        margin-right: 0;
+      }
     }
   }
 }

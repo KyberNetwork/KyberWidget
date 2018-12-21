@@ -204,18 +204,10 @@
 .common {
   &__desktop-display {
     display: block;
-
-    @include screen-max-width(600px) {
-      display: none;
-    }
   }
 
   &__mobile-display {
     display: none;
-
-    @include screen-max-width(600px) {
-      display: block;
-    }
   }
 
   &__one-line {
@@ -631,5 +623,21 @@
 
   &__margin-top {
     margin-top: 30px;
+  }
+
+  @include screen-max-width(600px) {
+    &__desktop-display {
+      display: none;
+    }
+
+    &__mobile-display {
+      display: block;
+    }
+
+    &__button {
+      max-width: 230px;
+      font-size: 16px;
+      padding: 13px 0;
+    }
   }
 }

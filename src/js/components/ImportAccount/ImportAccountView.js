@@ -42,16 +42,16 @@ const ImportAccountView = (props) => {
               <SignerAddress signerAddresses={props.signerAddresses}/>
             )}
 
+            <div className={addPrefixClass("import-account-content " + (props.chosenImportAccount && props.isLoading === false ? 'import-account-content--active' : ''))}>
+              {importComponent}
+            </div>
+
             <div className={addPrefixClass("import-account")}>
               <ImportByMetamask screen={props.screen}/>
               <ImportByLedgerView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
               <ImportByTrezorView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
               <ImportKeystore onOpenImportAccount={props.onOpenImportAccount} screen={props.screen} translate={props.translate}/>
               <ImportByPKeyView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
-            </div>
-
-            <div className={addPrefixClass("import-account-content " + (props.chosenImportAccount && props.isLoading === false ? 'import-account-content--active' : ''))}>
-              {importComponent}
             </div>
           </div>
           <div className={addPrefixClass("widget-exchange__column-item")}>
