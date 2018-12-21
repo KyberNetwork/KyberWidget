@@ -4,12 +4,14 @@ import {addPrefixClass} from "../../utils/className";
 
 const TransactionDetails = (props) => {
   let gasUsed = props.exchange.gas;
+  const isUnlockWalletStep = props.exchange.step === 2;
+
   if (props.exchange.isNeedApprove) {
     gasUsed += props.exchange.gas_approve
   }
 
   return (
-    <div className={addPrefixClass("widget-exchange__order theme-border")}>
+    <div className={addPrefixClass(`widget-exchange__order theme-border ${isUnlockWalletStep ? 'common__desktop-display' : ''}`)}>
       <div className={addPrefixClass("widget-exchange__order-header")}>Transaction Details</div>
 
       <div className={addPrefixClass("widget-exchange__order-body")}>

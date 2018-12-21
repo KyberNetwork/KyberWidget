@@ -37,8 +37,12 @@ const ExchangeBodyLayout = (props) => {
           </div>
         )}
 
+        {!props.exchange.type && (
+          <div className={addPrefixClass("widget-exchange__loading")}/>
+        )}
+
         {props.exchange.type === 'swap' && (
-          <div>
+          <div className={addPrefixClass("widget-exchange__wrapper")}>
             <div className={addPrefixClass("widget-exchange__title")}>Your are performing token conversion, Please choose</div>
             <div className={addPrefixClass("widget-exchange__swap-container")}>
               <div className={addPrefixClass("widget-exchange__swap-item")}>
@@ -60,9 +64,7 @@ const ExchangeBodyLayout = (props) => {
               </div>
 
               <div className={addPrefixClass("widget-exchange__swap-button-container")}>
-                <span data-tip={props.translate('transaction.click_to_swap') || 'Click to swap'} data-for="swap" currentitem="false">
-                  <div className={"widget-exchange__swap-button swap"} onClick={(e) => props.swapToken(e)}/>
-                </span>
+                <div className={"widget-exchange__swap-button swap"} onClick={(e) => props.swapToken(e)}/>
               </div>
 
               <div className={addPrefixClass("widget-exchange__swap-item")}>
@@ -90,7 +92,7 @@ const ExchangeBodyLayout = (props) => {
         )}
 
         {props.exchange.type === 'buy' && (
-          <div>
+          <div className={addPrefixClass("widget-exchange__wrapper")}>
             <div className={addPrefixClass("widget-exchange__title")}>
               Your are buying {props.global.params.receiveAmount} {props.exchange.destTokenSymbol}, Please select your token for the payment
             </div>
@@ -153,72 +155,74 @@ const ExchangeBodyLayout = (props) => {
         )}
 
         {props.exchange.type === 'pay' && (
-          <div className={addPrefixClass('widget-exchange__column')}>
-            <div className={addPrefixClass("widget-exchange__column-item")}>
-              <div className={addPrefixClass("widget-exchange__text theme-text")}>Choose your Token:</div>
-              <div className={addPrefixClass(`common__input-panel ${errorExchange ? 'error' : ''}`)}>
-                <TokenSelector
-                  type="source"
-                  focusItem={props.exchange.sourceTokenSymbol}
-                  listItem={props.tokens}
-                  chooseToken={props.onChooseToken}
-                />
+          <div className={addPrefixClass("widget-exchange__wrapper")}>
+            <div className={addPrefixClass('widget-exchange__column')}>
+              <div className={addPrefixClass("widget-exchange__column-item")}>
+                <div className={addPrefixClass("widget-exchange__text theme-text")}>Choose your Token:</div>
+                <div className={addPrefixClass(`common__input-panel ${errorExchange ? 'error' : ''}`)}>
+                  <TokenSelector
+                    type="source"
+                    focusItem={props.exchange.sourceTokenSymbol}
+                    listItem={props.tokens}
+                    chooseToken={props.onChooseToken}
+                  />
 
-                {props.exchange.isHaveDestAmount && (
-                  <div className={addPrefixClass("common__input-panel-label")}>
-                    {props.exchange.isSelectToken && (
-                      <div>Loading...</div>
-                    )}
-                    {(!props.exchange.isSelectToken && !isSourceEqualtoDestToken) && (
-                      <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 4)}</div>
-                    )}
-                    {(!props.exchange.isSelectToken && isSourceEqualtoDestToken) && (
-                      <div>{('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount}</div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {!props.exchange.isHaveDestAmount && (
-                <div className={addPrefixClass("widget-exchange__input-container")}>
-                  <div className={addPrefixClass("widget-exchange__text theme-text")}>
-                    {props.translate("transaction.enter_amount") || "Enter amount you will pay"}:
-                  </div>
-                  <div className={addPrefixClass(`common__input-panel ${errorExchange ? 'error' : ''}`)}>
-                    <input
-                      className={addPrefixClass("common__input theme-border")}
-                      min="0"
-                      step="0.000001"
-                      placeholder="0"
-                      autoFocus
-                      type="text"
-                      maxLength="50"
-                      autoComplete="off"
-                      value={props.input.sourceAmount.value}
-                      onFocus={props.input.sourceAmount.onFocus}
-                      onBlur={props.input.sourceAmount.onBlur}
-                      onChange={handleChangeSource}
-                    />
-                    <div className={addPrefixClass("common__input-panel-label small")}>{props.sourceTokenSymbol}</div>
-                  </div>
-
-                  {!props.global.params.receiveToken && (
-                    <div className={addPrefixClass("common__margin-top")}>
-                      <div className={addPrefixClass("widget-exchange__text theme-text")}>
-                        {props.translate("transaction.exchange_receive_token") || "Receive Token"}
-                      </div>
-                      <div className={addPrefixClass(`common__input-panel ${errorExchange ? 'error' : ''}`)}>
-                        {props.tokenDestSelect}
-                      </div>
+                  {props.exchange.isHaveDestAmount && (
+                    <div className={addPrefixClass("common__input-panel-label")}>
+                      {props.exchange.isSelectToken && (
+                        <div>Loading...</div>
+                      )}
+                      {(!props.exchange.isSelectToken && !isSourceEqualtoDestToken) && (
+                        <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 4)}</div>
+                      )}
+                      {(!props.exchange.isSelectToken && isSourceEqualtoDestToken) && (
+                        <div>{('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount}</div>
+                      )}
                     </div>
                   )}
                 </div>
-              )}
-              {errorShow}
-            </div>
 
-            <div className={addPrefixClass("widget-exchange__column-item")}>
-              {props.detailBox}
+                {!props.exchange.isHaveDestAmount && (
+                  <div className={addPrefixClass("widget-exchange__input-container")}>
+                    <div className={addPrefixClass("widget-exchange__text theme-text")}>
+                      {props.translate("transaction.enter_amount") || "Enter amount you will pay"}:
+                    </div>
+                    <div className={addPrefixClass(`common__input-panel ${errorExchange ? 'error' : ''}`)}>
+                      <input
+                        className={addPrefixClass("common__input theme-border")}
+                        min="0"
+                        step="0.000001"
+                        placeholder="0"
+                        autoFocus
+                        type="text"
+                        maxLength="50"
+                        autoComplete="off"
+                        value={props.input.sourceAmount.value}
+                        onFocus={props.input.sourceAmount.onFocus}
+                        onBlur={props.input.sourceAmount.onBlur}
+                        onChange={handleChangeSource}
+                      />
+                      <div className={addPrefixClass("common__input-panel-label small")}>{props.sourceTokenSymbol}</div>
+                    </div>
+
+                    {!props.global.params.receiveToken && (
+                      <div className={addPrefixClass("common__margin-top")}>
+                        <div className={addPrefixClass("widget-exchange__text theme-text")}>
+                          {props.translate("transaction.exchange_receive_token") || "Receive Token"}
+                        </div>
+                        <div className={addPrefixClass(`common__input-panel ${errorExchange ? 'error' : ''}`)}>
+                          {props.tokenDestSelect}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {errorShow}
+              </div>
+
+              <div className={addPrefixClass("widget-exchange__column-item")}>
+                {props.detailBox}
+              </div>
             </div>
           </div>
         )}

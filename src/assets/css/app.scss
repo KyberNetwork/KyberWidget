@@ -26,6 +26,7 @@ $alert-color: #ff5d00;
   position: relative;
   padding: 80px 20px;
 
+  @import 'animation';
   @import 'elements';
   @import 'broadcast';
   @import 'addresses';
@@ -37,7 +38,6 @@ $alert-color: #ff5d00;
   @import "import-account";
   @import "cold-wallet";
   @import "payment";
-  @import "error_payment";
   @import "slide-down";
 
   @include screen-max-width(600px) {

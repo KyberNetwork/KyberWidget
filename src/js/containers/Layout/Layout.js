@@ -103,6 +103,7 @@ export default class Layout extends React.Component {
 
     return (
       <LayoutView
+        isGlobalError={this.props.haltPayment}
         history={history}
         Exchange={Exchange}
         supportedLanguages={Language.supportLanguage}

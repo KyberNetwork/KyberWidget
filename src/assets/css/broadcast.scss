@@ -22,6 +22,18 @@
         padding-top: 20px;
       }
     }
+
+    &.list {
+      margin: 65px auto;
+    }
+  }
+
+  &__list {
+    margin-bottom: 20px;
+
+    div {
+      margin-bottom: 5px;
+    }
   }
 
   &__icon {

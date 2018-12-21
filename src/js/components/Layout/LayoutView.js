@@ -35,7 +35,7 @@ const LayoutView = (props) => {
       <div>
         <Route/>
         <section className={addPrefixClass(`widget-container ${props.exchange.type} ${props.exchange.theme} ${broadCastedClass}`)}>
-          {!isBroadCasted && (
+          {(!isBroadCasted && !props.isGlobalError) && (
             props.paymentHeader
           )}
 
