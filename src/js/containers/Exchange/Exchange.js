@@ -66,12 +66,14 @@ export default class Exchange extends React.Component {
 
   handleSlippageRateChanged = (e, isInput = false) => {
     const offeredRate  = this.props.exchange.offeredRate;
-    let value = isInput ? 100 - e.currentTarget.value : e.currentTarget.value;
+    const maxValue = 100;
+    let minValue = this.props.exchange.type === "pay" ? 10 : 0;
+    let value = isInput ? maxValue - e.currentTarget.value : e.currentTarget.value;
 
-    if (value > 100) {
-      value = 100;
-    } else if (value < 0) {
-      value = 0;
+    if (value > maxValue) {
+      value = maxValue;
+    } else if (value < minValue) {
+      value = minValue;
     }
 
     const minRate = converter.caculatorRateToPercentage(value, offeredRate);

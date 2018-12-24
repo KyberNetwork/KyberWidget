@@ -12,6 +12,20 @@ import { addPrefixClass } from "../../utils/className"
   }
 })
 export default class MinRate extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      customSlippageRate: props.exchange.type === "pay" ? 90 : 100
+    }
+  }
+
+  onCustomSlippageRateChanged = (event) => {
+    this.setState({customSlippageRate: event.target.value});
+
+    this.props.onSlippageRateChanged(event, true);
+  }
+
   render = () => {
     const percent = Math.round(parseFloat(converter.caculatorPercentageToRate(this.props.minConversionRate, this.props.offeredRate)));
     const exchangeRate = converter.toT(this.props.offeredRate);
@@ -49,14 +63,20 @@ export default class MinRate extends React.Component {
           </label>
           <label className={addPrefixClass("common__radio")}>
             <span className={addPrefixClass("common__radio-text")}>Custom</span>
-            <input className={addPrefixClass("common__radio-input theme-radio")} type="radio" name="slippageRate"/>
+            <input
+              className={addPrefixClass("common__radio-input theme-radio")}
+              type="radio"
+              name="slippageRate"
+              value={this.state.customSlippageRate}
+              onChange={(e) => this.props.onSlippageRateChanged(e, true)}
+            />
             <span className={addPrefixClass("common__radio-icon with-input")}/>
             <input
               className={addPrefixClass("advance-config__rate-input")}
               type="number"
               min="0"
               max="100"
-              onChange={(e) => this.props.onSlippageRateChanged(e, true)}
+              onChange={(e) => this.onCustomSlippageRateChanged(e)}
             />
             <span className={addPrefixClass("common__radio-text")}> %</span>
           </label>
