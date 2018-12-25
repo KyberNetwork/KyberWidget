@@ -340,4 +340,10 @@ window.kyberWidgetInstance.render = (widgetId) => {
       </Provider>
     </PersistGate>, document.getElementById(appId));
 }
+window.kyberWidgetInstance.isBroadcasted = () => {
+  const state = store.getState();
+  const exchange = state.exchange;
+
+  return exchange.step === 4 && !exchange.broadcasting;
+}
 window.kyberWidgetInstance.render()
