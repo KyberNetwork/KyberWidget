@@ -138,9 +138,7 @@ var getConfig = env => {
         mode: env.build !== 'true' ? 'development' : 'production',
         entry: entry,
         optimization: {
-            splitChunks: {
-                chunks: 'all'
-            },
+      
             minimizer: [
                 new TerserPlugin({
                     parallel: true,
