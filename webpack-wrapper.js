@@ -341,7 +341,7 @@ async function saveBackupTokens() {
 
 async function main() {
 
-    //await saveBackupTokens()
+    await saveBackupTokens()
 
     //read all endpoint
 
@@ -362,15 +362,15 @@ async function main() {
     }
 
     var webpackConfig = await getConfig(config)  //require('./webpack.config.js');
-    // var compiler = await webpack(webpackConfig)
-    // compiler.run(function (err, stats) {
-    //     if (!err) {
-    //         console.log("success")
-    //     } else {
-    //         console.log("fail")
-    //         console.log(err)
-    //     }
-    // })
+    var compiler = await webpack(webpackConfig)
+    compiler.run(function (err, stats) {
+         if (!err) {
+             console.log("success")
+         } else {
+             console.log("fail")
+            console.log(err)
+         }
+     })
     await renderThemeFiles()
 }
 
