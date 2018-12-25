@@ -253,14 +253,12 @@
     var link = document.createElement("link");
     link.type = "text/css";
     link.rel = "stylesheet";
-    // link.href = widgetUrl + "/widget.css?t=" + Date.now();
-    link.href = "v0.2/widget.css?t=" + Date.now();
+    link.href = widgetUrl + "/widget.css?t=" + Date.now();
     head.appendChild(link);
 
     var body = document.body;
     var script = document.createElement("script");
-    // script.src = widgetUrl + "/widget.js?t=" + Date.now();
-    script.src = "v0.2/widget.js?t=" + Date.now();
+    script.src = widgetUrl + "/widget.js?t=" + Date.now();
     body.appendChild(script);
   }
 
