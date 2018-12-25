@@ -5,7 +5,8 @@ const initState = {
     index: '',
     address: '',
     balance: '',
-    type: ''
+    type: '',
+    dPath: ''
   },
   chosenImportAccount: null,
   isStoreReady: false,
@@ -101,14 +102,20 @@ const account = (state = initState, action) => {
         ...state,
         chosenImportAccount: null,
         error: '',
-        showError: false
+        showError: false,
+        pKey: {error: "", isOpen: false}
       };
     }
     case "ACCOUNT.SET_WALLET": {
-      return {
-        ...state,
-        wallet: action.payload
-      };
+      const { index, address, balance, type } = action.payload;
+      let newState = { ...state };
+
+      newState.wallet.index = index;
+      newState.wallet.address = address;
+      newState.wallet.balance = balance;
+      newState.wallet.type = type;
+
+      return newState;
     }
     case "EXCHANGE.GO_TO_STEP": {
       let newState = { ...state }
@@ -124,6 +131,13 @@ const account = (state = initState, action) => {
         }
       }
       return newState
+    }
+    case "ACCOUNT.SET_DPATH": {
+      let newState = { ...state };
+
+      newState.wallet.dPath = action.payload;
+
+      return newState;
     }
   }
 

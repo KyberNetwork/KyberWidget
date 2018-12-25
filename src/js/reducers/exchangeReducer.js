@@ -34,6 +34,10 @@ const exchange = (state = initState, action) => {
       newState.isSelectToken = true
       return newState
     }
+    case "EXCHANGE.SET_LOADING_SELECT_TOKEN": {
+      newState.isSelectToken = action.payload
+      return newState
+    }
     case "EXCHANGE.SELECT_TOKEN": {
       if (action.payload.type === "source") {
         newState.sourceTokenSymbol = action.payload.symbol
@@ -158,6 +162,10 @@ const exchange = (state = initState, action) => {
     }
     case "EXCHANGE.HANDLE_AMOUNT":{
       newState.errors.rateSystem = "error.handle_amount"
+      return newState
+    }
+    case "EXCHANGE.RESET_HANDLE_AMOUNT_ERROR": {
+      newState.errors.rateSystem = "";
       return newState
     }
     case "EXCHANGE.UPDATE_RATE":{
@@ -477,6 +485,14 @@ const exchange = (state = initState, action) => {
       newState.snapshot = {...snapshot}
       return newState
     }
+    case "EXCHANGE.SET_SNAPSHOT_GAS_PRICE": {
+      newState.snapshot.gasPrice = action.payload;
+      return newState
+    }
+    case "EXCHANGE.SET_SNAPSHOT_MIN_CONVERSION_RATE": {
+      newState.snapshot.minConversionRate = action.payload;
+      return newState
+    }
     case "EXCHANGE.THROW_NOT_POSSESS_KGT_ERROR": {
       newState.errorNotPossessKgt = action.payload
       return newState
@@ -511,20 +527,22 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.INIT_PARAMS_EXCHANGE":{
-      const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, network,
-        paramForwarding, signer, commissionID, isSwap, type, pinTokens, paymentData, hint} = action.payload
+      const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, productQty, network,
+        paramForwarding, signer, commissionID, isSwap, type, pinTokens, paymentData, hint, theme} = action.payload
       newState.destTokenSymbol = receiveToken
       newState.destAmount = receiveAmount
+
       if (receiveAmount === null){
         newState.isHaveDestAmount = false
       }else{
         newState.isHaveDestAmount = true
       }
-      
+
       newState.destToken = tokenAddr
       newState.receiveAddr = receiveAddr
       newState.productName = productName
       newState.productAvatar = productAvatar
+      newState.productQty = productQty
       newState.callback = callback
       newState.network = network
       newState.paramForwarding = paramForwarding
@@ -534,6 +552,7 @@ const exchange = (state = initState, action) => {
       newState.type = type
       newState.paymentData = paymentData
       newState.hint = hint
+      newState.theme = theme
 
       return newState
     }
@@ -584,6 +603,10 @@ const exchange = (state = initState, action) => {
       newState.destTokenSymbol = destSymbol
       newState.destToken = destAddress
       return newState
+    }
+    case "EXCHANGE.SET_SOURCE_AMOUNT": {
+      newState.sourceAmount = action.payload;
+      return newState;
     }
   }
   return state

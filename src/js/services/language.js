@@ -1,8 +1,8 @@
 import Language from "../../../lang/index"
 import { initialize, addTranslationForLanguage } from 'react-localize-redux';
 
-const onMissingTranslation = (key, languageCode) => {
-};
+// const onMissingTranslation = (key, languageCode) => {
+// };
 
 function getParameterByName(name, url) {
   if (!url) url = window.location.href;
@@ -15,7 +15,8 @@ function getParameterByName(name, url) {
 }
 
 export function initLanguage(store){
-  let languagePack, packName
+  var packName = "en"
+  let languagePack
   try {
     packName = getParameterByName('lang')
     if (packName){
@@ -30,10 +31,20 @@ export function initLanguage(store){
     languagePack = require("../../../lang/" + packName + ".json")
   }
   console.log("________________ load loanguage ", packName)
-  store.dispatch(initialize([packName], { 
-    missingTranslationCallback: onMissingTranslation, 
-    showMissingTranslationMsg: false,
-    defaultLanguage: packName
+  // store.dispatch(initialize([packName], { 
+  //   missingTranslationCallback: onMissingTranslation, 
+  //   showMissingTranslationMsg: false,
+  //   defaultLanguage: packName
+  // }));
+  store.dispatch(initialize({
+    languages: [
+      { name: "", code: packName },      
+    ],
+    //translation: globalTranslations,
+    options: {
+      renderToStaticMarkup: false,
+      renderInnerHtml: true
+    }
   }));
   store.dispatch(addTranslationForLanguage(languagePack, packName));
 }

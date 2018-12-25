@@ -33,6 +33,7 @@ const INIT_EXCHANGE_FORM_STATE = {
   hint: "",
   productName: "",
   productAvatar: "",
+  productQty: 1,
   isNeedApprove: false,
   destAddress: "",
   inputFocus: "source",
@@ -105,7 +106,8 @@ const INIT_EXCHANGE_FORM_STATE = {
   analizeError : {},
   snapshot: {},
   network: 'ropsten',
-  isSwap:true
+  isSwap:true,
+  theme: "theme-emerald"
 }
 
 const INIT_TRANSFER_FORM_STATE = {
@@ -172,7 +174,7 @@ const ETH = {
   address: ETHER_ADDRESS
 };
 
-const IDLE_TIME_OUT = 60
+const IDLE_TIME_OUT = 900;
 
 const HISTORY_EXCHANGE = {
   page: 0,

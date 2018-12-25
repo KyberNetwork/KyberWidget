@@ -6,7 +6,7 @@
 
 var config = {
   ropsten: require('./config-env/ropsten.json'),
-  mainnet: require('./config-env/production.json'),
+  production: require('./config-env/production.json'),
   rinkeby: require('./config-env/rinkeby.json'),
   staging: require('./config-env/staging.json')
 } 

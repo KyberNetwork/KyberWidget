@@ -33,12 +33,27 @@ export default class ImportKeystore extends React.Component {
     this.props.dispatch(push('/exchange'));
   }
 
+//   onDrop = (acceptedFiles) => {
+//     acceptedFiles.forEach(file => {
+//         const reader = new FileReader();
+//         reader.onload = () => {
+//             const fileAsBinaryString = reader.result;
+//             // do whatever you want with the file content
+//         };
+//         reader.onabort = () => console.log('file reading was aborted');
+//         reader.onerror = () => console.log('file reading has failed');
+
+//         reader.readAsBinaryString(file);
+//     });
+// }
+
   onDrop = (files) => {
     try {
       var file = files[0]
+      console.log(files)
       var fileReader = new FileReader()
       fileReader.onload = (event) => {
-        var keystring = this.lowerCaseKey(event.target.result)
+        var keystring = this.lowerCaseKey(fileReader.result)
         var errors = {}
         errors["keyError"] = verifyKey(keystring)
         if (anyErrors(errors)) {
@@ -51,7 +66,7 @@ export default class ImportKeystore extends React.Component {
             keystring))
         }
       }
-      fileReader.readAsText(file)
+      fileReader.readAsBinaryString(file)
     } catch (e) {
       console.log(e)
     }

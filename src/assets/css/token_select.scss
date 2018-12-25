@@ -1,118 +1,4 @@
-.select-token-panel{
-  margin-top: 5px;
-  // cursor: pointer;
-  input{
-    height: auto;
-  }
-  .list-item{
-    height: 250px;
-    overflow: auto;
-  }
-  .amount-enter-label{
-    display: block;
-    margin-top: 21px;
-  }
-
-  .amount-input {
-    padding: 4px 12px;
-    margin-top: 10px;
-    border: 1px solid #ebebeb;
-    border-bottom: 2px solid #31CB9E;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 40px;
-
-    >div {
-      &:first-child {
-        width: 100%;
-
-        input {
-          width: 100%;
-        }
-      }
-    }
-
-    .focus-name{
-      text-transform: initial;
-    }
-
-    &.error{
-      border-bottom: 1px solid $error-color;
-      input{
-        color: $error-color !important;
-      }
-      span{
-        color: $error-color !important;
-      }
-    }
-
-    input {
-      font-size: 16px;
-      margin-bottom: 0;
-      padding: 0;
-      padding-right: 15px;
-      color: #454E5F;
-      border:none;
-      box-shadow: none;
-      outline: none;
-    }
-    span {
-      font-size: 15px;
-      display: flex;
-      align-items: center;
-      color: rgba(69, 78, 95, .5);
-      font-weight: 600;
-      &:focus{
-        color: #ef8102;
-      }
-    }    
-  }
-  .token-selector .dropdown.dropdown--active .select-item{
-    display: block;
-    border: 1px solid #aaa;
-    border-top: none;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    color: inherit;
-    box-shadow: none;
-  }
-  > input, > input:focus{
-    text-align: right;
-    //color: white;
-    margin-bottom: 0px;
-    font-size: 20px;
-    font-weight: bold;
-    background-color: transparent!important;
-    border-top: 1px solid #2a4654!important;
-  }
-}
-
-.market-header-right {
-  .token-selector {
-    .d-flex {
-      margin-top: 15px;
-    }
-    .shows-item {
-      display: flex;
-      align-items: center;
-      input {
-        height: 25px;
-        margin: 10px 10px;
-        width: 20px;
-        &:hover {
-          cursor: pointer;
-        }
-      }
-      label {
-        color: #0B0F1A;
-        font-size: 15px;
-      }
-    }
-  }
-}
-
-.token-selector{
+.token-selector {
   position: relative;  
   cursor: pointer;
   color: #545268;
@@ -121,10 +7,8 @@
     width: 100%;
 
     &.dropdown--active{
-     // background-color: #243c48;
       .focus-item{
-        // border-color: $white;
-        border-bottom: 1px solid #4c636f;        
+        border-bottom: 1px solid #4c636f;
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
       }
@@ -156,9 +40,7 @@
       }
     }
   }
-  // .token-name{
-  //   color: #aaa;
-  // }
+
   input{
     outline: none;
     border: 1px solid #aaa;
@@ -178,10 +60,7 @@
   .focus-item{
     padding: 12px 12px;
     border: 1px solid #ccc;
-    // border-bottom: 1px solid transparent;
     border-radius: 3px;
-  //  color: white;
-    // box-shadow: 0 0 15px #ddd;
     align-items: center;
     font-size: 15px;
     .rate-token{
@@ -209,16 +88,11 @@
       .token-balance{
         margin-right: 5px;
       }
-      // .token-symbol{
-      //   margin-left: 5px;
-      // }
     }
     .icon{
       margin-right: 10px;
       max-width: 30px;
-     // border-radius: 20px;
-     // background-color: $white;
-   //   border: 2px solid $white;
+
       img{
         vertical-align: top;
         width: 28px;
@@ -226,6 +100,7 @@
       }
     }
   }
+
   .select-item{
     position: absolute;
     transition: 0.2s;
@@ -233,7 +108,6 @@
     z-index: 2;
     background-color: #FCFCFC;
     box-shadow: 0 0 2px #aaa;
-  //  background-color: #243c48;
     border: 2px solid $white;
     border-top: none;
     border-bottom: none;
@@ -242,18 +116,6 @@
       margin-bottom: 10px;
     }
   }
-  // &.open{
-  //   background-color: #243c48;
-  //   .focus-item{
-  //     border-color: $white;
-  //     border-bottom: 1px solid #4c636f;
-  //   }
-  //   .select-item{
-  //     display: block;
-  //     border: 2px solid $white;
-  //     border-top: none;
-  //   }
-  // }
 
   .list-item{
     overflow-y: auto;
@@ -280,12 +142,8 @@
       .item-balance-value{
         margin-right: 5px;
       }
-      // .item-symbol{
-      //   margin-left: 5px;
-      // }
+
       .item-icon{
-        // border-radius: 20px;
-        // background-color: $white;
         width: 35px;
         display: inline-block;
         margin-right: 10px;
@@ -295,9 +153,6 @@
         }
       }
       >div{
-        // >span{
-        //   color: white
-        // }
         span.token-name{
           color: #aaa;
         }
@@ -332,15 +187,29 @@
   cursor: pointer;
   color: #545268;
 
+  &__selector {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid $theme-emerald-border;
+    padding-bottom: 13px;
+  }
+
+  &__token-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  &__token-symbol {
+    font-size: 16px;
+    font-weight: 600;
+    color: #222222;
+    margin: 0 13px 0 10px;
+  }
+
   .dropdown {
     width: 100%;
 
     &.dropdown--active {
-      .focus-item {
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-
       .select-item {
         display: block;
         border-top: none;
@@ -385,71 +254,14 @@
     border: solid 1px #e8e8e8;
     width: 100%;
     height: 55px;
-    // padding: 10px 10px 10px 35px;
     margin: 0;
     padding: 0;
     text-indent: 35px;
     box-shadow: inset 0 1px 2px hsla(0,0%,4%,.1);
-    transition: box-shadow .5s,border-color .25s ease-in-out,-webkit-box-shadow .5s;
-
-    &:-webkit-outer-spin-button,
-    &:-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    &::placeholder {
-      font-weight: normal;
-      color: #222222;
-    }
+    transition: all .3s;
 
     &:focus {
       box-shadow: 0 0 5px #ccc;
-    }
-  }
-
-  .focus-item {
-    padding: 12px 12px;
-    border: 1px solid #ebebeb;
-    border-radius: 3px;
-    align-items: center;
-    font-size: 15px;
-
-    .rate-token{
-      color: #555;
-      font-size: 13px;
-      display: flex;
-      img{
-        margin: 0 3px;
-      }
-    }
-    &.d-flex{
-      justify-content: space-between;
-    }
-    .d-flex{
-      align-items: center;
-    }
-    .focus-name{
-      color: #545268;
-      text-transform: uppercase;
-      font-size: 14px;
-    }
-
-    .focus-balance{
-      color: #666;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .icon {
-      margin-right: 10px;
-      max-width: 30px;
-
-      img{
-        vertical-align: top;
-        width: 28px;
-        max-height: 28px;
-      }
     }
   }
 
@@ -460,7 +272,6 @@
     z-index: 2;
     background-color: #FCFCFC;
     box-shadow: 0 0 2px #aaa;
-    // border: 1px solid #ebebeb;
     border-top: none;
     border-bottom: none;
     margin-bottom: 50px;
@@ -529,6 +340,10 @@
             opacity: .5;
           }
         }
+
+        &:hover {
+          color: $theme-emerald-regular;
+        }
       }
 
       &-content {
@@ -552,6 +367,7 @@
 
       &__rate {
         font-size: 12px;
+        font-weight: 500;
       }
     }
   }
@@ -571,60 +387,6 @@
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
       }
-    }
-  }
-
-  .focus-item {
-    background-color: #ffffff;
-    border: 1px solid #ebebeb;
-    padding: 10px 12px;
-    align-items: center;
-    font-size: 15px;
-    &.d-flex{
-      justify-content: space-between;
-    }
-    .d-flex{
-      align-items: center;
-      div:nth-child(2) {
-        overflow: hidden;
-        .focus-name {
-          text-overflow: ellipsis;
-          text-transform: initial;
-          overflow: hidden;
-          white-space: nowrap;
-        }
-      }
-    }
-
-    .focus-name {
-      color: #222222;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: -0.4px;
-    }
-
-    .focus-balance {
-      color: #666666;
-      font-size: 14px;
-      font-weight: 600;
-
-      .token-balance{
-        margin-right: 5px;
-      }
-    }
-
-    .icon {
-      margin-right: 10px;
-      img{
-        vertical-align: top;
-      }
-    }
-
-    i.k-angle {
-      background-image: url(../img/exchange/arrow-down-swap.svg);
-      height: 10px;
-      width: 13px;
-      background-size: 13px 13px;
     }
   }
 

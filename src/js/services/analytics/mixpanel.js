@@ -171,10 +171,10 @@ export default class Mixpanel {
         }
     }
 
-    clickShowPassword(status) {
+    clickShowPassword() {
         if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
             try {
-                mixpanel.track("Widget_2_2_Click_Show_Password", { status, status })
+                mixpanel.track("Widget_2_2_Click_Show_Password")
             } catch (e) {
                 console.log(e)
             }

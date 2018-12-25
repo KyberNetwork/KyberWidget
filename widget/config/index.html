@@ -1,146 +1,153 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="https://kyber.network/favicon.ico">
-    <title>KyberWidget Configuration</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css">
-    <link rel="stylesheet" href="assets/styles.css?v=31">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="https://kyber.network/favicon.ico">
+  <title>KyberWidget Configuration</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css">
+  <link rel="stylesheet" href="assets/styles.css?v=31">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600" rel="stylesheet">
 </head>
-<body class="body">
+<body class="widget-config__body theme-emerald">
+<div class="colored-block"></div>
 <div id="wrapper">
-  <h1>KyberWidget Configuration</h1>
+  <h1 class="widget-config__header">KyberWidget Configuration</h1>
   <div class="widget-config__container">
 
     <div class="widget-config__content widget-config__content--flex">
-      <div class="widget-config__button">
-        <div class="tablink">Widget</div>
+      <div class="widget-config__header-item">
         <div id="widget" class="item-value"></div>
       </div>
 
-      <div class="widget-config__button" id="version-selector">
-        <div class="tablink">Version</div>
-        <select name="version" class="widget-config__select" id="widget-config-version">
-          <option value="0.1">0.1</option>
-          <option value="0.2">0.2</option>
-          <option value="0.3" selected>0.3</option>
-        </select>
-      </div>
+      <div class="widget-config__header-item">
+        <div class="widget-config__btn widget-config__select version click-outside" id="version-selector">
+          <div class="widget-config__select-title">Version v<span id="selected-version">0.4</span></div>
+          <div class="widget-config__select-container">
+            <div class="widget-config__select-item" data-version="0.1">Version v0.1</div>
+            <div class="widget-config__select-item" data-version="0.2">Version v0.2</div>
+            <div class="widget-config__select-item" data-version="0.3">Version v0.3</div>
+            <div class="widget-config__select-item" data-version="0.4">Version v0.4</div>
+          </div>
+        </div>
 
-      <div class="widget-config__button">
-        <div class="tablink">HTML Source</div>
-        <div class="widget-config__code-btn" data-modal-id="code-modal">Get Code</div>
+        <div class="widget-config__btn" data-modal-id="code-modal" id="widget-html-source">HTML Source</div>
       </div>
     </div>
 
     <div class="widget-config__content">
       <form class="widget-config__form">
         <section class="widget-config__form-section">
-          <h3 class="section-title">Appearance</h3>
+          <h3 class="section-title">
+            <div class="section-title__text">Appearance</div>
+          </h3>
           <div class="item border-item">
             <label class="item-name">Widget Type</label>
-            <div class="item-value w30">
-              <label class="pointer">
-                <input type="radio" name="type" value="pay" checked> Pay
+            <div class="widget-config__option-container">
+              <label class="widget-config__option">
+                <span class="widget-config__option-text">Pay</span>
+                <input class="widget-config__radio" type="radio" name="type" value="pay" checked/>
+                <span class="widget-config__checkmark"/>
               </label>
-              <label class="pointer">
-                <input type="radio" name="type" value="swap"> Swap
+              <label class="widget-config__option">
+                <span class="widget-config__option-text">Swap</span>
+                <input class="widget-config__radio" type="radio" name="type" value="swap"/>
+                <span class="widget-config__checkmark"/>
               </label>
-              <label class="pointer">
-                <input type="radio" name="type" value="buy"> Buy
+              <label class="widget-config__option">
+                <span class="widget-config__option-text">Buy</span>
+                <input class="widget-config__radio" type="radio" name="type" value="buy"/>
+                <span class="widget-config__checkmark"/>
               </label>
             </div>
           </div>
           <div class="item border-item">
-            <label class="item-name">Mode</label>
-            <div class="item-value w30">
-              <label class="pointer">
-                <input type="radio" name="mode" value="popup" checked> Popup
+            <label class="item-name">Widget Mode</label>
+            <div class="widget-config__option-container">
+              <label class="widget-config__option">
+                <span class="widget-config__option-text">Popup</span>
+                <input class="widget-config__radio" type="radio" name="mode" value="popup" checked/>
+                <span class="widget-config__checkmark"/>
               </label>
-              <label class="pointer">
-                <input type="radio" name="mode" value="tab"> New Tab
+              <label class="widget-config__option">
+                <span class="widget-config__option-text">New Tab</span>
+                <input class="widget-config__radio" type="radio" name="mode" value="tab"/>
+                <span class="widget-config__checkmark"/>
               </label>
-              <label class="pointer">
-                <input type="radio" name="mode" value="iframe"> iFrame
+              <label class="widget-config__option">
+                <span class="widget-config__option-text">iFrame</span>
+                <input class="widget-config__radio" type="radio" name="mode" value="iframe"/>
+                <span class="widget-config__checkmark"/>
               </label>
             </div>
           </div>
           <div class="item border-item">
             <label class="item-name">Widget Theme</label>
-            <div class="item-value w30">
-              <label class="pointer">
-                <input type="radio" name="theme" value="light" checked> Light
-              </label>
-              <label class="disabled">
-                <input type="radio" name="theme" value="dark" disabled> Dark
-              </label>
-            </div>
-          </div>
-          <div class="item border-item">
-            <label class="item-name">Button Theme</label>
-            <div class="item-value w30">
-              <label class="pointer">
-                <input type="radio" name="button_theme" value="light"> Light
-              </label>
-              <label class="pointer">
-                <input type="radio" name="button_theme" value="dark" checked> Dark
-              </label>
+            <div class="widget-config__theme-container">
+              <div class="widget-config__theme-item emerald active" data-theme="theme-emerald"></div>
+              <div class="widget-config__theme-item violet" data-theme="theme-violet"></div>
+              <div class="widget-config__theme-item dark" data-theme="theme-dark"></div>
+              <div class="widget-config__theme-item soil" data-theme="theme-soil"></div>
+              <div class="widget-config__theme-item ocean" data-theme="theme-ocean"></div>
             </div>
           </div>
         </section>
 
         <section class="widget-config__form-section">
-          <h3 class="section-title">Parameters</h3>
+          <h3 class="section-title">
+            <div class="section-title__text">Parameters</div>
+          </h3>
           <div class="item hidden-type-swap hidden-type-buy">
             <label class="item-name required-type-pay">Recipient Address</label>
             <div class="item-value">
-              <input name="receiveAddr" class="full-length" type="text" data-type-swap="" data-type-buy="" spellcheck="false" value="0x63B42a7662538A1dA732488c252433313396eade"
+              <input name="receiveAddr" class="input-box full-length" type="text" data-type-swap="" data-type-buy="" spellcheck="false" value="0x63B42a7662538A1dA732488c252433313396eade"
                      placeholder="0x..." pattern="^0x[a-fA-F0-9]{40}$" message="Recipient Address must be a valid Ethereum address.">
             </div>
           </div>
           <div class="item hidden-type-swap">
             <label class="item-name required-type-pay required-type-buy">Receiving Token Symbol</label>
             <div class="item-value">
-              <input name="receiveToken" class="uppercase" type="text" data-type-swap="" spellcheck="false" maxlength="6" value="ETH">
+              <input name="receiveToken" class="input-box uppercase" type="text" data-type-swap="" spellcheck="false" maxlength="6" value="ETH">
             </div>
           </div>
           <div class="item hidden-type-swap">
             <label class="item-name">Receiving Amount</label>
             <div class="item-value">
-              <input name="receiveAmount" type="number" data-type-swap="" min="0.001" step="0.000000000000000001" message="Receiving Amount must be at least 0.001.">
+              <input class="input-box" name="receiveAmount" type="number" data-type-swap="" min="0.001" step="0.000000000000000001" message="Receiving Amount must be at least 0.001.">
             </div>
           </div>
           <div class="item">
             <label class="item-name">Callback URL</label>
             <div class="item-value">
-              <input name="callback" class="full-length" type="url" pattern="https://.+" placeholder="https://..." value="https://kyberpay-sample.knstats.com/callback" message="Callback URL must be a valid HTTPS URL.">
+              <input name="callback" class="input-box full-length" type="url" pattern="https://.+" placeholder="https://..." value="https://kyberpay-sample.knstats.com/callback" message="Callback URL must be a valid HTTPS URL.">
             </div>
           </div>
           <div class="item">
             <label class="item-name">Param Forwarding</label>
-            <div class="item-value">
-              <label class="pointer">
-                <input name="paramForwarding" type="checkbox" checked> Forward params to callback URL
+            <div class="widget-config__checkbox-container">
+              <label class="widget-config__checkbox-label">
+                <span class="widget-config__checkbox-text">Forward params to callback URL</span>
+                <input class="widget-config__checkbox-input" type="checkbox" name="paramForwarding" checked/>
+                <span class="widget-config__checkbox-substitute"/>
               </label>
             </div>
           </div>
           <div class="item">
             <label class="item-name">Network</label>
             <div class="item-value">
-              <select name="network" class="widget-config__select full-width">
-                <option value="">default</option>
-                <option value="test">test</option>
-                <option value="ropsten" selected>ropsten</option>
-                <option value="production">production</option>
-                <option value="mainnet">mainnet</option>
+              <select name="network" class="widget-config__select-default full-width">
+                <option value="">Default</option>
+                <option value="test">Testnet</option>
+                <option value="ropsten" selected>Ropsten</option>
+                <option value="production">Production</option>
+                <option value="mainnet">Mainnet</option>
               </select>
             </div>
           </div>
           <div class="item">
             <label class="item-name">Pinned Tokens (since v0.2)</label>
             <div class="item-value">
-              <input name="pinnedTokens" class="full-length" type="text"
+              <input name="pinnedTokens" class="input-box full-length" type="text"
                      pattern="^[A-Za-z0-9]+(_[A-Za-z0-9]+){0,}$"
                      placeholder="ETH_KNC_DAI_..." message="Pinned Tokens must be in TOKEN_TOKEN_TOKEN format.">
             </div>
@@ -148,7 +155,7 @@
           <div class="item hidden-type-pay hidden-type-buy">
             <label class="item-name">Default Pair (since v0.2)</label>
             <div class="item-value">
-              <input name="defaultPair" class="full-length" type="text"
+              <input name="defaultPair" class="input-box full-length" type="text"
                      pattern="^[A-Za-z0-9]+_[A-Za-z0-9]+$"
                      placeholder="ETH_KNC" message="Default Pair must be in TOKEN_TOKEN format.">
             </div>
@@ -156,13 +163,13 @@
           <div class="item">
             <label class="item-name">Commision-receiving Address</label>
             <div class="item-value">
-              <input name="commissionId" class="full-length" spellcheck="false" type="text" pattern="^0x[a-fA-F0-9]{40}$" placeholder="0x..." message="Commision-receiving Address must be a valid Ethereum address.">
+              <input name="commissionId" class="input-box full-length" spellcheck="false" type="text" pattern="^0x[a-fA-F0-9]{40}$" placeholder="0x..." message="Commision-receiving Address must be a valid Ethereum address.">
             </div>
           </div>
           <div class="item">
             <label class="item-name">Extra Params</label>
             <div class="item-value">
-              <input name="extraParams" class="full-length" spellcheck="false" type="text" placeholder="name1=value1&name2=value2">
+              <input name="extraParams" class="input-box full-length" spellcheck="false" type="text" placeholder="name1=value1&name2=value2">
             </div>
           </div>
         </section>
@@ -181,7 +188,7 @@
           </div>
 
           <div class="btn-copy-container">
-            <div class="btn-copy">Copy</div>
+            <div class="widget-config__default-btn btn-copy">Copy</div>
             <div class="copied-text">Copied to clipboard</div>
           </div>
         </div>

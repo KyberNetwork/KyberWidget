@@ -4,20 +4,22 @@
 html {
     font-size: 14px;
 }
-.body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+.widget-config__body {
+  font-family: 'Montserrat', sans-serif;
   background-color: #f7f7f7;
   color: #666666;
 }
+
 body, form {
     margin: 0;
     padding: 0;
 }
 
-h1 {
-  font-size: 24px;
-  font-weight: 400;
-  color: #222222;
+.widget-config__header {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .no-scroll {
@@ -32,16 +34,20 @@ h1 {
 }
 
 html.standalone #wrapper {
-  margin: 5rem auto;
+  margin: 50px auto;
 }
 
 .item {
-  padding: 15px 20px 0;
+  padding-top: 15px;
 }
 
 .border-item {
   padding-bottom: 15px;
   border-bottom: 1px solid #ececec;
+}
+
+.border-item:last-child {
+  border-bottom: none;
 }
 
 .single-item {
@@ -53,12 +59,13 @@ html.standalone #wrapper {
   position: relative;
   font-size: 14px;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 13px;
 }
 
 .item-value {
   font-size: 14px;
-  color: #757575;
+  font-weight: 600;
+  color: #475065;
 }
 
 .item-value label {
@@ -81,17 +88,31 @@ label.required::after, [data-widget-type='pay'] label.required-type-pay::after, 
     right: -10px;
 }
 
-input[type='text'], input[type='number'], input[type='url'] {
+.input-box {
   padding: 15px;
-  border-radius: 4px;
-  border: solid 1px #e5e5e5;
   outline: none;
   width: 100%;
+  border-radius: 4px;
+  background-color: #ffffff;
+  height: 50px;
+  transition: all .3s;
+  font-size: 14px;
+  color: #727b8f;
+}
+
+.input-box:focus {
+  box-shadow: 0 3px 5px 0 #ccc;
 }
 
 input:invalid, input.invalid {
-    background-color: #ffd8b8;
+  color: white;
+  background-color: #f2938e;
 }
+
+input:invalid::placeholder, input.invalid::placeholder {
+  color: #edece8 !important;
+}
+
 select {
     height: 2rem;
     text-indent: 0.1rem;
@@ -136,15 +157,6 @@ input[type="number"] {
   display: block;
 }
 
-/* Style the buttons inside the tab */
-.tablink {
-  padding: 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: #222222;
-  margin-bottom: 7px;
-}
-
 /* Style the tab content */
 .tabcontent {
   margin-top: 8px;
@@ -169,6 +181,10 @@ input[type="number"] {
   padding: 6px 30px;
   cursor: pointer;
   margin-left: 20px;
+}
+
+.widget-config__default-btn {
+  transition: all .3s;
 }
 
 .copied-text {
@@ -220,6 +236,28 @@ label input, select, .pointer {
 
 .widget-config__container {
   margin-top: 30px;
+  border-radius: 6px;
+  background-color: white;
+}
+
+.colored-block {
+  width: 100%;
+  height: 450px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: all .3s;
+}
+
+.widget-config__select-default {
+  height: 50px;
+  background-color: white;
+  font-size: 14px;
+  color: #727b8f;
+  border-radius: 4px;
+  border: solid 1px;
+  outline: none;
 }
 
 .widget-config__container input::placeholder {
@@ -231,51 +269,59 @@ label input, select, .pointer {
 .widget-config__content--flex {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  background-color: #ffffff;
+  padding: 25px 30px;
+  position: relative;
 }
 
-.widget-config__button {
+.widget-config__header-item {
   width: 50%;
 }
 
-.widget-config__button:nth-child(2) {
+.widget-config__header-item:nth-child(2) {
   text-align: center;
 }
 
-.widget-config__button:last-child {
+.widget-config__header-item:last-child {
   text-align: right;
 }
 
-.widget-config__select {
-  width: 100px;
-  border-radius: 4px;
-  background-color: #ffffff;
-  border: solid 1px #e5e5e5;
-  outline: none;
-  font-size: 14px;
-  height: 42px;
+.widget-config__header-item .widget-config__btn {
+  margin-left: 10px;
 }
 
 .full-width {
   width: 100%;
 }
 
-.widget-config__code-btn {
+.widget-config__btn {
   display: inline-block;
-  border-radius: 4px;
-  background-color: #31cb9e;
+  border-radius: 30px;
   font-size: 14px;
-  color: #f8f8f8;
-  padding: 0 45px;
-  height: 42px;
-  line-height: 42px;
+  font-weight: 600;
+  padding: 12px 25px;
   cursor: pointer;
-  box-shadow: 0 3px 5px 0 #dbdbdb;
+  position: relative;
+  background-color: #ffffff;
+  transition: all .3s;
 }
 
-.widget-config__code-btn--disabled {
-  opacity: 0.7;
+.widget-config__btn--disabled {
+  opacity: 0.6;
   pointer-events: none;
+  box-shadow: none !important;
+}
+
+.widget-config__btn--disabled .widget-config__select-container {
+  display: none;
+}
+
+.widget-config__btn:hover {
+  box-shadow: 0 3px 5px 0 #ccc;
+}
+
+.widget-config__btn:active {
+  top: 1px;
 }
 
 .widget-config__form {
@@ -288,19 +334,134 @@ label input, select, .pointer {
 
 .widget-config__form-section {
   width: 50%;
-  padding: 20px 20px 40px 20px;
-}
-
-.widget-config__form-section:first-child {
-  border-right: 1px solid #ececec;
+  padding: 20px 30px 40px 30px;
 }
 
 .section-title {
-  border-bottom: 1px solid #ccc;
-  padding: 15px 20px 20px;
-  margin: 0;
+  margin-bottom: 10px;
   font-size: 18px;
   font-weight: 600;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  width: 100%;
+  height: 2px;
+  display: block;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.section-title__text {
+  display: inline-block;
+  background: white;
+  position: relative;
+  z-index: 1;
+  padding-right: 20px;
+}
+
+.widget-config__option {
+  width: 30%;
+  display: inline-block;
+  position: relative;
+  padding-left: 22px;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.widget-config__radio {
+   position: absolute;
+   visibility: hidden;
+   pointer-events: none;
+}
+
+.widget-config__radio:checked ~.widget-config__checkmark {
+  border-color: #ef8102;
+  background-color: #ef8102;
+}
+
+.widget-config__radio:checked ~.widget-config__checkmark::after {
+  transform: translateY(-50%) scale(1);
+}
+
+.widget-config__checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 16px;
+  width: 16px;
+  border: solid 2px #d4e1ef;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: all .2s;
+}
+
+.widget-config__checkmark::after {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #fff;
+  position: absolute;
+  right: 0;
+  left: 0;
+  margin: 0 auto;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  transition: all .5s;
+}
+
+.widget-config__option-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #727b8f;
+}
+
+.widget-config__checkbox-input {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.widget-config__checkbox-label {
+  padding-left: 28px;
+  position: relative;
+  cursor: pointer;
+}
+
+.widget-config__checkbox-substitute {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #d4e1ef;
+  border-radius: 2px;
+  transition: all .2s;
+}
+
+.widget-config__checkbox-substitute::after {
+  display: block;
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 3px;
+  height: 7px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.widget-config__checkbox-input:checked ~.widget-config__checkbox-substitute {
+  border-color: #ef8102;
+  background-color: #ef8102;
+}
+
+.widget-config__checkbox-input:checked ~.widget-config__checkbox-substitute::after {
+  content: '';
 }
 
 .kyber-overlay {
@@ -314,6 +475,7 @@ label input, select, .pointer {
   opacity: 0;
   z-index: 999;
   overflow: auto;
+  transition: all .3s;
 }
 
 .kyber-overlay--active {
@@ -375,6 +537,235 @@ label input, select, .pointer {
   margin-bottom: 15px;
 }
 
+.widget-config__select {
+  padding-right: 50px;
+}
+
+.widget-config__select::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 8px;
+  background-image: url("images/icon-dropdown.svg");
+  display: block;
+  top: 17px;
+  right: 25px;
+}
+
+.widget-config__select:active {
+  top: 0;
+}
+
+.widget-config__select-title {
+
+}
+
+.widget-config__select-container {
+  border-radius: 5px;
+  box-shadow: 0 8px 26px 0 rgba(0, 0, 0, 0.09);
+  border: solid 1px;
+  background-color: white;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  margin-top: 18px;
+  text-align: left;
+  padding: 10px 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all .3s;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.widget-config__select.active {
+  box-shadow: 0 3px 5px 0 #ccc;
+}
+
+.widget-config__select.active .widget-config__select-container {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: initial;
+}
+
+.widget-config__select-item {
+  transition: all .3s;
+  padding: 10px 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #474d5f;
+}
+
+.widget-config__select-item:hover {
+  background-color: #f1f4f7;
+}
+
+.widget-config__select-item.selected {
+
+}
+
+.kyber-widget-button {
+  text-indent: -999px;
+  overflow: hidden;
+  width: 153px;
+  position: relative;
+}
+
+.kyber-widget-button::after {
+  content: 'Preview';
+  display: block;
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  text-indent: 0;
+}
+
+.widget-config__theme-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.widget-config__theme-item {
+  width: 50px;
+  height: 45px;
+  cursor: pointer;
+  background-size: contain;
+  position: relative;
+}
+
+.widget-config__theme-item::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 4px;
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  border-radius: 30px;
+  transition: all .3s;
+}
+
+.emerald.widget-config__theme-item::after {
+  background: #34BB99;
+}
+
+.violet.widget-config__theme-item::after {
+  background: #807DD6;
+}
+
+.dark.widget-config__theme-item::after {
+  background: #000000;
+}
+
+.soil.widget-config__theme-item::after {
+  background: #D2A800;
+}
+
+.ocean.widget-config__theme-item::after {
+  background: #2A95D5;
+}
+
+.widget-config__theme-item:hover::after,
+.widget-config__theme-item.active::after{
+  width: 100%;
+}
+
+.widget-config__theme-item.emerald {
+  background-image: url("images/theme-emerald.png");
+}
+
+.widget-config__theme-item.violet {
+  background-image: url("images/theme-violet.png");
+}
+
+.widget-config__theme-item.dark {
+  background-image: url("images/theme-dark.png");
+}
+
+.widget-config__theme-item.soil {
+  background-image: url("images/theme-soil.png");
+}
+
+.widget-config__theme-item.ocean {
+  background-image: url("images/theme-ocean.png");
+}
+
+
+.theme-emerald .widget-config__container {
+  box-shadow: 0 10px 20px 0 rgba(11, 104, 126, 0.21);
+}
+
+.theme-emerald .colored-block {
+  background-image: linear-gradient(130deg, #00f2cd, #0074b3);
+}
+
+.theme-emerald h1 {
+  color: white;
+}
+
+.theme-emerald .widget-config__content--flex {
+  box-shadow: 0 4px 32px 0 rgba(65, 101, 128, 0.11);
+}
+
+.theme-emerald .widget-config__btn {
+  border: solid 1px #d4e1ef;
+  color: #475065;
+}
+
+.theme-emerald .input-box {
+  border: solid 1px #d4e1ef;
+}
+
+.theme-emerald .widget-config__select-container {
+  border-color: #d4e1ef;
+}
+
+.theme-emerald .widget-config__select-default {
+  border-color: #d4e1ef;
+}
+
+.theme-emerald .widget-config__radio:checked ~.widget-config__checkmark {
+  border-color: #00a2bc;
+  background-color: #00a2bc;
+}
+
+.theme-emerald .widget-config__checkmark {
+  border-color: #d4e1ef;
+}
+
+.theme-emerald .section-title::after {
+  background-color: #d4e1ef;
+}
+
+.theme-emerald .border-item {
+  border-color: #d4e1ef;
+}
+
+.theme-emerald .widget-config__checkbox-input:checked ~.widget-config__checkbox-substitute {
+  background-color: #00a2bc;
+  border-color: #00a2bc;
+}
+
+.theme-emerald .widget-config__checkbox-substitute {
+  border-color: #d4e1ef;
+}
+
+.theme-emerald .widget-config__default-btn {
+  background-color: #00a2bc;
+}
+
+.theme-emerald .widget-config__default-btn:hover {
+  background-color: #02c2e0;
+}
+
+.theme-emerald .copied-text {
+  color: #02c2e0;
+}
+
 @keyframes slidein {
   to {
     opacity: 1;
@@ -402,12 +793,12 @@ label input, select, .pointer {
     flex-wrap: wrap;
   }
 
-  .widget-config__button {
+  .widget-config__header-item {
     width: 100%;
   }
 
-  .widget-config__button:nth-child(2),
-  .widget-config__button:last-child {
+  .widget-config__header-item:nth-child(2),
+  .widget-config__header-item:last-child {
     margin-top: 20px;
     text-align: left;
   }

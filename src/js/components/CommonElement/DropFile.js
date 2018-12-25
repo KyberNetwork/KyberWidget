@@ -30,7 +30,12 @@ const DropFile = (props)=> {
 
   return (
     <Dropzone onDrop={props.onDrop}>
-      {message}
+    {({getRootProps, getInputProps, isDragActive}) => {
+      return (
+        {message}
+      )
+    }}
+
     </Dropzone>)  
 }
 

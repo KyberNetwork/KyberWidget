@@ -2,15 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import AddressGenerator from "../../services/device/addressGenerator";
 import { ImportByDeviceView } from "../../components/ImportAccount"
-import {
-  importNewAccount,
-  importLoading,
-  closeImportLoading,
-  throwError,
-  checkTimeImportLedger,
-  resetCheckTimeImportLedger,
-  setWallet
-} from "../../actions/accountActions"
+import { importLoading, closeImportLoading, throwError, checkTimeImportLedger, resetCheckTimeImportLedger, setWallet, setDPath } from "../../actions/accountActions"
 import { toEther } from "../../utils/converter"
 import { getTranslate } from 'react-localize-redux'
 import bowser from 'bowser';
@@ -49,7 +41,7 @@ export default class ImportByDevice extends React.Component {
       { path: "m/0'/0'/0'", desc: 'SingularDTV', notSupport: true },
       { path: "m/44'/1'/0'/0", desc: 'Network: Testnets' },
       { path: "m/44'/40'/0'/0", desc: 'Network: Expanse', notSupport: true },
-      { path: 0, desc: 'modal.custom_path', defaultP: "m/44'/60'/1'/0", custom: false },
+      { path: 0, desc: 'Custom Path', defaultP: "m/44'/60'/1'/0", custom: false },
     ]
   }
 
@@ -82,8 +74,11 @@ export default class ImportByDevice extends React.Component {
     }
     this.props.deviceService.getPublicKey(selectedPath, this.state.modalOpen)
       .then((result) => {
-        this.dPath = (dpath != 0) ? result.dPath : dpath;
+        const dPath = (dpath != 0) ? result.dPath : dpath
+        this.dPath = dPath;
         this.generateAddress(result);
+
+        this.props.dispatch(setDPath(dPath));
         this.props.dispatch(closeImportLoading());
       })
       .catch((err) => {
@@ -191,23 +186,8 @@ export default class ImportByDevice extends React.Component {
     }
   }
 
-  getAddress() {
-    this.props.dispatch(importNewAccount(
-      this.props.account.wallet.address,
-      this.walletType,
-      this.dPath + '/' + this.props.account.wallet.index
-    ))
-  }
-
   setWallet(index, address, balance, type) {
-    const wallet = {
-      index: index,
-      address: address,
-      balance: roundingNumber(balance),
-      type: type
-    }
-
-    this.props.dispatch(setWallet(wallet));
+    this.props.dispatch(setWallet(index, address, roundingNumber(balance), type));
   }
 
   choosePath(selectedPath, dpath) {
@@ -240,11 +220,12 @@ export default class ImportByDevice extends React.Component {
   }
 
   showLoading(walletType) {
-    let browser = bowser.name;
+    const browser = bowser.getParser(window.navigator.userAgent);
+    const browserName = browser.getBrowserName();
     this.props.dispatch(resetCheckTimeImportLedger())
     if (walletType == 'ledger') {
-      if (browser != 'Chrome') {
-        let erroMsg = this.props.translate("error.browser_not_support_ledger", { browser: browser }) || `Ledger is not supported on ${browser}, you can use Chrome instead.`
+      if (browserName != 'Chrome') {
+        let erroMsg = this.props.translate("error.browser_not_support_ledger", { browser: browserName }) || `Ledger is not supported on ${browserName}, you can use Chrome instead.`
         this.props.dispatch(throwError(erroMsg));
         return;
       }
@@ -275,9 +256,7 @@ export default class ImportByDevice extends React.Component {
         currentAddresses={this.state.currentAddresses}
         walletType={this.walletType}
         choosePath={this.choosePath.bind(this)}
-        getAddress={this.getAddress.bind(this)}
         translate={this.props.translate}
-        onCloseImportAccount={this.props.onCloseImportAccount}
         chosenImportAccount={this.props.account.chosenImportAccount}
       />
     )
