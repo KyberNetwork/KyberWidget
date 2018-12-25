@@ -64,7 +64,7 @@ var getConfig = env => {
             inject: 'body'
         }),
         new MiniCssExtractPlugin({
-            filename: "[name].css",
+            filename: `[name].css?v=${timestamp}`,
         })
         // new webpack.HashedModuleIdsPlugin(),
         // new CopyWebpackPlugin([
