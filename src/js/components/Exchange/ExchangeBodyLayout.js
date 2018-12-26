@@ -15,7 +15,7 @@ const ExchangeBodyLayout = (props) => {
 
   Object.keys(props.exchange.errors).map(key => {
     if (props.exchange.errors[key] && props.exchange.errors[key] !== "") {
-      errorSource.push(props.translate(props.exchange.errors[key]) || props.exchange.errors[key])
+      errorSource.push(props.exchange.errors[key])
       errorExchange = true
     }
   })
