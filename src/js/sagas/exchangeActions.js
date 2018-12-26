@@ -18,6 +18,7 @@ import Tx from "../services/tx"
 import { getTranslate } from 'react-localize-redux';
 import { store } from '../store'
 import BLOCKCHAIN_INFO from "../../../env"
+import * as widgetOptions from "../utils/widget-options"
 
 function* approveTx(action) {
   try {
@@ -167,6 +168,7 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   yield put(actions.doTransactionComplete(hash))
   yield put(actions.finishExchange())
   yield put(actions.resetSignError())
+  widgetOptions.postMessageBroadCasted();
 }
 
 function* getInfo(hash) {
