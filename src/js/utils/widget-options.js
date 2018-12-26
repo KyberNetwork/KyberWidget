@@ -1,7 +1,4 @@
-
-
 export function onClose(){
-    console.log("close")
     if (window.kyberWidgetOptions && window.kyberWidgetOptions.onClose){
         window.kyberWidgetOptions.onClose()
     }else{
@@ -12,3 +9,6 @@ export function onClose(){
     }
 }
 
+export function postMessageBroadCasted() {
+    window.parent.postMessage("Broadcasted", "*")
+}
