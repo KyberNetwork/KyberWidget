@@ -97,6 +97,7 @@
   border-radius: 5px 5px 0 0;
   box-shadow: $theme-emerald-shadow-header;
   position: relative;
+  z-index: 2;
 
   &::after {
     content: '';

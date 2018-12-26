@@ -35,7 +35,7 @@ const TransactionLoadingView = (props) => {
         {!broadcastError &&
         <div className={addPrefixClass("broadcast__header")}>
           <div className={addPrefixClass("broadcast__icon broadcast")}/>
-          <div className={addPrefixClass("broadcast__title")}>{ props.translate('transaction.broadcasting') || "Broadcasting!" }</div>
+          <div className={addPrefixClass("broadcast__title")}>{ props.translate('transaction.broadcasted') || "Broadcasted!" }</div>
         </div>
         }
 

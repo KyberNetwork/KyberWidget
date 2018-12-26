@@ -64,7 +64,9 @@ const OrderDetails = (props) => {
               </div>
             )}
 
-            <div className={"widget-exchange__order-text-small"}>≈ {props.tokenRateToEth} ETH</div>
+            {props.exchange.destTokenSymbol !== 'ETH' && (
+              <div className={"widget-exchange__order-text-small"}>≈ {props.tokenRateToEth} ETH</div>
+            )}
           </div>
         </div>
 

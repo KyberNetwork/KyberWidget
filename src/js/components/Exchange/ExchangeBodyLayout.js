@@ -53,7 +53,7 @@ const ExchangeBodyLayout = (props) => {
                     <div>
                       <input
                         min="0" step="0.000001" placeholder="0" autoFocus type="text"
-                        maxLength="50" autoComplete="off" value={props.input.sourceAmount.value || ''}
+                        maxLength="12" autoComplete="off" value={props.input.sourceAmount.value || ''}
                         onFocus={props.input.sourceAmount.onFocus} onBlur={props.input.sourceAmount.onBlur}
                         onChange={handleChangeSource} className={addPrefixClass("widget-exchange__input")}
                       />
@@ -117,7 +117,7 @@ const ExchangeBodyLayout = (props) => {
                     <div className={addPrefixClass("common__input-panel-label input-container")}>
                       <input
                         id="inputSource" className={addPrefixClass("widget-exchange__input")} min="0" step="0.000001" placeholder="0"
-                        autoFocus type="text" maxLength="50" autoComplete="off" value={props.input.sourceAmount.value}
+                        autoFocus type="text" maxLength="12" autoComplete="off" value={props.input.sourceAmount.value}
                         onFocus={props.input.sourceAmount.onFocus} onBlur={props.input.sourceAmount.onBlur} onChange={handleChangeSource}
                       />
                     </div>
@@ -195,7 +195,7 @@ const ExchangeBodyLayout = (props) => {
                         placeholder="0"
                         autoFocus
                         type="text"
-                        maxLength="50"
+                        maxLength="12"
                         autoComplete="off"
                         value={props.input.sourceAmount.value}
                         onFocus={props.input.sourceAmount.onFocus}
