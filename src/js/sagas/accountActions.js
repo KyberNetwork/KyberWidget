@@ -205,7 +205,7 @@ function* checkBalance(address) {
 
   if (sourceTokenSymbol !== "ETH") {
     if (converter.compareTwoNumber(balanceETH, txFee) === -1) {
-      yield put(exchangeActions.throwErrorExchange("exceed_balance_fee", translate("error.eth_balance_not_enough_for_fee") || "Your balance is not enough for this transaction"))
+      yield put(exchangeActions.throwErrorExchange("exceed_balance_fee", "error.eth_balance_not_enough_for_fee"))
     } else {
       yield put(exchangeActions.throwErrorExchange("exceed_balance_fee", ""))
     }
@@ -213,7 +213,7 @@ function* checkBalance(address) {
 
     txFee = converter.addTwoNumber(txFee, srcAmount)
     if (converter.compareTwoNumber(balanceETH, txFee) === -1) {
-      yield put(exchangeActions.throwErrorExchange("exceed_balance_fee", translate("error.eth_balance_not_enough_for_fee") || "Your balance is not enough for this transaction"))
+      yield put(exchangeActions.throwErrorExchange("exceed_balance_fee", "error.eth_balance_not_enough_for_fee"))
     } else {
       yield put(exchangeActions.throwErrorExchange("exceed_balance_fee", ""))
     }
@@ -232,7 +232,7 @@ function* checkSigner(address) {
         return
       }
     }
-    yield put(exchangeActions.throwErrorExchange("signer_invalid", translate("error.signer_invalid") || "You access an invalid address"))
+    yield put(exchangeActions.throwErrorExchange("signer_invalid", "error.signer_invalid"))
   } else {
     yield put(exchangeActions.throwErrorExchange("signer_invalid", ""))
   }
