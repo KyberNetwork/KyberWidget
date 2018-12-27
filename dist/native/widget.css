@@ -47,7 +47,7 @@ html[data-kyber-widget-edition='etheremon'] .kyber-widget-button {
     top: 50%;
     max-height: 100%;
     width: 100%;
-    max-width: 405px;
+    max-width: 1000px;
 }
 
 #kyber-widget-overlay {
@@ -97,9 +97,9 @@ html[data-kyber-widget-edition='etheremon'] .kyber-widget-button {
 #kyber-widget-iframe {
     background-color: #fff;
     position: absolute;
-    width: 405px;
-    height: 605px;
-    max-width: 90%;
+    max-width: 1000px;
+    height: 650px;
+    width: 100%;
     max-height: 90%;
     box-sizing: border-box;
     transform: translateX(-50%) translateY(-50%);

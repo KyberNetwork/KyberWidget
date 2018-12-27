@@ -34,7 +34,7 @@ const LayoutView = (props) => {
     <ConnectedRouter history={props.history} store ={store}>
       <div>
         <Route/>
-        <section className={addPrefixClass(`widget-container ${props.exchange.type} ${props.exchange.theme} ${broadCastedClass}`)}>
+        <section className={addPrefixClass(`widget-container ${props.exchange.type} ${props.exchange.theme} ${props.mode} ${broadCastedClass}`)}>
           {(!isBroadCasted && !props.isGlobalError) && (
             props.paymentHeader
           )}
@@ -46,6 +46,8 @@ const LayoutView = (props) => {
           </Switch>
 
           <Processing />
+
+          <div className={addPrefixClass("widget-background theme-gradient")}/>
         </section>
 
         <div className={addPrefixClass("widget-footer")}/>
