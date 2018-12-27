@@ -85,10 +85,10 @@ var getConfig = env => {
     if (env && env.build !== 'true') {
         //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
         plugins.push(new webpack.DefinePlugin({
-            //'env': JSON.stringify(env.chain),
-            'process.env': {
-                'logger': 'true'
-            }
+          'process.env': {
+            'logger': 'true',
+            'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+          }
         }));
     } else {
         //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
@@ -119,7 +119,7 @@ var getConfig = env => {
         //     new webpack.DefinePlugin({
         //         //'env': JSON.stringify(env.chain),
         //         'process.env': {
-        //             'NODE_ENV': JSON.stringify('production')                    
+        //             'NODE_ENV': JSON.stringify('production')
         //         }
         //     })
         // );
@@ -313,7 +313,6 @@ async function renderThemeFiles(){
     
 }
 
-console.log(process.env.NODE_ENV)
 //var argv = require('minimist')(process.argv.slice(2));
 // process.argv.forEach((val, index) => {
 //     console.log(`${index}: ${val}`)
