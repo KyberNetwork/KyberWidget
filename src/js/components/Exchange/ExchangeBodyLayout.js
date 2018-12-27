@@ -64,7 +64,7 @@ const ExchangeBodyLayout = (props) => {
               </div>
 
               <div className={addPrefixClass("widget-exchange__swap-button-container")}>
-                <div className={"widget-exchange__swap-button swap"} onClick={(e) => props.swapToken(e)}/>
+                <div className={addPrefixClass("widget-exchange__swap-button swap")} onClick={(e) => props.swapToken(e)}/>
               </div>
 
               <div className={addPrefixClass("widget-exchange__swap-item")}>
@@ -127,7 +127,7 @@ const ExchangeBodyLayout = (props) => {
               </div>
 
               <div className={addPrefixClass("widget-exchange__swap-button-container")}>
-                <div className={"widget-exchange__swap-button buy"}/>
+                <div className={addPrefixClass("widget-exchange__swap-button buy")}/>
               </div>
 
               <div className={addPrefixClass("widget-exchange__swap-item disabled")}>

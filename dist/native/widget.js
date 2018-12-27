@@ -100,7 +100,7 @@
         var css = document.createElement("link");
         css.id = "kyber-widget-css";
         css.setAttribute("rel", "stylesheet")
-        css.setAttribute("href", baseUrl + "/app.bundle.css?v=" + incrementDeploy);
+        css.setAttribute("href", baseUrl + "/app.css?v=" + incrementDeploy);
         document.head.appendChild(css);
       }
     }

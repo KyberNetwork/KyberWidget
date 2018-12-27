@@ -13,8 +13,8 @@ const AdvanceConfigLayout = (props) => {
         </SlideDownTrigger>
 
         <SlideDownContent>
-          <div className={"advance-config__content"}>
-            <div className={"advance-config__close-button"} onClick={() => props.toggleAdvConfig()}>&times;</div>
+          <div className={addPrefixClass("advance-config__content")}>
+            <div className={addPrefixClass("advance-config__close-button")} onClick={() => props.toggleAdvConfig()}>&times;</div>
 
             {(props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol) && (
               <MinRate
