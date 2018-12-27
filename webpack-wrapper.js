@@ -83,22 +83,25 @@ var getConfig = env => {
 
     //}
     if (env && env.build !== 'true') {
-        //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
-        plugins.push(new webpack.DefinePlugin({
-          'process.env': {
-            'logger': 'true',
-            'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-          }
-        }));
+      plugins.push(new webpack.DefinePlugin({
+        'process.env': {
+          'logger': 'true',
+          'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        }
+      }));
+
+      plugins.push(new WebpackShellPlugin({
+        onBuildEnd: [`FOLDER=${folder} node webpack-config-after.js`]
+      }))
     } else {
         //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
-        plugins.push(
-            new WebpackShellPlugin(
-                {
-                    onBuildEnd: [`FOLDER=${folder} node webpack-config-after.js`]
-                }
-            )
-        )
+        // plugins.push(
+        //     new WebpackShellPlugin(
+        //         {
+        //             onBuildEnd: [`FOLDER=${folder} node webpack-config-after.js`]
+        //         }
+        //     )
+        // )
         // plugins.push(
         //     new MiniCssExtractPlugin({
         //         filename: "/src/assets/css/themes/dark.scss",
