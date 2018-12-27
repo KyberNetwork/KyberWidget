@@ -48,6 +48,7 @@ export default class Layout extends React.Component {
 
     this.intervalIdle = setInterval(this.checkTimmer.bind(this), 10000)
   }
+
   componentWillUnmount() {
     clearInterval(this.intervalIdle)
   }
@@ -56,8 +57,8 @@ export default class Layout extends React.Component {
     this.props.analytics.callTrack("trackAccessToWidget")
     window.addEventListener("beforeunload", this.handleCloseWeb)
   }
-  
-   handleCloseWeb = () => {
+
+  handleCloseWeb = () => {
     this.props.analytics.callTrack("exitWidget")
   }
 

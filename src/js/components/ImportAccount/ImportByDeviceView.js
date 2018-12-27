@@ -83,7 +83,7 @@ const ImportByDeviceView = (props) => {
       </div>
 
       {props.hasError &&
-      <div className={addPrefixClass("import-account-content__error")}>{props.error}</div>
+        <div className={addPrefixClass("common__error box")}>{props.error}</div>
       }
     </div>
   )

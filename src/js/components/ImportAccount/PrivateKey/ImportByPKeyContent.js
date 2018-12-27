@@ -27,7 +27,7 @@ const ImportByPKeyContent = (props) => {
         </div>
 
         {!!props.pKeyError &&
-        <div className={addPrefixClass("common__error")}>{props.pKeyError}</div>
+          <div className={addPrefixClass("common__error box")}>{props.pKeyError}</div>
         }
       </div>
     </div>

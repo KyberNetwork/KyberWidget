@@ -76,6 +76,74 @@ $animation-time: 0.5s;
   }
 }
 
+.coinbase {
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  background-color: #f8fbfd;
+  padding: 15px;
+  margin-bottom: 25px;
+
+  &__logo {
+    width: 30px;
+    height: 30px;
+    background-image: url($image-path + 'coinbase.svg');
+    background-size: contain;
+    margin-right: 10px;
+  }
+
+  &__content {
+    width: 200px;
+    border-right: 1px solid #dae3e9;
+    display: flex;
+    padding-right: 15px;
+  }
+
+  &__name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #677c94;
+    text-transform: uppercase;
+  }
+
+  &__desc {
+    font-size: 11px;
+    font-weight: 500;
+    color: #757575;
+  }
+
+  &__download {
+    width: calc(100% - 200px);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: $theme-emerald-regular;
+    text-decoration: none;
+  }
+
+  @media (max-width: 820px) and (min-width: 600px) {
+    display: block;
+
+    &__content {
+      border-right: none;
+      margin-right: 0;
+      padding-right: 0;
+      margin-bottom: 10px;
+    }
+  }
+
+  @include screen-max-width(370px) {
+    display: block;
+
+    &__content {
+      border-right: none;
+      margin-right: 0;
+      padding-right: 0;
+      margin-bottom: 10px;
+    }
+  }
+}
+
 .import-account {
   display: flex;
   position: relative;
@@ -216,14 +284,6 @@ $animation-time: 0.5s;
       font-family: $font-cera;
       font-size: 22px;
       letter-spacing: -0.4px;
-    }
-
-    &__error {
-      font-size: 14px;
-      font-weight: 500;
-      color: $error-color;
-      margin-top: 15px;
-      line-height: 1.4;
     }
 
     &--active {
