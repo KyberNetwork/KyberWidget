@@ -66,13 +66,13 @@ const OrderDetails = (props) => {
             )}
 
             {!isEthDest && (
-              <div className={"widget-exchange__order-text-small"}>≈ {props.tokenRateToEth} ETH</div>
+              <div className={addPrefixClass("widget-exchange__order-text-small")}>≈ {props.tokenRateToEth} ETH</div>
             )}
           </div>
         </div>
 
         {isConfirmStep && (
-          <div className={"widget-exchange__order-box"}>
+          <div className={addPrefixClass("widget-exchange__order-box")}>
             <div className={addPrefixClass("widget-exchange__order-text")}>
               {props.translate("transaction.transaction_fee") || "Transaction fee"}:
             </div>

@@ -91,8 +91,8 @@ export default class PathSelector extends React.Component {
           >
             {dPath.path !== 0 && (
               <div>
-                <div className="name">{dPath.path}</div>
-                <div className="note">{dPath.desc}</div>
+                <div className={addPrefixClass("name")}>{dPath.path}</div>
+                <div className={addPrefixClass("note")}>{dPath.desc}</div>
               </div>
             )}
 
