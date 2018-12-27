@@ -1,10 +1,8 @@
 import classnames from 'classnames'
 
+const prefixClass = process.env.NODE_ENV === 'production' ? "kyber_widget-" : ""
 
-
-const prefixClass = process.env.NODE_ENV === 'production' ? "kyber_widget-":""
 export function addPrefixClass(str){
-    //var prefixClass = window.KyberWidgetBuild === true ? "kyber-widget-" : ""
     var list = str.split(" ")
     var lisPrefix = []
     for (var i = 0; i< list.length; i++){

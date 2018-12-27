@@ -288,6 +288,10 @@ function initParams(appId) {
       }
     }
 
+    if (!Number.isInteger(parseInt(productQty)) || productQty <= 0) {
+      productQty = 1;
+    }
+
     if (!validator.verifyNetwork(network)) {
       errors["network"] = translate('error.invalid_network') || "Current network is not supported"
     }

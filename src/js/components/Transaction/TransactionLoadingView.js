@@ -35,7 +35,7 @@ const TransactionLoadingView = (props) => {
         {!broadcastError &&
         <div className={addPrefixClass("broadcast__header")}>
           <div className={addPrefixClass("broadcast__icon broadcast")}/>
-          <div className={addPrefixClass("broadcast__title")}>{ props.translate('transaction.broadcasting') || "Broadcasting!" }</div>
+          <div className={addPrefixClass("broadcast__title")}>{ props.translate('transaction.broadcasted') || "Broadcasted!" }</div>
         </div>
         }
 
@@ -126,9 +126,11 @@ const TransactionLoadingView = (props) => {
           <div className={addPrefixClass("broadcast__text-bold")}>
             {isPayMode && (
               <div className={"common__flexbox center"}>
-                <span className={addPrefixClass("common__text-semibold")}>{props.exchange.sourceAmount} {props.exchange.sourceTokenSymbol} </span>
+                <span className={addPrefixClass("common__text-semibold")}>{props.exchange.sourceAmount || props.exchange.destAmount} {props.exchange.sourceTokenSymbol} </span>
                 <span className={addPrefixClass("common__text-small")}> to </span>
-                <span className={addPrefixClass("broadcast__text-bold")}>{props.exchange.receiveAddr}</span>
+                <span className={addPrefixClass("broadcast__text-bold")}>
+                  {props.exchange.receiveAddr.slice(0, 15)}...{props.exchange.receiveAddr.slice(-6)}
+                </span>
               </div>
             )}
             {(isBuyMode || isSwapMode) && (

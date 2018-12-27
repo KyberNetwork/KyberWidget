@@ -7,6 +7,7 @@ const OrderDetails = (props) => {
   const haveProductAvatar = props.exchange.productAvatar && props.exchange.productAvatar !== "";
   const isUnlockWalletStep = props.exchange.step === 2;
   const isConfirmStep = props.exchange.step === 3;
+  const isEthDest = props.exchange.destTokenSymbol === 'ETH';
   let isError = false;
   let gasUsed = props.exchange.gas;
   if (props.exchange.isNeedApprove) {
@@ -36,7 +37,7 @@ const OrderDetails = (props) => {
           </div>
         )}
         <div className={addPrefixClass("widget-exchange__order-box")}>
-          <div className={addPrefixClass("widget-exchange__order-text widget-exchange__order-amount")}>
+          <div className={addPrefixClass(`widget-exchange__order-text widget-exchange__order-amount ${!isEthDest ? 'align-top' : ''}`)}>
             {props.translate("transaction.amount") || "Amount"}:
           </div>
           <div className={addPrefixClass("widget-exchange__order-text-bolder")}>
@@ -64,7 +65,9 @@ const OrderDetails = (props) => {
               </div>
             )}
 
-            <div className={"widget-exchange__order-text-small"}>≈ {props.tokenRateToEth} ETH</div>
+            {!isEthDest && (
+              <div className={"widget-exchange__order-text-small"}>≈ {props.tokenRateToEth} ETH</div>
+            )}
           </div>
         </div>
 

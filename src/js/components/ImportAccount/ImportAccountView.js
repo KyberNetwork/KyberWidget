@@ -8,10 +8,12 @@ import { ImportByPrivateKey, ImportByDeviceWithLedger, ImportByDeviceWithTrezor,
 import SignerAddress from "./SignerAddress";
 import constants from "../../services/constants";
 import {addPrefixClass} from "../../utils/className"
+import { isMobile } from '../../utils/common'
 
 const ImportAccountView = (props) => {
   let importComponent = "";
   let handleImportWallet = false;
+  const isOnMobile = isMobile.Android() || isMobile.iOS();
 
   switch (props.chosenImportAccount) {
     case constants.IMPORT_ACCOUNT_TYPE.keystore:
@@ -36,6 +38,21 @@ const ImportAccountView = (props) => {
       <div className={addPrefixClass("widget-exchange__body small-padding")}>
         <div className={addPrefixClass(`widget-exchange__column ${props.exchangeType}`)}>
           <div className={addPrefixClass("widget-exchange__column-item")}>
+            {isOnMobile && (
+              <div className={addPrefixClass("coinbase")}>
+                <div className={addPrefixClass("coinbase__content")}>
+                  <div className={addPrefixClass("coinbase__logo")}/>
+                  <div>
+                    <div className={addPrefixClass("coinbase__name")}>Coinbase Wallet</div>
+                    <div className={addPrefixClass("coinbase__desc")}>Ethereum Wallet & DApp</div>
+                  </div>
+                </div>
+                <a className={addPrefixClass("coinbase__download theme-text")} href={isMobile.iOS() ? "https://itunes.apple.com/us/app/coinbase-wallet/id1278383455?mt=8" : "https://play.google.com/store/apps/details?id=org.toshi&hl=en"} target="_blank">
+                  Download
+                </a>
+              </div>
+            )}
+
             <div className={addPrefixClass("widget-exchange__text theme-text")}>Unlock your Wallet</div>
 
             {props.signerAddresses.length !== 0 && (
@@ -47,9 +64,18 @@ const ImportAccountView = (props) => {
             </div>
 
             <div className={addPrefixClass("import-account")}>
-              <ImportByMetamask screen={props.screen}/>
-              <ImportByLedgerView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
-              <ImportByTrezorView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
+              {!isOnMobile && (
+                <ImportByMetamask screen={props.screen}/>
+              )}
+
+              {!isOnMobile && (
+                <ImportByLedgerView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
+              )}
+
+              {!isOnMobile && (
+                <ImportByTrezorView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
+              )}
+
               <ImportKeystore onOpenImportAccount={props.onOpenImportAccount} screen={props.screen} translate={props.translate}/>
               <ImportByPKeyView onOpenImportAccount={props.onOpenImportAccount} translate={props.translate}/>
             </div>

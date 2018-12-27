@@ -11,6 +11,9 @@ import * as exchangeActions from "../../actions/exchangeActions"
 import constansts from "../../services/constants"
 import { getTranslate } from 'react-localize-redux'
 import { default as _ } from 'underscore'
+import * as web3Package from "../../services/web3"
+import { importAccountMetamask } from "../../actions/accountActions";
+import BLOCKCHAIN_INFO from "../../../../env";
 
 @connect((store, props) => {
 
@@ -79,7 +82,6 @@ export default class ExchangeBody extends React.Component {
   }
 
   importAccount = () => {
-
     if (!this.state.acceptedTerm) {
       return
     }
@@ -120,9 +122,8 @@ export default class ExchangeBody extends React.Component {
       }
     }
 
-
-
     var gasPrice = parseFloat(this.props.exchange.gasPrice)
+
     if (isNaN(gasPrice)) {
       this.props.dispatch(exchangeActions.throwErrorExchange("gasPriceError", this.props.translate("error.gas_price_not_number") || "Gas price is not number"))
       isValidate = false
@@ -137,13 +138,23 @@ export default class ExchangeBody extends React.Component {
       return
     }
 
-    this.props.dispatch(exchangeActions.goToStep(2))
     this.props.global.analytics.callTrack("clickToNext", 2)
-
-    //set snapshot
     this.props.dispatch(exchangeActions.setSnapshot(this.props.exchange))
     this.props.dispatch(exchangeActions.updateRateSnapshot(this.props.ethereum))
-  }
+
+    const web3Service = web3Package.newWeb3Instance();
+
+    if (web3Service !== false) {
+      const walletType = web3Service.getWalletType();
+      const isDapp = (walletType !== "metamask") && (walletType !== "modern_metamask");
+
+      if (isDapp) {
+        this.props.dispatch(importAccountMetamask(web3Service, BLOCKCHAIN_INFO[this.props.exchange.network].networkId))
+      }
+
+      this.props.dispatch(exchangeActions.goToStep(2));
+    }
+  };
 
   chooseToken = (symbol, address, type) => {
     this.props.dispatch(exchangeActions.selectTokenAsync(symbol, address, type, this.props.ethereum))
