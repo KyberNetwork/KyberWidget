@@ -1,8 +1,4 @@
 &.theme-emerald {
-  &::after {
-    background-image: $theme-emerald-gradient;
-  }
-
   .theme-text {
     color: $theme-emerald-regular;
   }

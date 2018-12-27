@@ -25,7 +25,8 @@ import Language from "../../../../lang"
     locale: store.locale,
     exchange: store.exchange,
     haltPayment: store.global.haltPayment,
-    analytics: store.global.analytics
+    analytics: store.global.analytics,
+    mode: store.global.params.mode
   }
 })
 
@@ -114,6 +115,7 @@ export default class Layout extends React.Component {
         paymentHeader = {paymentHeader}
         theme={this.props.exchange}
         exchange={this.props.exchange}
+        mode={this.props.mode}
       />
     )
   }
