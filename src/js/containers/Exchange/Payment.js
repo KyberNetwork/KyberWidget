@@ -341,6 +341,10 @@ export default class Payment extends React.Component {
   }
 
   render() {
+    const sourceTokenSymbol = this.props.exchange.sourceTokenSymbol;
+    const sourceBalance = this.props.tokens[sourceTokenSymbol].balance;
+    const sourceDecimal = this.props.tokens[sourceTokenSymbol].decimals;
+    const ethBalance = this.props.tokens["ETH"].balance;
     var classDisable = ""
     var txError = this.props.exchange.signError + this.props.exchange.broadcastError;
 
@@ -397,7 +401,15 @@ export default class Payment extends React.Component {
                 </div>
                 <div className={addPrefixClass("common__text-container")}>
                   <span className={addPrefixClass("common__text small-margin-right")}>You have: </span>
-                  <span className={addPrefixClass("common__text")}>320 DAI</span>
+                  <span className={addPrefixClass("common__text")}>
+                    {sourceTokenSymbol !== "ETH" && (
+                      <span>{converter.roundingNumber(converter.toT(sourceBalance, sourceDecimal))} {sourceTokenSymbol}</span>
+                    )}
+
+                    {sourceTokenSymbol === "ETH" && (
+                      <span>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</span>
+                    )}
+                  </span>
                 </div>
               </div>
 
