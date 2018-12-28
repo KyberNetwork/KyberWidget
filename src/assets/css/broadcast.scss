@@ -16,7 +16,7 @@
     max-width: 400px;
 
     &-item {
-      &:last-child {
+      &:nth-child(2) {
         margin-top: 25px;
         border-top: 1px dashed $theme-emerald-border;
         padding-top: 20px;

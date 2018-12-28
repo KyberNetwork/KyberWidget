@@ -8,6 +8,7 @@ import * as transferActions from "../../actions/transferActions"
 import * as accountActions from "../../actions/accountActions"
 import { KeyStore, Trezor, Ledger, PrivateKey, Metamask } from "../../services/keys"
 import {addPrefixClass} from "../../utils/className"
+import * as web3Package from "../../services/web3"
 
 function getKeyService(type) {
   var keyService
@@ -59,8 +60,13 @@ export default class Payment extends React.Component {
   }
 
   reImportAccount = () => {
-    this.props.dispatch(exchangeActions.goToStep(2, 3))
-    this.props.global.analytics.callTrack("clickToBack", 2)
+    if (web3Package.isDApp()) {
+      this.props.dispatch(exchangeActions.goToStep(1, 3));
+      this.props.global.analytics.callTrack("clickToBack", 1)
+    } else {
+      this.props.dispatch(exchangeActions.goToStep(2, 3));
+      this.props.global.analytics.callTrack("clickToBack", 2)
+    }
 
     this.props.dispatch(accountActions.clearWatchMetamask())
   }

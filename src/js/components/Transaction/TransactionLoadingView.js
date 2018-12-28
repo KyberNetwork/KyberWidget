@@ -40,24 +40,26 @@ const TransactionLoadingView = (props) => {
         }
 
         <div className={addPrefixClass("broadcast__body")}>
-          <div className={addPrefixClass("broadcast__body-item")}>
-            <div className={addPrefixClass("broadcast__text")}>{props.translate("transaction.transaction") || "Transaction hash"}:</div>
+          {!broadcastError && (
+            <div className={addPrefixClass("broadcast__body-item")}>
+              <div className={addPrefixClass("broadcast__text")}>{props.translate("transaction.transaction") || "Transaction hash"}:</div>
 
-            <div className={addPrefixClass("broadcast__content")}>
-              <a className={addPrefixClass("broadcast__text-bold link theme-text-hover")} href={BLOCKCHAIN_INFO[props.network].ethScanUrl + 'tx/' + props.txHash} target="_blank"
-                 title={props.translate("modal.view_on_etherscan") || "View on Etherscan"} onClick={(e) => props.analytics.callTrack("viewTxOnEtherscan")}>
-                {props.txHash}
-              </a>
-              <a className={addPrefixClass("broadcast__copy")} data-for='copy-tx-tip' data-tip=""
-                 onClick={props.handleCopy}
-                 onMouseLeave={props.resetCopy} >
-                <CopyToClipboard text={props.txHash}>
-                  <img src={require("../../../assets/img/icons/icon-copy.svg")} />
-                </CopyToClipboard>
-              </a>
-              <ReactTooltip getContent={[() => getTooltipCopy()]} place="right" id="copy-tx-tip" type="light" />
+              <div className={addPrefixClass("broadcast__content")}>
+                <a className={addPrefixClass("broadcast__text-bold link theme-text-hover")} href={BLOCKCHAIN_INFO[props.network].ethScanUrl + 'tx/' + props.txHash} target="_blank"
+                   title={props.translate("modal.view_on_etherscan") || "View on Etherscan"} onClick={(e) => props.analytics.callTrack("viewTxOnEtherscan")}>
+                  {props.txHash}
+                </a>
+                <a className={addPrefixClass("broadcast__copy")} data-for='copy-tx-tip' data-tip=""
+                   onClick={props.handleCopy}
+                   onMouseLeave={props.resetCopy} >
+                  <CopyToClipboard text={props.txHash}>
+                    <img src={require("../../../assets/img/icons/icon-copy.svg")} />
+                  </CopyToClipboard>
+                </a>
+                <ReactTooltip getContent={[() => getTooltipCopy()]} place="right" id="copy-tx-tip" type="light" />
+              </div>
             </div>
-          </div>
+          )}
 
           <div className={addPrefixClass("broadcast__body-item theme-border")}>
             {!broadcastError &&
@@ -128,9 +130,7 @@ const TransactionLoadingView = (props) => {
               <div className={"common__flexbox center"}>
                 <span className={addPrefixClass("common__text-semibold")}>{props.exchange.sourceAmount || props.exchange.destAmount} {props.exchange.sourceTokenSymbol} </span>
                 <span className={addPrefixClass("common__text-small")}> to </span>
-                <span className={addPrefixClass("broadcast__text-bold")}>
-                  {props.exchange.receiveAddr.slice(0, 15)}...{props.exchange.receiveAddr.slice(-6)}
-                </span>
+                <span className={addPrefixClass("broadcast__text-bold")}>{props.exchange.receiveAddr}</span>
               </div>
             )}
             {(isBuyMode || isSwapMode) && (

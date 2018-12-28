@@ -93,6 +93,7 @@ function initParams(appId) {
   var hint
   var defaultPair
   var theme
+  var mode
 
   if (attributeWidget === true || attributeWidget === 'true') {
     for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++) {
@@ -123,6 +124,7 @@ function initParams(appId) {
     hint = widgetParent.getAttribute('data-widget-hint') || ""
     defaultPair = widgetParent.getAttribute('data-widget-default-pair')
     theme = widgetParent.getAttribute('data-widget-theme') || "theme-emerald"
+    mode = widgetParent.getAttribute('data-widget-mode')
   } else {
     query = common.getQueryParams(window.location.search)
     receiveAddr = common.getParameterByName("receiveAddr")
@@ -142,6 +144,7 @@ function initParams(appId) {
     hint = common.getParameterByName("hint") || ""
     defaultPair = common.getParameterByName("defaultPair")
     theme = common.getParameterByName("theme") || "theme-emerald"
+    mode = common.getParameterByName("mode")
   }
 
   paramForwarding = paramForwarding === "true" || paramForwarding === true ? paramForwarding : "false"
@@ -163,6 +166,7 @@ function initParams(appId) {
 
   getListTokens(network).then(tokens => {
     query.appId = appId
+    query.mode = mode;
     store.dispatch(initParamsGlobal(query))
 
     var errors = {}
