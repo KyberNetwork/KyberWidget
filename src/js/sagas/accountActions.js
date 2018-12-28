@@ -242,7 +242,7 @@ function* checkReceiveAddress(address) {
   var state = store.getState()
   var global = state.global
   if (global.params.receiveAddr === 'self') {
-    yield put.sync(exchangeActions.updateReceiveAddress(address))
+    yield put.resolve(exchangeActions.updateReceiveAddress(address))
   }
   return
 }

@@ -41,7 +41,7 @@ function* swapToken(action){
 function* selectToken(action) {
   const { symbol, address, type, ethereum } = action.payload
 
-  yield put.sync(actions.selectToken(symbol, address, type))
+  yield put.resolve(actions.selectToken(symbol, address, type))
   yield put(utilActions.hideSelectToken())
   yield put(actions.checkSelectToken())
 
@@ -818,7 +818,7 @@ function* updateRatePending(action) {
           return
         }
       }
-      yield put.sync(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true))
+      yield put.resolve(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true))
     }
 
     if (rateRequest.status === "timeout") {
@@ -852,7 +852,7 @@ function* updateRatePending(action) {
         }
       }
 
-      yield put.sync(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true))
+      yield put.resolve(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true))
     }
   }
 }
@@ -900,7 +900,7 @@ function* updateRateSnapshot(action) {
         yield put(actions.hideConfirm())
         yield put(actions.hidePassphrase())
       } else {
-        yield put.sync(actions.updateRateSnapshotComplete(rateInit, expectedPrice, slippagePrice))
+        yield put.resolve(actions.updateRateSnapshotComplete(rateInit, expectedPrice, slippagePrice))
         yield put(actions.caculateAmountInSnapshot())
       }
     } else {
@@ -1420,16 +1420,16 @@ export function* initParamsExchange(action) {
     source = tokens[sourceTokenSymbol].address
     var destSymbol = defaultPairArr[1]
     var destAddress = tokens[destSymbol].address
-    yield put.sync(actions.changeDefaultTokens(sourceTokenSymbol, source, destSymbol, destAddress))
+    yield put.resolve(actions.changeDefaultTokens(sourceTokenSymbol, source, destSymbol, destAddress))
   }
 
-  yield put.sync(setConnection(ethereum))
+  yield put.resolve(setConnection(ethereum))
 
   if (type === 'buy') {
     if (receiveToken === 'ETH') {
       sourceTokenSymbol = 'KNC'
       source = tokens['KNC'].address
-      yield put.sync(actions.updateSourceToken(sourceTokenSymbol, source))
+      yield put.resolve(actions.updateSourceToken(sourceTokenSymbol, source))
     }
   }
 

@@ -19,6 +19,14 @@ $alert-color: #ff5d00;
   @import 'custom_react_modals';
 }
 
+body {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 .kyber_widget {
   color: $base-color;
   font-size: 16px;

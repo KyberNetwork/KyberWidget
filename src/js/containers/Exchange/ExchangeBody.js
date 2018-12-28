@@ -142,18 +142,11 @@ export default class ExchangeBody extends React.Component {
     this.props.dispatch(exchangeActions.setSnapshot(this.props.exchange))
     this.props.dispatch(exchangeActions.updateRateSnapshot(this.props.ethereum))
 
-    const web3Service = web3Package.newWeb3Instance();
-
-    if (web3Service !== false) {
-      const walletType = web3Service.getWalletType();
-      const isDapp = (walletType !== "metamask") && (walletType !== "modern_metamask");
-
-      if (isDapp) {
-        this.props.dispatch(importAccountMetamask(web3Service, BLOCKCHAIN_INFO[this.props.exchange.network].networkId))
-      }
-
-      this.props.dispatch(exchangeActions.goToStep(2));
+    if (web3Package.isDApp()) {
+      this.props.dispatch(importAccountMetamask(web3Package.newWeb3Instance(), BLOCKCHAIN_INFO[this.props.exchange.network].networkId))
     }
+
+    this.props.dispatch(exchangeActions.goToStep(2));
   };
 
   chooseToken = (symbol, address, type) => {

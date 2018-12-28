@@ -48,9 +48,9 @@ const LayoutView = (props) => {
           <Processing />
 
           <div className={addPrefixClass("widget-background theme-gradient")}/>
-        </section>
 
-        <div className={addPrefixClass("widget-footer")}/>
+          <div className={addPrefixClass("widget-footer")}/>
+        </section>
 
         <section id="modals">
           <InfoModal />

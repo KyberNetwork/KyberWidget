@@ -52,3 +52,21 @@ function getWeb3Type(){
   }
   return "non_web3"
 }
+
+/**
+ * @returns {boolean}
+ */
+export function isDApp() {
+  const web3Service = newWeb3Instance();
+
+  if (web3Service !== false) {
+    const walletType = web3Service.getWalletType();
+    const isDapp = (walletType !== "metamask") && (walletType !== "modern_metamask");
+
+    if (isDapp) {
+      return true;
+    }
+  }
+
+  return false;
+}
