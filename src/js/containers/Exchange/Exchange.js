@@ -95,7 +95,7 @@ export default class Exchange extends React.Component {
     }
 
     tokenEthRate = converter.toT(this.props.tokens[symbol].rateEth, 18);
-    tokenRateToEth = tokenEthRate ? parseFloat((amount / tokenEthRate).toFixed(4)) : 0;
+    tokenRateToEth = tokenEthRate ? parseFloat((amount / tokenEthRate).toFixed(6)) : 0;
 
     return (
       <OrderDetails
