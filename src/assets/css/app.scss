@@ -45,7 +45,6 @@ body {
   @import "exchange";
   @import "import-account";
   @import "cold-wallet";
-  @import "payment";
   @import "slide-down";
 
   @include screen-max-width(600px) {

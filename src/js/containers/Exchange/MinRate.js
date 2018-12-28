@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import { getTranslate } from "react-localize-redux"
 import * as converter from "../../utils/converter"
 import { addPrefixClass } from "../../utils/className"
+import { filterInputNumber } from "../../utils/validators";
 
 @connect((store) => {
   return { 
@@ -16,11 +17,17 @@ export default class MinRate extends React.Component {
     super(props);
 
     this.state = {
-      customSlippageRate: props.exchange.type === "pay" ? 90 : 100
+      customSlippageRate: ''
     }
   }
 
   onCustomSlippageRateChanged = (event) => {
+    if (event.target.value > 100) event.target.value = 100;
+
+    const isNumberValid = filterInputNumber(event, event.target.value, this.state.customSlippageRate);
+
+    if (!isNumberValid) return;
+
     this.setState({customSlippageRate: event.target.value});
 
     this.props.onSlippageRateChanged(event, true);
@@ -73,9 +80,8 @@ export default class MinRate extends React.Component {
             <span className={addPrefixClass("common__radio-icon with-input")}/>
             <input
               className={addPrefixClass("advance-config__rate-input")}
-              type="number"
-              min="0"
-              max="100"
+              type="text"
+              value={this.state.customSlippageRate}
               onChange={(e) => this.onCustomSlippageRateChanged(e)}
             />
             <span className={addPrefixClass("common__radio-text")}> %</span>

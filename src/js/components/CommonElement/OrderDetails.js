@@ -81,11 +81,6 @@ const OrderDetails = (props) => {
             </div>
           </div>
         )}
-
-        <div className={addPrefixClass("widget-exchange__order-box widget-exchange__order-address theme-border")}>
-          <div className={addPrefixClass("widget-exchange__order-text-light")}>{props.translate("transaction.address") || "Address"}:</div>
-          <div className={addPrefixClass("widget-exchange__order-text common__one-line")}>{props.global.params.receiveAddr.slice(0, 19)}...{props.global.params.receiveAddr.slice(-6)}</div>
-        </div>
       </div>
     </div>
   )

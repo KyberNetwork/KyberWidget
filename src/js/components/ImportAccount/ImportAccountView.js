@@ -5,7 +5,6 @@ import ImportByTrezorView from "./Trezor/ImportByTrezorView";
 import ImportByKeystoreView from "./Keystore/ImportByKeystoreView";
 import { ImportByMetamask } from "../../containers/ImportAccount";
 import { ImportByPrivateKey, ImportByDeviceWithLedger, ImportByDeviceWithTrezor, ImportKeystore } from "../../containers/ImportAccount";
-import SignerAddress from "./SignerAddress";
 import constants from "../../services/constants";
 import {addPrefixClass} from "../../utils/className"
 import { isMobile } from '../../utils/common'
@@ -54,10 +53,6 @@ const ImportAccountView = (props) => {
             )}
 
             <div className={addPrefixClass("widget-exchange__text theme-text")}>Unlock your Wallet</div>
-
-            {props.signerAddresses.length !== 0 && (
-              <SignerAddress signerAddresses={props.signerAddresses}/>
-            )}
 
             <div className={addPrefixClass("import-account-content " + (props.chosenImportAccount && props.isLoading === false ? 'import-account-content--active' : ''))}>
               {importComponent}
