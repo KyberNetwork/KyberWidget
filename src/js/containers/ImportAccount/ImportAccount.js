@@ -29,18 +29,6 @@ import { addressFromPrivateKey } from "../../utils/keys"
 })
 
 export default class ImportAccount extends React.Component {
-  getSignerAddresses = ()  => {
-    if (!this.props.exchange.signer) {
-      return [];
-    }
-
-    let addresses = this.props.exchange.signer.split("_")
-
-    return addresses.filter(function(item, pos) {
-      return addresses.indexOf(item) == pos
-    })
-  };
-
   openImportAccount(type) {
     this.props.dispatch(openImportAccount(type));
     this.props.analytics.callTrack("clickToImportAccount", type)
@@ -85,7 +73,6 @@ export default class ImportAccount extends React.Component {
       <ImportAccountView
         exchangeType={this.props.exchange.type}
         isLoading={this.props.loading}
-        signerAddresses={this.getSignerAddresses()}
         onOpenImportAccount={this.openImportAccount.bind(this)}
         onCloseImportAccount={this.closeImportAccount.bind(this)}
         chosenImportAccount={this.props.chosenImportAccount}

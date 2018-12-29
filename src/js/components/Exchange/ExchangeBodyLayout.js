@@ -173,7 +173,7 @@ const ExchangeBodyLayout = (props) => {
                         <div>Loading...</div>
                       )}
                       {(!props.exchange.isSelectToken && !isSourceEqualtoDestToken) && (
-                        <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 4)}</div>
+                        <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)}</div>
                       )}
                       {(!props.exchange.isSelectToken && isSourceEqualtoDestToken) && (
                         <div>{('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount}</div>

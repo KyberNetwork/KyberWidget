@@ -49,7 +49,7 @@ const OrderDetails = (props) => {
                 {!props.exchange.isSelectToken && (
                   <div>
                     {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
-                      <div>{props.exchange.offeredRate == "0" || isError ? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 4)} {props.exchange.destTokenSymbol}</div>
+                      <div>{props.exchange.offeredRate == "0" || isError ? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}</div>
                     )}
                     {props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol && (
                       <div>{props.exchange.sourceAmount || 0} {props.exchange.sourceTokenSymbol}</div>
@@ -81,11 +81,6 @@ const OrderDetails = (props) => {
             </div>
           </div>
         )}
-
-        <div className={addPrefixClass("widget-exchange__order-box widget-exchange__order-address theme-border")}>
-          <div className={addPrefixClass("widget-exchange__order-text-light")}>{props.translate("transaction.address") || "Address"}:</div>
-          <div className={addPrefixClass("widget-exchange__order-text common__one-line")}>{props.global.params.receiveAddr.slice(0, 19)}...{props.global.params.receiveAddr.slice(-6)}</div>
-        </div>
       </div>
     </div>
   )

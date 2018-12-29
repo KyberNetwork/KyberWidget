@@ -361,10 +361,12 @@ export function* importMetamask(action) {
       var currentName = commonFunc.findNetworkName(parseInt(currentId, 10))
       var expectedName = commonFunc.findNetworkName(networkId)
       if (currentName) {
-        yield put(actions.throwError(translate("error.network_not_match", { currentName: currentName, expectedName: expectedName }) || "Network is not match"))
+        yield put(utilActions.openInfoModal(translate("error.error_occurred") || "Error occurred",
+          translate("error.network_not_match", { currentName: currentName, expectedName: expectedName }) || "Network is not match"))
         return
       } else {
-        yield put(actions.throwError(translate("error.network_not_match_unknow", { expectedName: expectedName }) || "Network is not match"))
+        yield put(utilActions.openInfoModal(translate("error.error_occurred") || "Error occurred",
+          translate("error.network_not_match_unknow", { expectedName: expectedName }) || "Network is not match"))
         return
       }
     }
@@ -380,8 +382,8 @@ export function* importMetamask(action) {
       metamask
     ))
   } catch (e) {
-    console.log(e)
-    yield put(actions.throwError(translate("error.cannot_connect_metamask") || "Cannot get metamask account. You probably did not login in Metamask"))
+    yield put(utilActions.openInfoModal(translate("error.error_occurred") || "Error occurred",
+      translate("error.cannot_connect_metamask") || "Cannot get metamask account. You probably did not login in Metamask"))
   }
 }
 

@@ -9,6 +9,7 @@ import * as accountActions from "../../actions/accountActions"
 import { KeyStore, Trezor, Ledger, PrivateKey, Metamask } from "../../services/keys"
 import {addPrefixClass} from "../../utils/className"
 import * as web3Package from "../../services/web3"
+import SignerAddress from "../../components/ImportAccount/SignerAddress";
 
 function getKeyService(type) {
   var keyService
@@ -300,6 +301,18 @@ export default class Payment extends React.Component {
     return <div>{errorItems}</div>
   };
 
+  getSignerAddresses = ()  => {
+    if (!this.props.exchange.signer) {
+      return [];
+    }
+
+    let addresses = this.props.exchange.signer.split("_")
+
+    return addresses.filter(function(item, pos) {
+      return addresses.indexOf(item) == pos
+    })
+  };
+
   getWalletType = () => {
     switch (this.props.account.type) {
       case "metamask":
@@ -328,10 +341,14 @@ export default class Payment extends React.Component {
   }
 
   render() {
+    const sourceTokenSymbol = this.props.exchange.sourceTokenSymbol;
+    const sourceBalance = this.props.tokens[sourceTokenSymbol].balance;
+    const sourceDecimal = this.props.tokens[sourceTokenSymbol].decimals;
+    const ethBalance = this.props.tokens["ETH"].balance;
     var classDisable = ""
     var txError = this.props.exchange.signError + this.props.exchange.broadcastError;
 
-    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming || this.props.exchange.isFetchingGas) {
+    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming || this.props.exchange.isFetchingGas || this.props.exchange.errors.signer_invalid) {
       classDisable += " disabled"
     }
 
@@ -355,7 +372,7 @@ export default class Payment extends React.Component {
               <div>
                 <div className={addPrefixClass("common__text-container-bold")}>
                   {this.props.exchange.type === 'pay' && (
-                    <div className={addPrefixClass("common__text-bold")}>
+                    <div className={addPrefixClass("common__text-semibold")}>
                       {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
                         <div>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</div>
                       )}
@@ -377,13 +394,21 @@ export default class Payment extends React.Component {
                   )}
                 </div>
                 <div className={addPrefixClass("common__text-container")}>
-                  <span className={addPrefixClass("common__text-light")}>Your wallet: </span>
-                  <span className={addPrefixClass("common__text")}>{this.getWalletType()}</span>
-                </div>
-                <div className={addPrefixClass("common__text-container")}>
-                  <span className={addPrefixClass("common__text-light")}>Your address: </span>
+                  <span className={addPrefixClass("common__text small-margin-right")}>Your address: </span>
                   <span className={addPrefixClass("common__text")}>
                     {this.props.account.address.slice(0, 12)}...{this.props.account.address.slice(-10)}
+                  </span>
+                </div>
+                <div className={addPrefixClass("common__text-container")}>
+                  <span className={addPrefixClass("common__text small-margin-right")}>You have: </span>
+                  <span className={addPrefixClass("common__text")}>
+                    {sourceTokenSymbol !== "ETH" && (
+                      <span>{converter.roundingNumber(converter.toT(sourceBalance, sourceDecimal))} {sourceTokenSymbol}</span>
+                    )}
+
+                    {sourceTokenSymbol === "ETH" && (
+                      <span>{converter.roundingNumber(converter.toT(ethBalance, 18))} ETH</span>
+                    )}
                   </span>
                 </div>
               </div>
@@ -391,6 +416,10 @@ export default class Payment extends React.Component {
               <div>
                 {this.props.advanceConfig}
               </div>
+
+              {this.getSignerAddresses().length !== 0 && (
+                <SignerAddress signerAddresses={this.getSignerAddresses()}/>
+              )}
 
               <div className={addPrefixClass("widget-exchange__info")}>
                 {this.props.account.type === "keystore" && (
@@ -420,15 +449,14 @@ export default class Payment extends React.Component {
                 )}
 
                 {this.props.exchange.isNeedApprove && (
-                  <div className={addPrefixClass("common__confirm")}>
-                    *{this.props.translate("modal.approve_exchange", { token: this.props.exchange.sourceTokenSymbol })
-                  || `You need to grant permission for Kyber Payment to interact with ${this.props.exchange.sourceTokenSymbol} with this address`}
+                  <div className={addPrefixClass("common__information box")}>
+                    {this.props.translate("modal.approve_exchange", { token: this.props.exchange.sourceTokenSymbol }) || `You need to grant permission for Kyber Payment to interact with ${this.props.exchange.sourceTokenSymbol} with this address`}
                   </div>
                 )}
 
                 {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
-                  <div className={addPrefixClass("common__confirm")}>
-                    *{this.props.account.type !== "keystore" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}
+                  <div className={addPrefixClass("common__information box")}>
+                    {this.props.account.type !== "keystore" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}
                   </div>
                 )}
 

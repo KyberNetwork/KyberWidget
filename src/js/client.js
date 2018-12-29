@@ -151,7 +151,7 @@ function initParams(appId) {
   switch (network) {
     case "production":
     case "mainnet":
-      network = "mainnet"
+      network = "production"
       break
     case "rinkeby":
       network = "rinkeby"
