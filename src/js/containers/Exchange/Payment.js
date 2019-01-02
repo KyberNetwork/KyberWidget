@@ -288,7 +288,7 @@ export default class Payment extends React.Component {
     const errorItems = Object.keys(errors).map(key => {
       if (errors[key] && errors[key] !== "") {
         isError = true;
-        return <div key={key}>{this.props.translate(errors[key]) || errors[key]}</div>
+        return <div key={key}>{errors[key]}</div>
       }
 
       return "";
