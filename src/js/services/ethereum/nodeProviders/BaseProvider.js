@@ -5,6 +5,7 @@ import BLOCKCHAIN_INFO from "../../../../../env"
 import abiDecoder from "abi-decoder"
 import EthereumTx from "ethereumjs-tx"
 import * as common from "../../../utils/common";
+import * as converters from "../../../utils/converter"
 
 export default class BaseProvider {
     // constructor(props) {
@@ -199,9 +200,11 @@ export default class BaseProvider {
         if (!this.rpc.utils.isAddress(walletId)) {
             walletId = "0x" + Array(41).join("0")
         }
-        var data = this.networkContract.methods.trade(
+        var hint = this.rpc.utils.utf8ToHex(constants.PERM_HINT)
+
+        var data = this.networkContract.methods.tradeWithHint(
             sourceToken, sourceAmount, destToken, destAddress,
-            maxDestAmount, minConversionRate, walletId).encodeABI()
+            maxDestAmount, minConversionRate, walletId, hint).encodeABI()
 
         return new Promise((resolve, reject) => {
             resolve(data)
@@ -256,6 +259,8 @@ export default class BaseProvider {
     if (!this.rpc.utils.isAddress(walletId)) {
       walletId = "0x" + Array(41).join("0")
     }
+    
+    var hint = this.rpc.utils.utf8ToHex(constants.PERM_HINT)
 
     const data = this.payWrapperContract.methods.pay(
       sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
@@ -402,7 +407,8 @@ export default class BaseProvider {
 
         var arrayEthAddress = Array(arrayTokenAddress.length).fill(constants.ETH.address)
 
-        var arrayQty = Array(arrayTokenAddress.length * 2).fill("0x0")
+        var mask = converters.maskNumber()
+        var arrayQty = Array(arrayTokenAddress.length * 2).fill(mask)
 
         return this.getAllRate(arrayTokenAddress.concat(arrayEthAddress), arrayEthAddress.concat(arrayTokenAddress), arrayQty).then((result) => {
             var returnData = []
@@ -630,7 +636,12 @@ export default class BaseProvider {
     }
 
     getRateAtSpecificBlock(source, dest, srcAmount, blockno) {
-        var data = this.networkContract.methods.getExpectedRate(source, dest, srcAmount).encodeABI()
+
+        var mask = converters.maskNumber()
+        var srcAmountEnableFistBit = converters.sumOfTwoNumber(srcAmount,  mask)
+        srcAmountEnableFistBit = converters.toHex(srcAmountEnableFistBit)
+
+        var data = this.networkContract.methods.getExpectedRate(source, dest, srcAmountEnableFistBit).encodeABI()
 
         return new Promise((resolve, reject) => {
             this.rpc.eth.call({

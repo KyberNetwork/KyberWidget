@@ -16,7 +16,7 @@ const PaymentHeader = (props) => {
     <div>
       <div className={addPrefixClass("kyber-payment-logo-container")}>
         <div className={addPrefixClass("kyber-payment-logo")}></div>
-        <div className={addPrefixClass("k-version")}>v0.4</div>
+        <div className={addPrefixClass("k-version")}>v0.5</div>
       </div>
       <div className={addPrefixClass("step-breadcrumb k-container")}>
         {props.type === 'swap' && (
