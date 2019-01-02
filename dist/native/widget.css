@@ -1,4 +1,4 @@
-html:not([data-kyber-widget-edition='etheremon']) .kyber-widget-button {
+.kyber-widget-button {
     display: inline-block;
     text-align: center;
     text-decoration: none;
@@ -11,32 +11,17 @@ html:not([data-kyber-widget-edition='etheremon']) .kyber-widget-button {
     height: 45px;
     max-width: 100%;
     text-transform: uppercase;
+    background-color: #00a2bc;
+    color: #f8f8f8;
     transition: background-color .3s;
 }
 
-html:not([data-kyber-widget-edition='etheremon']) .kyber-widget-button:active {
-    top: 1px;
-}
-
-.theme-emerald .kyber-widget-button {
-    background-color: #00a2bc;
-    color: #f8f8f8;
-}
-
-.theme-emerald .kyber-widget-button:hover {
+.kyber-widget-button:hover {
     background-color: #02c2e0;
 }
 
-html:not([data-kyber-widget-edition='etheremon']) .kyber-widget-button.kyber-widget-button--light {
-    background-color: white;
-    color: #222;
-    box-shadow: 0 3px 5px 0 #dbdbdb;
-}
-
-html[data-kyber-widget-edition='etheremon'] .kyber-widget-button {
-    padding-left: 36px;
-    background-position: 12px center;
-    background-size: 16px;
+.kyber-widget-button:active {
+    top: 1px;
 }
 
 #kyber-widget {
@@ -47,7 +32,7 @@ html[data-kyber-widget-edition='etheremon'] .kyber-widget-button {
     top: 50%;
     max-height: 100%;
     width: 100%;
-    max-width: 950px;
+    max-width: 960px;
 }
 
 #kyber-widget-overlay {
@@ -87,16 +72,17 @@ html[data-kyber-widget-edition='etheremon'] .kyber-widget-button {
     top: 16px;
     right: 8px;
     display: inline-block;
-    padding: 6px;
+    padding: 12px 4px;
     font-size: 36px;
     color: #fff;
     line-height: 0;
     cursor: pointer;
+    z-index: 999;
 }
 
 #kyber-widget-iframe {
     position: absolute;
-    max-width: 950px;
+    max-width: 960px;
     height: 650px;
     width: 100%;
     max-height: 90%;
