@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
 }
+
 html {
     font-size: 14px;
 }
@@ -104,23 +105,20 @@ label.required::after, [data-widget-type='pay'] label.required-type-pay::after, 
   box-shadow: 0 3px 5px 0 #ccc;
 }
 
-input:invalid, input.invalid {
+.input-box:invalid, .input-box.invalid {
   color: white;
   background-color: #f2938e;
 }
 
-input:invalid::placeholder, input.invalid::placeholder {
+.input-box:invalid::placeholder, .input-box.invalid::placeholder {
   color: #edece8 !important;
 }
 
-select {
+.widget-config__select-default {
     height: 2rem;
     text-indent: 0.1rem;
 }
-textarea {
-    width: 100%;
-    font-family: monospace;
-}
+
 .align-top {
     vertical-align: top;
 }
@@ -278,16 +276,12 @@ label input, select, .pointer {
   width: 50%;
 }
 
-.widget-config__header-item:nth-child(2) {
-  text-align: center;
-}
-
 .widget-config__header-item:last-child {
   text-align: right;
 }
 
-.widget-config__header-item .widget-config__btn {
-  margin-left: 10px;
+.widget-config__header-item .widget-config__btn:first-child {
+  margin-right: 10px;
 }
 
 .full-width {
@@ -797,9 +791,8 @@ label input, select, .pointer {
     width: 100%;
   }
 
-  .widget-config__header-item:nth-child(2),
   .widget-config__header-item:last-child {
-    margin-top: 20px;
+    margin-top: 15px;
     text-align: left;
   }
 

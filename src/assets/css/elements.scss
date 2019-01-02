@@ -196,6 +196,11 @@
 
       &:first-child {
         align-items: flex-start;
+
+        .step-breadcrumb__step::after {
+          width: 50px;
+          left: 0;
+        }
       }
 
       &:nth-child(2) {
@@ -206,6 +211,11 @@
 
       &:last-child {
         align-items: flex-end;
+
+        .step-breadcrumb__step::after {
+          width: 50px;
+          right: 0;
+        }
       }
     }
 

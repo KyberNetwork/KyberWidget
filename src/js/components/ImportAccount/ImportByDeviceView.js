@@ -37,7 +37,7 @@ const ImportByDeviceView = (props) => {
             <div className={addPrefixClass("address common__one-line")}>{props.wallet.address.slice(0, 12)}...{props.wallet.address.slice(-6)}</div>
           </div>
           <div className={addPrefixClass("import-account-content__info-text-balance")}>
-            <div className={addPrefixClass("title")}>{props.translate("transaction.balance") || "Balance"}: </div>
+            <div className={addPrefixClass("title")}>You have: </div>
             <div className={addPrefixClass("address common__one-line")}>{props.wallet.balance} ETH</div>
           </div>
         </div>
