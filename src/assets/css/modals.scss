@@ -508,10 +508,6 @@ $divider-color: darken($title-background-color, 5);
     box-shadow: none;
     padding-bottom: 20px;
     padding-top: 20px;
-    &.security{
-      font-family: 'text-security-disc';
-      font-size: 14px;
-    }
   }
   .password-input{
     text-align: left;

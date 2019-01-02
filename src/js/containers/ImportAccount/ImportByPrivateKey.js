@@ -23,6 +23,13 @@ import { addPrefixClass } from "../../utils/className";
 })
 
 export default class ImportByPrivateKey extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      showPassword: false
+    }
+  }
+
   handleSubmit() {
     let privateKey = document.getElementById("private_key").value;
     this.importPrivateKey(privateKey);
@@ -35,19 +42,8 @@ export default class ImportByPrivateKey extends React.Component {
   }
 
   toggleShowPw() {
-    let input = document.getElementById('private_key');
-    let securityClass = addPrefixClass("security");
-    let unlockClass = addPrefixClass("unlock");
-
-    if (input.classList.contains(securityClass)) {
-      input.classList.remove(securityClass)
-      input.parentElement.classList.add(unlockClass)
-      this.props.analytics.callTrack("clickShowPassword", "show")
-    } else if (input.type == 'text') {
-      input.classList.add(securityClass)
-      input.parentElement.classList.remove(unlockClass)
-      this.props.analytics.callTrack("clickShowPassword", "hide")
-    }
+    this.setState({showPassword : !this.state.showPassword})
+    this.props.analytics.callTrack("clickShowPassword", this.state.showPassword ? "show" : "hide")
   }
 
   inputChange(e) {
@@ -78,6 +74,7 @@ export default class ImportByPrivateKey extends React.Component {
         onHandleSubmit={this.handleSubmit.bind(this)}
         onCloseImportAccount={this.props.onCloseImportAccount}
         onSubmit={this.submit}
+        showPassword={this.state.showPassword}
         onToggleShowPw={this.toggleShowPw.bind(this)}
         pKeyError={this.props.account.pKey.error}
         translate={this.props.translate}

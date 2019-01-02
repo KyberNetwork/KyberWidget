@@ -2,14 +2,6 @@
 @import 'settings';
 @import "util";
 
-@font-face{
-  font-family: 'text-security-disc';
-  font-style: normal;
-  font-weight: normal;
-  //src: url(../fonts/text-security-disc.ttf);
-  src: url(../fonts/text-security-disc.ttf);
-}
-
 $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
 $alert-color: #ff5d00;
 

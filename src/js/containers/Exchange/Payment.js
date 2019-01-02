@@ -704,9 +704,9 @@ export default class Payment extends React.Component {
               </div> */}
               <div className={addPrefixClass("import-account-content__private-key" + (this.state.showPassword ? ' unlock' : ''))}>
                 <input
-                  className={addPrefixClass(this.state.showPassword ? "import-account-content__private-key-input" : "import-account-content__private-key-input security")}
+                  className={addPrefixClass("import-account-content__private-key-input")}
                   id="passphrase"
-                  type="text"
+                  type={this.state.showPassword ? 'text' : 'password'}
                   autoFocus
                   autoComplete="off"
                   spellCheck="false"
