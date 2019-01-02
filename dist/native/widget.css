@@ -72,11 +72,12 @@ html:not([data-kyber-widget-edition='etheremon']) .kyber-widget-button:active {
     top: 16px;
     right: 8px;
     display: inline-block;
-    padding: 6px;
+    padding: 12px 4px;
     font-size: 36px;
     color: #fff;
     line-height: 0;
     cursor: pointer;
+    z-index: 999;
 }
 
 #kyber-widget-iframe {
