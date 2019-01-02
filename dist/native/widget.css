@@ -1,4 +1,4 @@
-html:not([data-kyber-widget-edition='etheremon']) .kyber-widget-button {
+.kyber-widget-button {
     display: inline-block;
     text-align: center;
     text-decoration: none;
@@ -16,11 +16,11 @@ html:not([data-kyber-widget-edition='etheremon']) .kyber-widget-button {
     transition: background-color .3s;
 }
 
-html:not([data-kyber-widget-edition='etheremon']) .kyber-widget-button:hover {
+.kyber-widget-button:hover {
     background-color: #02c2e0;
 }
 
-html:not([data-kyber-widget-edition='etheremon']) .kyber-widget-button:active {
+.kyber-widget-button:active {
     top: 1px;
 }
 
