@@ -48,7 +48,7 @@
 
 .widget-container {
   max-width: $container-max-width;
-  margin: 80px auto;
+  margin: 0 auto;
   box-shadow: $theme-emerald-shadow-container;
   border-radius: 0 0 5px 5px;
 
@@ -572,11 +572,6 @@
 
     &::placeholder {
       opacity: 0.4;
-    }
-
-    &.security {
-      font-size: 23px;
-      font-family: 'text-security-disc', sans-serif;
     }
   }
 

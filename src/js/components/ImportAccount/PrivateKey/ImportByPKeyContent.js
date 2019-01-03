@@ -10,9 +10,9 @@ const ImportByPKeyContent = (props) => {
       <div className={addPrefixClass("import-account-content__wrapper")}>
         <div className={addPrefixClass("common__input-panel")}>
           <input
-            className={addPrefixClass(`common__input theme-border ${props.showPassword ? "" : "security"}`)}
+            className={addPrefixClass(`common__input theme-border`)}
             id="private_key"
-            type="text"
+            type={props.showPassword ? "text" : "password"}
             onChange={(e) => props.onChange(e)}
             value={props.privateKey}
             autoFocus
