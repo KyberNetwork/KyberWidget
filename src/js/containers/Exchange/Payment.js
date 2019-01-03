@@ -345,10 +345,11 @@ export default class Payment extends React.Component {
     const sourceBalance = this.props.tokens[sourceTokenSymbol].balance;
     const sourceDecimal = this.props.tokens[sourceTokenSymbol].decimals;
     const ethBalance = this.props.tokens["ETH"].balance;
+    const errors = this.props.exchange.errors;
     var classDisable = ""
     var txError = this.props.exchange.signError + this.props.exchange.broadcastError;
 
-    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming || this.props.exchange.isFetchingGas || this.props.exchange.errors.signer_invalid) {
+    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming || this.props.exchange.isFetchingGas || errors.signer_invalid || errors.exceed_balance_fee) {
       classDisable += " disabled"
     }
 
@@ -427,9 +428,9 @@ export default class Payment extends React.Component {
                     <div className={addPrefixClass("widget-exchange__text theme-text")}>Enter your Password</div>
                     <div className={addPrefixClass("common__input-panel")}>
                       <input
-                        className={addPrefixClass(`common__input theme-border ${this.state.showPassword ? "" : "security"}`)}
+                        className={addPrefixClass(`common__input theme-border`)}
                         id="passphrase"
-                        type="text"
+                        type={this.state.showPassword ? "text" : "password"}
                         autoFocus
                         autoComplete="off"
                         spellCheck="false"
