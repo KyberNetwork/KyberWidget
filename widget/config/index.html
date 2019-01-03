@@ -107,7 +107,17 @@
           <div class="item hidden-type-swap">
             <label class="item-name required-type-pay required-type-buy">Receiving Token Symbol</label>
             <div class="item-value">
-              <input name="receiveToken" class="input-box uppercase" type="text" data-type-swap="" spellcheck="false" maxlength="6" value="ETH">
+              <input id="dest-token" name="receiveToken" class="input-box uppercase" type="hidden" data-type-swap="" spellcheck="false" maxlength="6" value="ETH">
+
+              <div class="widget-config__dropdown">
+                <div id="token-trigger" class="widget-config__dropdown-trigger">ETH</div>
+                <div class="widget-config__dropdown-content">
+                  <div class="widget-config__dropdown-search">
+                    <input id="widget-config__token-search" placeholder="Search" type="text" value="">
+                  </div>
+                  <div id="token-list" class="widget-config__dropdown-list"></div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="item hidden-type-swap">
@@ -135,7 +145,7 @@
           <div class="item">
             <label class="item-name">Network</label>
             <div class="item-value">
-              <select name="network" class="widget-config__select-default full-width">
+              <select id="widget-network" name="network" class="widget-config__select-default full-width">
                 <option value="">Default</option>
                 <option value="test">Testnet</option>
                 <option value="ropsten" selected>Ropsten</option>
