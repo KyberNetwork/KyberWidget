@@ -203,4 +203,10 @@
     initKyberWidget();
   }
 
+  global.addEventListener("message", function (e) {
+    if (e.data === "Broadcasted") {
+      global.kyberWidgetOptions.isBroadcasted = true;
+    }
+  });
+
 })(this);
