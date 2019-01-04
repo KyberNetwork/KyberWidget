@@ -1,6 +1,6 @@
 (function (global) {
 
-  var WIDGET_VERSION = "0.2";
+  var WIDGET_VERSION = "0.4";
 
   function initKyberWidget() {
     function getCurrentScriptDir() {
@@ -69,6 +69,12 @@
 
         setTimeout(function () {
           overlay.remove();
+
+          const onCloseCallBack = window.kyberWidgetOptions.onCloseCallBack;
+
+          if (onCloseCallBack && typeof onCloseCallBack === "function") {
+            onCloseCallBack()
+          }
         }, 300);
       }
     }
@@ -196,5 +202,11 @@
   } else {  // `DOMContentLoaded` already fired
     initKyberWidget();
   }
+
+  global.addEventListener("message", function (e) {
+    if (e.data === "Broadcasted") {
+      global.kyberWidgetOptions.isBroadcasted = true;
+    }
+  });
 
 })(this);

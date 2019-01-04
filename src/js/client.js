@@ -357,25 +357,13 @@ Modal.setAppElement('body');
 
 window.kyberWidgetInstance = {}
 
-//console.log(document.getElementById(constanst.APP_NAME))
 window.kyberWidgetInstance.render = (widgetId) => {
   var appId = widgetId ? widgetId : constanst.APP_NAME
 
   if (!document.getElementById(appId)) {
     return
   }
-  // if (illegal) {
-  //   ReactDOM.render(
-  //     <NotSupportPage client={clientPlatform} />
-  //     , document.getElementById(constanst.APP_NAME));
-  // } else {
-  //   ReactDOM.render(
-  //     <PersistGate persistor={persistor}>
-  //       <Provider store={store}>
-  //         <Layout />
-  //       </Provider>
-  //     </PersistGate>, document.getElementById(constanst.APP_NAME));
-  // }
+
   store.dispatch(initSession())
   initParams(appId)
 
@@ -387,9 +375,4 @@ window.kyberWidgetInstance.render = (widgetId) => {
     </PersistGate>, document.getElementById(appId));
 }
 
-
-
 window.kyberWidgetInstance.render()
-
-
-
