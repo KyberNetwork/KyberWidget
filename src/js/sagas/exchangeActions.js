@@ -242,8 +242,8 @@ function* processApprove(action) {
 }
 
 export function* processApproveByColdWallet(action) {
-  const { ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-    keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload
+  const { ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice, keystring,
+    password, accountType, account, keyService, sourceTokenSymbol, isApproveZero } = action.payload
 
   var networkId = common.getNetworkId()
   let rawApprove
@@ -251,7 +251,7 @@ export function* processApproveByColdWallet(action) {
 
   try {
     rawApprove = yield call(keyService.callSignTransaction, "getAppoveToken", isPayMode, ethereum, sourceToken,
-      sourceAmount, nonce, gas, gasPrice, keystring, password, accountType, account.address, networkId)
+      sourceAmount, nonce, gas, gasPrice, keystring, password, accountType, account.address, networkId, isApproveZero)
   } catch (e) {
     console.log(e)
     let msg = ''
@@ -280,19 +280,26 @@ export function* processApproveByColdWallet(action) {
 }
 
 export function* processApproveByMetamask(action) {
-  const { ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-    keystring, password, accountType, account, keyService, sourceTokenSymbol } = action.payload;
+  const { ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice, keystring,
+    password, accountType, account, keyService, sourceTokenSymbol, isApproveZero } = action.payload;
 
   var networkId = common.getNetworkId()
   const isPayMode = checkIsPayMode();
 
   try {
     const hashApprove = yield call(keyService.callSignTransaction, "getAppoveToken", isPayMode, ethereum, sourceToken,
-      sourceAmount, nonce, gas, gasPrice, keystring, password, accountType, account.address, networkId);
+      sourceAmount, nonce, gas, gasPrice, keystring, password, accountType, account.address, networkId, isApproveZero);
 
     yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol));
     yield put(incManualNonceAccount(account.address));
-    yield put(actions.setApprove(false));
+
+    if (isApproveZero) {
+      yield put(actions.setIsApproveZero(false));
+      yield put(actions.setApprove(true));
+    } else {
+      yield put(actions.setApprove(false));
+    }
+
     yield put(actions.fetchGasSuccess());
     yield put(actions.unsetConfirming());
   } catch (e) {

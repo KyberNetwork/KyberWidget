@@ -118,10 +118,12 @@ export const tokenToOthersPayment = (
 
 export const getAppoveToken = (
   isPayMode, ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-  keystring, password, accountType, account, networkId
+  keystring, password, accountType, account, networkId, isApproveZero = false
 ) => {
+  const value = isApproveZero ? 0 : biggestNumber();
+
   return new Promise((resolve) => {
-    ethereum.call("approveTokenData", sourceToken, biggestNumber(), isPayMode).then(result => {
+    ethereum.call("approveTokenData", sourceToken, value, isPayMode).then(result => {
 
       const txParams = createTxParams(account, nonce, gasPrice, gas, sourceToken, "0x0", result, networkId);
 

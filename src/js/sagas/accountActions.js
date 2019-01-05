@@ -64,7 +64,13 @@ function* checkApproveAccount(address, type) {
       if (converter.compareTwoNumber(remain, sourceAmount) !== -1) {
         yield put(exchangeActions.setApprove(false))
       } else {
-        yield put(exchangeActions.setApprove(true))
+        if (remain != 0) {
+          yield put(exchangeActions.setIsApproveZero(true))
+          yield put(exchangeActions.setApprove(false))
+        } else {
+          yield put(exchangeActions.setIsApproveZero(false))
+          yield put(exchangeActions.setApprove(true))
+        }
       }
     }
   }
