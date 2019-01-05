@@ -458,7 +458,7 @@ export default class Payment extends React.Component {
 
                 {this.props.exchange.isApproveZero && (
                   <div className={addPrefixClass("common__information box")}>
-                    You need to reset your previous allowance for {this.props.exchange.sourceTokenSymbol}
+                    You need to grant permission for KyberWidget to reset your previous allowance of {this.props.exchange.sourceTokenSymbol} since it's insufficient to make the transaction
                   </div>
                 )}
 
