@@ -271,9 +271,15 @@ export function* processApproveByColdWallet(action) {
 
     yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol));
     yield put(incManualNonceAccount(account.address));
-    yield put(actions.setApprove(false));
     yield put(actions.fetchGasSuccess());
     yield put(actions.unsetConfirming());
+
+    if (isApproveZero) {
+      yield put(actions.setIsApproveZero(false));
+      yield put(actions.setApprove(true));
+    } else {
+      yield put(actions.setApprove(false));
+    }
   } catch (e) {
     yield call(doTxFail, ethereum, account, e.message)
   }
@@ -292,6 +298,8 @@ export function* processApproveByMetamask(action) {
 
     yield put(actions.setApproveTx(hashApprove, sourceTokenSymbol));
     yield put(incManualNonceAccount(account.address));
+    yield put(actions.fetchGasSuccess());
+    yield put(actions.unsetConfirming());
 
     if (isApproveZero) {
       yield put(actions.setIsApproveZero(false));
@@ -299,9 +307,6 @@ export function* processApproveByMetamask(action) {
     } else {
       yield put(actions.setApprove(false));
     }
-
-    yield put(actions.fetchGasSuccess());
-    yield put(actions.unsetConfirming());
   } catch (e) {
     yield put(actions.setSignError(e))
   }
