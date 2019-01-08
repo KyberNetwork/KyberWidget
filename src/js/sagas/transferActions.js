@@ -12,6 +12,7 @@ import { addTx } from '../actions/txActions'
 import { store } from "../store"
 import {getTranslate} from "react-localize-redux/lib/index";
 import BLOCKCHAIN_INFO from "../../../env";
+import * as widgetOptions from "../utils/widget-options";
 
 export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
 
@@ -37,6 +38,7 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   yield put(exchangeActions.doTransactionComplete(hash))
   yield put(exchangeActions.finishExchange())
   yield put(exchangeActions.resetSignError())
+  widgetOptions.postMessageBroadCasted();
 }
 
 function* doTxFail(ethereum, account, e) {

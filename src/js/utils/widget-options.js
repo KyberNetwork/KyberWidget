@@ -12,3 +12,6 @@ export function onClose(){
     }
 }
 
+export function postMessageBroadCasted() {
+  window.parent.postMessage("Broadcasted", "*")
+}
