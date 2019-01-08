@@ -61,10 +61,10 @@ const ExchangeBodyLayout = (props) => {
                         {props.tokenSourceSelect}
                         {!props.exchange.isHaveDestAmount && (
                           <div className={addPrefixClass(classSource)}>
-                            <div>
+                            <div>                              
                               <input id="inputSource" className={addPrefixClass("source-input")} min="0" step="0.000001"
                                 placeholder="0" autoFocus
-                                type="number" maxLength="50" autoComplete="off"
+                                type="text" maxLength="50" autoComplete="off"
                                 value={props.input.sourceAmount.value || ''}
                                 onFocus={props.input.sourceAmount.onFocus}
                                 onBlur={props.input.sourceAmount.onBlur}
