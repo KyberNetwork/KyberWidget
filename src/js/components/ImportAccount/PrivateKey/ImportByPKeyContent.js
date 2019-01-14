@@ -20,11 +20,11 @@ const ImportByPKeyContent = (props) => {
           </div>
         </div>
 
-        <div className={addPrefixClass("import-account-content__private-key")}>
+        <div className={addPrefixClass("import-account-content__private-key" + (props.showPassword ? ' unlock' : ''))}>
           <input
-              className={addPrefixClass("import-account-content__private-key-input security")}
+              className={addPrefixClass("import-account-content__private-key-input")}
               id="private_key"
-              type="text"
+              type={props.showPassword ? 'text' : 'password'}
               onChange={(e) => props.onChange(e)}
               onKeyPress={(e) => props.onSubmit(e)}
               value={props.privateKey}
