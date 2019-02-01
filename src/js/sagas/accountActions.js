@@ -41,15 +41,18 @@ function* checkApproveAccount(address, type) {
   const tokens = state.tokens.tokens;
   const ethereum = state.connection.ethereum;
   const isPayMode = !exchange.isSwap;
+  const isSameToken = exchange.sourceTokenSymbol === exchange.destTokenSymbol;
 
   yield call(resetApproveState);
 
   if (type === "keystore" || type === "privateKey") return;
 
-  if ((isPayMode && exchange.sourceTokenSymbol !== exchange.destTokenSymbol) || exchange.sourceTokenSymbol !== "ETH") {
+  if ((isPayMode && !isSameToken) || exchange.sourceTokenSymbol !== "ETH") {
     let sourceAmount = 0;
 
-    if (exchange.isHaveDestAmount) {
+    if (exchange.isHaveDestAmount && isSameToken) {
+      sourceAmount = converter.toTWei(exchange.snapshot.destAmount, tokens[exchange.sourceTokenSymbol].decimals);
+    } else if (exchange.isHaveDestAmount) {
       const minConversionRate = converter.toTWei(exchange.snapshot.minConversionRate);
       sourceAmount = converter.caculateSourceAmount(exchange.snapshot.destAmount, minConversionRate, 6);
       sourceAmount = converter.toTWei(sourceAmount, tokens[exchange.sourceTokenSymbol].decimals);
