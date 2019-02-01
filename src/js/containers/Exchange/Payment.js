@@ -83,7 +83,7 @@ export default class Payment extends React.Component {
     const account = this.props.account
     const ethereum = this.props.ethereum
     this.props.dispatch(exchangeActions.doApprove(ethereum, params.sourceToken, params.sourceAmount, params.nonce, params.gas_approve, params.gasPrice,
-      account.keystring, account.password, account.type, account, this.props.keyService, params.sourceTokenSymbol))
+      account.keystring, account.password, account.type, account, this.props.keyService, params.sourceTokenSymbol, this.props.exchange.isApproveZero))
     this.props.global.analytics.callTrack("clickToApprove", params.sourceTokenSymbol)
   }
 
@@ -346,10 +346,13 @@ export default class Payment extends React.Component {
     const sourceDecimal = this.props.tokens[sourceTokenSymbol].decimals;
     const ethBalance = this.props.tokens["ETH"].balance;
     const errors = this.props.exchange.errors;
+    const isApprove = this.props.exchange.isNeedApprove || this.props.exchange.isApproveZero;
+    const isConfirming = this.props.exchange.isConfirming || this.props.transfer.isConfirming;
+    const isKeystoreOrPrivateKey = this.props.account.type === "keystore" || this.props.account.type === "privateKey";
     var classDisable = ""
     var txError = this.props.exchange.signError + this.props.exchange.broadcastError;
 
-    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming || this.props.exchange.isFetchingGas || errors.signer_invalid || errors.exceed_balance_fee) {
+    if (!this.props.exchange.validateAccountComplete || isConfirming || this.props.exchange.isFetchingGas || errors.signer_invalid || errors.exceed_balance_fee) {
       classDisable += " disabled"
     }
 
@@ -455,9 +458,21 @@ export default class Payment extends React.Component {
                   </div>
                 )}
 
-                {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
+                {this.props.exchange.isApproveZero && (
                   <div className={addPrefixClass("common__information box")}>
-                    {this.props.account.type !== "keystore" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}
+                    You need to grant permission for KyberWidget to reset your previous allowance of {this.props.exchange.sourceTokenSymbol} since it's insufficient to make the transaction
+                  </div>
+                )}
+
+                {(isConfirming && !isKeystoreOrPrivateKey) && (
+                  <div className={addPrefixClass("common__information box")}>
+                    {this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet"}
+                  </div>
+                )}
+
+                {(isConfirming && isKeystoreOrPrivateKey) && (
+                  <div className={addPrefixClass("common__information box")}>
+                    Sending Transactions...
                   </div>
                 )}
 
@@ -477,17 +492,17 @@ export default class Payment extends React.Component {
         </div>
 
         <div className={addPrefixClass("widget-exchange__bot common__flexbox between mobile-column-reverse")}>
-          <div className={addPrefixClass("common__button hollow theme-button" + (this.props.exchange.isConfirming || this.props.transfer.isConfirming ? " disable" : ""))} onClick={this.reImportAccount}>
+          <div className={addPrefixClass(`common__button hollow theme-button ${isConfirming ? "disable" : ""}`)} onClick={this.reImportAccount}>
             {this.props.translate("transaction.back") || "Back"}
           </div>
 
-          {this.props.exchange.isNeedApprove && (
+          {isApprove && (
             <div className={addPrefixClass("common__button widget-exchange__import theme-gradient" + classDisable)} onClick={this.approveToken}>
               {this.props.translate("transaction.approve") || "Approve"}
             </div>
           )}
 
-          {!this.props.exchange.isNeedApprove && (
+          {!isApprove && (
             <div className={addPrefixClass("common__button widget-exchange__import theme-gradient" + classDisable)} onClick={this.payment}>
               {this.props.translate("transaction.confirm") || "Confirm"}
             </div>

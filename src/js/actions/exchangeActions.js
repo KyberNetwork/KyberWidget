@@ -188,12 +188,12 @@ export function processExchange(
 }
 
 export function doApprove(ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-  keystring, password, accountType, account, keyService, sourceTokenSymbol) {
+  keystring, password, accountType, account, keyService, sourceTokenSymbol, isApproveZero = false) {
   return {
     type: "EXCHANGE.PROCESS_APPROVE",
     payload: {
-      ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-      keystring, password, accountType, account, keyService, sourceTokenSymbol
+      ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice, keystring,
+      password, accountType, account, keyService, sourceTokenSymbol, isApproveZero
     }
   }
 }
@@ -457,7 +457,6 @@ export function setApprove(isNeedApprove){
   }
 }
 
-
 export function throwErrorExchange(key, val){
   return {
     type: "EXCHANGE.THROW_ERROR_EXCHANGE",
@@ -510,5 +509,12 @@ export function setSourceAmount(amount){
   return {
     type: "EXCHANGE.SET_SOURCE_AMOUNT",
     payload: amount
+  }
+}
+
+export function setIsApproveZero(isApproveZero){
+  return {
+    type: "EXCHANGE.SET_IS_APPROVE_ZERO",
+    payload: isApproveZero
   }
 }

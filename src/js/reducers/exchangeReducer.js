@@ -608,6 +608,10 @@ const exchange = (state = initState, action) => {
       newState.sourceAmount = action.payload;
       return newState;
     }
+    case "EXCHANGE.SET_IS_APPROVE_ZERO":{
+      newState.isApproveZero = action.payload;
+      return newState;
+    }
   }
   return state
 }

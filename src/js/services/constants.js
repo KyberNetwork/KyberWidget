@@ -35,6 +35,7 @@ const INIT_EXCHANGE_FORM_STATE = {
   productAvatar: "",
   productQty: 1,
   isNeedApprove: false,
+  isApproveZero: false,
   destAddress: "",
   inputFocus: "source",
   maxCap: 0,
