@@ -347,10 +347,12 @@ export default class Payment extends React.Component {
     const ethBalance = this.props.tokens["ETH"].balance;
     const errors = this.props.exchange.errors;
     const isApprove = this.props.exchange.isNeedApprove || this.props.exchange.isApproveZero;
+    const isConfirming = this.props.exchange.isConfirming || this.props.transfer.isConfirming;
+    const isKeystoreOrPrivateKey = this.props.account.type === "keystore" || this.props.account.type === "privateKey";
     var classDisable = ""
     var txError = this.props.exchange.signError + this.props.exchange.broadcastError;
 
-    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming || this.props.exchange.isFetchingGas || errors.signer_invalid || errors.exceed_balance_fee) {
+    if (!this.props.exchange.validateAccountComplete || isConfirming || this.props.exchange.isFetchingGas || errors.signer_invalid || errors.exceed_balance_fee) {
       classDisable += " disabled"
     }
 
@@ -462,9 +464,15 @@ export default class Payment extends React.Component {
                   </div>
                 )}
 
-                {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
+                {(isConfirming && !isKeystoreOrPrivateKey) && (
                   <div className={addPrefixClass("common__information box")}>
-                    {this.props.account.type !== "keystore" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}
+                    {this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet"}
+                  </div>
+                )}
+
+                {(isConfirming && isKeystoreOrPrivateKey) && (
+                  <div className={addPrefixClass("common__information box")}>
+                    Sending Transactions...
                   </div>
                 )}
 
@@ -484,7 +492,7 @@ export default class Payment extends React.Component {
         </div>
 
         <div className={addPrefixClass("widget-exchange__bot common__flexbox between mobile-column-reverse")}>
-          <div className={addPrefixClass("common__button hollow theme-button" + (this.props.exchange.isConfirming || this.props.transfer.isConfirming ? " disable" : ""))} onClick={this.reImportAccount}>
+          <div className={addPrefixClass(`common__button hollow theme-button ${isConfirming ? "disable" : ""}`)} onClick={this.reImportAccount}>
             {this.props.translate("transaction.back") || "Back"}
           </div>
 

@@ -116,7 +116,7 @@ export const tokenToOthersPayment = (
   })
 };
 
-export const getAppoveToken = (
+export const getApproveToken = (
   isPayMode, ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
   keystring, password, accountType, account, networkId, isApproveZero = false
 ) => {

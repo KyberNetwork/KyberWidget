@@ -36,44 +36,49 @@ export function* updateTokenBalance(action) {
 }
 
 function* checkApproveAccount(address, type) {
-  var state = store.getState()
-  var exchange = state.exchange
-  var tokens = state.tokens.tokens
-  var ethereum = state.connection.ethereum
-  var isPayMode = !exchange.isSwap;
+  const state = store.getState();
+  const exchange = state.exchange;
+  const tokens = state.tokens.tokens;
+  const ethereum = state.connection.ethereum;
+  const isPayMode = !exchange.isSwap;
 
-  if ((type === "keystore") || (type === "privateKey")) {
-    yield put(exchangeActions.setApprove(false))
-  } else {
-    if ((!isPayMode && exchange.sourceTokenSymbol === exchange.destTokenSymbol) || (exchange.sourceTokenSymbol === "ETH")) {
-      yield put(exchangeActions.setApprove(false))
+  yield call(resetApproveState);
+
+  if (type === "keystore" || type === "privateKey") return;
+
+  if ((isPayMode && exchange.sourceTokenSymbol !== exchange.destTokenSymbol) || exchange.sourceTokenSymbol !== "ETH") {
+    let sourceAmount = 0;
+
+    if (exchange.isHaveDestAmount) {
+      const minConversionRate = converter.toTWei(exchange.snapshot.minConversionRate);
+      sourceAmount = converter.caculateSourceAmount(exchange.snapshot.destAmount, minConversionRate, 6);
+      sourceAmount = converter.toTWei(sourceAmount, tokens[exchange.sourceTokenSymbol].decimals);
     } else {
-      //get source amount
-      var sourceAmount = 0
-      if (exchange.isHaveDestAmount) {
-        var minConversionRate = converter.toTWei(exchange.snapshot.minConversionRate)
-        sourceAmount = converter.caculateSourceAmount(exchange.snapshot.destAmount, minConversionRate, 6)
-        sourceAmount = converter.toTWei(sourceAmount, tokens[exchange.sourceTokenSymbol].decimals)
-      } else {
-        sourceAmount = converter.toTWei(exchange.sourceAmount, tokens[exchange.sourceTokenSymbol].decimals)
-      }
-      //get allowance
-      var remain = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", tokens[exchange.sourceTokenSymbol].address, address, isPayMode)
-      remain = converter.hexToBigNumber(remain)
+      sourceAmount = converter.toTWei(exchange.sourceAmount, tokens[exchange.sourceTokenSymbol].decimals);
+    }
 
-      if (converter.compareTwoNumber(remain, sourceAmount) !== -1) {
-        yield put(exchangeActions.setApprove(false))
-      } else {
-        if (remain != 0) {
-          yield put(exchangeActions.setIsApproveZero(true))
-          yield put(exchangeActions.setApprove(false))
-        } else {
-          yield put(exchangeActions.setIsApproveZero(false))
-          yield put(exchangeActions.setApprove(true))
-        }
-      }
+    let remain = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock",
+      tokens[exchange.sourceTokenSymbol].address, address, isPayMode);
+    remain = converter.hexToBigNumber(remain);
+
+    if (converter.compareTwoNumber(remain, sourceAmount) !== -1) {
+      yield call(resetApproveState);
+    } else if (remain != 0) {
+      yield call(setApproveState, true);
+    } else {
+      yield call(setApproveState, false);
     }
   }
+}
+
+function *setApproveState(isApproveZero) {
+  yield put(exchangeActions.setIsApproveZero(isApproveZero));
+  yield put(exchangeActions.setApprove(!isApproveZero));
+}
+
+function *resetApproveState() {
+  yield put(exchangeActions.setApprove(false));
+  yield put(exchangeActions.setIsApproveZero(false));
 }
 
 function* checkMaxCap(address) {
