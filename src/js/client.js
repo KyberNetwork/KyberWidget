@@ -84,9 +84,7 @@ function initParams(appId) {
   var paramForwarding
   var signer
   var commissionID
-  var productName
-  var productAvatar
-  var productQty
+  var products
   var type
   var pinnedTokens
   var paymentData
@@ -115,9 +113,7 @@ function initParams(appId) {
     paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
     signer = widgetParent.getAttribute('data-widget-signer')
     commissionID = widgetParent.getAttribute('data-widget-commission-id')
-    productName = widgetParent.getAttribute('data-widget-product-name')
-    productAvatar = widgetParent.getAttribute('data-widget-product-avatar')
-    productQty = widgetParent.getAttribute('data-widget-product-qty') || 1
+    products = widgetParent.getAttribute('data-widget-products')
     type = widgetParent.getAttribute('data-widget-type')
     pinnedTokens = widgetParent.getAttribute('data-widget-pinned-tokens') || []
     paymentData = widgetParent.getAttribute('data-widget-payment-data') || ""
@@ -135,9 +131,7 @@ function initParams(appId) {
     paramForwarding = common.getParameterByName("paramForwarding")
     signer = common.getParameterByName("signer")
     commissionID = common.getParameterByName("commissionId")
-    productName = common.getParameterByName("productName")
-    productAvatar = common.getParameterByName("productAvatar")
-    productQty = common.getParameterByName("productQty") || 1
+    products = common.getParameterByName("products")
     type = common.getParameterByName("type")
     pinnedTokens = common.getParameterByName("pinnedTokens") || []
     paymentData = common.getParameterByName("paymentData") || ""
@@ -146,6 +140,8 @@ function initParams(appId) {
     theme = common.getParameterByName("theme") || "theme-emerald"
     mode = common.getParameterByName("mode")
   }
+
+  products = products ? common.getProductsFromParam(products) : [];
 
   paramForwarding = paramForwarding === "true" || paramForwarding === true ? paramForwarding : "false"
   switch (network) {
@@ -292,9 +288,9 @@ function initParams(appId) {
       }
     }
 
-    if (!Number.isInteger(parseInt(productQty)) || productQty <= 0) {
-      productQty = 1;
-    }
+    // if (!Number.isInteger(parseInt(productQty)) || productQty <= 0) {
+    //   productQty = 1;
+    // }
 
     if (!validator.verifyNetwork(network)) {
       errors["network"] = translate('error.invalid_network') || "Current network is not supported"
@@ -313,9 +309,8 @@ function initParams(appId) {
       var tokenAddr = tokens[receiveToken].address
 
       store.dispatch(initParamsExchange(
-        receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
-        productQty, callback, network, paramForwarding, signer, commissionID, isSwap,
-        type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme
+        receiveAddr, receiveToken, tokenAddr, receiveAmount, products, callback, network, paramForwarding,
+        signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme
       ));
 
       //init analytic

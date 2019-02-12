@@ -437,15 +437,14 @@ export function resetHandleAmountError(){
 
 
 export function initParamsExchange(
-  receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
-  productQty, callback, network, paramForwarding, signer, commissionID, isSwap,
-  type, pinTokens, defaultPairArr, paymentData, hint, tokens, theme
+  receiveAddr, receiveToken, tokenAddr, receiveAmount, products, callback, network, paramForwarding,
+  signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme
 ) {
   return {
     type: "EXCHANGE.INIT_PARAMS_EXCHANGE",
     payload: {
-      receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, productQty, network,
-      paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr, paymentData, hint, tokens, theme
+      receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, products, network, paramForwarding,
+      signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme
     }
   }
 }

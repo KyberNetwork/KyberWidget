@@ -43,7 +43,7 @@ const ExchangeBodyLayout = (props) => {
 
         {props.exchange.type === 'swap' && (
           <div className={addPrefixClass("widget-exchange__wrapper")}>
-            <div className={addPrefixClass("widget-exchange__title")}>Your are performing token conversion, Please choose</div>
+            <div className={addPrefixClass("widget-exchange__title")}>You are performing token conversion, Please choose</div>
             <div className={addPrefixClass("widget-exchange__swap-container")}>
               <div className={addPrefixClass("widget-exchange__swap-item")}>
                 <div className={addPrefixClass("widget-exchange__text theme-text")}>From Token</div>
@@ -94,7 +94,7 @@ const ExchangeBodyLayout = (props) => {
         {props.exchange.type === 'buy' && (
           <div className={addPrefixClass("widget-exchange__wrapper")}>
             <div className={addPrefixClass("widget-exchange__title")}>
-              Your are buying {props.global.params.receiveAmount} {props.exchange.destTokenSymbol}, Please select your token for the payment
+              You are buying {props.global.params.receiveAmount} {props.exchange.destTokenSymbol}, Please select your token for the payment
             </div>
             <div className={addPrefixClass("widget-exchange__swap-container")}>
               <div className={addPrefixClass("widget-exchange__swap-item")}>
