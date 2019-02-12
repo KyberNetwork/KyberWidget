@@ -127,7 +127,7 @@ const TransactionLoadingView = (props) => {
           </div>
           <div className={addPrefixClass("broadcast__text-bold")}>
             {isPayMode && (
-              <div className={"common__flexbox center"}>
+              <div className={addPrefixClass("common__flexbox center")}>
                 <span className={addPrefixClass("common__text-semibold")}>{props.exchange.sourceAmount || props.exchange.destAmount} {props.exchange.sourceTokenSymbol} </span>
                 <span className={addPrefixClass("common__text-small")}> to </span>
                 <span className={addPrefixClass("broadcast__text-bold")}>{props.exchange.receiveAddr}</span>
