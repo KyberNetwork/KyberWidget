@@ -42,12 +42,13 @@ function* checkApproveAccount(address, type) {
   const ethereum = state.connection.ethereum;
   const isPayMode = !exchange.isSwap;
   const isSameToken = exchange.sourceTokenSymbol === exchange.destTokenSymbol;
+  const isSourceTokenETH = exchange.sourceTokenSymbol === "ETH"
 
   yield call(resetApproveState);
 
   if (type === "keystore" || type === "privateKey") return;
 
-  if ((isPayMode && !isSameToken) || exchange.sourceTokenSymbol !== "ETH") {
+  if (!isSourceTokenETH) {
     let sourceAmount = 0;
 
     if (exchange.isHaveDestAmount && isSameToken) {
@@ -136,7 +137,7 @@ function* checkMaxCap(address) {
 
     if (sourceTokenSymbol !== "ETH") {
       var rate = tokens[sourceTokenSymbol].rate
-      srcAmount = converter.toT(srcAmount, decimals)
+      srcAmount = converter.toT(srcAmount, tokens[sourceTokenSymbol].decimals)
       srcAmount = converter.caculateDestAmount(srcAmount, rate, 6)
       srcAmount = converter.toTWei(srcAmount, 18)
     }
@@ -149,12 +150,9 @@ function* checkMaxCap(address) {
     }
 
   } catch (err) {
-    console.log(err)
     yield put(exchangeActions.throwErrorExchange("exceed_cap", ""))
   }
-
 }
-
 
 function* checkBalance(address) {
   var state = store.getState()
