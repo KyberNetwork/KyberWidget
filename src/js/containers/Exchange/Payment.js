@@ -102,6 +102,7 @@ export default class Payment extends React.Component {
       var formId = "transfer"
       var data = ""
       var token = this.props.exchange.destTokenSymbol
+      var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
       var tokenAddress = this.props.tokens[token].address
       var tokenDecimal = this.props.tokens[token].decimals
       var tokenName = this.props.tokens[token].tokenName
@@ -128,7 +129,7 @@ export default class Payment extends React.Component {
 
       this.props.dispatch(transferActions.processTransfer(formId, ethereum, account.address, tokenAddress, amount,
         destAddress, nonce, gas, gasPrice, account.keystring, account.type, password, account, data,
-        this.props.keyService, balanceData, commissionID, paymentData, hint))
+        this.props.keyService, balanceData, commissionID, paymentData, hint, sourceTokenSymbol))
     } catch (e) {
       console.log(e)
     }

@@ -90,51 +90,53 @@ function* doBeforeMakeTransaction(txRaw) {
 function *transferKeystoreAndPrivateKey(action) {
   let {
     formId, ethereum, address, token, amount, destAddress, nonce, gas, gasPrice, keystring, type, password,
-    account, data, keyService, balanceData, commissionID, paymentData, hint } = action.payload;
+    account, data, keyService, balanceData, commissionID, paymentData, hint, sourceTokenSymbol } = action.payload;
   const networkId  = common.getNetworkId();
   let rawTx, hash;
 
-  const isPayMode = checkIsPayMode();
-  const remain = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", token, address, isPayMode);
-  const remainBigNumber = converter.hexToBigNumber(remain);
-  const sourceAmountBigNumber = converter.hexToBigNumber(amount);
-  let approveRaw, approveZeroRaw;
+  if (sourceTokenSymbol !== "ETH") {
+    const isPayMode = checkIsPayMode();
+    const remain = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", token, address, isPayMode);
+    const remainBigNumber = converter.hexToBigNumber(remain);
+    const sourceAmountBigNumber = converter.hexToBigNumber(amount);
+    let approveRaw, approveZeroRaw;
 
-  if (!remainBigNumber.isGreaterThanOrEqualTo(sourceAmountBigNumber)) {
-    if (remain != 0) {
-      try {
-        approveZeroRaw = yield call(keyService.callSignTransaction, "getApproveToken", isPayMode, ethereum, token,
-          amount, nonce, gas, gasPrice, keystring, password, type, address, networkId, true);
-      } catch (e) {
-        yield put(actions.throwPassphraseError(e.message));
-        return;
+    if (!remainBigNumber.isGreaterThanOrEqualTo(sourceAmountBigNumber)) {
+      if (remain != 0) {
+        try {
+          approveZeroRaw = yield call(keyService.callSignTransaction, "getApproveToken", isPayMode, ethereum, token,
+            amount, nonce, gas, gasPrice, keystring, password, type, address, networkId, true);
+        } catch (e) {
+          yield put(actions.throwPassphraseError(e.message));
+          return;
+        }
+
+        try {
+          yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", approveZeroRaw);
+          yield put(incManualNonceAccount(account.address));
+          nonce++;
+        } catch (e) {
+          yield call(doTxFail, ethereum, account, e.message);
+          return;
+        }
       }
 
       try {
-        yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", approveZeroRaw);
+        approveRaw = yield call(keyService.callSignTransaction, "getApproveToken", isPayMode, ethereum, token,
+          amount, nonce, gas, gasPrice, keystring, password, type, address, networkId)
+      } catch (e) {
+        yield put(actions.throwPassphraseError(e.message))
+        return
+      }
+
+      try {
+        yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", approveRaw);
         yield put(incManualNonceAccount(account.address));
         nonce++;
       } catch (e) {
         yield call(doTxFail, ethereum, account, e.message);
         return;
       }
-    }
-
-    try {
-      approveRaw = yield call(keyService.callSignTransaction, "getApproveToken", isPayMode, ethereum, token,
-        amount, nonce, gas, gasPrice, keystring, password, type, address, networkId)
-    } catch (e) {
-      yield put(actions.throwPassphraseError(e.message))
-      return
-    }
-
-    try {
-      yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", approveRaw);
-      yield put(incManualNonceAccount(account.address));
-      nonce++;
-    } catch (e) {
-      yield call(doTxFail, ethereum, account, e.message);
-      return;
     }
   }
 
