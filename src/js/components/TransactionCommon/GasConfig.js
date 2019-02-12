@@ -10,7 +10,7 @@ const GasConfig = (props) => {
   ];
 
   return (
-    <div className={"advance-config__gas"}>
+    <div className={addPrefixClass("advance-config__gas")}>
       <div className={addPrefixClass("advance-config__gas-title")}>GAS fee (Gwei)</div>
       <div className={addPrefixClass("common__flexbox between")}>
         {gasOptions.map((item, index) => {

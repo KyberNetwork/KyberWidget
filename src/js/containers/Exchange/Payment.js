@@ -149,16 +149,10 @@ export default class Payment extends React.Component {
     var sourceAmount = converter.stringToHex(this.props.snapshot.sourceAmount, this.props.snapshot.sourceDecimal)
     var destToken = this.props.snapshot.destToken
     var minConversionRate = converter.toTWei(this.props.snapshot.minConversionRate)
-    var blockNo
+    var blockNo = this.props.exchange.commissionID
     var destAddress
 
     minConversionRate = converter.numberToHex(minConversionRate)
-
-    if (this.props.exchange.commissionID) {
-      blockNo = this.props.exchange.commissionID
-    } else {
-      blockNo = converter.numberToHexAddress(this.props.snapshot.blockNo)
-    }
 
     if (this.props.exchange.isSwap) {
       destAddress = this.props.account.address
@@ -196,16 +190,10 @@ export default class Payment extends React.Component {
     var sourceAmount = this.getSourceAmount()
     var destToken = this.props.snapshot.destToken
     var minConversionRate = converter.toTWei(this.props.snapshot.minConversionRate)
-    var blockNo
+    var blockNo = this.props.exchange.commissionID;
     var destAddress
 
     minConversionRate = converter.numberToHex(minConversionRate)
-
-    if (this.props.exchange.commissionID) {
-      blockNo = this.props.exchange.commissionID
-    } else {
-      blockNo = converter.numberToHexAddress(this.props.snapshot.blockNo)
-    }
 
     if (this.props.exchange.isSwap) {
       destAddress = this.props.account.address
