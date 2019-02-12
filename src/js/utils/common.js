@@ -10,6 +10,25 @@ export function getParameterByName(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+/**
+ * Get array of products from string parameter
+ *
+ * @param stringProducts Ex: name1_qty1_avatar_1;name2_qty2_avatar_2
+ *
+ * @return {Array}
+ */
+export function getProductsFromParam(stringProducts) {
+  let products = stringProducts.split(';');
+
+  products = products.map((product) => {
+    const productAttributes = product.split('_');
+    const productQty = +productAttributes[1] ? +productAttributes[1] : 1;
+
+    return { name: productAttributes[0], qty: productQty, image: productAttributes[2] };
+  });
+
+  return products;
+}
 
 export function getActiveLanguage(langs) {
   for (var i = 0; i < langs.length; i++) {
@@ -19,7 +38,6 @@ export function getActiveLanguage(langs) {
   }
   return "en"
 }
-
 
 export function getQueryParams(qs) {
   qs = qs.split('+').join(' ');
@@ -49,7 +67,6 @@ export function queryParamsString(url) {
   return params
 }
 
-
 export function findNetworkName(networkId) {
   switch (networkId) {
     case 0:
@@ -69,7 +86,6 @@ export function findNetworkName(networkId) {
   }
 }
 
-
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -83,9 +99,6 @@ export function lineToCamel(str) {
   return key
 }
 
-
-
-
 export function checkComponentExist(componentId) {
   if (document.getElementById(componentId)) {
     return true
@@ -93,7 +106,6 @@ export function checkComponentExist(componentId) {
     return false
   }
 }
-
 
 export function setCookie(cname, cvalue, exdays) {
   if (!exdays) {
@@ -176,15 +188,10 @@ export function submitForm(path, params, method, maxTimeout) {
       });
     };
 
-
-
-
     var formData = new FormData(form);
+
     xhr.send(formData);
-
   })
-
-  //form.submit();
 }
 
 export function submitUrlEncoded(path, params, method, maxTimeout) {

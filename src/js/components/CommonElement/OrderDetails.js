@@ -3,8 +3,6 @@ import * as converter from "../../utils/converter";
 import {addPrefixClass} from "../../utils/className";
 
 const OrderDetails = (props) => {
-  const haveProductName = props.exchange.productName && props.exchange.productName !== "";
-  const haveProductAvatar = props.exchange.productAvatar && props.exchange.productAvatar !== "";
   const isUnlockWalletStep = props.exchange.step === 2;
   const isConfirmStep = props.exchange.step === 3;
   const isEthDest = props.exchange.destTokenSymbol === 'ETH';
@@ -20,22 +18,32 @@ const OrderDetails = (props) => {
     }
   });
 
+  function renderProducts() {
+    return props.exchange.products.map((product) => {
+      if (!product.name) {
+        return false;
+      }
+
+      return (
+        <div>
+          <div className={addPrefixClass("widget-exchange__order-box")}>
+            <img className={addPrefixClass("widget-exchange__order-image")} src={product.image} />
+            <div className={addPrefixClass("widget-exchange__order-content common__flexbox between")}>
+              <span className={addPrefixClass("widget-exchange__order-text widget-exchange__order-product-name")}>{product.name}</span>
+              <span className={addPrefixClass("widget-exchange__order-text-bold")}>X{product.qty}</span>
+            </div>
+          </div>
+        </div>
+      );
+    });
+  }
+
   return (
     <div className={addPrefixClass(`widget-exchange__order theme-border ${isUnlockWalletStep ? 'common__desktop-display' : ''}`)}>
       <div className={addPrefixClass("widget-exchange__order-header")}>Order Details</div>
 
       <div className={addPrefixClass("widget-exchange__order-body")}>
-        {haveProductName && (
-          <div className={addPrefixClass("widget-exchange__order-box")}>
-            <span className={addPrefixClass("widget-exchange__order-text widget-exchange__order-product-name")}>{props.exchange.productName}</span>
-            <span className={addPrefixClass("widget-exchange__order-text-bold")}>X{props.exchange.productQty}</span>
-          </div>
-        )}
-        {haveProductAvatar && (
-          <div className={addPrefixClass("widget-exchange__order-box")}>
-            <img src={props.exchange.productAvatar} />
-          </div>
-        )}
+        {renderProducts()}
         <div className={addPrefixClass("widget-exchange__order-box")}>
           <div className={addPrefixClass(`widget-exchange__order-text widget-exchange__order-amount ${!isEthDest ? 'align-top' : ''}`)}>
             {props.translate("transaction.amount") || "Amount"}:
