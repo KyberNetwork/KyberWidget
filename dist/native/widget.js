@@ -1,6 +1,8 @@
 (function (global) {
-  var WIDGET_VERSION = "0.4";
-  var incrementDeploy = 1;
+
+
+  var WIDGET_VERSION = "0.5";
+
 
   function initKyberWidget() {
     function getCurrentScriptDir() {
@@ -92,7 +94,7 @@
         script.onload = function () {
           document.getElementById("kyber-widget") && global.kyberWidgetInstance.render();
         };
-        script.src = baseUrl + "/app.min.js?v=" + incrementDeploy;
+        script.src = baseUrl + "/app.min.js?t=" + Date.now();
         document.body.appendChild(script);
       }
       // add CSS tag
@@ -100,7 +102,7 @@
         var css = document.createElement("link");
         css.id = "kyber-widget-css";
         css.setAttribute("rel", "stylesheet")
-        css.setAttribute("href", baseUrl + "/app.css?v=" + incrementDeploy);
+        css.setAttribute("href", baseUrl + "/app.bundle.css?t=" + Date.now());
         document.head.appendChild(css);
       }
     }
