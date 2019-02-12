@@ -19,13 +19,13 @@ const OrderDetails = (props) => {
   });
 
   function renderProducts() {
-    return props.exchange.products.map((product) => {
+    return props.exchange.products.map((product, index) => {
       if (!product.name) {
         return false;
       }
 
       return (
-        <div>
+        <div key={index}>
           <div className={addPrefixClass("widget-exchange__order-box")}>
             <img className={addPrefixClass("widget-exchange__order-image")} src={product.image} />
             <div className={addPrefixClass("widget-exchange__order-content common__flexbox between")}>
