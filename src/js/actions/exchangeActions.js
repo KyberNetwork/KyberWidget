@@ -18,9 +18,10 @@ export function selectToken(symbol, address, type) {
     payload: { symbol, address, type }
   }
 }
-export function checkSelectToken() {
+export function checkSelectToken(sameTokenError) {
   return {
-    type: "EXCHANGE.CHECK_SELECT_TOKEN"
+    type: "EXCHANGE.CHECK_SELECT_TOKEN",
+    payload: sameTokenError
   }
 }
 

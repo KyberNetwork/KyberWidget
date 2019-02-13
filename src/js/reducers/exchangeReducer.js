@@ -59,10 +59,10 @@ const exchange = (state = initState, action) => {
       newState.errors.selectTokenToken = ''
       newState.errors.sourceAmountError = ''
 
-      if (newState.isSwap){
+      if (newState.isSwap) {
         if(newState.destTokenSymbol === newState.sourceTokenSymbol){
-          newState.errors.selectSameToken = "error.select_same_token"
-        }else{
+          newState.errors.selectSameToken = action.payload
+        } else {
           newState.errors.selectSameToken = ""
         }
       }
