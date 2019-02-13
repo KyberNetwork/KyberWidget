@@ -98,7 +98,7 @@ export default class ExchangeBody extends React.Component {
     if (!this.props.exchange.isHaveDestAmount) {
       srcAmount = parseFloat(this.props.exchange.sourceAmount)
       if (isNaN(srcAmount)) {
-        this.props.dispatch(exchangeActions.thowErrorSourceAmount("error.source_amount_is_not_number"))
+        this.props.dispatch(exchangeActions.thowErrorSourceAmount(this.props.translate("error.source_amount_is_not_number")))
         isValidate = false
         sourceAmountIsNumber = false
       }

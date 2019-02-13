@@ -26,7 +26,7 @@ export default class Trezor extends React.Component {
             resolve(result);
           } else {
             console.log(result)
-            var err = translate("error.cannot_connect_trezor") || 'Cannot connect to trezor'
+            var err = translate("error.cannot_connect_trezor") || 'Cannot connect to Trezor'
             if (result.toString() == 'Error: Not a valid path.') {
               err = translate("error.path_not_support_by_trezor") || 'This path not supported by Trezor'
             }

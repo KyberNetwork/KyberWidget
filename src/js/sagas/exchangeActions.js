@@ -80,10 +80,11 @@ function* swapToken(action){
 
 function* selectToken(action) {
   const { symbol, address, type, ethereum } = action.payload
+  const translate = getTranslate(store.getState().locale);
 
   yield put.resolve(actions.selectToken(symbol, address, type))
   yield put(utilActions.hideSelectToken())
-  yield put(actions.checkSelectToken())
+  yield put(actions.checkSelectToken(translate("error.select_same_token")))
 
   var state = store.getState()
   var exchange = state.exchange

@@ -109,10 +109,14 @@
       width: 100px;
       border-radius: 3px;
       margin-right: 20px;
+
+      ~ .widget-exchange__order-content {
+        width: calc(100% - 120px);
+      }
     }
 
     &-content {
-      width: calc(100% - 120px);
+      width: 100%;
     }
 
     &-product-name {

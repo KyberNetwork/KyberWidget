@@ -27,7 +27,9 @@ const OrderDetails = (props) => {
       return (
         <div key={index}>
           <div className={addPrefixClass("widget-exchange__order-box")}>
-            <img className={addPrefixClass("widget-exchange__order-image")} src={product.image} />
+            {product.image && (
+              <img className={addPrefixClass("widget-exchange__order-image")} src={product.image} />
+            )}
             <div className={addPrefixClass("widget-exchange__order-content common__flexbox between")}>
               <span className={addPrefixClass("widget-exchange__order-text widget-exchange__order-product-name")}>{product.name}</span>
               <span className={addPrefixClass("widget-exchange__order-text-bold")}>X{product.qty}</span>
