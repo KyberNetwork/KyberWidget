@@ -22,10 +22,12 @@ export default class PathSelector extends React.Component {
 
   showSelector = (e) => {
     this.setState({ open: true })
+    this.props.analytics.callTrack("clickPathSelectorColdWallet", this.state.walletType, true)
   }
 
   hideSelector = (e) => {
     this.setState({ open: false })
+    this.props.analytics.callTrack("clickPathSelectorColdWallet", this.state.walletType, false)
   }
 
   selectItem = (e, index) => {

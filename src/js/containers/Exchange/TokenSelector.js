@@ -33,10 +33,12 @@ export default class TokenSelector extends React.Component {
 
   showTokens = (e) => {
     this.setState({ open: true })
+    this.props.analytics.callTrack("clickTokenSelector", true)
   };
 
   hideTokens = (e) => {
     this.setState({ open: false })
+    this.props.analytics.callTrack("clickTokenSelector", false)
   };
 
   selectItem = (event, symbol, address, suggest) => {

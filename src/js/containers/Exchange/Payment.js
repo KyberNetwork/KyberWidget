@@ -341,7 +341,7 @@ export default class Payment extends React.Component {
     var classDisable = ""
     var txError = this.props.exchange.signError + this.props.exchange.broadcastError;
 
-    if (!this.props.exchange.validateAccountComplete || isConfirming || this.props.exchange.isFetchingGas || errors.signer_invalid || errors.exceed_balance_fee) {
+    if (!this.props.exchange.validateAccountComplete || isConfirming || this.props.exchange.isFetchingGas || errors.signer_invalid || errors.exceed_balance_fee || errors.exceed_balance) {
       classDisable += " disabled"
     }
 
