@@ -1,40 +1,32 @@
-
 import React from 'react';
-
 import * as keyService from "./baseKey"
-import TrezorConnect from "../device/trezor/trezor-connect";
+import TrezorConnect from 'trezor-connect';
 import EthereumTx from "ethereumjs-tx"
 import { numberToHex } from "../../utils/converter"
 import { getTranslate } from 'react-localize-redux'
-
 import { store } from "../../store"
 
 const defaultDPath = "m/44'/60'/0'/0";
 
 export default class Trezor extends React.Component {
-  constructor(){
-    super()
-    this.trezor = TrezorConnect()
-    this.trezor.close()
-  }
   getPublicKey = (path = defaultDPath) => {
-    var translate = getTranslate(store.getState().locale)    
+    var translate = getTranslate(store.getState().locale)
     return new Promise((resolve, reject) => {
-      this.trezor.getXPubKey(path, (result) => {
-          if (result.success) {
-            result.dPath = path;
-            resolve(result);
-          } else {
-            console.log(result)
-            var err = translate("error.cannot_connect_trezor") || 'Cannot connect to Trezor'
-            if (result.toString() == 'Error: Not a valid path.') {
-              err = translate("error.path_not_support_by_trezor") || 'This path not supported by Trezor'
-            }
-            reject(err)
+      TrezorConnect.getPublicKey({ path }).then(function (result) {
+        if (result.success) {
+          result = { ...result.payload };
+          result.dPath = path;
+          resolve(result);
+        } else {
+          var err = translate("error.cannot_connect_trezor") || 'Cannot connect to trezor'
+          if (result.toString() == 'Error: Not a valid path.') {
+            err = translate("error.path_not_support_by_trezor") || 'This path not supported by Trezor'
           }
-      })
+          reject(err)
+        }
+      });
     });
-  }
+  };
 
   callSignTransaction = (funcName, ...args) => {
     return new Promise((resolve, reject) => {
@@ -81,34 +73,36 @@ export default class Trezor extends React.Component {
 
     var chain_id = params.chainId; // 1 for ETH, 61 for ETC    
     return new Promise((resolve, reject) => {
-      this.trezor.signEthereumTx(
-        address_n,
-        nonce,
-        gasPrice,
-        gasLimit,
-        to,
-        value,
-        data,
-        chain_id,
-        function (response) {
+      TrezorConnect.ethereumSignTransaction(
+        {
+          path: address_n,
+          transaction: {
+            to,
+            value,
+            data,
+            chainId: chain_id,
+            nonce,
+            gasLimit,
+            gasPrice
+          }
+        })
+        .then(response => {
           if (response.success) {
-            var v = new Buffer([response.v]);
-            var r = new Buffer(response.r, 'hex');
-            var s = new Buffer(response.s, 'hex');
             var tx = new EthereumTx({
+              from: params.from,
               nonce: params.nonce,
               gasPrice: params.gasPrice,
               gasLimit: params.gasLimit,
               to: params.to,
               value: params.value,
               data: params.data,
-              v: v,
-              r: r,
-              s: s
+              v: response.payload.v,
+              r: response.payload.r,
+              s: response.payload.s
             })
             resolve(tx)
           } else {
-            reject(response.error)
+            reject(response.payload.error)
           }
         })
     })
