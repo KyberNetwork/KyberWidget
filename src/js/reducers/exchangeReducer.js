@@ -168,19 +168,19 @@ const exchange = (state = initState, action) => {
       newState.errors.rateSystem = "";
       return newState
     }
-    case "EXCHANGE.UPDATE_RATE":{
-      const { rateInit, expectedPrice, slippagePrice, blockNo, isSuccess} = action.payload
+    case "EXCHANGE.UPDATE_RATE": {
+      const { rateInit, expectedPrice, slippagePrice, blockNo, isSuccess, errors } = action.payload
 
       if (!isSuccess) {
-        newState.errors.rateSystem = "error.get_rate"
-      }else{
-        if(expectedPrice === "0"){
-          if(rateInit === "0" || rateInit === 0 || rateInit === undefined || rateInit === null){
-            newState.errors.rateSystem = "error.kyber_maintain"
-          }else{
-            newState.errors.rateSystem = "error.handle_amount"
+        newState.errors.rateSystem = errors.getRate;
+      } else {
+        if (expectedPrice === "0") {
+          if(rateInit === "0" || rateInit === 0 || rateInit === undefined || rateInit === null) {
+            newState.errors.rateSystem = errors.kyberMaintain;
+          } else {
+            newState.errors.rateSystem = errors.handleAmount;
           }
-        }else{
+        } else {
           newState.errors.rateSystem = ""
         }
       }

@@ -91,7 +91,7 @@ const tokens = (state = initState, action) => {
       return Object.assign({}, state, { tokens: tokens }) 
     }
 
-    case 'EXCHANGE.INIT_PARAMS_EXCHANGE':{
+    case 'EXCHANGE.INIT_PARAMS_EXCHANGE': {
       const {tokens, network, pinnedTokens} = action.payload
       var newTokens = JSON.parse(JSON.stringify(tokens))
 

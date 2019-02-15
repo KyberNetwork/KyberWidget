@@ -108,10 +108,10 @@ export function updateRateSnapshot(ethereum){
   }
 }
 
-export function updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, blockNo, isManual, isSuccess) {
+export function updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, blockNo, isManual, isSuccess, errors) {
   return {
     type: "EXCHANGE.UPDATE_RATE",
-    payload: { rateInit, expectedPrice, slippagePrice, blockNo, isManual, isSuccess}
+    payload: { rateInit, expectedPrice, slippagePrice, blockNo, isManual, isSuccess, errors }
   }
 
 }

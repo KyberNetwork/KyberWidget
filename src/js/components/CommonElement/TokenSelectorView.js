@@ -6,17 +6,17 @@ import { getTokenUrl } from "../../utils/common";
 import * as constants from "../../services/constants";
 
 const TokenSelectorView = (props) => {
-  var focusItem = props.listItem[props.focusItem]
-  var tokenList = {};
+  const focusItem = props.listItem[props.focusItem]
+  let sortedTokens = {};
   let priorityTokens = [];
 
   Object.keys(props.listItem).map((key) => {
-    var token = props.listItem[key],
+    const token = props.listItem[key],
         matchName = token.name.toLowerCase().includes(props.searchWord),
         matchSymbol = token.symbol.toLowerCase().includes(props.searchWord);
 
     if (matchSymbol || matchName) {
-      tokenList[key] = props.listItem[key];
+      sortedTokens[key] = props.listItem[key];
     }
 
     if (token.priority) {
@@ -24,23 +24,19 @@ const TokenSelectorView = (props) => {
     }
   });
 
-  var getListToken = () => {
-    priorityTokens = _(priorityTokens).chain().sortBy(function(token) {
-      return token.index;
-    }).pluck('symbol').value();
-
-    tokenList = _(tokenList).chain().sortBy(function (token) {
+  function getListToken() {
+    sortedTokens = _(sortedTokens).chain().sortBy(function (token) {
       return !constants.STABLE_COINS.includes(token.symbol)
     }).sortBy(function (token) {
-      return !priorityTokens.includes(token.symbol)
+      return token.index
     }).value();
 
-    return Object.keys(tokenList).map((key) => {
+    return Object.keys(sortedTokens).map((key) => {
       if (key === props.focusItem) {
         return;
       }
 
-      var item = tokenList[key];
+      const item = sortedTokens[key];
 
       return (
         <div className={addPrefixClass("token-item-container theme-text-hover")} onClick={(e) => props.selectItem(e, item.symbol, item.address)} key={key}>
