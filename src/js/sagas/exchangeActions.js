@@ -811,12 +811,14 @@ function* updateRatePending(action) {
   var state = store.getState()
   var ethereum = state.connection.ethereum
   var translate = getTranslate(state.locale)
-
-
-
   var sourceAmoutRefined = yield call(getSourceAmount, sourceTokenSymbol, sourceAmount)
   var sourceAmoutZero = yield call(getSourceAmountZero, sourceTokenSymbol)
-  console.log({ sourceAmoutRefined, sourceAmoutZero })
+  const errors = {
+    getRate: translate("error.get_rate") || "Cannot get rate from Blockchain",
+    kyberMaintain: translate("error.kyber_maintain") || "This pair is temporarily under maintenance",
+    handleAmount: translate("error.handle_amount") || "Kyber cannot handle your amount, please reduce amount",
+  };
+
   if (isManual) {
     var rateRequest = yield call(common.handleRequest, getRate, ethereum, source, dest, sourceAmoutRefined)
     if (rateRequest.status === "success") {
@@ -839,7 +841,7 @@ function* updateRatePending(action) {
           return
         }
       }
-      yield put.resolve(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true))
+      yield put.resolve(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true, errors))
     }
 
     if (rateRequest.status === "timeout") {
@@ -873,7 +875,7 @@ function* updateRatePending(action) {
         }
       }
 
-      yield put.resolve(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true))
+      yield put.resolve(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true, errors))
     }
   }
 }

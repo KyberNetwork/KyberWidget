@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import { Provider } from "react-redux"
 import { Layout } from "./containers/Layout"
 import BLOCKCHAIN_INFO from "../../env"
-import constanst from "./services/constants"
+import constants from "./services/constants"
 import { initSession, initParamsGlobal, haltPayment, initAnalytics } from "./actions/globalActions"
 import { initParamsExchange } from "./actions/exchangeActions"
 import { PersistGate } from 'redux-persist/lib/integration/react'
@@ -16,7 +16,6 @@ import Web3 from "web3";
 
 function getListTokens(network) {
   return new Promise((resolve, reject) => {
-    //return list of object tokens
     fetch(BLOCKCHAIN_INFO[network].api_tokens, {
       method: 'GET',
       headers: {
@@ -28,7 +27,6 @@ function getListTokens(network) {
     })
       .then((result) => {
         if (result.success) {
-          //check listing time
           var now = Math.round(new Date().getTime()/1000)
           var tokens = {}
           result.data.map(val => {
@@ -36,10 +34,7 @@ function getListTokens(network) {
             tokens[val.symbol] = val
           })
           resolve(tokens)
-
-          //resolve(result.data)
         } else {
-          //get from snapshot
           var tokens = BLOCKCHAIN_INFO[network].tokens
           resolve(tokens)
         }
@@ -324,7 +319,7 @@ function initParams(appId) {
 Modal.setAppElement('body');
 window.kyberWidgetInstance = {}
 window.kyberWidgetInstance.render = (widgetId) => {
-  var appId = widgetId ? widgetId : constanst.APP_NAME
+  var appId = widgetId ? widgetId : constants.APP_NAME
 
   if (!document.getElementById(appId)) {
     return

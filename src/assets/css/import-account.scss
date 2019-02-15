@@ -333,8 +333,6 @@ $animation-time: 0.5s;
   }
 
   @include screen-max-width(600px) {
-    justify-content: unset;
-
     &__item {
       width: 30%;
       max-width: unset;
