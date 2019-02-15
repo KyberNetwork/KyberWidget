@@ -20,7 +20,8 @@ import { roundingNumber } from "../../utils/converter";
     tokens: supportTokens,
     deviceService: props.deviceService,
     translate: getTranslate(store.locale),
-    screen: props.screen
+    screen: props.screen,
+    analytics: store.global.analytics
   }
 })
 export default class ImportByDevice extends React.Component {
@@ -166,6 +167,7 @@ export default class ImportByDevice extends React.Component {
           isFirstList: false
         })
       }
+      this.props.analytics.callTrack("clickNavigateAddressColdWallet", "next")
     } else {
       this.props.dispatch(throwError('Cannot connect to ' + this.walletType))
     }
@@ -184,6 +186,7 @@ export default class ImportByDevice extends React.Component {
         isFirstList: true
       })
     }
+    this.props.analytics.callTrack("clickNavigateAddressColdWallet", "previous")
   }
 
   setWallet(index, address, balance, type) {

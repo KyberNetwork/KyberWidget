@@ -2,7 +2,13 @@ import React from "react"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import { roundingNumber } from "../../utils/converter";
 import { addPrefixClass } from "../../utils/className";
+import {connect} from "react-redux";
 
+@connect((store) => {
+  return {
+    analytics: store.global.analytics
+  }
+})
 export default class AddressSelector extends React.Component {
   state = {
     isOpen: false,
@@ -10,15 +16,18 @@ export default class AddressSelector extends React.Component {
 
   showSelector = () => {
     this.setState({ isOpen: true })
+    this.props.analytics.callTrack("clickAddressSelectorColdWallet", this.state.walletType, true)
   }
 
   hideSelector = () => {
-    this.setState({ isOpen: false })
+    this.setState({ isOpen: false });
+    this.props.analytics.callTrack("clickAddressSelectorColdWallet", this.state.walletType, false)
   }
 
   setWallet(index, address, balance) {
     this.hideSelector();
     this.props.setWallet(index, address, balance, this.props.walletType);
+    this.props.analytics.callTrack("clickChooseNewAddressColdWallet", address, this.state.walletType);
   }
 
   getAddressList = () => {

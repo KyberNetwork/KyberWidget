@@ -195,13 +195,12 @@ function* checkBalance(address) {
     srcAmount = exchange.sourceAmount
     srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimals)
   }
-  if (sourceTokenSymbol !== "ETH") {
-    var srcBalance = mapBalance[sourceTokenSymbol]
-    if (converter.compareTwoNumber(srcBalance, srcAmount) === -1) {
-      yield put(exchangeActions.throwErrorExchange("exceed_balance", translate("error.source_amount_too_high") || "Source amount is over your balance"))
-    } else {
-      yield put(exchangeActions.throwErrorExchange("exceed_balance", ""))
-    }
+
+  var srcBalance = mapBalance[sourceTokenSymbol]
+  if (converter.compareTwoNumber(srcBalance, srcAmount) === -1) {
+    yield put(exchangeActions.throwErrorExchange("exceed_balance", translate("error.source_amount_too_high") || "Source amount is over your balance"))
+  } else {
+    yield put(exchangeActions.throwErrorExchange("exceed_balance", ""))
   }
 
   //validate tx fee
@@ -222,7 +221,6 @@ function* checkBalance(address) {
       yield put(exchangeActions.throwErrorExchange("exceed_balance_fee", ""))
     }
   } else {
-
     txFee = converter.addTwoNumber(txFee, srcAmount)
     if (converter.compareTwoNumber(balanceETH, txFee) === -1) {
       yield put(exchangeActions.throwErrorExchange("exceed_balance_fee", translate("error.eth_balance_not_enough_for_fee")))
