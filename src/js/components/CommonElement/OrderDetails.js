@@ -6,17 +6,10 @@ const OrderDetails = (props) => {
   const isUnlockWalletStep = props.exchange.step === 2;
   const isConfirmStep = props.exchange.step === 3;
   const isEthDest = props.exchange.destTokenSymbol === 'ETH';
-  let isError = false;
   let gasUsed = props.exchange.gas;
   if (props.exchange.isNeedApprove) {
     gasUsed += props.exchange.gas_approve
   }
-
-  Object.keys(props.exchange.errors).map(key => {
-    if (props.exchange.errors[key] && props.exchange.errors[key] !== "") {
-      isError = true;
-    }
-  });
 
   function renderProducts() {
     return props.exchange.products.map((product, index) => {
@@ -59,7 +52,7 @@ const OrderDetails = (props) => {
                 {!props.exchange.isSelectToken && (
                   <div>
                     {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
-                      <div>{props.exchange.offeredRate == "0" || isError ? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}</div>
+                      <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}</div>
                     )}
                     {props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol && (
                       <div>{props.exchange.sourceAmount || 0} {props.exchange.sourceTokenSymbol}</div>
