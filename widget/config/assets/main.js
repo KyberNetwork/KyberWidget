@@ -9,7 +9,7 @@
 
   async function fetchTokens(network) {
     try {
-      document.getElementById('token-list').innerHTML = '<img class="widget-config__loading-icon" src="/assets/images/icon-loading.gif"/>';
+      document.getElementById('token-list').innerHTML = '<img class="widget-config__loading-icon" src="assets/images/icon-loading.gif"/>';
 
       const response = await fetch(`https://${network === "ropsten" ? network + '-' : ''}api.kyber.network/internal/currencies`);
       const tokenResponse = await response.json();

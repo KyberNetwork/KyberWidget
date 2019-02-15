@@ -161,7 +161,7 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.HANDLE_AMOUNT":{
-      newState.errors.rateSystem = "error.handle_amount"
+      newState.errors.rateSystem = "Kyber cannot handle your amount, please reduce amount"
       return newState
     }
     case "EXCHANGE.RESET_HANDLE_AMOUNT_ERROR": {

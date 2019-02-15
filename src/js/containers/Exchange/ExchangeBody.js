@@ -87,14 +87,9 @@ export default class ExchangeBody extends React.Component {
     }
 
     var isValidate = true
-
-    if (!this.props.exchange.kyber_enabled) {
-      this.props.dispatch(exchangeActions.thowErrorSourceAmount("Kyber swap is not enabled"))
-      isValidate = false
-    }
-
     var srcAmount
     var sourceAmountIsNumber = true
+
     if (!this.props.exchange.isHaveDestAmount) {
       srcAmount = parseFloat(this.props.exchange.sourceAmount)
       if (isNaN(srcAmount)) {
@@ -313,7 +308,7 @@ export default class ExchangeBody extends React.Component {
     }
 
     let isStepValid;
-    if (!validators.anyErrors(this.props.exchange.errors) && this.state.acceptedTerm && !this.props.exchange.isSelectToken) {
+    if (!validators.anyErrors(this.props.exchange.errors) && this.state.acceptedTerm && !this.props.exchange.isSelectToken && this.props.exchange.kyber_enabled) {
       isStepValid = true;
     } else {
       isStepValid = false;

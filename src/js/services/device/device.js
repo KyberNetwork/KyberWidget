@@ -1,25 +1,21 @@
-import TrezorConnect from "../device/trezor/trezor-connect";
-
+import TrezorConnect from 'trezor-connect';
 import TransportU2F from "@ledgerhq/hw-transport-u2f";
 import Eth from "@ledgerhq/hw-app-eth";
-
 const defaultDPath = "m/44'/60'/0'/0";
 const ledgerPath = "m/44'/60'/0'";
 
 export function getTrezorPublicKey(path = defaultDPath) {
-    return new Promise((resolve, reject) => {
-        TrezorConnect.getXPubKey(path, (result) => {
-            if (result.success) {
-                result.dPath = path;
-                resolve(result);
-            } else {
-                reject(result);
-            }
-        })
+  return new Promise((resolve, reject) => {
+    TrezorConnect.getPublicKey({path}).then(function(result) {
+      if (result.success) {
+        result.dPath = path;
+        resolve(result);
+      } else {
+        reject(result);
+      }
     });
+  });
 }
-
-
 
 export function connectLedger() {
     return new Promise((resolve, reject) => {
@@ -42,19 +38,6 @@ export function connectLedger() {
         //     });
     });
 }
-
-// export function connectLedger(time) {
-//     return new Promise((resolve, reject) => {
-//         ledgerU2f.create_async(time)
-//             .then((comm) => {
-//                 var eth = new ledgerEth(comm);
-//                 resolve(eth);
-//             })
-//             .fail((err) => {
-//                 reject(err);
-//             });
-//     });
-// }
 
 export function getLedgerPublicKey(eth,path = ledgerPath) {
     return new Promise((resolve, reject) => {
