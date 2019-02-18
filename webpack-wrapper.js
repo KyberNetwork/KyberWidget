@@ -89,10 +89,6 @@ var getConfig = env => {
           'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
         }
       }));
-
-      plugins.push(new WebpackShellPlugin({
-        onBuildEnd: [`FOLDER=${folder} node webpack-config-after.js`]
-      }))
     } else {
         //entry['libary'] = ['./assets/css/foundation-float.min.css', './assets/css/foundation-prototype.min.css']
         // plugins.push(
@@ -341,6 +337,35 @@ async function saveBackupTokens() {
     }
 }
 
+function addPrefixCss() {
+  var fs = require('fs');
+  var postcss = require('postcss');
+  var classPrfx = require('postcss-class-prefix');
+  var file = `dist/native/app.css`
+  var css = fs.readFileSync(file, 'utf8').toString();
+
+  var out = postcss()
+    .use(classPrfx('kyber_widget-', { ignore: [
+        "kyber_widget",
+        "dropdown",
+        "ReactModalPortal",
+        "dropdown--active",
+        "dropdown__trigger",
+        "dropdown__content",
+        "rc-slider-handle",
+        "rc-slider-handle:focus",
+        "rc-slider-handle:active"
+      ] }))
+    .process(css);
+
+  fs.writeFile(file, out, (err) => {
+    if (err) {
+      console.log(err)
+      throw err
+    }
+  });
+}
+
 async function main() {
 
     await saveBackupTokens()
@@ -365,14 +390,16 @@ async function main() {
 
     var webpackConfig = await getConfig(config)  //require('./webpack.config.js');
     var compiler = await webpack(webpackConfig)
-    compiler.run(function (err, stats) {
+    await compiler.run(function (err, stats) {
          if (!err) {
              console.log("success")
+           addPrefixCss();
          } else {
              console.log("fail")
             console.log(err)
          }
      })
+
     await renderThemeFiles()
 }
 
