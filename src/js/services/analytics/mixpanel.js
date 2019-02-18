@@ -386,4 +386,13 @@ export default class Mixpanel {
       }
     }
   }
+  clickCloseModal() {
+    if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+      try {
+        mixpanel.track("Widget_Click_Close_Modal")
+      } catch(e) {
+        console.log(e)
+      }
+    }
+  }
 }

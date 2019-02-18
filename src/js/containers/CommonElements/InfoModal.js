@@ -8,14 +8,16 @@ import { getTranslate } from 'react-localize-redux'
   var modal = store.utils.infoModal  
   return {
     modal: modal ? modal : { open: false, },
-    translate: getTranslate(store.locale)
+    translate: getTranslate(store.locale),
+    analytics: store.global.analytics
   }
 })
 
 export default class Info extends React.Component {
   exitIdleMode = () => {
-    this.props.dispatch(closeInfoModal())
-  }
+    this.props.dispatch(closeInfoModal());
+    this.props.analytics.callTrack("clickCloseModal")
+  };
 
   render(){
     return (
@@ -24,7 +26,7 @@ export default class Info extends React.Component {
           title={this.props.modal.title} 
           translate={this.props.translate} 
           content={this.props.modal.content} 
-          closeModal={this.exitIdleMode.bind(this)}          
+          closeModal={this.exitIdleMode.bind(this)}
       />
     )  
   }
