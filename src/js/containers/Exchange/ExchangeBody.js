@@ -237,7 +237,7 @@ export default class ExchangeBody extends React.Component {
   swapToken = () => {
     this.props.dispatch(exchangeActions.swapToken(this.props.exchange.sourceTokenSymbol, this.props.exchange.destTokenSymbol))
     this.props.ethereum.fetchRateExchange(true)
-    this.props.global.analytics.callTrack("clickSwitchTwoTokens", this.props.exchange.sourceTokenSymbol, this.props.exchange.destTokenSymbol)
+    this.props.global.analytics.callTrack("clickSwitchTwoTokens", this.props.exchange.destTokenSymbol, this.props.exchange.sourceTokenSymbol)
   }
 
   render() {

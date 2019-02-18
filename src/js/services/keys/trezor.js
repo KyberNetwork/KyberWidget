@@ -10,7 +10,6 @@ const defaultDPath = "m/44'/60'/0'/0";
 
 export default class Trezor extends React.Component {
   getPublicKey = (path = defaultDPath) => {
-    TrezorConnect.dispose();
     var translate = getTranslate(store.getState().locale)
     return new Promise((resolve, reject) => {
       TrezorConnect.getPublicKey({ path }).then(function (result) {

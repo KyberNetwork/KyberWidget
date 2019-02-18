@@ -75,11 +75,9 @@ export default class ImportByDevice extends React.Component {
     }
     this.props.deviceService.getPublicKey(selectedPath, this.state.modalOpen)
       .then((result) => {
-        const dPath = (dpath != 0) ? result.dPath : dpath
-        this.dPath = dPath;
+        const currentDPath = (dpath != 0) ? result.dPath : dpath
         this.generateAddress(result);
-
-        this.props.dispatch(setDPath(dPath));
+        this.props.dispatch(setDPath(currentDPath));
         this.props.dispatch(closeImportLoading());
       })
       .catch((err) => {
@@ -223,6 +221,8 @@ export default class ImportByDevice extends React.Component {
   }
 
   showLoading(walletType) {
+    if (this.props.account.loading) return;
+
     const browser = bowser.getParser(window.navigator.userAgent);
     const browserName = browser.getBrowserName();
     this.props.dispatch(resetCheckTimeImportLedger())
@@ -253,7 +253,7 @@ export default class ImportByDevice extends React.Component {
         getPreAddress={() => this.preAddress()}
         getMoreAddress={() => this.moreAddress()}
         dPath={this.DPATH}
-        currentDPath={this.dPath}
+        currentDPath={this.props.account.wallet.dPath}
         wallet={this.props.account.wallet}
         setWallet={this.setWallet.bind(this)}
         currentAddresses={this.state.currentAddresses}
