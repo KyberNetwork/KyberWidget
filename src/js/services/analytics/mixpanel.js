@@ -87,6 +87,16 @@ export default class Mixpanel {
     }
   }
 
+  clickSwitchTwoTokens(srcToken, destToken) {
+    if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+      try {
+        mixpanel.track("Widget_1_1_Click_Switch_Two_Tokens", {srcToken, destToken})
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
+
   clickTokenSelector(isOpen) {
     if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
       try {
@@ -100,7 +110,7 @@ export default class Mixpanel {
   chooseToken(token, type) {
     if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
       try {
-        mixpanel.track("Widget_1_2_Click_Choose_Token", { token: token, type: type })
+        mixpanel.track("Widget_1_2_Click_Choose_Token", { selectedToken: token, type: type })
       } catch (e) {
         console.log(e)
       }
@@ -110,7 +120,7 @@ export default class Mixpanel {
   chooseSuggestToken(token, type) {
     if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
       try {
-        mixpanel.track("Widget_1_2_Click_Choose_Suggest_Token", { token: token, type: type })
+        mixpanel.track("Widget_1_2_Click_Choose_Suggest_Token", { selectedToken: token, type: type })
       } catch (e) {
         console.log(e)
       }
@@ -170,17 +180,27 @@ export default class Mixpanel {
   clickToApprove(token) {
     if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
       try {
-        mixpanel.track("Widget_3_1_Click_Approve_Token", { token: token })
+        mixpanel.track("Widget_3_1_Click_Approve_Token", { selectedToken: token })
       } catch (e) {
         console.log(e)
       }
     }
   }
 
-  clickShowPassword() {
+  clickToggleRevealPrivateKeyPassword(showPassword) {
     if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
       try {
-        mixpanel.track("Widget_2_2_Click_Show_Password")
+        mixpanel.track("Widget_2_2_Click_Toggle_Reveal_Private_Key_Password", { showPassword })
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
+
+  clickToggleRevealKeyStorePassword(showPassword) {
+    if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+      try {
+        mixpanel.track("Widget_3_1_Click_Toggle_Reveal_Key_Store_Password", { showPassword })
       } catch (e) {
         console.log(e)
       }
@@ -389,7 +409,7 @@ export default class Mixpanel {
   exitWidget(){
     if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function'){
       try{
-        mixpanel.track("Session_Widget_End")
+        mixpanel.track("Widget_Session_End")
       }catch(e){
         console.log(e)
       }

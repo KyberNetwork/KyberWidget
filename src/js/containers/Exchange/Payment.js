@@ -321,7 +321,7 @@ export default class Payment extends React.Component {
 
   toogleShowPassword = () => {
     this.setState({showPassword : !this.state.showPassword})
-    this.props.global.analytics.callTrack("clickShowPassword", this.state.showPassword ? "show" : "hide")
+    this.props.global.analytics.callTrack("clickToggleRevealKeyStorePassword", !this.state.showPassword)
   }
 
   resetPasswordError = () => {
