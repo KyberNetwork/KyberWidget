@@ -130,7 +130,7 @@ export default class Mixpanel {
   clickToAdvance(status) {
     if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
       try {
-        mixpanel.track("Widget_1_1_Click_To_Advance", { status: status })
+        mixpanel.track("Widget_3_1_Click_Advanced_Config", { status: status })
       } catch (e) {
         console.log(e)
       }
@@ -230,7 +230,7 @@ export default class Mixpanel {
   setNewMinRate(minRate) {
     if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
       try {
-        mixpanel.track("Widget_1_2_Click_Set_New_MinRate", { minRate: minRate })
+        mixpanel.track("Widget_3_2_Click_Set_New_MinRate", { minRate: minRate })
       } catch (e) {
         console.log(e)
       }
@@ -238,7 +238,6 @@ export default class Mixpanel {
   }
 
   customNewGas() {
-    console.log("input new gas")
     if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
       try {
         mixpanel.track("Widget_1_2_Click_To_Custom_Gas")
@@ -251,7 +250,7 @@ export default class Mixpanel {
   chooseGas(type, gasPrice) {
     if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
       try {
-        mixpanel.track("Widget_1_3_Click_To_Choose_Gas", { type: type, gasPrice: gasPrice })
+        mixpanel.track("Widget_3_2_Click_To_Choose_Gas", { type: type, gasPrice: gasPrice })
       } catch (e) {
         console.log(e)
       }
@@ -281,7 +280,7 @@ export default class Mixpanel {
   clickTermAndCondition() {
     if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
       try {
-        mixpanel.track("Widget_1_1_Click_To_Term_And_Codition")
+        mixpanel.track("Widget_1_1_Click_To_Term_And_Condition")
       } catch (e) {
         console.log(e)
       }
@@ -368,6 +367,16 @@ export default class Mixpanel {
     }
   }
 
+  clickCloseModal() {
+    if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
+      try {
+        mixpanel.track("Widget_*_1_Click_Close_Modal")
+      } catch(e) {
+        console.log(e)
+      }
+    }
+  }
+
   trackAccessToWidget(){
     if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
       try {
@@ -382,15 +391,6 @@ export default class Mixpanel {
       try{
         mixpanel.track("Session_Widget_End")
       }catch(e){
-        console.log(e)
-      }
-    }
-  }
-  clickCloseModal() {
-    if (typeof mixpanel !== "undefined" && typeof mixpanel.track === 'function') {
-      try {
-        mixpanel.track("Widget_Click_Close_Modal")
-      } catch(e) {
         console.log(e)
       }
     }

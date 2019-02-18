@@ -11,14 +11,15 @@ $divider-color: darken($title-background-color, 5);
 .reveal {
   position: relative;
   overflow: visible;
-  border-radius: 0;
   color: #2c2c2c;
   outline: none;
   box-shadow: 0 20px 40px 0 rgba($medium-gray, .2);
   background-color: #fefefe;
-  padding: 1rem;
+  padding: 0;
   border: 1px solid #cacaca;
   margin: 0 auto;
+  border-radius: 5px;
+  font-family: $font-montserrat;
 
   .text-center {
     text-align: center;
@@ -148,6 +149,47 @@ $divider-color: darken($title-background-color, 5);
       text-transform: uppercase;
       color: $dark-gray;
       letter-spacing: .5px;
+    }
+  }
+}
+
+.modal-error {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 22px 10px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #ea221d;
+    box-shadow: 0 4px 32px 0 rgba(65, 101, 128, 0.11);
+
+    &::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 24px;
+      position: relative;
+      top: -1px;
+      margin-right: 10px;
+      background-image: url($image-path + 'icons/icon-error-small.svg');
+      background-size: contain;
+    }
+  }
+
+  &__content {
+    text-align: center;
+    padding: 30px 10px 35px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #727b8f;
+    background-color: #f7f7f7;
+    line-height: 1.6;
+
+    br {
+      content: "";
+      display: block;
+      margin-top: 7px;
     }
   }
 }
