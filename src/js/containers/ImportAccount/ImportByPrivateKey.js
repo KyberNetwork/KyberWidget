@@ -31,7 +31,7 @@ export default class ImportByPrivateKey extends React.Component {
 
   toggleShowPw() {
     this.setState({showPassword: !this.state.showPassword});
-    this.props.analytics.callTrack("clickShowPassword");
+    this.props.analytics.callTrack("clickToggleRevealPrivateKeyPassword", !this.state.showPassword);
   }
 
   inputChange(e) {

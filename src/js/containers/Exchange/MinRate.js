@@ -63,7 +63,7 @@ export default class MinRate extends React.Component {
               className={addPrefixClass("common__radio-input theme-radio")}
               type="radio"
               name="slippageRate"
-              value="0"
+              value="10"
               onChange={this.props.onSlippageRateChanged}
             />
             <span className={addPrefixClass("common__radio-icon")}/>

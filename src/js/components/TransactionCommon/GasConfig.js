@@ -26,7 +26,7 @@ const GasConfig = (props) => {
                 name="gasAmount"
                 value={item.key}
                 defaultChecked={props.selectedGas == item.key}
-                onChange={() => props.handleGasChanged(item.value, item.key)}
+                onChange={() => props.handleGasChanged(item.value, item.key, item.text)}
               />
               <span className={addPrefixClass("common__radio-icon")}/>
             </label>
