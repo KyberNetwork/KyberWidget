@@ -118,7 +118,8 @@ function initParams(appId) {
     defaultPair = widgetParent.getAttribute('data-widget-default-pair')
     theme = widgetParent.getAttribute('data-widget-theme') || "theme-emerald"
     mode = widgetParent.getAttribute('data-widget-mode')
-    products = widgetParent.getAttribute('data-widget-products') || []
+    products = widgetParent.getAttribute('data-widget-products')
+    products = products ? JSON.parse(products) : [];
   } else {
     query = common.getQueryParams(window.location.search)
     receiveAddr = common.getParameterByName("receiveAddr")
@@ -139,7 +140,6 @@ function initParams(appId) {
     defaultPair = common.getParameterByName("defaultPair")
     theme = common.getParameterByName("theme") || "theme-emerald"
     mode = common.getParameterByName("mode")
-
     products = productNames ? common.getProductsFromParam(productNames, productQtys, productImages) : [];
   }
 
