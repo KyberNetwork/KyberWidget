@@ -244,6 +244,12 @@
       generateTag();
     });
 
+    document.querySelectorAll(".widget-config__theme-item").forEach(function (item) {
+      item.addEventListener("click", function () {
+        generateTag();
+      })
+    });
+
     document.querySelectorAll(".widget-config__dropdown-trigger").forEach(function (item) {
       item.addEventListener("click", function () {
         var network = document.getElementById('widget-network').value;
