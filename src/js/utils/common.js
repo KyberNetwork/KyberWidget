@@ -10,24 +10,18 @@ export function getParameterByName(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-/**
- * Get array of products from string parameter
- *
- * @param stringProducts Ex: name1_qty1_avatar_1;name2_qty2_avatar_2
- *
- * @return {Array}
- */
-export function getProductsFromParam(stringProducts) {
-  let products = stringProducts.split(';');
+export function getMultipleValuesByName(name) {
+  let url = new URL(window.location.href);
+  return url.searchParams.getAll(name);
+}
 
-  products = products.map((product) => {
-    const productAttributes = product.split('_');
-    const productQty = +productAttributes[1] ? +productAttributes[1] : 1;
+export function getProductsFromParam(productNames, productQtys = [], productImages = []) {
+  return productNames.map((productName, index) => {
+    const productQty = +productQtys[index] ? +productQtys[index] : 1;
+    const productImage = productImages[index] ? productImages[index] : null;
 
-    return { name: productAttributes[0], qty: productQty, image: productAttributes[2] };
+    return { name: productName, qty: productQty, image: productImage };
   });
-
-  return products;
 }
 
 export function getActiveLanguage(langs) {

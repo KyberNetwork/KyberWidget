@@ -80,6 +80,9 @@ function initParams(appId) {
   var signer
   var commissionID
   var products
+  var productNames
+  var productQtys
+  var productImages
   var type
   var pinnedTokens
   var paymentData
@@ -108,7 +111,6 @@ function initParams(appId) {
     paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
     signer = widgetParent.getAttribute('data-widget-signer')
     commissionID = widgetParent.getAttribute('data-widget-commission-id')
-    products = widgetParent.getAttribute('data-widget-products')
     type = widgetParent.getAttribute('data-widget-type')
     pinnedTokens = widgetParent.getAttribute('data-widget-pinned-tokens') || []
     paymentData = widgetParent.getAttribute('data-widget-payment-data') || ""
@@ -116,6 +118,8 @@ function initParams(appId) {
     defaultPair = widgetParent.getAttribute('data-widget-default-pair')
     theme = widgetParent.getAttribute('data-widget-theme') || "theme-emerald"
     mode = widgetParent.getAttribute('data-widget-mode')
+    products = widgetParent.getAttribute('data-widget-products')
+    products = products ? JSON.parse(products) : [];
   } else {
     query = common.getQueryParams(window.location.search)
     receiveAddr = common.getParameterByName("receiveAddr")
@@ -126,7 +130,9 @@ function initParams(appId) {
     paramForwarding = common.getParameterByName("paramForwarding")
     signer = common.getParameterByName("signer")
     commissionID = common.getParameterByName("commissionId")
-    products = common.getParameterByName("products")
+    productNames = common.getMultipleValuesByName("productName")
+    productQtys = common.getMultipleValuesByName("productQty")
+    productImages = common.getMultipleValuesByName("productImage")
     type = common.getParameterByName("type")
     pinnedTokens = common.getParameterByName("pinnedTokens") || []
     paymentData = common.getParameterByName("paymentData") || ""
@@ -134,9 +140,8 @@ function initParams(appId) {
     defaultPair = common.getParameterByName("defaultPair")
     theme = common.getParameterByName("theme") || "theme-emerald"
     mode = common.getParameterByName("mode")
+    products = productNames ? common.getProductsFromParam(productNames, productQtys, productImages) : [];
   }
-
-  products = products ? common.getProductsFromParam(products) : [];
 
   paramForwarding = paramForwarding === "true" || paramForwarding === true ? paramForwarding : "false"
   switch (network) {
