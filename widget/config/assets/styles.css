@@ -604,14 +604,14 @@ label input, select, .pointer {
 
 }
 
-.kyber-widget-button {
+.kyber-widget-button.theme-supported {
   text-indent: -999px;
   overflow: hidden;
   width: 153px;
   position: relative;
 }
 
-.kyber-widget-button::after {
+.kyber-widget-button.theme-supported::after {
   content: 'Preview';
   display: block;
   position: absolute;

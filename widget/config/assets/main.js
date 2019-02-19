@@ -6,6 +6,9 @@
   var activeTheme = "theme-emerald";
   var currentNetwork = document.getElementById('widget-network').value;
   var currentTokens = [];
+  var version = getUrlParam("version");
+  var currentVersion = version === NO_VERSION ? defaultVersion : version
+  var isSupportedThemeVersion =  currentVersion > 0.5;
 
   async function fetchTokens(network) {
     try {
@@ -313,6 +316,7 @@
 
     codeBtn.classList.remove("widget-config__btn--disabled");
 
+    var themeSupportedClass = isSupportedThemeVersion ? "theme-supported" : '';
     var mode = document.querySelector("form").mode.value || "tab";
     var widgetBaseUrl = getWidgetUrl();
     var url = widgetBaseUrl + "/?" + formData.data;
@@ -320,7 +324,7 @@
     var jsUrl = widgetBaseUrl + '/widget.js';
     var tagHtml = "<!-- This is the '" + formData.buttonText + "' button, place it anywhere on your webpage -->\n";
     tagHtml += "<!-- You can add multiple buttons into a same page -->\n";
-    tagHtml += "<a href='" + url + "'\nclass='kyber-widget-button " + activeTheme + "' ";
+    tagHtml += "<a href='" + url + "'\nclass='kyber-widget-button " + activeTheme + " " + themeSupportedClass + "' ";
     tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay with tokens'\n";
     tagHtml += "target='_blank'>" + formData.buttonText + "</a>";
 
@@ -359,6 +363,10 @@
   function setupVersion() {
     var widgetUrlParam = getUrlParam("widget_url");
     var version = getUrlParam("version");
+
+    if (!isSupportedThemeVersion) {
+      document.getElementById("theme-selector").style.display = "none";
+    }
 
     if (widgetUrlParam && version === NO_VERSION) {
       document.getElementById("version-selector").style.display = "none";
