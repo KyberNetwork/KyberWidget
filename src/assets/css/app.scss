@@ -20,20 +20,6 @@ body {
   box-sizing: border-box;
 }
 
-#kyber-widget-overlay {
-  .widget-background {
-    display: none;
-  }
-
-  .widget-footer {
-    background-image: url($image-path + 'footer-logo-white.svg');
-  }
-
-  .widget-container::after {
-    display: none;
-  }
-}
-
 .kyber_widget {
   color: $base-color;
   font-size: 16px;

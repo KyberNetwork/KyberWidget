@@ -106,7 +106,7 @@ const INIT_EXCHANGE_FORM_STATE = {
   snapshot: {},
   network: 'ropsten',
   isSwap:true,
-  theme: "theme-emerald"
+  theme: ''
 }
 
 const INIT_TRANSFER_FORM_STATE = {

@@ -113,7 +113,6 @@ export default class Layout extends React.Component {
         currentLanguage = {currentLanguage}  
         translate={this.props.translate}
         paymentHeader = {paymentHeader}
-        theme={this.props.exchange}
         exchange={this.props.exchange}
         mode={this.props.mode}
       />
