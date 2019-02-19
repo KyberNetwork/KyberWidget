@@ -24,6 +24,26 @@
     top: 1px;
 }
 
+/* ========== Theme Sunset Settings ========== */
+
+.kyber-widget-button.theme-sunset {
+    background-color: #ee8006;
+}
+
+.kyber-widget-button.theme-sunset:hover {
+    background-color: #ffb15e;
+}
+
+/* ========== Theme Ocean Settings ========== */
+
+.kyber-widget-button.theme-ocean {
+    background-color: #1F87F0;
+}
+
+.kyber-widget-button.theme-ocean:hover {
+    background-color: #3fbdfc;
+}
+
 #kyber-widget {
     position: absolute;
     box-sizing: border-box;

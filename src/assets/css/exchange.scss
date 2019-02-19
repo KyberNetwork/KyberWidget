@@ -98,7 +98,7 @@
 
   &__order {
     border-radius: 6px;
-    border: solid 1px $theme-emerald-border;
+    border: solid 1px $theme-border;
     background-color: white;
 
     &-rate {
@@ -180,7 +180,7 @@
 
     &-address {
       padding-top: 25px;
-      border-top: 1px dashed $theme-emerald-border;
+      border-top: 1px dashed $theme-border;
     }
   }
 

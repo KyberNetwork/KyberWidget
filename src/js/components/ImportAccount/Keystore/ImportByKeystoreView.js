@@ -4,7 +4,7 @@ import { addPrefixClass } from "../../../utils/className";
 const ImportByKeystoreView = (props) => {
   return (
     <div>
-      <div className={addPrefixClass("payment-gateway__step-title payment-gateway__step-title--2")}>
+      <div className={addPrefixClass("widget-exchange__text theme-text")}>
         {props.translate("import.from_json_title") || "Choose your JSON file"}
       </div>
       <div className={addPrefixClass("import-account-content__wrapper")}>

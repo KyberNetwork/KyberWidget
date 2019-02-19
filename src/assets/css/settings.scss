@@ -102,15 +102,28 @@ $info-color: #1db1ff;
 // Theme colors
 $theme-color-default: #31cb9e;
 $theme-color-default-light: #38e0ad;
+$theme-shadow-container: 0 10px 20px 0 rgba(11, 104, 126, 0.21);
+$theme-shadow-header: 0 4px 32px 0 rgba(11, 104, 126, 0.21);
+$theme-shadow-icon: 0 9px 30px 0 rgba(143, 165, 188, 0.38);
+$theme-border: #d4e1ef;
 
+// Theme Emerald Settings
 $theme-emerald-regular: #00a2bc;
 $theme-emerald-light: #0faaa2;
 $theme-emerald-hover: #02e0bb;
-$theme-emerald-shadow-container: 0 10px 20px 0 rgba(11, 104, 126, 0.21);
-$theme-emerald-shadow-header: 0 4px 32px 0 rgba(11, 104, 126, 0.21);
-$theme-emerald-shadow-icon: 0 9px 30px 0 rgba(143, 165, 188, 0.38);
-$theme-emerald-border: #d4e1ef;
 $theme-emerald-gradient: linear-gradient(160deg, #00f2cd, #0074b3);
+
+// Theme Sunset Settings
+$theme-sunset-regular: #ee8006;
+$theme-sunset-light: #fa9e1e;
+$theme-sunset-hover: #ffb15e;
+$theme-sunset-gradient: linear-gradient(170deg, #ffb046, #f52880);
+
+// Theme Ocean Settings
+$theme-ocean-regular: #1F87F0;
+$theme-ocean-light: #1db1ff;
+$theme-ocean-hover: #3fbdfc;
+$theme-ocean-gradient: linear-gradient(170deg, #5d9cec, #1b6bd3);
 
 $body-font-family:'Montserrat', sans-serif;
 $body-antialiased: true;
