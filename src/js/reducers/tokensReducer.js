@@ -91,8 +91,8 @@ const tokens = (state = initState, action) => {
       return Object.assign({}, state, { tokens: tokens }) 
     }
 
-    case 'EXCHANGE.INIT_PARAMS_EXCHANGE':{
-      const {tokens, network, pinTokens} = action.payload
+    case 'EXCHANGE.INIT_PARAMS_EXCHANGE': {
+      const {tokens, network, pinnedTokens} = action.payload
       var newTokens = JSON.parse(JSON.stringify(tokens))
 
       for (var symbol in newTokens) {
@@ -112,11 +112,11 @@ const tokens = (state = initState, action) => {
         })
       }
 
-      if (pinTokens.length > 0) {
+      if (pinnedTokens.length > 0) {
         for (let symbol in newTokens) {
-          if (pinTokens.includes(symbol)) {
+          if (pinnedTokens.includes(symbol)) {
             newTokens[symbol].priority = true;
-            newTokens[symbol].index = pinTokens.indexOf(symbol);
+            newTokens[symbol].index = pinnedTokens.indexOf(symbol);
           }
         }
       }
@@ -136,8 +136,7 @@ const tokens = (state = initState, action) => {
       const {hash, symbol} = action.payload
       var tokens = { ...state.tokens }
       tokens[symbol].approveTx = hash
-      console.log(tokens)
-      return Object.assign({}, state, { tokens: tokens }) 
+      return Object.assign({}, state, { tokens: tokens })
     }
     case 'EXCHANGE.REMOVE_APPROVE_TX':{
       const {symbol} = action.payload

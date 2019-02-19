@@ -85,6 +85,13 @@ export function closeImportLoading() {
   }
 }
 
+export function setDPath(dPath) {
+  return {
+    type: "ACCOUNT.SET_DPATH",
+    payload: dPath
+  }
+}
+
 export function throwError(error) {
   return {
     type: "ACCOUNT.THROW_ERROR",
@@ -112,10 +119,10 @@ export function importAccountMetamask(web3Service, networkId) {
   }
 }
 
-export function setWallet(wallet) {
+export function setWallet(index, address, balance, type) {
   return {
     type: "ACCOUNT.SET_WALLET",
-    payload: wallet
+    payload: { index, address, balance, type }
   }
 }
 

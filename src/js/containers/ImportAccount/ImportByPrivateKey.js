@@ -1,10 +1,8 @@
 import React from "react"
 import { connect } from "react-redux"
 import ImportByPKeyContent from "../../components/ImportAccount/PrivateKey/ImportByPKeyContent"
-import { importNewAccount, throwError, pKeyChange, throwPKeyError, openImportAccount } from "../../actions/accountActions"
-import { addressFromPrivateKey } from "../../utils/keys"
+import { pKeyChange } from "../../actions/accountActions"
 import { getTranslate } from 'react-localize-redux';
-import { addPrefixClass } from "../../utils/className";
 
 @connect((store) => {
   var tokens = store.tokens.tokens;
@@ -23,40 +21,17 @@ import { addPrefixClass } from "../../utils/className";
 })
 
 export default class ImportByPrivateKey extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props);
+
     this.state = {
       showPassword: false
     }
   }
 
-  handleSubmit() {
-    let privateKey = document.getElementById("private_key").value;
-    this.importPrivateKey(privateKey);
-  }
-
-  submit(e) {
-    if (e.key === 'Enter') {
-      handleSubmit(e)
-    }
-  }
-
   toggleShowPw() {
-    // let input = document.getElementById('private_key');
-    // let securityClass = addPrefixClass("security");
-    // let unlockClass = addPrefixClass("unlock");
-
-    // if (input.classList.contains(securityClass)) {
-    //   input.classList.remove(securityClass)
-    //   input.parentElement.classList.add(unlockClass)
-    //   this.props.analytics.callTrack("clickShowPassword", "show")
-    // } else if (input.type == 'text') {
-    //   input.classList.add(securityClass)
-    //   input.parentElement.classList.remove(unlockClass)
-    //   this.props.analytics.callTrack("clickShowPassword", "hide")
-    // }
-    this.setState({showPassword : !this.state.showPassword})
-    this.props.analytics.callTrack("clickShowPassword", this.state.showPassword ? "show" : "hide")
+    this.setState({showPassword: !this.state.showPassword});
+    this.props.analytics.callTrack("clickToggleRevealPrivateKeyPassword", !this.state.showPassword);
   }
 
   inputChange(e) {
@@ -64,29 +39,10 @@ export default class ImportByPrivateKey extends React.Component {
     this.props.dispatch(pKeyChange(value));
   }
 
-  importPrivateKey(privateKey) {
-    try {
-      if (privateKey.match(/^0[x | X].{3,}$/)) {
-        privateKey = privateKey.substring(2)
-      }
-      let address = addressFromPrivateKey(privateKey)
-      this.props.dispatch(importNewAccount(address,
-          "privateKey",
-          privateKey))
-    }
-    catch (e) {
-      console.log(e)
-      this.props.dispatch(throwPKeyError(this.props.translate("error.invalid_private_key") || 'Invalid private key'))
-    }
-  }
-
   render() {
     return (
       <ImportByPKeyContent
         onChange={this.inputChange.bind(this)}
-        onHandleSubmit={this.handleSubmit.bind(this)}
-        onCloseImportAccount={this.props.onCloseImportAccount}
-        onSubmit={this.submit}
         onToggleShowPw={this.toggleShowPw.bind(this)}
         pKeyError={this.props.account.pKey.error}
         translate={this.props.translate}

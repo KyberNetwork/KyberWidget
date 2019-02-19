@@ -3,7 +3,7 @@ import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdow
 import { connect } from "react-redux"
 import {addPrefixClass} from "../../utils/className"
 
-@connect((store, props) => {
+@connect((store) => {
   return {
     analytics: store.global.analytics
   }
@@ -22,10 +22,12 @@ export default class PathSelector extends React.Component {
 
   showSelector = (e) => {
     this.setState({ open: true })
+    this.props.analytics.callTrack("clickPathSelectorColdWallet", this.state.walletType, true)
   }
 
   hideSelector = (e) => {
     this.setState({ open: false })
+    this.props.analytics.callTrack("clickPathSelectorColdWallet", this.state.walletType, false)
   }
 
   selectItem = (e, index) => {
@@ -44,14 +46,40 @@ export default class PathSelector extends React.Component {
   focusItem = () => {
     return (this.props.listItem).map((dPath, index) => {
       if (dPath.path === this.props.currentDPath) {
-        var description = dPath.desc
+        var description = dPath.desc;
+        let path = dPath.defaultP;
+
         if (dPath.path) {
-          return `${dPath.path} - ${description}`
+          path = dPath.path;
         }
-        return `${dPath.defaultP} - ${description}`
+
+        return <div key={index}><span className={addPrefixClass("focus-item__bold-text")}>{path}</span> - {description}</div>
       }
     })
   }
+
+  handleSelectDerivationPath = (e, dPath, index) => {
+    if (dPath.path === this.props.currentDPath) {
+      this.setState({
+        open: false
+      })
+    } else if (dPath.path) {
+      this.selectItem(e, index)
+    }
+  };
+
+  handleSelectAddress = (dPath) => {
+    if (dPath.path === this.props.currentDPath) {
+      this.setState({
+        open: false
+      })
+    } else if (this.state.onChange) {
+      this.setState({
+        open: false
+      });
+      this.state.onChange(dPath.path)
+    }
+  };
 
   getListItem = () => {
     return (this.state.list).map((dPath, index) => {
@@ -60,60 +88,49 @@ export default class PathSelector extends React.Component {
         return (
           <div
             key={dPath + index}
-            className={addPrefixClass("token-item payment-gateway__checkmark-after " + (this.props.currentDPath === dPath.path ? 'active' : ''))}
-            onClick={(e) => {
-              if (dPath.path === this.props.currentDPath) {
-                this.setState({
-                  open: false
-                })
-              } else if (dPath.path) this.selectItem(e, index)
-          }}>
-            {
-              dPath.path ? (
+            className={addPrefixClass("address-selector__item " + (this.props.currentDPath === dPath.path ? 'address-selector__item--active' : ''))}
+            onClick={(e) => this.handleSelectDerivationPath(e, dPath, index)}
+          >
+            {dPath.path !== 0 && (
+              <div>
+                <div className={addPrefixClass("name")}>{dPath.path}</div>
+                <div className={addPrefixClass("note")}>{dPath.desc}</div>
+              </div>
+            )}
+
+            {!dPath.path && (
+              <div className={addPrefixClass("input-custom-path theme-border")}>
                 <div>
-                  <div class="name">{dPath.path}</div>
-                  <div class="note">{dPath.desc}</div>
+                  <input
+                    id="form-input-custom-path"
+                    type="text"
+                    name="customPath"
+                    defaultValue={dPath.defaultP}
+                    placeholder="Your Custom Path"
+                    onFocus={() => this.props.analytics.callTrack("clickFocusToInPutNewPathColdWallet", this.state.walletType)}
+                  />
+                  <div className={addPrefixClass("common__arrow right")} onClick={() => this.handleSelectAddress(dPath)}/>
                 </div>
-              ) : (
-                <div className={addPrefixClass("input-custom-path")}>
-                  <div>
-                    <input id="form-input-custom-path" type="text" name="customPath" defaultValue={dPath.defaultP}  placeholder="Your Custom Path" onFocus={(e) => this.props.analytics.callTrack("clickFocusToInPutNewPathColdWallet", this.state.walletType)} />
-                    <img src={require('../../../assets/img/angle-right.svg')} onClick={(e) => {
-                      if (dPath.path === this.props.currentDPath) {
-                        this.setState({
-                          open: false
-                        })
-                      } else if (this.state.onChange){
-                        this.setState({
-                          open: false
-                        })
-                        this.state.onChange(dPath.path)
-                      }
-                    }}/>
-                  </div>
-                </div>
-              )
-            }
+              </div>
+            )}
           </div>
         )
       }
     })
-  }
+  };
 
   render() {
     return (
       <div className={addPrefixClass("token-selector")}>
         <Dropdown onShow={(e) => this.showSelector(e)} onHide={(e) => this.hideSelector(e)} active={this.state.open}>
           <DropdownTrigger className={addPrefixClass("notifications-toggle")}>
-            <div className={addPrefixClass("focus-item d-flex")}>
-              <div>
-                {this.focusItem()}
-              </div>
-              <div><div className={addPrefixClass("payment-gateway__arrow-down")}></div></div>
+            <div className={addPrefixClass("focus-item d-flex theme-border")}>
+              <div>{this.focusItem()}</div>
+              <div className={addPrefixClass("common__arrow")}/>
             </div>
           </DropdownTrigger>
           <DropdownContent>
-            <div className={addPrefixClass("select-item")}>
+            <div className={addPrefixClass("select-item theme-border")}>
               <div className={addPrefixClass("list-item custom-scroll")}>
                 {this.getListItem()}
               </div>

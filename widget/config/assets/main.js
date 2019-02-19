@@ -1,8 +1,48 @@
 (function () {
-  var excludedInput = ["button_theme", "version"];
-  var versionElement = document.querySelector("select[name=version]");
-  var defaultVersion = document.getElementById("widget-config-version").value;
+  var excludedInput = ["version"];
+  var defaultVersion = document.getElementById("selected-version").innerText;
   var NO_VERSION = "no";
+  var STABLE_COINS = ['DAI', 'WBTC'];
+  var activeTheme = "theme-emerald";
+  var currentNetwork = document.getElementById('widget-network').value;
+  var currentTokens = [];
+
+  async function fetchTokens(network) {
+    try {
+      document.getElementById('token-list').innerHTML = '<img class="widget-config__loading-icon" src="assets/images/icon-loading.gif"/>';
+
+      const response = await fetch(`https://${network === "ropsten" ? network + '-' : ''}api.kyber.network/internal/currencies`);
+      const tokenResponse = await response.json();
+      const tokens = tokenResponse.data;
+
+      // Sort stable coins on the top
+      tokens.unshift(tokens.splice(tokens.findIndex(item => STABLE_COINS.includes(item.symbol)), 1)[0]);
+
+      currentTokens = tokens;
+
+      renderTokenList(tokens);
+    } catch (error) {
+      alert('Errors occurred on fetching tokens from API: ' + error)
+    }
+  }
+
+  function renderTokenList(tokens) {
+    let tokenListHtml = '';
+
+    for (let i in tokens) {
+      const tokenSymbol = tokens[i].symbol;
+      const tokenName = tokens[i].name;
+
+      tokenListHtml += `
+          <div class="widget-config__dropdown-token" data-token-symbol="${tokenSymbol}">
+            <span class="widget-config__dropdown-symbol" data-token-symbol="${tokenSymbol}">${tokenSymbol}</span>
+            <span class="widget-config__dropdown-name" data-token-symbol="${tokenSymbol}">${STABLE_COINS.includes(tokenSymbol) ? 'Stable Coin': tokenName}</span>
+          </div>
+        `
+    }
+
+    document.getElementById('token-list').innerHTML = tokenListHtml;
+  }
 
   function getUrlParam(name) {
     return new URLSearchParams(location.search).get(name);
@@ -48,6 +88,7 @@
       receiveToken = form.receiveToken,
       buttonText = "Swap tokens";
     var data = [], error = [], msg, name, value;
+
     form.querySelectorAll("input, select").forEach(function (node) {
       name = node.getAttribute("name");
 
@@ -110,6 +151,8 @@
       }
     }
 
+    data.push("theme=" + activeTheme);
+
     return {
       error: error,
       data: data.join("&"),
@@ -154,15 +197,6 @@
       }, 3000);
     });
 
-    versionElement.addEventListener("change", function() {
-      var version = versionElement.options[versionElement.selectedIndex].value;
-      var params = new URLSearchParams(location.search);
-
-      params.set("version", version);
-
-      window.location.search = params.toString();
-    });
-
     // For Modal
     document.querySelector("[data-modal-id]").addEventListener("click", openModal);
     document.querySelector(".kyber-modal__close-btn").addEventListener("click", function() {
@@ -176,33 +210,117 @@
       if(e.target.nodeName.toLowerCase() === "a") return;
       e.stopPropagation();
     });
+
+    document.querySelectorAll(".widget-config__select.version").forEach(function (item) {
+      item.addEventListener("click", function () {
+        this.classList.toggle("active");
+      })
+    });
+
+    document.querySelectorAll(".widget-config__select.version .widget-config__select-item").forEach(function (item) {
+      item.addEventListener("click", function () {
+        var version = this.getAttribute("data-version");
+        var params = new URLSearchParams(location.search);
+
+        params.set("version", version);
+
+        window.location.search = params.toString();
+      })
+    });
+
+    document.querySelectorAll(".widget-config__theme-item").forEach(function (item) {
+      item.addEventListener("click", function () {
+        var theme = this.getAttribute("data-theme");
+        var body = document.querySelector(".widget-config__body");
+
+        document.querySelector(".widget-config__theme-item.active").classList.remove("active");
+        this.classList.add("active");
+        body.className = "widget-config__body " + theme;
+        activeTheme = theme;
+      })
+    });
+
+    document.getElementById("widget-html-source").addEventListener("click", function () {
+      generateTag();
+    });
+
+    document.querySelectorAll(".widget-config__theme-item").forEach(function (item) {
+      item.addEventListener("click", function () {
+        generateTag();
+      })
+    });
+
+    document.querySelectorAll(".widget-config__dropdown-trigger").forEach(function (item) {
+      item.addEventListener("click", function () {
+        var network = document.getElementById('widget-network').value;
+
+        if (network === "test" || network === "ropsten") {
+          network = "ropsten";
+        } else if (network === "production" || network === "mainnet") {
+          network = "";
+        }
+
+        if (network !== currentNetwork) {
+          currentNetwork = network;
+          fetchTokens(currentNetwork);
+        }
+
+        this.classList.toggle("active");
+      })
+    });
+
+    document.getElementById("token-list").addEventListener("click",function(e) {
+      if (e.target && e.target.matches(".widget-config__dropdown-token, .widget-config__dropdown-symbol, .widget-config__dropdown-name")) {
+        const tokenSymbol =  e.target.getAttribute("data-token-symbol");
+        const $tokenTrigger = document.getElementById('token-trigger');
+
+        document.getElementById('dest-token').value = tokenSymbol;
+        $tokenTrigger.innerText = tokenSymbol;
+        $tokenTrigger.classList.remove("active");
+        generateTag();
+      }
+    });
+
+    document.getElementById("widget-config__token-search").addEventListener("keyup", function() {
+      const value = this.value.toLowerCase();
+
+      if (!currentTokens.length) return;
+
+      if (!value) {
+        renderTokenList(currentTokens);
+        return;
+      }
+
+      const filteredTokens = currentTokens.filter(function (token) {
+        return token.symbol.toLowerCase().includes(value) || token.name.toLowerCase().includes(value)
+      });
+
+      renderTokenList(filteredTokens);
+    });
   }
 
   var generateTag = debounce(function () {
     var formData = grabForm();
-    var codeBtn = document.querySelector(".widget-config__code-btn");
+    var codeBtn = document.querySelector(".widget-config__btn");
 
     if (formData.error && formData.error.length) {
       document.getElementById("widget").innerHTML = "<div class='error'>" +
         formData.error.join("<br>") + "</div>";
       document.getElementById("sourceHtml").textContent = "";
-      codeBtn.classList.add("widget-config__code-btn--disabled");
+      codeBtn.classList.add("widget-config__btn--disabled");
       return;
     }
 
-    codeBtn.classList.remove("widget-config__code-btn--disabled");
+    codeBtn.classList.remove("widget-config__btn--disabled");
 
     var mode = document.querySelector("form").mode.value || "tab";
-    var buttonTheme = document.querySelector('input[name=button_theme]:checked').value;
-    buttonTheme = buttonTheme != "dark"  ? " kyber-widget-button--" + buttonTheme : '';
-
     var widgetBaseUrl = getWidgetUrl();
     var url = widgetBaseUrl + "/?" + formData.data;
     var cssUrl = widgetBaseUrl + '/widget.css';
     var jsUrl = widgetBaseUrl + '/widget.js';
     var tagHtml = "<!-- This is the '" + formData.buttonText + "' button, place it anywhere on your webpage -->\n";
     tagHtml += "<!-- You can add multiple buttons into a same page -->\n";
-    tagHtml += "<a href='" + url + "'\nclass='kyber-widget-button" + buttonTheme + "' ";
+    tagHtml += "<a href='" + url + "'\nclass='kyber-widget-button " + activeTheme + "' ";
     tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay with tokens'\n";
     tagHtml += "target='_blank'>" + formData.buttonText + "</a>";
 
@@ -245,7 +363,7 @@
     if (widgetUrlParam && version === NO_VERSION) {
       document.getElementById("version-selector").style.display = "none";
     } else {
-      versionElement.value = version || defaultVersion;
+      document.getElementById("selected-version").innerText = version || defaultVersion;
     }
   }
 
@@ -267,10 +385,11 @@
       document.documentElement.classList.add("standalone");
     }
   }
-  
+
   checkStandalone();
   insertWidgetFiles();
   generateTag();
   wireEvents();
   setupVersion();
+  fetchTokens("ropsten");
 })();

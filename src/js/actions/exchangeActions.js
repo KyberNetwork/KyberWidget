@@ -6,15 +6,22 @@ export function selectTokenAsync(symbol, address, type, ethereum) {
     payload: { symbol, address, type, ethereum }
   }
 }
+export function setLoadingSelectToken(isLoading = true) {
+  return {
+    type: "EXCHANGE.SET_LOADING_SELECT_TOKEN",
+    payload: isLoading
+  }
+}
 export function selectToken(symbol, address, type) {
   return {
     type: "EXCHANGE.SELECT_TOKEN",
     payload: { symbol, address, type }
   }
 }
-export function checkSelectToken() {
+export function checkSelectToken(sameTokenError) {
   return {
-    type: "EXCHANGE.CHECK_SELECT_TOKEN"
+    type: "EXCHANGE.CHECK_SELECT_TOKEN",
+    payload: sameTokenError
   }
 }
 
@@ -101,10 +108,10 @@ export function updateRateSnapshot(ethereum){
   }
 }
 
-export function updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, blockNo, isManual, isSuccess) {
+export function updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, blockNo, isManual, isSuccess, errors) {
   return {
     type: "EXCHANGE.UPDATE_RATE",
-    payload: { rateInit, expectedPrice, slippagePrice, blockNo, isManual, isSuccess}
+    payload: { rateInit, expectedPrice, slippagePrice, blockNo, isManual, isSuccess, errors }
   }
 
 }
@@ -182,12 +189,12 @@ export function processExchange(
 }
 
 export function doApprove(ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-  keystring, password, accountType, account, keyService, sourceTokenSymbol) {
+  keystring, password, accountType, account, keyService, sourceTokenSymbol, isApproveZero = false) {
   return {
     type: "EXCHANGE.PROCESS_APPROVE",
     payload: {
-      ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-      keystring, password, accountType, account, keyService, sourceTokenSymbol
+      ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice, keystring,
+      password, accountType, account, keyService, sourceTokenSymbol, isApproveZero
     }
   }
 }
@@ -377,6 +384,20 @@ export function setSnapshot(data){
   }
 }
 
+export function setSnapshotGasPrice(gasPrice) {
+  return {
+    type: "EXCHANGE.SET_SNAPSHOT_GAS_PRICE",
+    payload: gasPrice
+  }
+}
+
+export function setSnapshotMinConversionRate(minConversionRate) {
+  return {
+    type: "EXCHANGE.SET_SNAPSHOT_MIN_CONVERSION_RATE",
+    payload: minConversionRate
+  }
+}
+
 export function verifyExchange(){
   return {
     type: "EXCHANGE.VERIFY_EXCHANGE",
@@ -409,12 +430,23 @@ export function throwErrorHandleAmount(){
   }
 }
 
-export function initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
-    callback, network, paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr, paymentData, hint, tokens) {
+export function resetHandleAmountError(){
+  return {
+    type: "EXCHANGE.RESET_HANDLE_AMOUNT_ERROR"
+  }
+}
+
+
+export function initParamsExchange(
+  receiveAddr, receiveToken, tokenAddr, receiveAmount, products, callback, network, paramForwarding,
+  signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme
+) {
   return {
     type: "EXCHANGE.INIT_PARAMS_EXCHANGE",
-    payload: {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, network,
-      paramForwarding, signer, commissionID, isSwap, type, pinTokens, defaultPairArr, paymentData, hint, tokens}
+    payload: {
+      receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, products, network, paramForwarding,
+      signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme
+    }
   }
 }
 
@@ -424,7 +456,6 @@ export function setApprove(isNeedApprove){
     payload: {isNeedApprove}
   }
 }
-
 
 export function throwErrorExchange(key, val){
   return {
@@ -471,5 +502,19 @@ export function changeDefaultTokens(sourceSymbol, sourceAddress, destSymbol, des
   return {
     type: "EXCHANGE.CHANGE_DEFAULT_TOKEN",
     payload: {sourceSymbol, sourceAddress, destSymbol, destAddress}
+  }
+}
+
+export function setSourceAmount(amount){
+  return {
+    type: "EXCHANGE.SET_SOURCE_AMOUNT",
+    payload: amount
+  }
+}
+
+export function setIsApproveZero(isApproveZero){
+  return {
+    type: "EXCHANGE.SET_IS_APPROVE_ZERO",
+    payload: isApproveZero
   }
 }

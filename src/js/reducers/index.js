@@ -10,11 +10,13 @@ import {initState as initStateGlobal, global} from './globalReducer'
 import connection from './connection'
 import utils from './utilsReducer'
 import {initState as initStateTxs, txs} from './txsReducer'
-import { localeReducer } from 'react-localize-redux';
+import { localizeReducer } from 'react-localize-redux';
+
+//console.log(localizeReducer)
 
 const appReducer = combineReducers({
   account, exchange, transfer, connection, router: routerReducer,global,
-  locale : localeReducer,
+  locale : localizeReducer,
   tokens, utils,
   txs: persistReducer({
     key: 'txs',

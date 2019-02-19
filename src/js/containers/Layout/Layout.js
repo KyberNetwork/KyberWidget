@@ -1,10 +1,8 @@
 import React from "react"
 import { connect } from "react-redux"
 import { Exchange } from "../../containers/Exchange"
-import { Header } from "../../containers/Header"
-import { ExchangeHistory } from "../../containers/CommonElements/"
 import {PaymentHeader} from "../../components/Header";
-import constanst from "../../services/constants"
+import constant from "../../services/constants"
 import history from "../../history"
 import { clearSession, changeLanguage } from "../../actions/globalActions"
 import { openInfoModal } from "../../actions/utilActions"
@@ -27,7 +25,8 @@ import Language from "../../../../lang"
     locale: store.locale,
     exchange: store.exchange,
     haltPayment: store.global.haltPayment,
-    analytics: store.global.analytics
+    analytics: store.global.analytics,
+    mode: store.global.params.mode
   }
 })
 
@@ -35,7 +34,7 @@ export default class Layout extends React.Component {
   constructor() {
     super();
     this.idleTime = 0;
-    this.timeoutEndSession = constanst.IDLE_TIME_OUT / 10;    // x10 seconds
+    this.timeoutEndSession = constant.IDLE_TIME_OUT / 10;    // x10 seconds
     this.intervalIdle = null;
   }
 
@@ -50,6 +49,7 @@ export default class Layout extends React.Component {
 
     this.intervalIdle = setInterval(this.checkTimmer.bind(this), 10000)
   }
+
   componentWillUnmount() {
     clearInterval(this.intervalIdle)
   }
@@ -58,8 +58,8 @@ export default class Layout extends React.Component {
     this.props.analytics.callTrack("trackAccessToWidget")
     window.addEventListener("beforeunload", this.handleCloseWeb)
   }
-  
-   handleCloseWeb = () => {
+
+  handleCloseWeb = () => {
     this.props.analytics.callTrack("exitWidget")
   }
 
@@ -67,7 +67,7 @@ export default class Layout extends React.Component {
     if (!this.props.account.account) return;
     if (this.props.utils.infoModal && this.props.utils.infoModal.open) return;
     if (this.idleTime >= this.timeoutEndSession) {
-      let timeOut = constanst.IDLE_TIME_OUT/60
+      let timeOut = constant.IDLE_TIME_OUT/60
       let titleModal = this.props.translate('error.time_out') || 'Time out'
       let contentModal = this.props.translate('error.clear_data_timeout', {time: timeOut}) || `We've cleared all your data because your session is timed out ${timeOut} minutes`
       this.props.dispatch(openInfoModal(titleModal, contentModal));
@@ -94,23 +94,27 @@ export default class Layout extends React.Component {
 
   render() {
     var currentLanguage = common.getActiveLanguage(this.props.locale.languages)
-    var paymentHeader =  <PaymentHeader 
-    translate={this.props.translate}
-    step={this.props.exchange.step}
-    haltPayment={this.props.haltPayment}
-    type = {this.props.exchange.type}
-  />
+    var paymentHeader =  (
+      <PaymentHeader
+        translate={this.props.translate}
+        step={this.props.exchange.step}
+        haltPayment={this.props.haltPayment}
+        type = {this.props.exchange.type}
+      />
+    );
+
     return (
       <LayoutView
+        isGlobalError={this.props.haltPayment}
         history={history}
-        Header={Header}
         Exchange={Exchange}
         supportedLanguages={Language.supportLanguage}
         setActiveLanguage={this.setActiveLanguage}      
         currentLanguage = {currentLanguage}  
         translate={this.props.translate}
-                
         paymentHeader = {paymentHeader}
+        exchange={this.props.exchange}
+        mode={this.props.mode}
       />
     )
   }

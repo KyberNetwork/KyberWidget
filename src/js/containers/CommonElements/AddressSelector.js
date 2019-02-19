@@ -2,7 +2,13 @@ import React from "react"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import { roundingNumber } from "../../utils/converter";
 import { addPrefixClass } from "../../utils/className";
+import {connect} from "react-redux";
 
+@connect((store) => {
+  return {
+    analytics: store.global.analytics
+  }
+})
 export default class AddressSelector extends React.Component {
   state = {
     isOpen: false,
@@ -10,15 +16,18 @@ export default class AddressSelector extends React.Component {
 
   showSelector = () => {
     this.setState({ isOpen: true })
+    this.props.analytics.callTrack("clickAddressSelectorColdWallet", this.state.walletType, true)
   }
 
   hideSelector = () => {
-    this.setState({ isOpen: false })
+    this.setState({ isOpen: false });
+    this.props.analytics.callTrack("clickAddressSelectorColdWallet", this.state.walletType, false)
   }
 
   setWallet(index, address, balance) {
     this.hideSelector();
     this.props.setWallet(index, address, balance, this.props.walletType);
+    this.props.analytics.callTrack("clickChooseNewAddressColdWallet", address, this.state.walletType);
   }
 
   getAddressList = () => {
@@ -26,16 +35,14 @@ export default class AddressSelector extends React.Component {
       return (
         <div
           key={index}
-          className={addPrefixClass("address-selector__item payment-gateway__checkmark-after " + (address.addressString === this.props.wallet.address ? 'address-selector__item--active' : ''))}
+          className={addPrefixClass("address-selector__item " + (address.addressString === this.props.wallet.address ? 'address-selector__item--active' : ''))}
           onClick={() => this.setWallet(address.index, address.addressString, roundingNumber(address.balance))}>
-            <div className={addPrefixClass("address-selector__item-address")}>
-              {address.addressString.slice(0, 20)}...{address.addressString.slice(-6)}
-            </div>
+            <div className={addPrefixClass("address-selector__item-address")}>{address.addressString}</div>
             <div className={addPrefixClass("address-selector__item-balance")}>
               {address.balance == '-1' ?
-                <img src={require('../../../assets/img/waiting-white.svg')} />
-                : roundingNumber(address.balance)
-              } ETH
+                <img src={require('../../../assets/img/icons/icon-loading.gif')} />
+                : <span>{roundingNumber(address.balance)} ETH</span>
+              }
             </div>
         </div>
       )
@@ -47,26 +54,24 @@ export default class AddressSelector extends React.Component {
       <div className={addPrefixClass("token-selector")}>
         <Dropdown onShow={() => this.showSelector()} onHide={() => this.hideSelector()} active={this.state.isOpen}>
           <DropdownTrigger className={addPrefixClass("notifications-toggle")}>
-            <div className={addPrefixClass("focus-item d-flex")}>
-              <div>{this.props.wallet.address}</div>
-              <div><div className={addPrefixClass("payment-gateway__arrow-down")}></div></div>
+            <div className={addPrefixClass("focus-item d-flex theme-border")}>
+              <div className={addPrefixClass("focus-item__bold-text")}>{this.props.wallet.address}</div>
+              <div className={addPrefixClass("common__arrow")}/>
             </div>
           </DropdownTrigger>
           <DropdownContent>
-            <div className={addPrefixClass("select-item")}>
+            <div className={addPrefixClass("select-item theme-border")}>
               <div className={addPrefixClass("list-item custom-scroll")}>
                 {this.getAddressList()}
               </div>
 
-              <div className={addPrefixClass("address-list-navigation")}>
-                  <img
-                    src={require('../../../assets/img/import-account/arrows_left_icon.svg')}
-                    className={addPrefixClass("payment-gateway__background " + (this.props.isFirstList ? 'disabled' : ''))}
-                    onClick={this.props.getPreAddress}/>
-                  <img
-                    className={addPrefixClass("payment-gateway__background")}
-                    src={require('../../../assets/img/import-account/arrows_right_icon.svg')}
-                    onClick={this.props.getMoreAddress}/>
+              <div className={addPrefixClass(`address-list-navigation ${this.props.isFirstList ? 'disabled' : ''}`)}>
+                <div onClick={this.props.getPreAddress} className={addPrefixClass("address-list-navigation__button")}>
+                  <div className={addPrefixClass("common__arrow left")}/>
+                </div>
+                <div onClick={this.props.getMoreAddress} className={addPrefixClass("address-list-navigation__button")}>
+                  <div className={addPrefixClass("common__arrow right")}/>
+                </div>
               </div>
             </div>
           </DropdownContent>

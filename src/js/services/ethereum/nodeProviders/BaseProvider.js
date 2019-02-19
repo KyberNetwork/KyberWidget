@@ -260,7 +260,7 @@ export default class BaseProvider {
       walletId = "0x" + Array(41).join("0")
     }
     
-    var hint = this.rpc.utils.utf8ToHex(constants.PERM_HINT)
+    hint = this.rpc.utils.utf8ToHex(constants.PERM_HINT)
 
     const data = this.payWrapperContract.methods.pay(
       sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,

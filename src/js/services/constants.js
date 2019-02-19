@@ -31,9 +31,9 @@ const INIT_EXCHANGE_FORM_STATE = {
   receiveAddr: "",
   paymentData: "",
   hint: "",
-  productName: "",
-  productAvatar: "",
+  products: [],
   isNeedApprove: false,
+  isApproveZero: false,
   destAddress: "",
   inputFocus: "source",
   maxCap: 0,
@@ -105,7 +105,8 @@ const INIT_EXCHANGE_FORM_STATE = {
   analizeError : {},
   snapshot: {},
   network: 'ropsten',
-  isSwap:true
+  isSwap:true,
+  theme: ''
 }
 
 const INIT_TRANSFER_FORM_STATE = {
@@ -172,7 +173,7 @@ const ETH = {
   address: ETHER_ADDRESS
 };
 
-const IDLE_TIME_OUT = 900
+const IDLE_TIME_OUT = 900;
 
 const HISTORY_EXCHANGE = {
   page: 0,
@@ -215,6 +216,11 @@ const SUPPORTED_NETWORK = [
   'staging'
 ];
 
+const STABLE_COINS = [
+  'DAI',
+  'WBTC'
+];
+
 const APP_NAME='kyber-widget'
 const VERSION='v0.1';
 const ASSET_URL = 'https://files.kyber.network/DesignAssets/';
@@ -229,5 +235,5 @@ module.exports = {
   KYBER_WALLET_DATA, INIT_EXCHANGE_FORM_STATE, INIT_TRANSFER_FORM_STATE, ASSET_URL,
   RATE_EPSILON, IDLE_TIME_OUT, HISTORY_EXCHANGE, STORAGE_KEY, CONNECTION_CHECKER, PAYMENT_TOKEN_TRANSFER_GAS, PAYMENT_ETH_TRANSFER_GAS,
   MAX_CAP_ONE_EXCHANGE_BASE_VALUE, MAX_CAP_ONE_EXCHANGE_BASE_RESERVE, MAX_CAP_PERCENT, CONFIG_ENV_LEDGER_LINK, LEDGER_SUPPORT_LINK, TRANSFER_TOPIC, BASE_HOST,
-  IMPORT_ACCOUNT_TYPE, MAX_AMOUNT_RATE_HANDLE, SUPPORTED_NETWORK, APP_NAME, PAYMENT_PATH, VERSION, PERM_HINT
+  IMPORT_ACCOUNT_TYPE, MAX_AMOUNT_RATE_HANDLE, SUPPORTED_NETWORK, APP_NAME, PAYMENT_PATH, VERSION, PERM_HINT, STABLE_COINS
 }

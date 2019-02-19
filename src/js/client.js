@@ -1,37 +1,21 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { Provider } from "react-redux"
-import { Route } from 'react-router'
-import { Link } from 'react-router-dom'
 import { Layout } from "./containers/Layout"
-
 import BLOCKCHAIN_INFO from "../../env"
-
-import constanst from "./services/constants"
-//import NotSupportPage from "./components/NotSupportPage"
-//import platform from 'platform'
-//import { blackList } from './blacklist'
+import constants from "./services/constants"
 import { initSession, initParamsGlobal, haltPayment, initAnalytics } from "./actions/globalActions"
 import { initParamsExchange } from "./actions/exchangeActions"
-import { initListTokens } from "./actions/tokenActions"
-
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import { persistor, store } from "./store"
 import Modal from 'react-modal';
-
-import { getTranslate } from 'react-localize-redux'
-
 import * as common from "./utils/common"
 import * as validator from "./utils/validators"
-
 import AnalyticFactory from "./services/analytics"
 import Web3 from "web3";
 
 function getListTokens(network) {
-  
-  //in ropsten
   return new Promise((resolve, reject) => {
-    //return list of object tokens
     fetch(BLOCKCHAIN_INFO[network].api_tokens, {
       method: 'GET',
       headers: {
@@ -43,7 +27,6 @@ function getListTokens(network) {
     })
       .then((result) => {
         if (result.success) {
-          //check listing time
           var now = Math.round(new Date().getTime()/1000)
           var tokens = {}
           result.data.map(val => {
@@ -51,11 +34,7 @@ function getListTokens(network) {
             tokens[val.symbol] = val
           })
           resolve(tokens)
-
-          //resolve(result.data)
         } else {
-          //rejected(new Error("Cannot get data"))
-          //get from snapshot
           var tokens = BLOCKCHAIN_INFO[network].tokens
           resolve(tokens)
         }
@@ -85,15 +64,12 @@ function checkInListToken(str, tokens) {
 }
 
 function initParams(appId) {
-  //var translate = getTranslate(store.locale)
   var translate = (...args) => {
     return null
   }
 
   var widgetParent = document.getElementById(appId)
   var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
-
-
   var query = {}
   var receiveAddr
   var receiveToken
@@ -103,13 +79,17 @@ function initParams(appId) {
   var paramForwarding
   var signer
   var commissionID
-  var productName
-  var productAvatar
+  var products
+  var productNames
+  var productQtys
+  var productImages
   var type
   var pinnedTokens
   var paymentData
   var hint
   var defaultPair
+  var theme
+  var mode
 
   if (attributeWidget === true || attributeWidget === 'true') {
     for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++) {
@@ -123,8 +103,6 @@ function initParams(appId) {
       }
     }
 
-    //this.props.dispatch(initParamsGlobal(query))
-
     receiveAddr = widgetParent.getAttribute('data-widget-receive-addr')
     receiveToken = widgetParent.getAttribute('data-widget-receive-token')
     receiveAmount = widgetParent.getAttribute('data-widget-receive-amount')
@@ -133,16 +111,17 @@ function initParams(appId) {
     paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
     signer = widgetParent.getAttribute('data-widget-signer')
     commissionID = widgetParent.getAttribute('data-widget-commission-id')
-    productName = widgetParent.getAttribute('data-widget-product-name')
-    productAvatar = widgetParent.getAttribute('data-widget-product-avatar')
     type = widgetParent.getAttribute('data-widget-type')
     pinnedTokens = widgetParent.getAttribute('data-widget-pinned-tokens') || []
     paymentData = widgetParent.getAttribute('data-widget-payment-data') || ""
     hint = widgetParent.getAttribute('data-widget-hint') || ""
     defaultPair = widgetParent.getAttribute('data-widget-default-pair')
+    theme = widgetParent.getAttribute('data-widget-theme') || "theme-emerald"
+    mode = widgetParent.getAttribute('data-widget-mode')
+    products = widgetParent.getAttribute('data-widget-products')
+    products = products ? JSON.parse(products) : [];
   } else {
     query = common.getQueryParams(window.location.search)
-
     receiveAddr = common.getParameterByName("receiveAddr")
     receiveToken = common.getParameterByName("receiveToken")
     receiveAmount = common.getParameterByName("receiveAmount");
@@ -151,21 +130,24 @@ function initParams(appId) {
     paramForwarding = common.getParameterByName("paramForwarding")
     signer = common.getParameterByName("signer")
     commissionID = common.getParameterByName("commissionId")
-    productName = common.getParameterByName("productName")
-    productAvatar = common.getParameterByName("productAvatar")
+    productNames = common.getMultipleValuesByName("productName")
+    productQtys = common.getMultipleValuesByName("productQty")
+    productImages = common.getMultipleValuesByName("productImage")
     type = common.getParameterByName("type")
     pinnedTokens = common.getParameterByName("pinnedTokens") || []
     paymentData = common.getParameterByName("paymentData") || ""
     hint = common.getParameterByName("hint") || ""
     defaultPair = common.getParameterByName("defaultPair")
+    theme = common.getParameterByName("theme") || "theme-emerald"
+    mode = common.getParameterByName("mode")
+    products = productNames ? common.getProductsFromParam(productNames, productQtys, productImages) : [];
   }
-
 
   paramForwarding = paramForwarding === "true" || paramForwarding === true ? paramForwarding : "false"
   switch (network) {
     case "production":
     case "mainnet":
-      network = "mainnet"
+      network = "production"
       break
     case "rinkeby":
       network = "rinkeby"
@@ -177,17 +159,11 @@ function initParams(appId) {
       network = "ropsten"
       break
   }
-  //init tokens
-  //store.dispatch(initListTokens(network))
 
   getListTokens(network).then(tokens => {
-
-    //init tokens data
-    //store.dispatch(initListTokens(tokens, network))
-
     query.appId = appId
+    query.mode = mode;
     store.dispatch(initParamsGlobal(query))
-
 
     var errors = {}
     var defaultPairArr = []
@@ -218,7 +194,6 @@ function initParams(appId) {
             defaultPairArr.push(listDefault[1])
           }
         }
-
         break;
       case "buy":
         type = "buy"
@@ -257,8 +232,6 @@ function initParams(appId) {
         break
     }
 
-
-
     var isSwap = true
     if (type === "pay") {
       isSwap = false
@@ -270,8 +243,6 @@ function initParams(appId) {
           || "Cannot set receive amount of unknown token"
       }
     }
-
-
 
     if (receiveAmount && receiveAmount !== "") {
       receiveAmount = receiveAmount.toString();
@@ -333,37 +304,31 @@ function initParams(appId) {
       }
       var tokenAddr = tokens[receiveToken].address
 
-
-      store.dispatch(initParamsExchange(receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
-        callback, network, paramForwarding, signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens));
+      store.dispatch(initParamsExchange(
+        receiveAddr, receiveToken, tokenAddr, receiveAmount, products, callback, network, paramForwarding,
+        signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme
+      ));
 
       //init analytic
       var analytic = new AnalyticFactory({ listWorker: ['mix'], network })
       store.dispatch(initAnalytics(analytic))
     }
-
   }).catch(err => {
     var errors = {
       tokens: "Cannot get list tokens"
     }
     store.dispatch(haltPayment(errors))
   })
-
-
-
 }
 
 Modal.setAppElement('body');
-
 window.kyberWidgetInstance = {}
-
 window.kyberWidgetInstance.render = (widgetId) => {
-  var appId = widgetId ? widgetId : constanst.APP_NAME
+  var appId = widgetId ? widgetId : constants.APP_NAME
 
   if (!document.getElementById(appId)) {
     return
   }
-
   store.dispatch(initSession())
   initParams(appId)
 
@@ -374,5 +339,4 @@ window.kyberWidgetInstance.render = (widgetId) => {
       </Provider>
     </PersistGate>, document.getElementById(appId));
 }
-
 window.kyberWidgetInstance.render()

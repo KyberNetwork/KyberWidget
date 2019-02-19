@@ -26,13 +26,15 @@ export function throwPassphraseError(message) {
   }
 }
 
-export function processTransfer(formId, ethereum, address, token, amount, destAddress, nonce, gas,
-  gasPrice, keystring, type, password, account, data, keyService, balanceData, commissionID, paymentData, hint) {
+export function processTransfer(
+  formId, ethereum, address, token, amount, destAddress, nonce, gas, gasPrice, keystring,
+  type, password, account, data, keyService, balanceData, commissionID, paymentData, hint, sourceTokenSymbol
+) {
   return {
     type: "TRANSFER.PROCESS_TRANSFER",
     payload: {
       formId, ethereum, address, token, amount, destAddress, nonce, gas, gasPrice, keystring,
-      type, password, account, data, keyService, balanceData, commissionID, paymentData, hint
+      type, password, account, data, keyService, balanceData, commissionID, paymentData, hint, sourceTokenSymbol
     }
   }
 }

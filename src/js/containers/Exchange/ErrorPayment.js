@@ -11,12 +11,10 @@ import {addPrefixClass} from "../../utils/className"
     translate: translate
   }
 })
-
 export default class ErrorPayment extends React.Component {
-
   getErrorPayment = () => {
     return Object.keys(this.props.global.errorsPayment).map(key => {
-      return <li key={key}>{this.props.global.errorsPayment[key]}</li>
+      return <div key={key}>{this.props.global.errorsPayment[key]}</div>
     })
   };
 
@@ -24,29 +22,21 @@ export default class ErrorPayment extends React.Component {
     widgetOptions.onClose()
     if (this.props.global.analytics) this.props.global.analytics.callTrack("backToWebsite")
   }
-  
 
   render = () => {
     return (
-      <div className={addPrefixClass("error-payment-container")}>
-        <div className={addPrefixClass("error-payment")}>
-          <div className={addPrefixClass("error-payment__icon-container")}>
-            <div className={addPrefixClass("error-payment__icon")}></div>
-            <div className={addPrefixClass("error-payment__icon-text")}>{this.props.translate("transaction.error") || "Error"}!</div>
-          </div>
-          <div className={addPrefixClass("error-payment__content")}>
-            <div className={addPrefixClass("k-container")}>
-              <ul className={addPrefixClass("error-payment__content-text error-payment__content-text--bold")}>{this.getErrorPayment()}</ul>
-              <div className={addPrefixClass("error-payment__content-text")}>
-                {this.props.translate("transaction.contact_merchant")
-                  || "Please contact your merchant for wrong params"}
-              </div>
-              <div className={addPrefixClass("error-payment__content-button")}>
-                <div className={addPrefixClass("payment-gateway__hollow-button")} onClick={(e) => this.closeWidget()}>
-                {this.props.translate("transaction.back_to_website") || "Back to Website"}
-                </div>
-              </div>
-            </div>
+      <div className={addPrefixClass("broadcast")}>
+        <div className={addPrefixClass("broadcast__header")}>
+          <div className={addPrefixClass("broadcast__icon failed")}/>
+          <div className={addPrefixClass("broadcast__title")}>{ this.props.translate('transaction.error') || "Error" }</div>
+        </div>
+        <div className={addPrefixClass("broadcast__body list")}>
+          <div className={addPrefixClass("broadcast__list broadcast__text-light")}>{this.getErrorPayment()}</div>
+          <div className={addPrefixClass("broadcast__text-bold")}>{this.props.translate("transaction.contact_merchant") || "Please contact your merchant for wrong params"}</div>
+        </div>
+        <div className={addPrefixClass("widget-exchange__bot common__flexbox center")}>
+          <div className={addPrefixClass("common__button hollow small theme-button")} onClick={(e) => this.closeWidget()}>
+            {this.props.translate("transaction.back_to_website") || "Back to Website"}
           </div>
         </div>
       </div>

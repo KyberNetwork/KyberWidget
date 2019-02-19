@@ -1,55 +1,34 @@
 import React from "react";
 import {addPrefixClass} from "../../../utils/className"
-import { getAssetUrl } from "../../../utils/common";
 
 const ImportByPKeyContent = (props) => {
   return (
     <div>
-      <div className={addPrefixClass("payment-gateway__step-title payment-gateway__step-title--2")}>
+      <div className={addPrefixClass("widget-exchange__text theme-text")}>
         {props.translate("import.from_private_key_input_title") || "Enter your Private Key"}
       </div>
       <div className={addPrefixClass("import-account-content__wrapper")}>
-        <div className={addPrefixClass("import-account-content__info")}>
-          <div className={addPrefixClass("import-account-content__info-type")}>
-            <img
-                className={addPrefixClass("import-account-content__info-type-image")}
-                src={getAssetUrl(`wallets/privatekey.svg`)}/>
-            <div className={addPrefixClass("import-account-content__info-type-text")}>
-              {props.translate("import.from_private_key") || "PRIVATE KEY"}
-            </div>
-          </div>
-        </div>
-
-        <div className={addPrefixClass("import-account-content__private-key" + (props.showPassword ? ' unlock' : ''))}>
+        <div className={addPrefixClass("common__input-panel")}>
           <input
-              className={addPrefixClass("import-account-content__private-key-input")}
-              id="private_key"
-              type={props.showPassword ? 'text' : 'password'}
-              onChange={(e) => props.onChange(e)}
-              onKeyPress={(e) => props.onSubmit(e)}
-              value={props.privateKey}
-              autoFocus
-              autoComplete="off"
-              spellCheck="false"
-              onFocus={(e) => {props.analytics.callTrack("clickFocusToInputPrivateKey")}}
-              required />
-          <div>{props.privateKeyVisible}</div>
-          <div className={addPrefixClass("import-account-content__private-key-toggle")} onClick={props.onToggleShowPw}></div>
-          <div className={addPrefixClass("import-account-content__private-key-icon")}></div>
+            className={addPrefixClass(`common__input theme-border`)}
+            id="private_key"
+            type={props.showPassword ? "text" : "password"}
+            onChange={(e) => props.onChange(e)}
+            value={props.privateKey}
+            autoFocus
+            autoComplete="off"
+            spellCheck="false"
+            onFocus={(e) => {props.analytics.callTrack("clickFocusToInputPrivateKey")}}
+            required
+          />
+          <div className={addPrefixClass("common__input-panel-label small")}>
+            <div className={addPrefixClass(`import-account__eye-icon ${props.showPassword ? "unlock" : ""}`)} onClick={props.onToggleShowPw}/>
+          </div>
         </div>
 
         {!!props.pKeyError &&
-        <div className={addPrefixClass("import-account-content__error")}>{props.pKeyError}</div>
+          <div className={addPrefixClass("common__error box")}>{props.pKeyError}</div>
         }
-
-        <div className={addPrefixClass("import-account-content__button-container")}>
-          <div className={addPrefixClass("import-account-content__button payment-gateway__button--back")} onClick={props.onCloseImportAccount}>
-            {props.translate("transaction.back") || "Back"}
-          </div>
-          <div className={addPrefixClass("import-account-content__button payment-gateway__button")} id="submit_pkey" onClick={props.onHandleSubmit}>
-            {props.translate("modal.import") || "Import"}
-          </div>
-        </div>
       </div>
     </div>
   )
