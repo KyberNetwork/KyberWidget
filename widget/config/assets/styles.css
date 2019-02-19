@@ -617,7 +617,6 @@ label input, select, .pointer {
 
 .widget-config__theme-container {
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
 }
 
@@ -627,6 +626,11 @@ label input, select, .pointer {
   cursor: pointer;
   background-size: contain;
   position: relative;
+  margin-right: 30px;
+}
+
+.widget-config__theme-item:last-child {
+  margin-right: 0;
 }
 
 .widget-config__theme-item::after {
@@ -772,20 +776,12 @@ label input, select, .pointer {
   background: #34BB99;
 }
 
-.violet.widget-config__theme-item::after {
-  background: #807DD6;
-}
-
-.dark.widget-config__theme-item::after {
-  background: #000000;
-}
-
-.soil.widget-config__theme-item::after {
-  background: #D2A800;
+.sunset.widget-config__theme-item::after {
+  background: #FC8259;
 }
 
 .ocean.widget-config__theme-item::after {
-  background: #2A95D5;
+  background: #1F87F0;
 }
 
 .widget-config__theme-item:hover::after,
@@ -797,22 +793,13 @@ label input, select, .pointer {
   background-image: url("images/theme-emerald.png");
 }
 
-.widget-config__theme-item.violet {
-  background-image: url("images/theme-violet.png");
-}
-
-.widget-config__theme-item.dark {
-  background-image: url("images/theme-dark.png");
-}
-
-.widget-config__theme-item.soil {
-  background-image: url("images/theme-soil.png");
+.widget-config__theme-item.sunset {
+  background-image: url("images/theme-sunset.png");
 }
 
 .widget-config__theme-item.ocean {
   background-image: url("images/theme-ocean.png");
 }
-
 
 .theme-emerald .widget-config__container {
   box-shadow: 0 10px 20px 0 rgba(11, 104, 126, 0.21);
