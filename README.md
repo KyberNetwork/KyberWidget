@@ -96,4 +96,4 @@ The widget supports following params:
 - ***productImage*** - String - Just like `productName`, you can push multiple `productImage` to the URL *Note: `productImage` always goes with a `productName`, it will be ignored if there is no `productName`
 - ***paymentData*** - String - A piece of additional information attached to the payment after broadcasted on the blockchain (*Note: This param only takes effect when type=pay)
 ## Supported tokens
-See all supported tokens [here](https://tracker.kyber.network/#/tokens)
+See all supported tokens [here](https://api.kyber.network/currencies)
