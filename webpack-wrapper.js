@@ -85,7 +85,7 @@ var getConfig = env => {
     if (env && env.build !== 'true') {
       plugins.push(new webpack.DefinePlugin({
         'process.env': {
-          'logger': 'true',
+          'logger': 'false',
           'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
         }
       }));
@@ -133,8 +133,8 @@ var getConfig = env => {
     }
     return {
         context: path.join(__dirname, 'src'),
-        devtool: env && env.build !== 'true' ? 'inline-sourcemap' : false,
-        mode: env.build !== 'true' ? 'development' : 'production',
+        devtool: false,
+        mode: 'production',
         entry: entry,
         optimization: {
       
