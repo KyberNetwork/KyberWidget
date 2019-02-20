@@ -11,6 +11,10 @@ const PaymentHeader = (props) => {
     return "step-breadcrumb__step";
   };
 
+  if (!props.type) {
+    return '';
+  }
+
   return (
     <div className={addPrefixClass("step-breadcrumb theme-shadow-small")}>
       {props.type === "swap" && (
