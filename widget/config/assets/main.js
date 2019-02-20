@@ -2,7 +2,7 @@
   var excludedInput = ["version"];
   var defaultVersion = document.getElementById("selected-version").innerText;
   var NO_VERSION = "no";
-  var STABLE_COINS = ['DAI', 'WBTC'];
+  var STABLE_COINS = ['DAI'];
   var activeTheme = "theme-emerald";
   var currentNetwork = document.getElementById('widget-network').value;
   var currentTokens = [];

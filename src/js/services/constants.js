@@ -216,10 +216,7 @@ const SUPPORTED_NETWORK = [
   'staging'
 ];
 
-const STABLE_COINS = [
-  'DAI',
-  'WBTC'
-];
+const STABLE_COINS = ['DAI'];
 
 const APP_NAME='kyber-widget'
 const VERSION='v0.1';
