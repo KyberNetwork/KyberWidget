@@ -60,7 +60,7 @@ function paymentStatus(txhash, expectedPayment) -> return status {
 }
 ```
 ## How to use the widget
-First you should come to check [KyberWidget Generater](https://widget.kyber.network/widget/config/) to generate all the params which is needed for your website.
+First you should come to check [KyberWidget Generator](https://widget.kyber.network/widget/config/) to generate all the params which is needed for your website.
 And then all you need to do is to copy & paste a snippet of code generated from there that renders a button with proper params linked to the widget.
 
 Eg.
