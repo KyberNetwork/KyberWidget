@@ -60,7 +60,8 @@ function paymentStatus(txhash, expectedPayment) -> return status {
 }
 ```
 ## How to use the widget
-All you have to do is to place a button with proper url to your website.
+First you should come to check [KyberWidget Generater](https://widget.kyber.network/widget/config/) to generate all the params which is needed for your website.
+And then all you need to do is to copy & paste a snippet of code generated from there that renders a button with proper params linked to the widget.
 
 Eg.
 ```
@@ -95,5 +96,18 @@ The widget supports following params:
 - ***productQty*** - String - Just like `productName`, you can push multiple `productQty` to the URL *Note: `productQty` always goes with a `productName`, it will be ignored if there is no `productName`
 - ***productImage*** - String - Just like `productName`, you can push multiple `productImage` to the URL *Note: `productImage` always goes with a `productName`, it will be ignored if there is no `productName`
 - ***paymentData*** - String - A piece of additional information attached to the payment after broadcasted on the blockchain (*Note: This param only takes effect when type=pay)
-## Supported tokens
+## Example Links
+1. Pay mode with some product information:
+```
+https://widget.kyber.network/v0.6/?type=pay&mode=tab&receiveAddr=0x63B42a7662538A1dA732488c252433313396eade&receiveToken=KNC&callback=https%3A%2F%2Fkyberpay-sample.knstats.com%2Fcallback&paramForwarding=true&network=ropsten&receiveAmount=0.5&theme=theme-emerald&productName=A%20Cat%20Picture&productQty=7&productImage=https://images.unsplash.com/photo-1518791841217-8f162f1e1131&productName=Falling%20Autumn%20Leaves&productQty=24&productImage=https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/intermediary/f/fabdf38b-1811-49e8-8eeb-4c5632076c3e/dczgthc-076fcdf7-4932-4672-8d94-f3b6ed07d100.png&commissionId=0x90A21dbB74D7684B7AF747963D7ac7A8086b82B6
+```
+2. Swap mode with Sunset theme
+```
+https://widget.kyber.network/v0.6/?type=swap&mode=tab&callback=https%3A%2F%2Fkyberpay-sample.knstats.com%2Fcallback&paramForwarding=true&network=ropsten&pinnedTokens=KNC_DAI&theme=theme-sunset
+```
+3. Buy mode
+```
+https://widget.kyber.network/v0.6/?type=buy&mode=tab&receiveToken=ETH&receiveAmount=0.001&callback=https%3A%2F%2Fkyberpay-sample.knstats.com%2Fcallback&paramForwarding=true&network=ropsten&pinnedTokens=KNC_DAI&theme=theme-emerald
+```
+## Supported Tokens
 See all supported tokens [here](https://api.kyber.network/currencies)
