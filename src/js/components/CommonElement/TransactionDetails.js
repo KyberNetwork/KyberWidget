@@ -33,7 +33,7 @@ const TransactionDetails = (props) => {
           <div className={addPrefixClass("widget-exchange__order-box widget-exchange__order-address theme-border")}>
             <div className={addPrefixClass("widget-exchange__order-text")}>Transaction Fee:</div>
             <div className={addPrefixClass("widget-exchange__order-text-bold")}>
-              {props.exchange.isFetchingGas ? "Loading..." : converter.calculateGasFee(props.exchange.gasPrice, gasUsed)}
+              {props.exchange.isFetchingGas ? "Loading..." : converter.calculateGasFee(props.exchange.gasPrice, gasUsed)} ETH
             </div>
           </div>
         )}
