@@ -69,7 +69,7 @@ var getConfig = env => {
         // new webpack.HashedModuleIdsPlugin(),
         // new CopyWebpackPlugin([
         //   { from: './assets/img/kyber-payment.png', to: '' }
-        // ])       
+        // ])
 
     ];
     // if (env && env.logger === 'true') {
@@ -85,7 +85,7 @@ var getConfig = env => {
     if (env && env.build !== 'true') {
       plugins.push(new webpack.DefinePlugin({
         'process.env': {
-          'logger': 'true',
+          'logger': 'false',
           'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
         }
       }));
@@ -133,8 +133,8 @@ var getConfig = env => {
     }
     return {
         context: path.join(__dirname, 'src'),
-        devtool: env && env.build !== 'true' ? 'inline-sourcemap' : false,
-        mode: env.build !== 'true' ? 'development' : 'production',
+        devtool: false,
+        mode: 'production',
         entry: entry,
         optimization: {
       
@@ -363,6 +363,10 @@ function addPrefixCss() {
       console.log(err)
       throw err
     }
+
+    fs.copyFile(file, 'dist/native/app.bundle.css', (err) => {
+      if (err) throw err;
+    });
   });
 }
 
@@ -392,11 +396,11 @@ async function main() {
     var compiler = await webpack(webpackConfig)
     await compiler.run(function (err, stats) {
          if (!err) {
-             console.log("success")
+           console.log("success")
            addPrefixCss();
          } else {
-             console.log("fail")
-            console.log(err)
+           console.log("fail")
+           console.log(err)
          }
      })
 

@@ -518,6 +518,12 @@
     &.up {
       transform: rotate(-180deg);
     }
+
+    &--small {
+      border-left-width: 5px;
+      border-right-width: 5px;
+      border-top-width: 7px;
+    }
   }
 
   &__error {
