@@ -80,7 +80,7 @@ const OrderDetails = (props) => {
               {props.translate("transaction.transaction_fee") || "Transaction fee"}:
             </div>
             <div className={addPrefixClass("widget-exchange__order-text-bold")}>
-              {props.exchange.isFetchingGas ? "Loading..." : converter.calculateGasFee(props.exchange.gasPrice, gasUsed)}
+              {props.exchange.isFetchingGas ? "Loading..." : converter.calculateGasFee(props.exchange.gasPrice, gasUsed)} ETH
             </div>
           </div>
         )}

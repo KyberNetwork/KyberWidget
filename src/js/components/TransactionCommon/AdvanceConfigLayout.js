@@ -9,7 +9,10 @@ const AdvanceConfigLayout = (props) => {
     <div className={addPrefixClass("advance-config theme-border")}>
       <SlideDown active={props.isAdvConfigActive}>
         <SlideDownTrigger onToggleContent={() => props.toggleAdvConfig()}>
-          <div className={addPrefixClass("advance-config__title")}>Advanced (Optional)</div>
+          <div className={addPrefixClass("advance-config__trigger")}>
+            <div className={addPrefixClass("advance-config__title")}>Advanced (Optional)</div>
+            <div className={addPrefixClass(`common__triangle common__triangle--small theme-border-top ${props.isAdvConfigActive ? 'up' : ''}`)}/>
+          </div>
         </SlideDownTrigger>
 
         <SlideDownContent>
