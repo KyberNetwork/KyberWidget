@@ -346,6 +346,7 @@
   }
 
   &__checkbox {
+    display: flex;
     padding-left: 28px;
     position: relative;
     cursor: pointer;
@@ -386,6 +387,7 @@
         border: solid white;
         border-width: 0 2px 2px 0;
         transform: rotate(45deg);
+        box-sizing: initial;
       }
     }
 
@@ -406,6 +408,7 @@
   }
 
   &__button {
+    line-height: normal;
     width: 100%;
     max-width: 250px;
     font-size: 20px;
