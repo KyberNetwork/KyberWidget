@@ -1,5 +1,5 @@
 (function (global) {
-  var WIDGET_VERSION = "0.6";
+  var WIDGET_VERSION = "0.6.1";
   var incrementDeploy = 18;
 
   function initKyberWidget() {
