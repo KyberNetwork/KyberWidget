@@ -227,11 +227,6 @@ export default class ImportByDevice extends React.Component {
     const browserName = browser.getBrowserName();
     this.props.dispatch(resetCheckTimeImportLedger())
     if (walletType == 'ledger') {
-      if (browserName != 'Chrome') {
-        let erroMsg = this.props.translate("error.browser_not_support_ledger", { browser: browserName }) || `Ledger is not supported on ${browserName}, you can use Chrome instead.`
-        this.props.dispatch(throwError(erroMsg));
-        return;
-      }
       this.props.dispatch(importLoading());
       this.connectDevice(walletType);
       this.ledgerLoading = setTimeout(() => {
