@@ -6,7 +6,7 @@
   <link rel="icon" href="https://kyber.network/favicon.ico">
   <title>KyberWidget Configuration</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css">
-  <link rel="stylesheet" href="assets/styles.css?v=33">
+  <link rel="stylesheet" href="assets/styles.css?v=34">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600" rel="stylesheet">
 </head>
 <body class="widget-config__body theme-emerald">
@@ -22,12 +22,15 @@
 
       <div class="widget-config__header-item">
         <div class="widget-config__btn widget-config__select version click-outside" id="version-selector">
-          <div class="widget-config__select-title">Version v<span id="selected-version">0.4</span></div>
+          <div class="widget-config__select-title">Version v<span id="selected-version">0.6.1</span></div>
           <div class="widget-config__select-container">
             <div class="widget-config__select-item" data-version="0.1">Version v0.1</div>
             <div class="widget-config__select-item" data-version="0.2">Version v0.2</div>
             <div class="widget-config__select-item" data-version="0.3">Version v0.3</div>
             <div class="widget-config__select-item" data-version="0.4">Version v0.4</div>
+            <div class="widget-config__select-item" data-version="0.5">Version v0.5</div>
+            <div class="widget-config__select-item" data-version="0.6">Version v0.6</div>
+            <div class="widget-config__select-item" data-version="0.6.1">Version v0.6.1</div>
           </div>
         </div>
 
@@ -81,13 +84,11 @@
               </label>
             </div>
           </div>
-          <div class="item border-item">
+          <div id="theme-selector" class="item border-item">
             <label class="item-name">Widget Theme</label>
             <div class="widget-config__theme-container">
               <div class="widget-config__theme-item emerald active" data-theme="theme-emerald"></div>
-              <div class="widget-config__theme-item violet" data-theme="theme-violet"></div>
-              <div class="widget-config__theme-item dark" data-theme="theme-dark"></div>
-              <div class="widget-config__theme-item soil" data-theme="theme-soil"></div>
+              <div class="widget-config__theme-item sunset" data-theme="theme-sunset"></div>
               <div class="widget-config__theme-item ocean" data-theme="theme-ocean"></div>
             </div>
           </div>
@@ -107,7 +108,17 @@
           <div class="item hidden-type-swap">
             <label class="item-name required-type-pay required-type-buy">Receiving Token Symbol</label>
             <div class="item-value">
-              <input name="receiveToken" class="input-box uppercase" type="text" data-type-swap="" spellcheck="false" maxlength="6" value="ETH">
+              <input id="dest-token" name="receiveToken" class="input-box uppercase" type="hidden" data-type-swap="" spellcheck="false" maxlength="6" value="ETH">
+
+              <div class="widget-config__dropdown">
+                <div id="token-trigger" class="widget-config__dropdown-trigger">ETH</div>
+                <div class="widget-config__dropdown-content">
+                  <div class="widget-config__dropdown-search">
+                    <input id="widget-config__token-search" placeholder="Search" type="text" value="">
+                  </div>
+                  <div id="token-list" class="widget-config__dropdown-list"></div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="item hidden-type-swap">
@@ -135,7 +146,7 @@
           <div class="item">
             <label class="item-name">Network</label>
             <div class="item-value">
-              <select name="network" class="widget-config__select-default full-width">
+              <select id="widget-network" name="network" class="widget-config__select-default full-width">
                 <option value="">Default</option>
                 <option value="test">Testnet</option>
                 <option value="ropsten" selected>Ropsten</option>
@@ -198,7 +209,7 @@
   </div>
 </div>
 <script data-manual src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js"></script>
-<script src="assets/main.js?v=67"></script>
+<script src="assets/main.js?v=68"></script>
 </body>
 
 </html>

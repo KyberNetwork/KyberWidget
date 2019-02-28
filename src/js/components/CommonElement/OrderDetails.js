@@ -3,39 +3,42 @@ import * as converter from "../../utils/converter";
 import {addPrefixClass} from "../../utils/className";
 
 const OrderDetails = (props) => {
-  const haveProductName = props.exchange.productName && props.exchange.productName !== "";
-  const haveProductAvatar = props.exchange.productAvatar && props.exchange.productAvatar !== "";
   const isUnlockWalletStep = props.exchange.step === 2;
   const isConfirmStep = props.exchange.step === 3;
   const isEthDest = props.exchange.destTokenSymbol === 'ETH';
-  let isError = false;
   let gasUsed = props.exchange.gas;
   if (props.exchange.isNeedApprove) {
     gasUsed += props.exchange.gas_approve
   }
 
-  Object.keys(props.exchange.errors).map(key => {
-    if (props.exchange.errors[key] && props.exchange.errors[key] !== "") {
-      isError = true;
-    }
-  });
+  function renderProducts() {
+    return props.exchange.products.map((product, index) => {
+      if (!product.name) {
+        return false;
+      }
+
+      return (
+        <div key={index}>
+          <div className={addPrefixClass("widget-exchange__order-box")}>
+            {product.image && (
+              <img className={addPrefixClass("widget-exchange__order-image")} src={product.image} />
+            )}
+            <div className={addPrefixClass("widget-exchange__order-content common__flexbox between")}>
+              <span className={addPrefixClass("widget-exchange__order-text widget-exchange__order-product-name")}>{product.name}</span>
+              <span className={addPrefixClass("widget-exchange__order-text-bold")}>X{product.qty}</span>
+            </div>
+          </div>
+        </div>
+      );
+    });
+  }
 
   return (
     <div className={addPrefixClass(`widget-exchange__order theme-border ${isUnlockWalletStep ? 'common__desktop-display' : ''}`)}>
       <div className={addPrefixClass("widget-exchange__order-header")}>Order Details</div>
 
       <div className={addPrefixClass("widget-exchange__order-body")}>
-        {haveProductName && (
-          <div className={addPrefixClass("widget-exchange__order-box")}>
-            <span className={addPrefixClass("widget-exchange__order-text widget-exchange__order-product-name")}>{props.exchange.productName}</span>
-            <span className={addPrefixClass("widget-exchange__order-text-bold")}>X{props.exchange.productQty}</span>
-          </div>
-        )}
-        {haveProductAvatar && (
-          <div className={addPrefixClass("widget-exchange__order-box")}>
-            <img src={props.exchange.productAvatar} />
-          </div>
-        )}
+        {renderProducts()}
         <div className={addPrefixClass("widget-exchange__order-box")}>
           <div className={addPrefixClass(`widget-exchange__order-text widget-exchange__order-amount ${!isEthDest ? 'align-top' : ''}`)}>
             {props.translate("transaction.amount") || "Amount"}:
@@ -49,7 +52,7 @@ const OrderDetails = (props) => {
                 {!props.exchange.isSelectToken && (
                   <div>
                     {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
-                      <div>{props.exchange.offeredRate == "0" || isError ? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}</div>
+                      <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}</div>
                     )}
                     {props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol && (
                       <div>{props.exchange.sourceAmount || 0} {props.exchange.sourceTokenSymbol}</div>
@@ -77,7 +80,7 @@ const OrderDetails = (props) => {
               {props.translate("transaction.transaction_fee") || "Transaction fee"}:
             </div>
             <div className={addPrefixClass("widget-exchange__order-text-bold")}>
-              {props.exchange.isFetchingGas ? "Loading..." : converter.calculateGasFee(props.exchange.gasPrice, gasUsed)}
+              {props.exchange.isFetchingGas ? "Loading..." : converter.calculateGasFee(props.exchange.gasPrice, gasUsed)} ETH
             </div>
           </div>
         )}

@@ -59,10 +59,10 @@ const exchange = (state = initState, action) => {
       newState.errors.selectTokenToken = ''
       newState.errors.sourceAmountError = ''
 
-      if (newState.isSwap){
+      if (newState.isSwap) {
         if(newState.destTokenSymbol === newState.sourceTokenSymbol){
-          newState.errors.selectSameToken = "error.select_same_token"
-        }else{
+          newState.errors.selectSameToken = action.payload
+        } else {
           newState.errors.selectSameToken = ""
         }
       }
@@ -161,26 +161,26 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.HANDLE_AMOUNT":{
-      newState.errors.rateSystem = "error.handle_amount"
+      newState.errors.rateSystem = "Kyber cannot handle your amount, please reduce amount"
       return newState
     }
     case "EXCHANGE.RESET_HANDLE_AMOUNT_ERROR": {
       newState.errors.rateSystem = "";
       return newState
     }
-    case "EXCHANGE.UPDATE_RATE":{
-      const { rateInit, expectedPrice, slippagePrice, blockNo, isSuccess} = action.payload
+    case "EXCHANGE.UPDATE_RATE": {
+      const { rateInit, expectedPrice, slippagePrice, blockNo, isSuccess, errors } = action.payload
 
       if (!isSuccess) {
-        newState.errors.rateSystem = "error.get_rate"
-      }else{
-        if(expectedPrice === "0"){
-          if(rateInit === "0" || rateInit === 0 || rateInit === undefined || rateInit === null){
-            newState.errors.rateSystem = "error.kyber_maintain"
-          }else{
-            newState.errors.rateSystem = "error.handle_amount"
+        newState.errors.rateSystem = errors.getRate;
+      } else {
+        if (expectedPrice === "0") {
+          if(rateInit === "0" || rateInit === 0 || rateInit === undefined || rateInit === null) {
+            newState.errors.rateSystem = errors.kyberMaintain;
+          } else {
+            newState.errors.rateSystem = errors.handleAmount;
           }
-        }else{
+        } else {
           newState.errors.rateSystem = ""
         }
       }
@@ -527,8 +527,8 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.INIT_PARAMS_EXCHANGE":{
-      const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, productName, productAvatar, productQty, network,
-        paramForwarding, signer, commissionID, isSwap, type, pinTokens, paymentData, hint, theme} = action.payload
+      const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, products, network,
+        paramForwarding, signer, commissionID, isSwap, type, paymentData, hint, theme} = action.payload
       newState.destTokenSymbol = receiveToken
       newState.destAmount = receiveAmount
 
@@ -540,9 +540,7 @@ const exchange = (state = initState, action) => {
 
       newState.destToken = tokenAddr
       newState.receiveAddr = receiveAddr
-      newState.productName = productName
-      newState.productAvatar = productAvatar
-      newState.productQty = productQty
+      newState.products = products
       newState.callback = callback
       newState.network = network
       newState.paramForwarding = paramForwarding
@@ -606,6 +604,10 @@ const exchange = (state = initState, action) => {
     }
     case "EXCHANGE.SET_SOURCE_AMOUNT": {
       newState.sourceAmount = action.payload;
+      return newState;
+    }
+    case "EXCHANGE.SET_IS_APPROVE_ZERO":{
+      newState.isApproveZero = action.payload;
       return newState;
     }
   }

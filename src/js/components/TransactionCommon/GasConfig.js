@@ -10,7 +10,7 @@ const GasConfig = (props) => {
   ];
 
   return (
-    <div className={"advance-config__gas"}>
+    <div className={addPrefixClass("advance-config__gas")}>
       <div className={addPrefixClass("advance-config__gas-title")}>GAS fee (Gwei)</div>
       <div className={addPrefixClass("common__flexbox between")}>
         {gasOptions.map((item, index) => {
@@ -26,7 +26,7 @@ const GasConfig = (props) => {
                 name="gasAmount"
                 value={item.key}
                 defaultChecked={props.selectedGas == item.key}
-                onChange={() => props.handleGasChanged(item.value, item.key)}
+                onChange={() => props.handleGasChanged(item.value, item.key, item.text)}
               />
               <span className={addPrefixClass("common__radio-icon")}/>
             </label>

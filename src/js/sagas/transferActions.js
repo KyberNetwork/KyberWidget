@@ -62,10 +62,10 @@ export function* processTransfer(action) {
   const { type } = action.payload
 
   switch (type) {
-    case "keystore":
-      yield call(transferKeystore, action)
-      break
     case "privateKey":
+    case "keystore":
+      yield call(transferKeystoreAndPrivateKey, action)
+      break
     case "trezor":
     case "ledger":
       yield call(transferColdWallet, action)
@@ -87,33 +87,75 @@ function* doBeforeMakeTransaction(txRaw) {
   return true
 }
 
-function* transferKeystore(action) {
-  const {
+function *transferKeystoreAndPrivateKey(action) {
+  let {
     formId, ethereum, address, token, amount, destAddress, nonce, gas, gasPrice, keystring, type, password,
-    account, data, keyService, balanceData, commissionID, paymentData, hint } = action.payload;
+    account, data, keyService, balanceData, commissionID, paymentData, hint, sourceTokenSymbol } = action.payload;
+  const networkId  = common.getNetworkId();
+  let rawTx, hash;
 
-  var networkId  = common.getNetworkId();
-  var rawTx;
+  if (sourceTokenSymbol !== "ETH") {
+    const isPayMode = checkIsPayMode();
+    const remain = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", token, address, isPayMode);
+    const remainBigNumber = converter.hexToBigNumber(remain);
+    const sourceAmountBigNumber = converter.hexToBigNumber(amount);
+    let approveRaw, approveZeroRaw;
+
+    if (!remainBigNumber.isGreaterThanOrEqualTo(sourceAmountBigNumber)) {
+      if (remain != 0) {
+        try {
+          approveZeroRaw = yield call(keyService.callSignTransaction, "getApproveToken", isPayMode, ethereum, token,
+            amount, nonce, gas, gasPrice, keystring, password, type, address, networkId, true);
+        } catch (e) {
+          yield put(actions.throwPassphraseError(e.message));
+          return;
+        }
+
+        try {
+          yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", approveZeroRaw);
+          yield put(incManualNonceAccount(account.address));
+          nonce++;
+        } catch (e) {
+          yield call(doTxFail, ethereum, account, e.message);
+          return;
+        }
+      }
+
+      try {
+        approveRaw = yield call(keyService.callSignTransaction, "getApproveToken", isPayMode, ethereum, token,
+          amount, nonce, gas, gasPrice, keystring, password, type, address, networkId)
+      } catch (e) {
+        yield put(actions.throwPassphraseError(e.message))
+        return
+      }
+
+      try {
+        yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", approveRaw);
+        yield put(incManualNonceAccount(account.address));
+        nonce++;
+      } catch (e) {
+        yield call(doTxFail, ethereum, account, e.message);
+        return;
+      }
+    }
+  }
 
   try {
     rawTx = yield callService(keyService, formId, ethereum, address, token, amount, destAddress, nonce,
       gas, gasPrice, keystring, type, password, networkId, commissionID, paymentData, hint);
   } catch (e) {
-    yield put(exchangeActions.throwPassphraseError(e.message))
+    yield put(exchangeActions.throwPassphraseError(e.message));
     return
   }
+
   try {
-    yield put(actions.prePareBroadcast(balanceData))
-
-    var response = yield call(doBeforeMakeTransaction, rawTx)
-    console.log(response)
-
-    const hash = yield call([ethereum, ethereum.callMultiNode],"sendRawTransaction", rawTx)
-    yield call(runAfterBroadcastTx, ethereum, rawTx, hash, account, data)
+    yield put(actions.prePareBroadcast(balanceData));
+    yield call(doBeforeMakeTransaction, rawTx);
+    hash = yield call([ethereum, ethereum.callMultiNode],"sendRawTransaction", rawTx);
+    yield call(runAfterBroadcastTx, ethereum, rawTx, hash, account, data);
   } catch (e) {
     yield call(doTxFail, ethereum, account, e.message)
   }
-
 }
 
 function* transferColdWallet(action) {

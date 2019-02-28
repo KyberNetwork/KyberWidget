@@ -171,8 +171,8 @@ $animation-time: 0.5s;
     }
 
     &:hover {
-      box-shadow: $theme-emerald-shadow-icon;
-      border-color: $theme-emerald-border;
+      box-shadow: $theme-shadow-icon;
+      border-color: $theme-border;
     }
 
     .column-block {
@@ -301,7 +301,7 @@ $animation-time: 0.5s;
       justify-content: center;
       align-items: center;
       border-radius: 5px;
-      border: solid 1px $theme-emerald-border;
+      border: solid 1px $theme-border;
       line-height: 1.4;
 
       &.error {
@@ -333,8 +333,6 @@ $animation-time: 0.5s;
   }
 
   @include screen-max-width(600px) {
-    justify-content: unset;
-
     &__item {
       width: 30%;
       max-width: unset;

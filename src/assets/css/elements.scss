@@ -48,8 +48,8 @@
 
 .widget-container {
   max-width: $container-max-width;
-  margin: 80px auto;
-  box-shadow: $theme-emerald-shadow-container;
+  margin: 0 auto;
+  box-shadow: $theme-shadow-container;
   border-radius: 0 0 5px 5px;
 
   &.swap,
@@ -70,9 +70,11 @@
     .widget-footer {
       background-image: url($image-path + 'footer-logo-white.svg');
     }
+  }
 
+  &.tab {
     &::after {
-      display: none;
+      background-color: #f9fcff;
     }
   }
 
@@ -83,7 +85,7 @@
     height: 260px;
     top: -80px;
     left: 0;
-    background-image: $theme-emerald-gradient;
+    background-color: transparent;
     z-index: -1;
     transition: all .3s;
   }
@@ -107,7 +109,6 @@
     height: 100%;
     min-height: 100vh;
     display: block;
-    background-color: #f9fcff;
     z-index: -2;
   }
 
@@ -123,7 +124,7 @@
   padding: 30px 40px;
   background-color: white;
   border-radius: 5px 5px 0 0;
-  box-shadow: $theme-emerald-shadow-header;
+  box-shadow: $theme-shadow-header;
   position: relative;
   z-index: 2;
 
@@ -345,6 +346,7 @@
   }
 
   &__checkbox {
+    display: flex;
     padding-left: 28px;
     position: relative;
     cursor: pointer;
@@ -385,6 +387,7 @@
         border: solid white;
         border-width: 0 2px 2px 0;
         transform: rotate(45deg);
+        box-sizing: initial;
       }
     }
 
@@ -405,6 +408,7 @@
   }
 
   &__button {
+    line-height: normal;
     width: 100%;
     max-width: 250px;
     font-size: 20px;
@@ -517,6 +521,12 @@
     &.up {
       transform: rotate(-180deg);
     }
+
+    &--small {
+      border-left-width: 5px;
+      border-right-width: 5px;
+      border-top-width: 7px;
+    }
   }
 
   &__error {
@@ -534,6 +544,7 @@
       border-radius: 6px;
       background-color: #ffeeee;
       margin-top: 20px;
+      word-break: break-word;
     }
   }
 
@@ -568,15 +579,10 @@
     width: 100%;
     outline: none;
     border: none;
-    border-bottom: 2px solid $theme-emerald-border;
+    border-bottom: 2px solid $theme-border;
 
     &::placeholder {
       opacity: 0.4;
-    }
-
-    &.security {
-      font-size: 23px;
-      font-family: 'text-security-disc', sans-serif;
     }
   }
 

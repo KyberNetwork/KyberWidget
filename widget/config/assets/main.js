@@ -2,7 +2,50 @@
   var excludedInput = ["version"];
   var defaultVersion = document.getElementById("selected-version").innerText;
   var NO_VERSION = "no";
+  var STABLE_COINS = ['DAI'];
   var activeTheme = "theme-emerald";
+  var currentNetwork = document.getElementById('widget-network').value;
+  var currentTokens = [];
+  var version = getUrlParam("version") || defaultVersion;
+  var currentVersion = version === NO_VERSION ? defaultVersion : version
+  var isSupportedThemeVersion =  currentVersion > 0.5;
+
+  async function fetchTokens(network) {
+    try {
+      document.getElementById('token-list').innerHTML = '<img class="widget-config__loading-icon" src="assets/images/icon-loading.gif"/>';
+
+      const response = await fetch(`https://${network === "ropsten" ? network + '-' : ''}api.kyber.network/internal/currencies`);
+      const tokenResponse = await response.json();
+      const tokens = tokenResponse.data;
+
+      // Sort stable coins on the top
+      tokens.unshift(tokens.splice(tokens.findIndex(item => STABLE_COINS.includes(item.symbol)), 1)[0]);
+
+      currentTokens = tokens;
+
+      renderTokenList(tokens);
+    } catch (error) {
+      alert('Errors occurred on fetching tokens from API: ' + error)
+    }
+  }
+
+  function renderTokenList(tokens) {
+    let tokenListHtml = '';
+
+    for (let i in tokens) {
+      const tokenSymbol = tokens[i].symbol;
+      const tokenName = tokens[i].name;
+
+      tokenListHtml += `
+          <div class="widget-config__dropdown-token" data-token-symbol="${tokenSymbol}">
+            <span class="widget-config__dropdown-symbol" data-token-symbol="${tokenSymbol}">${tokenSymbol}</span>
+            <span class="widget-config__dropdown-name" data-token-symbol="${tokenSymbol}">${STABLE_COINS.includes(tokenSymbol) ? 'Stable Coin': tokenName}</span>
+          </div>
+        `
+    }
+
+    document.getElementById('token-list').innerHTML = tokenListHtml;
+  }
 
   function getUrlParam(name) {
     return new URLSearchParams(location.search).get(name);
@@ -203,6 +246,60 @@
     document.getElementById("widget-html-source").addEventListener("click", function () {
       generateTag();
     });
+
+    document.querySelectorAll(".widget-config__theme-item").forEach(function (item) {
+      item.addEventListener("click", function () {
+        generateTag();
+      })
+    });
+
+    document.querySelectorAll(".widget-config__dropdown-trigger").forEach(function (item) {
+      item.addEventListener("click", function () {
+        var network = document.getElementById('widget-network').value;
+
+        if (network === "test" || network === "ropsten") {
+          network = "ropsten";
+        } else if (network === "production" || network === "mainnet") {
+          network = "";
+        }
+
+        if (network !== currentNetwork) {
+          currentNetwork = network;
+          fetchTokens(currentNetwork);
+        }
+
+        this.classList.toggle("active");
+      })
+    });
+
+    document.getElementById("token-list").addEventListener("click",function(e) {
+      if (e.target && e.target.matches(".widget-config__dropdown-token, .widget-config__dropdown-symbol, .widget-config__dropdown-name")) {
+        const tokenSymbol =  e.target.getAttribute("data-token-symbol");
+        const $tokenTrigger = document.getElementById('token-trigger');
+
+        document.getElementById('dest-token').value = tokenSymbol;
+        $tokenTrigger.innerText = tokenSymbol;
+        $tokenTrigger.classList.remove("active");
+        generateTag();
+      }
+    });
+
+    document.getElementById("widget-config__token-search").addEventListener("keyup", function() {
+      const value = this.value.toLowerCase();
+
+      if (!currentTokens.length) return;
+
+      if (!value) {
+        renderTokenList(currentTokens);
+        return;
+      }
+
+      const filteredTokens = currentTokens.filter(function (token) {
+        return token.symbol.toLowerCase().includes(value) || token.name.toLowerCase().includes(value)
+      });
+
+      renderTokenList(filteredTokens);
+    });
   }
 
   var generateTag = debounce(function () {
@@ -219,6 +316,7 @@
 
     codeBtn.classList.remove("widget-config__btn--disabled");
 
+    var themeSupportedClass = isSupportedThemeVersion ? "theme-supported" : '';
     var mode = document.querySelector("form").mode.value || "tab";
     var widgetBaseUrl = getWidgetUrl();
     var url = widgetBaseUrl + "/?" + formData.data;
@@ -226,7 +324,7 @@
     var jsUrl = widgetBaseUrl + '/widget.js';
     var tagHtml = "<!-- This is the '" + formData.buttonText + "' button, place it anywhere on your webpage -->\n";
     tagHtml += "<!-- You can add multiple buttons into a same page -->\n";
-    tagHtml += "<a href='" + url + "'\nclass='kyber-widget-button " + activeTheme + "' ";
+    tagHtml += "<a href='" + url + "'\nclass='kyber-widget-button " + activeTheme + " " + themeSupportedClass + "' ";
     tagHtml += "name='KyberWidget - Powered by KyberNetwork' title='Pay with tokens'\n";
     tagHtml += "target='_blank'>" + formData.buttonText + "</a>";
 
@@ -266,6 +364,10 @@
     var widgetUrlParam = getUrlParam("widget_url");
     var version = getUrlParam("version");
 
+    if (!isSupportedThemeVersion) {
+      document.getElementById("theme-selector").style.display = "none";
+    }
+
     if (widgetUrlParam && version === NO_VERSION) {
       document.getElementById("version-selector").style.display = "none";
     } else {
@@ -297,4 +399,5 @@
   generateTag();
   wireEvents();
   setupVersion();
+  fetchTokens("ropsten");
 })();

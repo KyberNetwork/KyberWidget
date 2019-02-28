@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import { Provider } from "react-redux"
 import { Layout } from "./containers/Layout"
 import BLOCKCHAIN_INFO from "../../env"
-import constanst from "./services/constants"
+import constants from "./services/constants"
 import { initSession, initParamsGlobal, haltPayment, initAnalytics } from "./actions/globalActions"
 import { initParamsExchange } from "./actions/exchangeActions"
 import { PersistGate } from 'redux-persist/lib/integration/react'
@@ -16,7 +16,6 @@ import Web3 from "web3";
 
 function getListTokens(network) {
   return new Promise((resolve, reject) => {
-    //return list of object tokens
     fetch(BLOCKCHAIN_INFO[network].api_tokens, {
       method: 'GET',
       headers: {
@@ -28,7 +27,6 @@ function getListTokens(network) {
     })
       .then((result) => {
         if (result.success) {
-          //check listing time
           var now = Math.round(new Date().getTime()/1000)
           var tokens = {}
           result.data.map(val => {
@@ -36,10 +34,7 @@ function getListTokens(network) {
             tokens[val.symbol] = val
           })
           resolve(tokens)
-
-          //resolve(result.data)
         } else {
-          //get from snapshot
           var tokens = BLOCKCHAIN_INFO[network].tokens
           resolve(tokens)
         }
@@ -84,9 +79,10 @@ function initParams(appId) {
   var paramForwarding
   var signer
   var commissionID
-  var productName
-  var productAvatar
-  var productQty
+  var products
+  var productNames
+  var productQtys
+  var productImages
   var type
   var pinnedTokens
   var paymentData
@@ -115,9 +111,6 @@ function initParams(appId) {
     paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
     signer = widgetParent.getAttribute('data-widget-signer')
     commissionID = widgetParent.getAttribute('data-widget-commission-id')
-    productName = widgetParent.getAttribute('data-widget-product-name')
-    productAvatar = widgetParent.getAttribute('data-widget-product-avatar')
-    productQty = widgetParent.getAttribute('data-widget-product-qty') || 1
     type = widgetParent.getAttribute('data-widget-type')
     pinnedTokens = widgetParent.getAttribute('data-widget-pinned-tokens') || []
     paymentData = widgetParent.getAttribute('data-widget-payment-data') || ""
@@ -125,6 +118,8 @@ function initParams(appId) {
     defaultPair = widgetParent.getAttribute('data-widget-default-pair')
     theme = widgetParent.getAttribute('data-widget-theme') || "theme-emerald"
     mode = widgetParent.getAttribute('data-widget-mode')
+    products = widgetParent.getAttribute('data-widget-products')
+    products = products ? JSON.parse(products) : [];
   } else {
     query = common.getQueryParams(window.location.search)
     receiveAddr = common.getParameterByName("receiveAddr")
@@ -135,9 +130,9 @@ function initParams(appId) {
     paramForwarding = common.getParameterByName("paramForwarding")
     signer = common.getParameterByName("signer")
     commissionID = common.getParameterByName("commissionId")
-    productName = common.getParameterByName("productName")
-    productAvatar = common.getParameterByName("productAvatar")
-    productQty = common.getParameterByName("productQty") || 1
+    productNames = common.getMultipleValuesByName("productName")
+    productQtys = common.getMultipleValuesByName("productQty")
+    productImages = common.getMultipleValuesByName("productImage")
     type = common.getParameterByName("type")
     pinnedTokens = common.getParameterByName("pinnedTokens") || []
     paymentData = common.getParameterByName("paymentData") || ""
@@ -145,6 +140,7 @@ function initParams(appId) {
     defaultPair = common.getParameterByName("defaultPair")
     theme = common.getParameterByName("theme") || "theme-emerald"
     mode = common.getParameterByName("mode")
+    products = productNames ? common.getProductsFromParam(productNames, productQtys, productImages) : [];
   }
 
   paramForwarding = paramForwarding === "true" || paramForwarding === true ? paramForwarding : "false"
@@ -292,10 +288,6 @@ function initParams(appId) {
       }
     }
 
-    if (!Number.isInteger(parseInt(productQty)) || productQty <= 0) {
-      productQty = 1;
-    }
-
     if (!validator.verifyNetwork(network)) {
       errors["network"] = translate('error.invalid_network') || "Current network is not supported"
     }
@@ -313,9 +305,8 @@ function initParams(appId) {
       var tokenAddr = tokens[receiveToken].address
 
       store.dispatch(initParamsExchange(
-        receiveAddr, receiveToken, tokenAddr, receiveAmount, productName, productAvatar,
-        productQty, callback, network, paramForwarding, signer, commissionID, isSwap,
-        type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme
+        receiveAddr, receiveToken, tokenAddr, receiveAmount, products, callback, network, paramForwarding,
+        signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme
       ));
 
       //init analytic
@@ -333,7 +324,7 @@ function initParams(appId) {
 Modal.setAppElement('body');
 window.kyberWidgetInstance = {}
 window.kyberWidgetInstance.render = (widgetId) => {
-  var appId = widgetId ? widgetId : constanst.APP_NAME
+  var appId = widgetId ? widgetId : constants.APP_NAME
 
   if (!document.getElementById(appId)) {
     return

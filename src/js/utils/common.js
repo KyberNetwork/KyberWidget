@@ -10,6 +10,19 @@ export function getParameterByName(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+export function getMultipleValuesByName(name) {
+  let url = new URL(window.location.href);
+  return url.searchParams.getAll(name);
+}
+
+export function getProductsFromParam(productNames, productQtys = [], productImages = []) {
+  return productNames.map((productName, index) => {
+    const productQty = +productQtys[index] ? +productQtys[index] : 1;
+    const productImage = productImages[index] ? productImages[index] : null;
+
+    return { name: productName, qty: productQty, image: productImage };
+  });
+}
 
 export function getActiveLanguage(langs) {
   for (var i = 0; i < langs.length; i++) {
@@ -19,7 +32,6 @@ export function getActiveLanguage(langs) {
   }
   return "en"
 }
-
 
 export function getQueryParams(qs) {
   qs = qs.split('+').join(' ');
@@ -49,7 +61,6 @@ export function queryParamsString(url) {
   return params
 }
 
-
 export function findNetworkName(networkId) {
   switch (networkId) {
     case 0:
@@ -69,7 +80,6 @@ export function findNetworkName(networkId) {
   }
 }
 
-
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -83,9 +93,6 @@ export function lineToCamel(str) {
   return key
 }
 
-
-
-
 export function checkComponentExist(componentId) {
   if (document.getElementById(componentId)) {
     return true
@@ -93,7 +100,6 @@ export function checkComponentExist(componentId) {
     return false
   }
 }
-
 
 export function setCookie(cname, cvalue, exdays) {
   if (!exdays) {
@@ -176,15 +182,10 @@ export function submitForm(path, params, method, maxTimeout) {
       });
     };
 
-
-
-
     var formData = new FormData(form);
+
     xhr.send(formData);
-
   })
-
-  //form.submit();
 }
 
 export function submitUrlEncoded(path, params, method, maxTimeout) {

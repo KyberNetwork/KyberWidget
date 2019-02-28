@@ -1,7 +1,3 @@
-$title-background-color: #DCF0EC;
-$footer-background-color: $title-background-color;
-$divider-color: darken($title-background-color, 5);
-
 .reveal-overlay {
   background-color: rgba($dark-gray, .75);
   overflow-y: scroll;
@@ -11,143 +7,58 @@ $divider-color: darken($title-background-color, 5);
 .reveal {
   position: relative;
   overflow: visible;
-  border-radius: 0;
   color: #2c2c2c;
   outline: none;
   box-shadow: 0 20px 40px 0 rgba($medium-gray, .2);
   background-color: #fefefe;
-  padding: 1rem;
+  padding: 0;
   border: 1px solid #cacaca;
   margin: 0 auto;
+  border-radius: 5px;
+  font-family: $font-montserrat;
+  max-width: 90%;
+  width: 420px;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
-  .text-center {
-    text-align: center;
-  }
-  @include breakpoint(small only) {
-    height: 100vh;
-  }
-  .message {
-    margin-bottom: 25px;
-  }
-  a{
-    color: #EF8102;
-    &.x {
-      display: block;
-      position: absolute;
-      right: 20px;
-      top: 0px;
-      font-size: 3rem;
-      color: #aaa;
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
-  .k-title {
-    font-size: 1.8rem;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  .overlap {
-    width: 100%;
-    text-align: center;
+.modal-error {
+  &__header {
     display: flex;
-    justify-content: space-between;
-    background-color: #8CBCAE;
-    padding: 50px 50px;
     align-items: center;
-    span{
-      &:not(.error-text){
-        color: white;
-      }
-    }
-    .button {
-      margin: 0;
-    }
-  }
-  .k-content {
-    &.with-overlap {
-      padding-bottom: 25px;
-      &.tx-loading {
-        padding-bottom: 100px;
-      }
-    }
-    .block-title {
-      @include clearfix;
-      font-weight: bold;
-      font-size: 16px;
-      margin-bottom: 15px;
-      img.loading {
-        height: 21px;
-        float: right;
-        margin-left: 10px;
-      }
-    }
-    p {
-      font-size: 14px;
-      line-height: 1.7;
-    }
-    .gas-configed{
-      width: 270px;
-      max-width: 100%;
-      white-space: nowrap;
-      text-align: left;
-      font-size: 0.8rem;
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-      >div{
-        &:first-child{
-          margin-bottom: 0.6rem;
-        }
-      }
-    }
-    hr{
-      border-color: #a5a5a5;
-    }
-    .modal-error{
-      font-size: 0.9em;
-      margin-bottom: 25px;
-      color: $alert-color;
-      padding-top: 24px;
-      &.metamask{
-        height: 65px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        word-wrap: break-word;
-        margin: 24px;
-        padding: 5px 5px;
-        margin-left: 10px;
-        margin-bottom: 0;
-        &.full{
-          white-space: normal;
-        }
-        + .show-full{
-          font-size: 0.8em;
-          margin-top: -20px;
-          margin-bottom: 15px;
-          cursor: pointer;
-          color: #ff5d00;
-          font-style: italic;
-        }
-      }
+    justify-content: center;
+    padding: 22px 10px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #ea221d;
+    box-shadow: 0 4px 32px 0 rgba(65, 101, 128, 0.11);
+
+    &::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 24px;
+      position: relative;
+      top: -1px;
+      margin-right: 10px;
+      background-image: url($image-path + 'icons/icon-error-small.svg');
+      background-size: contain;
     }
   }
-  .footer {
-    border-top: 1px solid $divider-color;
-    padding: 25px 10px;
-    background-color: $footer-background-color;
-    @include breakpoint(medium) {
-      padding: 15px;
-    }
-    &.with-overlap {
-      padding-top: 45px;
-    }
-    .action {
-      font-weight: bold;
-      font-size: 12px;
-      text-transform: uppercase;
-      color: $dark-gray;
-      letter-spacing: .5px;
+
+  &__content {
+    text-align: center;
+    padding: 30px 10px 35px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #727b8f;
+    background-color: #f7f7f7;
+    line-height: 1.6;
+
+    br {
+      content: "";
+      display: block;
+      margin-top: 7px;
     }
   }
 }

@@ -98,11 +98,29 @@
 
   &__order {
     border-radius: 6px;
-    border: solid 1px $theme-emerald-border;
+    border: solid 1px $theme-border;
     background-color: white;
 
     &-rate {
       text-align: right;
+    }
+
+    &-image {
+      width: 100px;
+      border-radius: 3px;
+      margin-right: 20px;
+
+      ~ .widget-exchange__order-content {
+        width: calc(100% - 120px);
+      }
+    }
+
+    &-content {
+      width: 100%;
+    }
+
+    &-product-name {
+      padding-right: 20px;
     }
 
     &-header {
@@ -158,16 +176,11 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 25px;
-
-      img {
-        width: 100%;
-        border-radius: 3px;
-      }
     }
 
     &-address {
       padding-top: 25px;
-      border-top: 1px dashed $theme-emerald-border;
+      border-top: 1px dashed $theme-border;
     }
   }
 

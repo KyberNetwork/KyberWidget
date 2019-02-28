@@ -20,7 +20,8 @@ import { roundingNumber } from "../../utils/converter";
     tokens: supportTokens,
     deviceService: props.deviceService,
     translate: getTranslate(store.locale),
-    screen: props.screen
+    screen: props.screen,
+    analytics: store.global.analytics
   }
 })
 export default class ImportByDevice extends React.Component {
@@ -74,11 +75,9 @@ export default class ImportByDevice extends React.Component {
     }
     this.props.deviceService.getPublicKey(selectedPath, this.state.modalOpen)
       .then((result) => {
-        const dPath = (dpath != 0) ? result.dPath : dpath
-        this.dPath = dPath;
+        const currentDPath = (dpath != 0) ? result.dPath : dpath
         this.generateAddress(result);
-
-        this.props.dispatch(setDPath(dPath));
+        this.props.dispatch(setDPath(currentDPath));
         this.props.dispatch(closeImportLoading());
       })
       .catch((err) => {
@@ -166,6 +165,7 @@ export default class ImportByDevice extends React.Component {
           isFirstList: false
         })
       }
+      this.props.analytics.callTrack("clickNavigateAddressColdWallet", "next")
     } else {
       this.props.dispatch(throwError('Cannot connect to ' + this.walletType))
     }
@@ -184,6 +184,7 @@ export default class ImportByDevice extends React.Component {
         isFirstList: true
       })
     }
+    this.props.analytics.callTrack("clickNavigateAddressColdWallet", "previous")
   }
 
   setWallet(index, address, balance, type) {
@@ -220,15 +221,12 @@ export default class ImportByDevice extends React.Component {
   }
 
   showLoading(walletType) {
+    if (this.props.account.loading) return;
+
     const browser = bowser.getParser(window.navigator.userAgent);
     const browserName = browser.getBrowserName();
     this.props.dispatch(resetCheckTimeImportLedger())
     if (walletType == 'ledger') {
-      if (browserName != 'Chrome') {
-        let erroMsg = this.props.translate("error.browser_not_support_ledger", { browser: browserName }) || `Ledger is not supported on ${browserName}, you can use Chrome instead.`
-        this.props.dispatch(throwError(erroMsg));
-        return;
-      }
       this.props.dispatch(importLoading());
       this.connectDevice(walletType);
       this.ledgerLoading = setTimeout(() => {
@@ -250,7 +248,7 @@ export default class ImportByDevice extends React.Component {
         getPreAddress={() => this.preAddress()}
         getMoreAddress={() => this.moreAddress()}
         dPath={this.DPATH}
-        currentDPath={this.dPath}
+        currentDPath={this.props.account.wallet.dPath}
         wallet={this.props.account.wallet}
         setWallet={this.setWallet.bind(this)}
         currentAddresses={this.state.currentAddresses}

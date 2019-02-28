@@ -1,6 +1,6 @@
 (function (global) {
-  var WIDGET_VERSION = "0.4";
-  var incrementDeploy = 1;
+  var WIDGET_VERSION = "0.6.1";
+  var incrementDeploy = 18;
 
   function initKyberWidget() {
     function getCurrentScriptDir() {
@@ -154,16 +154,39 @@
 
           var element = '';
           if (mode === 'popup') {
+            var productNames = [];
+            var productQtys = [];
+            var productImages = [];
+
             // create the widget container
             element = document.createElement("DIV");
             element.id = "kyber-widget";
             element.classList.add("kyber_widget");
+
             // set widget attributes
             element.setAttribute("data-widget-attribute", "true");
+
             for (var pair of params) {
-              element.setAttribute("data-widget-" +
-                decodeURIComponent(pair[0]).replace(/([a-z])([A-Z])/g,
-                  '$1-$2'), decodeURIComponent(pair[1]));
+              var name = decodeURIComponent(pair[0]).replace(/([a-z])([A-Z])/g, '$1-$2');
+              var value = decodeURIComponent(pair[1]);
+
+              if (name === 'product-Name') {
+                productNames.push(value);
+                continue;
+              } else if (name === 'product-Qty') {
+                productQtys.push(value);
+                continue;
+              } else if (name === 'product-Image') {
+                productImages.push(value);
+                continue;
+              }
+
+              element.setAttribute("data-widget-" + name, value);
+            }
+
+            if (productNames.length) {
+              var products = generateProductDataAttribute(productNames, productQtys, productImages);
+              element.setAttribute("data-widget-products", JSON.stringify(products));
             }
           } else {
             element = document.createElement("IFRAME");
@@ -194,6 +217,19 @@
       if (hasDomMode & !shouldDelegate) insertTags(global.kyberWidgetOptions.path);
 
     })();
+
+    function generateProductDataAttribute(productNames, productQtys, productImages) {
+      var products = [];
+
+      for (var i = 0; i < productNames.length; i++) {
+        var productQty = +productQtys[i] ? +productQtys[i] : 1;
+        var productImage = productImages[i] ? productImages[i] : null;
+
+        products.push({"name": productNames[i], "qty": productQty, "image": productImage})
+      }
+
+      return products;
+    }
 
   }
 

@@ -17,7 +17,6 @@ export function newWeb3Instance(){
       web3Instance = new dapp.MetamaskBrowser()
       break
     case "dapp":
-    case "unknown":
       web3Instance = new dapp.DappBrowser()
       break
     case "non_web3":
@@ -32,24 +31,30 @@ export function newWeb3Instance(){
 }
 
 function getWeb3Type(){
-  if (window.ethereum){
-    return "modern_metamask"
-  }
-  if (window.web3){
-    if (window.web3.currentProvider && window.web3.currentProvider.isMetaMask){
+  if (window.web3) {
+    if (window.ethereum && window.web3.currentProvider && window.web3.currentProvider.isMetaMask) {
+      return "modern_metamask"
+    }
+
+    if (window.web3.currentProvider && window.web3.currentProvider.isMetaMask) {
       return "metamask"
     }
+
     if (window.web3.currentProvider && window.web3.currentProvider.isTrust === true) {
       return "trust"
     }
+
     if ((!!window.__CIPHER__) && (window.web3.currentProvider && window.web3.currentProvider.constructor && window.web3.currentProvider.constructor.name === "CipherProvider")) {
       return "cipher"
     }
+
     if (window.web3.isDAppBrowser && window.web3.isDAppBrowser()) {
       return "dapp"
     }
-    return "unknown"
+
+    return "dapp"
   }
+
   return "non_web3"
 }
 
@@ -59,14 +64,11 @@ function getWeb3Type(){
 export function isDApp() {
   const web3Service = newWeb3Instance();
 
-  if (web3Service !== false) {
-    const walletType = web3Service.getWalletType();
-    const isDapp = (walletType !== "metamask") && (walletType !== "modern_metamask");
-
-    if (isDapp) {
-      return true;
-    }
+  if (!web3Service) {
+    return false;
   }
 
-  return false;
+  const walletType = web3Service.getWalletType();
+
+  return (walletType !== "metamask") && (walletType !== "modern_metamask");
 }

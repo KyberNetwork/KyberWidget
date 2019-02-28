@@ -1,12 +1,5 @@
-@import '../bower/animate.css/animate.css';
+@import 'fonts';
 @import 'settings';
-
-@font-face{
-  font-family: 'text-security-disc';
-  font-style: normal;
-  font-weight: normal;
-  src: url(../fonts/text-security-disc.ttf);
-}
 
 $accent-gradient: linear-gradient(169deg, #36d9ac, #049696);
 $alert-color: #ff5d00;
@@ -32,17 +25,22 @@ body {
   font-size: 16px;
   font-family: $font-montserrat;
   position: relative;
+  padding: 80px 20px;
 
   @import 'animation';
   @import 'elements';
   @import 'broadcast';
   @import 'addresses';
   @import 'custom';
-  @import "token_select";
+  @import "token-select";
   @import "icon";
   @import "advance-config";
   @import "exchange";
   @import "import-account";
   @import "cold-wallet";
   @import "slide-down";
+
+  @include screen-max-width(600px) {
+    padding: 80px 10px;
+  }
 }

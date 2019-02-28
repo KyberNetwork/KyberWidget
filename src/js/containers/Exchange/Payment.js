@@ -83,7 +83,7 @@ export default class Payment extends React.Component {
     const account = this.props.account
     const ethereum = this.props.ethereum
     this.props.dispatch(exchangeActions.doApprove(ethereum, params.sourceToken, params.sourceAmount, params.nonce, params.gas_approve, params.gasPrice,
-      account.keystring, account.password, account.type, account, this.props.keyService, params.sourceTokenSymbol))
+      account.keystring, account.password, account.type, account, this.props.keyService, params.sourceTokenSymbol, this.props.exchange.isApproveZero))
     this.props.global.analytics.callTrack("clickToApprove", params.sourceTokenSymbol)
   }
 
@@ -102,6 +102,7 @@ export default class Payment extends React.Component {
       var formId = "transfer"
       var data = ""
       var token = this.props.exchange.destTokenSymbol
+      var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
       var tokenAddress = this.props.tokens[token].address
       var tokenDecimal = this.props.tokens[token].decimals
       var tokenName = this.props.tokens[token].tokenName
@@ -128,7 +129,7 @@ export default class Payment extends React.Component {
 
       this.props.dispatch(transferActions.processTransfer(formId, ethereum, account.address, tokenAddress, amount,
         destAddress, nonce, gas, gasPrice, account.keystring, account.type, password, account, data,
-        this.props.keyService, balanceData, commissionID, paymentData, hint))
+        this.props.keyService, balanceData, commissionID, paymentData, hint, sourceTokenSymbol))
     } catch (e) {
       console.log(e)
     }
@@ -149,16 +150,10 @@ export default class Payment extends React.Component {
     var sourceAmount = converter.stringToHex(this.props.snapshot.sourceAmount, this.props.snapshot.sourceDecimal)
     var destToken = this.props.snapshot.destToken
     var minConversionRate = converter.toTWei(this.props.snapshot.minConversionRate)
-    var blockNo
+    var blockNo = this.props.exchange.commissionID
     var destAddress
 
     minConversionRate = converter.numberToHex(minConversionRate)
-
-    if (this.props.exchange.commissionID) {
-      blockNo = this.props.exchange.commissionID
-    } else {
-      blockNo = converter.numberToHexAddress(this.props.snapshot.blockNo)
-    }
 
     if (this.props.exchange.isSwap) {
       destAddress = this.props.account.address
@@ -196,16 +191,10 @@ export default class Payment extends React.Component {
     var sourceAmount = this.getSourceAmount()
     var destToken = this.props.snapshot.destToken
     var minConversionRate = converter.toTWei(this.props.snapshot.minConversionRate)
-    var blockNo
+    var blockNo = this.props.exchange.commissionID;
     var destAddress
 
     minConversionRate = converter.numberToHex(minConversionRate)
-
-    if (this.props.exchange.commissionID) {
-      blockNo = this.props.exchange.commissionID
-    } else {
-      blockNo = converter.numberToHexAddress(this.props.snapshot.blockNo)
-    }
 
     if (this.props.exchange.isSwap) {
       destAddress = this.props.account.address
@@ -332,7 +321,7 @@ export default class Payment extends React.Component {
 
   toogleShowPassword = () => {
     this.setState({showPassword : !this.state.showPassword})
-    this.props.global.analytics.callTrack("clickShowPassword", this.state.showPassword ? "show" : "hide")
+    this.props.global.analytics.callTrack("clickToggleRevealKeyStorePassword", !this.state.showPassword)
   }
 
   resetPasswordError = () => {
@@ -345,10 +334,14 @@ export default class Payment extends React.Component {
     const sourceBalance = this.props.tokens[sourceTokenSymbol].balance;
     const sourceDecimal = this.props.tokens[sourceTokenSymbol].decimals;
     const ethBalance = this.props.tokens["ETH"].balance;
+    const errors = this.props.exchange.errors;
+    const isApprove = this.props.exchange.isNeedApprove || this.props.exchange.isApproveZero;
+    const isConfirming = this.props.exchange.isConfirming || this.props.transfer.isConfirming;
+    const isKeystoreOrPrivateKey = this.props.account.type === "keystore" || this.props.account.type === "privateKey";
     var classDisable = ""
     var txError = this.props.exchange.signError + this.props.exchange.broadcastError;
 
-    if (!this.props.exchange.validateAccountComplete || this.props.exchange.isConfirming || this.props.exchange.isFetchingGas || this.props.exchange.errors.signer_invalid) {
+    if (!this.props.exchange.validateAccountComplete || isConfirming || this.props.exchange.isFetchingGas || errors.signer_invalid || errors.exceed_balance_fee || errors.exceed_balance) {
       classDisable += " disabled"
     }
 
@@ -427,9 +420,9 @@ export default class Payment extends React.Component {
                     <div className={addPrefixClass("widget-exchange__text theme-text")}>Enter your Password</div>
                     <div className={addPrefixClass("common__input-panel")}>
                       <input
-                        className={addPrefixClass(`common__input theme-border ${this.state.showPassword ? "" : "security"}`)}
+                        className={addPrefixClass(`common__input theme-border`)}
                         id="passphrase"
-                        type="text"
+                        type={this.state.showPassword ? "text" : "password"}
                         autoFocus
                         autoComplete="off"
                         spellCheck="false"
@@ -454,9 +447,21 @@ export default class Payment extends React.Component {
                   </div>
                 )}
 
-                {(this.props.exchange.isConfirming || this.props.transfer.isConfirming) && (
+                {this.props.exchange.isApproveZero && (
                   <div className={addPrefixClass("common__information box")}>
-                    {this.props.account.type !== "keystore" ? (this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet") : ""}
+                    You need to grant permission for KyberWidget to reset your previous allowance of {this.props.exchange.sourceTokenSymbol} since it's insufficient to make the transaction
+                  </div>
+                )}
+
+                {(isConfirming && !isKeystoreOrPrivateKey) && (
+                  <div className={addPrefixClass("common__information box")}>
+                    {this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet"}
+                  </div>
+                )}
+
+                {(isConfirming && isKeystoreOrPrivateKey) && (
+                  <div className={addPrefixClass("common__information box")}>
+                    Sending Transactions...
                   </div>
                 )}
 
@@ -476,17 +481,17 @@ export default class Payment extends React.Component {
         </div>
 
         <div className={addPrefixClass("widget-exchange__bot common__flexbox between mobile-column-reverse")}>
-          <div className={addPrefixClass("common__button hollow theme-button" + (this.props.exchange.isConfirming || this.props.transfer.isConfirming ? " disable" : ""))} onClick={this.reImportAccount}>
+          <div className={addPrefixClass(`common__button hollow theme-button ${isConfirming ? "disable" : ""}`)} onClick={this.reImportAccount}>
             {this.props.translate("transaction.back") || "Back"}
           </div>
 
-          {this.props.exchange.isNeedApprove && (
+          {isApprove && (
             <div className={addPrefixClass("common__button widget-exchange__import theme-gradient" + classDisable)} onClick={this.approveToken}>
               {this.props.translate("transaction.approve") || "Approve"}
             </div>
           )}
 
-          {!this.props.exchange.isNeedApprove && (
+          {!isApprove && (
             <div className={addPrefixClass("common__button widget-exchange__import theme-gradient" + classDisable)} onClick={this.payment}>
               {this.props.translate("transaction.confirm") || "Confirm"}
             </div>

@@ -24,6 +24,26 @@
     top: 1px;
 }
 
+/* ========== Theme Sunset Settings ========== */
+
+.kyber-widget-button.theme-sunset {
+    background-color: #ee8006;
+}
+
+.kyber-widget-button.theme-sunset:hover {
+    background-color: #ffb15e;
+}
+
+/* ========== Theme Ocean Settings ========== */
+
+.kyber-widget-button.theme-ocean {
+    background-color: #1F87F0;
+}
+
+.kyber-widget-button.theme-ocean:hover {
+    background-color: #3fbdfc;
+}
+
 #kyber-widget {
     position: absolute;
     box-sizing: border-box;
@@ -72,7 +92,7 @@
     top: 16px;
     right: 8px;
     display: inline-block;
-    padding: 12px 4px;
+    padding: 15px 0;
     font-size: 36px;
     color: #fff;
     line-height: 0;
@@ -82,7 +102,7 @@
 
 #kyber-widget-iframe {
     position: absolute;
-    max-width: 960px;
+    max-width: 990px;
     height: 650px;
     width: 100%;
     max-height: 90%;

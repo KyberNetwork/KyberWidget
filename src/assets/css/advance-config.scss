@@ -1,7 +1,7 @@
 .advance-config {
   margin-top: 30px;
   padding-top: 15px;
-  border-top: 1px dashed $theme-emerald-border;
+  border-top: 1px dashed $theme-border;
   max-width: 360px;
 
   &__rate {
@@ -60,11 +60,17 @@
     }
   }
 
+  &__trigger {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
   &__title {
     font-size: 14px;
     font-weight: 500;
     color: #9ea8b3;
-    margin-bottom: 15px;
+    margin-right: 7px;
   }
 
   &__content {
