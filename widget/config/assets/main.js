@@ -8,7 +8,7 @@
   var currentTokens = [];
   var version = getUrlParam("version") || defaultVersion;
   var currentVersion = version === NO_VERSION ? defaultVersion : parseFloat(version,10)
-  var isSupportedThemeVersion =  currentVersion > 0.5;
+  var isSupportedThemeVersion =  currentVersion > 0.5 || currentVersion === NO_VERSION;
 
   async function fetchTokens(network) {
     try {
