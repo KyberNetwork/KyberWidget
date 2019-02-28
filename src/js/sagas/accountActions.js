@@ -124,8 +124,7 @@ function* checkMaxCap(address) {
 
 
     var srcAmount
-    var sourceTokenSymbol = exchange.sourceTokenSymbol
-    var decimals = tokens[sourceTokenSymbol].decimals
+    var sourceTokenSymbol = exchange.sourceTokenSymbol    
     if (exchange.isHaveDestAmount) {
       var minConversionRate = converter.toTWei(exchange.minConversionRate, 18)
       srcAmount = converter.caculateSourceAmount(exchange.destAmount, minConversionRate, 6)
