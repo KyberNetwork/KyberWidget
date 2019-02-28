@@ -1,6 +1,6 @@
 (function (global) {
   var WIDGET_VERSION = "0.6.1";
-  var incrementDeploy = 18;
+  var incrementDeploy = 19;
 
   function initKyberWidget() {
     function getCurrentScriptDir() {
