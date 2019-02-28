@@ -7,7 +7,7 @@
   var currentNetwork = document.getElementById('widget-network').value;
   var currentTokens = [];
   var version = getUrlParam("version") || defaultVersion;
-  var currentVersion = version === NO_VERSION ? defaultVersion : version
+  var currentVersion = version === NO_VERSION ? defaultVersion : parseFloat(version,10)
   var isSupportedThemeVersion =  currentVersion > 0.5;
 
   async function fetchTokens(network) {
