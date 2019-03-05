@@ -338,25 +338,10 @@ export default class CachedServerProvider extends React.Component {
         return new Promise((resolve, rejected) => {
             fetch(BLOCKCHAIN_INFO[this.network].statEndPoint + '/users?address=' + address, {
             }).then((response) => {
-                return response.json()
+                return resolve(response.json());
+            }).catch((err) => {
+                rejected(err)
             })
-                .then((result) => {
-                    if (result.cap){
-                        var val = parseFloat(result.cap);
-                        if(isNaN(val)){
-                            rejected(new Error("Cannot parse data user cap"))                            
-                        }else{
-                            resolve(result)
-                        }
-                    }else{
-                        rejected(new Error("Cannot parse data user cap"))
-                    }
-                    
-                   // resolve(result)
-                })
-                .catch((err) => {
-                    rejected(err)
-                })
         })
     }
 
