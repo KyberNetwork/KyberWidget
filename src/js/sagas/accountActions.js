@@ -106,13 +106,16 @@ function* checkMaxCap(address) {
   
   try {
     var result = yield call([ethereum, ethereum.call], "getUserMaxCap", address)
-    if (!result.success || (result.kyc !== "false" && result.kyc !== false)) {
+
+    if (result.kyced) {
       yield put(exchangeActions.throwErrorExchange("exceed_cap", ""))
       return
     }
 
-    var maxCapOneExchange = result.data
+    var maxCapOneExchange = result.cap
+
     yield put(exchangeActions.setCapExchange(maxCapOneExchange))
+
     if (+maxCapOneExchange == 0) {
       var linkReg = 'https://kybernetwork.zendesk.com'
       yield put(exchangeActions.thowErrorNotPossessKGt(translate("error.not_possess_kgt", { link: linkReg }) || "There seems to be a problem with your address, please contact us for more details"))
@@ -120,8 +123,6 @@ function* checkMaxCap(address) {
     } else {
       yield put(exchangeActions.thowErrorNotPossessKGt(""))
     }
-
-
 
     var srcAmount
     var sourceTokenSymbol = exchange.sourceTokenSymbol    
