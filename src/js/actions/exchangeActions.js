@@ -404,12 +404,6 @@ export function verifyExchange(){
   }
 }
 
-export function fetchExchangeEnable(){
-  return {
-    type: "EXCHANGE.FETCH_EXCHANGE_ENABLE",
-  }
-}
-
 export function setExchangeEnable(enable){
   return {
     type: "EXCHANGE.SET_EXCHANGE_ENABLE",
