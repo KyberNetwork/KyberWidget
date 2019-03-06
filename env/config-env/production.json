@@ -576,5 +576,5 @@
     "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
     "tracker": "https://tracker.kyber.network",
     "networkName": "production",
-    "statEndPoint": "https://mainnet-data.kyber.network"
+    "statEndPoint": "https://production-cache.kyber.network"
 }
