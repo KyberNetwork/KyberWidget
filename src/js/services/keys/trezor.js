@@ -9,6 +9,15 @@ import { store } from "../../store"
 const defaultDPath = "m/44'/60'/0'/0";
 
 export default class Trezor extends React.Component {
+  constructor(props) {
+    super(props);
+
+    TrezorConnect.manifest({
+      email: 'andrew@kyber.network',
+      appUrl: 'http://widget.kyber.network'
+    });
+  }
+
   getPublicKey = (path = defaultDPath) => {
     var translate = getTranslate(store.getState().locale)
     return new Promise((resolve, reject) => {
