@@ -1390,43 +1390,6 @@ function* verifyExchange() {
   }
 }
 
-
-export function* fetchExchangeEnable() {
-  var enableRequest = yield call(common.handleRequest, getExchangeEnable)
-  if (enableRequest.status === "success") {
-    var state = store.getState()
-    var exchange = state.exchange
-    console.log(enableRequest)
-    if (enableRequest.data === true && exchange.errors.exchange_enable === "") {
-      var translate = getTranslate(state.locale)
-      var kycLink = "https://account.kyber.network/users/sign_up"
-      yield put(utilActions.openInfoModal(translate("error.error_occurred") || "Error occurred",
-        translate("error.exceed_daily_volumn", { link: kycLink }) || "You may want to register with us to have higher trade limits " + kycLink))
-    }
-    yield put(actions.setExchangeEnable(enableRequest.data))
-  }
-  if ((enableRequest.status === "timeout") || (enableRequest.status === "fail")) {
-    yield put(actions.setExchangeEnable(false))
-  }
-}
-
-export function* getExchangeEnable() {
-  var state = store.getState()
-
-  const ethereum = state.connection.ethereum
-
-  var account = state.account.account
-  var address = account.address
-
-  try {
-    var enabled = yield call([ethereum, ethereum.call], "getExchangeEnable", address)
-    return { status: "success", res: enabled }
-  } catch (e) {
-    console.log(e.message)
-    return { status: "success", res: false }
-  }
-}
-
 export function* initParamsExchange(action) {
   var state = store.getState()
   var exchange = state.exchange
@@ -1577,7 +1540,6 @@ export function* watchExchange() {
   yield takeEvery("EXCHANGE.SELECT_TOKEN_ASYNC", selectToken)
   yield takeEvery("EXCHANGE.CHECK_KYBER_ENABLE", checkKyberEnable)
   yield takeEvery("EXCHANGE.VERIFY_EXCHANGE", verifyExchange)
-  yield takeEvery("EXCHANGE.FETCH_EXCHANGE_ENABLE", fetchExchangeEnable)
   yield takeEvery("EXCHANGE.INIT_PARAMS_EXCHANGE", initParamsExchange)
   yield takeEvery("EXCHANGE.SWAP_TOKEN", swapToken)
 }

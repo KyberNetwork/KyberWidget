@@ -254,34 +254,6 @@ export default class CachedServerProvider extends React.Component {
         })
     }
 
-
-   
-    getExchangeEnable(address){
-        return new Promise((resolve, rejected) => {
-            fetch('https://mainnet-data.kyber.network/richguy/' + address, {
-                method: 'GET',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then((response) => {
-                return response.json()
-            })
-            .then( (result) => {
-                if(result.success){
-                    resolve(result.data)
-                }else{
-                    resolve(false)
-                }  
-            })
-            .catch((err) => {
-                console.log(err)
-                resolve(false)
-            })
-        })
-    }
-
     getMarketData() {
         return new Promise((resolve, rejected) => {
             fetch(this.rpcUrl + '/getMarketData', {
@@ -364,27 +336,12 @@ export default class CachedServerProvider extends React.Component {
 
     getUserMaxCap(address) {
         return new Promise((resolve, rejected) => {
-            fetch(BLOCKCHAIN_INFO[this.network].statEndPoint + '/cap-by-address/' + address, {
+            fetch(BLOCKCHAIN_INFO[this.network].statEndPoint + '/users?address=' + address, {
             }).then((response) => {
-                return response.json()
+                return resolve(response.json());
+            }).catch((err) => {
+                rejected(err)
             })
-                .then((result) => {
-                    if (result.data){
-                        var val = parseFloat(result.data);
-                        if(isNaN(val)){
-                            rejected(new Error("Cannot parse data user cap"))                            
-                        }else{
-                            resolve(result)
-                        }
-                    }else{
-                        rejected(new Error("Cannot parse data user cap"))
-                    }
-                    
-                   // resolve(result)
-                })
-                .catch((err) => {
-                    rejected(err)
-                })
         })
     }
 
