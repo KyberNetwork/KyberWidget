@@ -44,6 +44,16 @@
     background-color: #3fbdfc;
 }
 
+/* ========== Theme Dark Settings ========== */
+
+.kyber-widget-button.theme-dark {
+    background-color: #424242;
+}
+
+.kyber-widget-button.theme-dark:hover {
+    background-color: #605f5f;
+}
+
 #kyber-widget {
     position: absolute;
     box-sizing: border-box;

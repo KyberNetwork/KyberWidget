@@ -162,3 +162,51 @@
     background-image: $theme-ocean-gradient;
   }
 }
+
+/* ========== Theme Dark ========= */
+
+&.theme-dark {
+  .theme-text {
+    color: $theme-dark-regular;
+  }
+
+  .theme-text-light {
+    color: $theme-dark-light;
+  }
+
+  .theme-text-hover:hover {
+    color: $theme-dark-hover;
+  }
+
+  .theme-bg {
+    color: white;
+    background-color: $theme-dark-regular;
+  }
+
+  .theme-checkbox:checked ~.common__checkbox-icon,
+  .theme-radio:checked ~.common__radio-icon {
+    background-color: $theme-dark-regular;
+    border-color: $theme-dark-regular;
+  }
+
+  .theme-bg-light {
+    background-color: $theme-dark-light;
+  }
+
+  .theme-bg-hover:hover {
+    background-color: $theme-dark-hover;
+  }
+
+  .theme-button:hover {
+    color: white;
+    background-color: $theme-dark-regular;
+  }
+
+  .theme-border-top {
+    border-top-color: $theme-dark-regular;
+  }
+
+  .theme-gradient {
+    background-image: $theme-dark-gradient;
+  }
+}
