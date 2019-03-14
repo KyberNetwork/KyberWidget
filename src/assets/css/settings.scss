@@ -125,6 +125,12 @@ $theme-ocean-light: #1db1ff;
 $theme-ocean-hover: #3fbdfc;
 $theme-ocean-gradient: linear-gradient(170deg, #5d9cec, #1b6bd3);
 
+// Theme Dark Settings
+$theme-dark-regular: #4b4b4b;
+$theme-dark-light: #404a4f;
+$theme-dark-hover: #605f5f;
+$theme-dark-gradient: linear-gradient(to bottom, #4a4a4a, #373737);
+
 $body-font-family:'Montserrat', sans-serif;
 $body-antialiased: true;
 $global-margin: 1rem;
