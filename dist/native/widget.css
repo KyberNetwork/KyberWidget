@@ -122,3 +122,9 @@
     top: 50%;
     border: 0;
 }
+
+#kyber-widget.embedded-iframe,
+#kyber-widget-iframe.embedded-iframe {
+    transform: translateX(-50%);
+    top: 0;
+}
