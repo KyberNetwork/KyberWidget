@@ -106,8 +106,9 @@ const INIT_EXCHANGE_FORM_STATE = {
   snapshot: {},
   network: 'ropsten',
   isSwap:true,
-  theme: ''
-}
+  theme: '',
+  fluctuatingRate: 0,
+};
 
 const INIT_TRANSFER_FORM_STATE = {
   isOpenImportAcount: false,
