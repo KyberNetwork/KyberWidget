@@ -1,13 +1,43 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { filterInputNumber } from "../../utils/validators";
 import * as converter from "../../utils/converter";
 import {addPrefixClass} from "../../utils/className";
 import { TokenSelector } from "../../containers/Exchange";
+import ReactTooltip from 'react-tooltip'
 
 const ExchangeBodyLayout = (props) => {
   function handleChangeSource(e) {
     var check = filterInputNumber(e, e.target.value, props.input.sourceAmount.value)
     if (check) props.input.sourceAmount.onChange(e)
+  }
+
+  function getContentForTooltipRate(fluctuatingRate) {
+    return `This rate is ${fluctuatingRate}% lower than current Market`
+  }
+
+  function renderEstimatedRate() {
+    const fluctuatingRate = props.exchange.fluctuatingRate;
+
+    return (
+      <div className={addPrefixClass("widget-exchange__swap-text")}>
+        <span>1 {props.sourceTokenSymbol}</span>
+        <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
+        <span>{rateSwap} {props.destTokenSymbol}</span>
+        {props.sourceToken && (
+          <Fragment>
+            <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
+            <span>{converter.roundingNumber(props.sourceToken.rateUSD)} USD</span>
+          </Fragment>
+        )}
+        {fluctuatingRate > 0 && (
+          <div className={addPrefixClass("common__mt-5 common__fade-in")}>
+            <span className={addPrefixClass("common__decreased-number common__ml-5")}>{fluctuatingRate.toFixed(1)}%</span>
+            <span className={addPrefixClass("common__tooltip common__ml-5")} data-tip=""/>
+            <ReactTooltip className={addPrefixClass("custom__tooltip")} effect="solid" getContent={() => getContentForTooltipRate(fluctuatingRate.toFixed(1))}/>
+          </div>
+        )}
+      </div>
+    )
   }
 
   var errorSource = []
@@ -72,20 +102,10 @@ const ExchangeBodyLayout = (props) => {
                 <div className={addPrefixClass("common__input-panel short-margin")}>
                   {props.tokenDestSelect}
                   <div className={addPrefixClass("common__input-panel-label")}>
-                    {props.exchange.isSelectToken ? "Loading..." : `${props.exchange.destAmount} ${props.destTokenSymbol}`}
+                    {props.exchange.isSelectToken ? "Loading..." : `${props.exchange.destAmount}`}
                   </div>
                 </div>
-                <div className={addPrefixClass("widget-exchange__swap-text")}>
-                  <span>1 {props.sourceTokenSymbol}</span>
-                  <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
-                  <span>{rateSwap} {props.destTokenSymbol}</span>
-                  {props.sourceToken && (
-                    <span>
-                      <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
-                      <span>{converter.roundingNumber(props.sourceToken.rateUSD)} USD</span>
-                    </span>
-                  )}
-                </div>
+                {renderEstimatedRate()}
               </div>
             </div>
           </div>
@@ -135,20 +155,10 @@ const ExchangeBodyLayout = (props) => {
                 <div className={addPrefixClass("common__input-panel short-margin")}>
                   {props.tokenDestSelect}
                   <div className={addPrefixClass("common__input-panel-label")}>
-                    {('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount}
+                    {props.exchange.isSelectToken ? "Loading..." : ('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount}
                   </div>
                 </div>
-                <div className={addPrefixClass("widget-exchange__swap-text")}>
-                  <span>1 {props.sourceTokenSymbol}</span>
-                  <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
-                  <span>{rateSwap} {props.destTokenSymbol}</span>
-                  {props.sourceToken && (
-                    <span>
-                      <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
-                      <span>{converter.roundingNumber(props.sourceToken.rateUSD)} USD</span>
-                    </span>
-                  )}
-                </div>
+                {renderEstimatedRate()}
               </div>
             </div>
           </div>
@@ -159,7 +169,7 @@ const ExchangeBodyLayout = (props) => {
             <div className={addPrefixClass('widget-exchange__column')}>
               <div className={addPrefixClass("widget-exchange__column-item")}>
                 <div className={addPrefixClass("widget-exchange__text theme-text")}>Choose your Token:</div>
-                <div className={addPrefixClass(`common__input-panel ${errorExchange ? 'error' : ''}`)}>
+                <div className={addPrefixClass(`common__input-panel short-margin ${errorExchange ? 'error' : ''}`)}>
                   <TokenSelector
                     type="source"
                     focusItem={props.exchange.sourceTokenSymbol}
@@ -200,6 +210,8 @@ const ExchangeBodyLayout = (props) => {
                     </div>
                   )}
                 </div>
+
+                {renderEstimatedRate()}
 
                 {(!props.exchange.isHaveDestAmount && !props.global.params.receiveToken) && (
                   <div className={addPrefixClass("widget-exchange__input-container")}>
