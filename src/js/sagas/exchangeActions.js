@@ -806,25 +806,6 @@ function* getSourceAmountZero(sourceTokenSymbol) {
   return sourceAmountHex
 }
 
-function* setFluctuatingRate(ethereum, source, dest, sourceAmountRefined, sourceAmountZero) {
-  try {
-    const latestBlock = yield call([ethereum, ethereum.call], "getLatestBlock");
-    const rate = yield call([ethereum, ethereum.call], "getRateAtSpecificBlock", source, dest, sourceAmountRefined, latestBlock);
-    const rateZero = yield call([ethereum, ethereum.call], "getRateAtSpecificBlock", source, dest, sourceAmountZero, latestBlock);
-    let fluctuatingRate = 0;
-
-    if (rateZero.expectedPrice) {
-      fluctuatingRate = (rateZero.expectedPrice - rate.expectedPrice) / rateZero.expectedPrice;
-      fluctuatingRate = Math.round(fluctuatingRate * 1000) / 10;
-      if (fluctuatingRate <= 0.1 || fluctuatingRate > 80) fluctuatingRate = 0;
-    }
-
-    yield put(actions.setFluctuatingRate(fluctuatingRate));
-  } catch (e) {
-    console.log(e);
-  }
-}
-
 function* updateRatePending(action) {
   const { source, dest, sourceAmount, sourceTokenSymbol, isManual } = action.payload
   var state = store.getState()
@@ -837,8 +818,6 @@ function* updateRatePending(action) {
     kyberMaintain: translate("error.kyber_maintain") || "This pair is temporarily under maintenance",
     handleAmount: translate("error.handle_amount") || "Kyber cannot handle your amount, please reduce amount",
   };
-
-  yield call(setFluctuatingRate, ethereum, source, dest, sourceAmoutRefined, sourceAmoutZero);
 
   if (isManual) {
     var rateRequest = yield call(common.handleRequest, getRate, ethereum, source, dest, sourceAmoutRefined)

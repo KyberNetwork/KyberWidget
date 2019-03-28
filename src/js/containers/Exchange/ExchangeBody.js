@@ -338,7 +338,6 @@ export default class ExchangeBody extends React.Component {
         global={this.props.global}
         tokens={this.props.tokens}
         sourceToken={this.props.tokens[this.props.exchange.sourceTokenSymbol]}
-        destToken={this.props.tokens[this.props.exchange.destTokenSymbol]}
         onChooseToken={this.chooseToken}
         detailBox={this.props.detailBox}
       />

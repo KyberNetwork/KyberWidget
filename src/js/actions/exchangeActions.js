@@ -113,6 +113,7 @@ export function updateRateExchangeComplete(rateInit, expectedPrice, slippagePric
     type: "EXCHANGE.UPDATE_RATE",
     payload: { rateInit, expectedPrice, slippagePrice, blockNo, isManual, isSuccess, errors }
   }
+
 }
 
 export function updateRateSnapshotComplete(rateInit, expectedPrice, slippagePrice) {
@@ -509,12 +510,5 @@ export function setIsApproveZero(isApproveZero){
   return {
     type: "EXCHANGE.SET_IS_APPROVE_ZERO",
     payload: isApproveZero
-  }
-}
-
-export function setFluctuatingRate(fluctuatingRate) {
-  return {
-    type: "EXCHANGE.SET_FLUCTUATING_RATE",
-    payload: fluctuatingRate
   }
 }
