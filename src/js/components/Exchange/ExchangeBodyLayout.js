@@ -30,30 +30,39 @@ const ExchangeBodyLayout = (props) => {
       sourceTokenSymbol = props.sourceTokenSymbol;
       destTokenSymbol = props.destTokenSymbol;
       rate = converter.toT(props.exchange.offeredRate, 18);
-      rateUSD = converter.roundingNumber(props.sourceToken.rateUSD)
+      rateUSD = props.sourceToken.rateUSD
     }
 
     return (
       <div className={addPrefixClass("widget-exchange__swap-text")}>
         <span>1 {sourceTokenSymbol}</span>
-        {!isSourceEqualToDestToken && (
-          <Fragment>
-            <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
-            <span>{!!parseFloat(rate) ? parseFloat(rate).toFixed(6) : 0} {destTokenSymbol}</span>
-          </Fragment>
+
+        {props.exchange.isSelectToken && (
+          <div className={"common__inline-loading"}/>
         )}
-        {props.sourceToken && (
+
+        {!props.exchange.isSelectToken && (
           <Fragment>
-            <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
-            <span>{!!parseFloat(rateUSD) ? parseFloat(rateUSD).toFixed(3) : 0} USD</span>
+            {!isSourceEqualToDestToken && (
+              <Fragment>
+                <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
+                <span>{!!parseFloat(rate) ? parseFloat(rate).toFixed(6) : 0} {destTokenSymbol}</span>
+              </Fragment>
+            )}
+            {props.sourceToken && (
+              <Fragment>
+                <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
+                <span>{!!parseFloat(rateUSD) ? parseFloat(rateUSD).toFixed(3) : 0} USD</span>
+              </Fragment>
+            )}
+            {fluctuatingRate > 0 && (
+              <div className={addPrefixClass("common__inline-block common__fade-in")}>
+                <span className={addPrefixClass("common__decreased-number common__ml-5")}>{fluctuatingRate.toFixed(1)}%</span>
+                <span className={addPrefixClass("common__tooltip common__ml-5")} data-tip=""/>
+                <ReactTooltip className={addPrefixClass("custom__tooltip")} effect="solid" getContent={() => getContentForTooltipRate(fluctuatingRate.toFixed(1))}/>
+              </div>
+            )}
           </Fragment>
-        )}
-        {fluctuatingRate > 0 && (
-          <div className={addPrefixClass("common__inline-block common__fade-in")}>
-            <span className={addPrefixClass("common__decreased-number common__ml-5")}>{fluctuatingRate.toFixed(1)}%</span>
-            <span className={addPrefixClass("common__tooltip common__ml-5")} data-tip=""/>
-            <ReactTooltip className={addPrefixClass("custom__tooltip")} effect="solid" getContent={() => getContentForTooltipRate(fluctuatingRate.toFixed(1))}/>
-          </div>
         )}
       </div>
     )

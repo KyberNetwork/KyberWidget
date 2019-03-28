@@ -730,6 +730,15 @@
     cursor: pointer;
   }
 
+  &__inline-loading {
+    width: 18px;
+    height: 18px;
+    background-image: url($image-path + 'icons/icon-loading.gif');
+    background-size: contain;
+    display: inline-block;
+    margin: 0 4px;
+  }
+
   &__fade-in {
     opacity: 0;
     transform: translateY(10px);
