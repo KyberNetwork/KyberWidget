@@ -6,31 +6,50 @@ import { TokenSelector } from "../../containers/Exchange";
 import ReactTooltip from 'react-tooltip'
 
 const ExchangeBodyLayout = (props) => {
+  const isSourceEqualToDestToken = props.sourceTokenSymbol === props.destTokenSymbol;
+
   function handleChangeSource(e) {
     var check = filterInputNumber(e, e.target.value, props.input.sourceAmount.value)
     if (check) props.input.sourceAmount.onChange(e)
   }
 
   function getContentForTooltipRate(fluctuatingRate) {
-    return `This rate is ${fluctuatingRate}% lower than current Market`
+    return `Price is dependent on your source amount. There is a ${fluctuatingRate}% difference in price for the requested quantity compared to the default source amount of 0.5 ETH`
   }
 
   function renderEstimatedRate() {
     const fluctuatingRate = props.exchange.fluctuatingRate;
+    let sourceTokenSymbol, destTokenSymbol, rate, rateUSD;
+
+    if (props.sourceTokenSymbol === "ETH") {
+      sourceTokenSymbol = props.destTokenSymbol;
+      destTokenSymbol = props.sourceTokenSymbol;
+      rate = converter.convertBuyRate(props.exchange.offeredRate);
+      rateUSD = rate * props.sourceToken.rateUSD
+    } else {
+      sourceTokenSymbol = props.sourceTokenSymbol;
+      destTokenSymbol = props.destTokenSymbol;
+      rate = converter.toT(props.exchange.offeredRate, 18);
+      rateUSD = converter.roundingNumber(props.sourceToken.rateUSD)
+    }
 
     return (
       <div className={addPrefixClass("widget-exchange__swap-text")}>
-        <span>1 {props.sourceTokenSymbol}</span>
-        <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
-        <span>{rateSwap} {props.destTokenSymbol}</span>
+        <span>1 {sourceTokenSymbol}</span>
+        {!isSourceEqualToDestToken && (
+          <Fragment>
+            <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
+            <span>{!!parseFloat(rate) ? parseFloat(rate).toFixed(6) : 0} {destTokenSymbol}</span>
+          </Fragment>
+        )}
         {props.sourceToken && (
           <Fragment>
             <span className={addPrefixClass("widget-exchange__approximate")}> ≈ </span>
-            <span>{converter.roundingNumber(props.sourceToken.rateUSD)} USD</span>
+            <span>{!!parseFloat(rateUSD) ? parseFloat(rateUSD).toFixed(3) : 0} USD</span>
           </Fragment>
         )}
         {fluctuatingRate > 0 && (
-          <div className={addPrefixClass("common__mt-5 common__fade-in")}>
+          <div className={addPrefixClass("common__inline-block common__fade-in")}>
             <span className={addPrefixClass("common__decreased-number common__ml-5")}>{fluctuatingRate.toFixed(1)}%</span>
             <span className={addPrefixClass("common__tooltip common__ml-5")} data-tip=""/>
             <ReactTooltip className={addPrefixClass("custom__tooltip")} effect="solid" getContent={() => getContentForTooltipRate(fluctuatingRate.toFixed(1))}/>
@@ -53,9 +72,6 @@ const ExchangeBodyLayout = (props) => {
   var errorShow = errorSource.map((value, index) => {
     return <div className={addPrefixClass("common__error")} key={index}>{value}</div>
   })
-
-  const isSourceEqualtoDestToken = props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol;
-  const rateSwap = isSourceEqualtoDestToken ? 1 : converter.toT(props.exchange.offeredRate, 18, 6);
 
   return (
     <div className={addPrefixClass("widget-exchange")}>
@@ -182,10 +198,10 @@ const ExchangeBodyLayout = (props) => {
                       {props.exchange.isSelectToken && (
                         <div>Loading...</div>
                       )}
-                      {(!props.exchange.isSelectToken && !isSourceEqualtoDestToken) && (
+                      {(!props.exchange.isSelectToken && !isSourceEqualToDestToken) && (
                         <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)}</div>
                       )}
-                      {(!props.exchange.isSelectToken && isSourceEqualtoDestToken) && (
+                      {(!props.exchange.isSelectToken && isSourceEqualToDestToken) && (
                         <div>{('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount}</div>
                       )}
                     </div>
