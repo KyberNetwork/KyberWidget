@@ -456,7 +456,7 @@
     margin-bottom: 10px;
 
     &.short-margin {
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
 
     &-label {
@@ -695,6 +695,10 @@
     margin-top: 5px;
   }
 
+  &__inline-block {
+    display: inline-block;
+  }
+
   &__decreased-number {
     display: inline-block;
     font-size: 12px;
@@ -724,6 +728,15 @@
     top: 2px;
     left: 1px;
     cursor: pointer;
+  }
+
+  &__inline-loading {
+    width: 18px;
+    height: 18px;
+    background-image: url($image-path + 'icons/icon-loading.gif');
+    background-size: contain;
+    display: inline-block;
+    margin: 0 4px;
   }
 
   &__fade-in {
