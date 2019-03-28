@@ -246,10 +246,16 @@
     }
 
     &-text {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
-      text-align: right;
       color: #727a91;
+      position: relative;
+      z-index: 2;
+      line-height: 1.6;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      flex-wrap: wrap;
     }
   }
 
