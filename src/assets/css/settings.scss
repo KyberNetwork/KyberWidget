@@ -86,6 +86,7 @@ $dark-gray: #0B0F1A;
 $black: #2c2c2c;
 $white: #ffffff;
 $white-light: rgba(255, 255, 255, 0.56);
+$red-light: #ffeeee;
 $body-background: #fff;
 $body-font-color: #0B0F1A;
 $k-primary: #2a4552;
@@ -124,6 +125,12 @@ $theme-ocean-regular: #1F87F0;
 $theme-ocean-light: #1db1ff;
 $theme-ocean-hover: #3fbdfc;
 $theme-ocean-gradient: linear-gradient(170deg, #5d9cec, #1b6bd3);
+
+// Theme Dark Settings
+$theme-dark-regular: #4b4b4b;
+$theme-dark-light: #404a4f;
+$theme-dark-hover: #605f5f;
+$theme-dark-gradient: linear-gradient(to bottom, #4a4a4a, #373737);
 
 $body-font-family:'Montserrat', sans-serif;
 $body-antialiased: true;

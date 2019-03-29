@@ -72,10 +72,17 @@
     }
   }
 
-  &.tab {
-    &::after {
-      background-color: #f9fcff;
-    }
+  &.tab::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    display: block;
+    z-index: -2;
+    background-color: #f9fcff;
   }
 
   .widget-background {
@@ -98,18 +105,6 @@
     position: absolute;
     left: 0;
     right: 0;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    min-height: 100vh;
-    display: block;
-    z-index: -2;
   }
 
   @import "theme";
@@ -461,7 +456,7 @@
     margin-bottom: 10px;
 
     &.short-margin {
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
 
     &-label {
@@ -690,6 +685,64 @@
 
   &__margin-top {
     margin-top: 30px;
+  }
+
+  &__ml-5 {
+    margin-left: 5px;
+  }
+
+  &__mt-5 {
+    margin-top: 5px;
+  }
+
+  &__inline-block {
+    display: inline-block;
+  }
+
+  &__decreased-number {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: $error-color;
+    border-radius: 10px;
+    background-color: $red-light;
+    padding: 2px 8px 2px 10px;
+
+    &::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background-image: url($image-path + 'icons/icon-arrow-down-red.svg');
+      background-size: contain;
+      display: inline-block;
+      margin-left: 3px;
+    }
+  }
+
+  &__tooltip {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background-image: url($image-path + 'icons/icon-tooltip.svg');
+    position: relative;
+    top: 2px;
+    left: 1px;
+    cursor: pointer;
+  }
+
+  &__inline-loading {
+    width: 18px;
+    height: 18px;
+    background-image: url($image-path + 'icons/icon-loading.gif');
+    background-size: contain;
+    display: inline-block;
+    margin: 0 4px;
+  }
+
+  &__fade-in {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fade-in 0.3s forwards;
   }
 
   @include screen-max-width(600px) {

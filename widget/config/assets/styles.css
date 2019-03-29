@@ -778,18 +778,6 @@ label input, select, .pointer {
   color: #474d5f;
 }
 
-.emerald.widget-config__theme-item::after {
-  background: #34BB99;
-}
-
-.sunset.widget-config__theme-item::after {
-  background: #FC8259;
-}
-
-.ocean.widget-config__theme-item::after {
-  background: #1F87F0;
-}
-
 .widget-config__theme-item:hover::after,
 .widget-config__theme-item.active::after{
   width: 100%;
@@ -807,7 +795,15 @@ label input, select, .pointer {
   background-image: url("images/theme-ocean.png");
 }
 
+.widget-config__theme-item.dark {
+  background-image: url("images/theme-dark.png");
+}
+
 /* ========== Theme Emerald Settings ========== */
+
+.emerald.widget-config__theme-item::after {
+  background: #34BB99;
+}
 
 .theme-emerald .colored-block {
   background-image: linear-gradient(130deg, #00f2cd, #0074b3);
@@ -837,6 +833,10 @@ label input, select, .pointer {
 
 /* ========== Theme Sunset Settings ========== */
 
+.sunset.widget-config__theme-item::after {
+  background: #FC8259;
+}
+
 .theme-sunset .colored-block {
   background-image: linear-gradient(170deg, #ffb046, #f52880);
 }
@@ -865,6 +865,10 @@ label input, select, .pointer {
 
 /* ========== Theme Ocean Settings ========== */
 
+.ocean.widget-config__theme-item::after {
+  background: #1F87F0;
+}
+
 .theme-ocean .colored-block {
   background-image: linear-gradient(170deg, #5d9cec, #1b6bd3);
 }
@@ -889,6 +893,38 @@ label input, select, .pointer {
 
 .theme-ocean .copied-text {
   color: #1F87F0;
+}
+
+/* ========== Theme Dark Settings ========== */
+
+.dark.widget-config__theme-item::after {
+  background: #424242;
+}
+
+.theme-dark .colored-block {
+  background-image: linear-gradient(to bottom, #4a4a4a, #373737);
+}
+
+.theme-dark .widget-config__checkbox-input:checked ~.widget-config__checkbox-substitute {
+  background-color: #424242;
+  border-color: #424242;
+}
+
+.theme-dark .widget-config__radio:checked ~.widget-config__checkmark {
+  border-color: #424242;
+  background-color: #424242;
+}
+
+.theme-dark .widget-config__default-btn {
+  background-color: #424242;
+}
+
+.theme-dark .widget-config__default-btn:hover {
+  background-color: #424242;
+}
+
+.theme-dark .copied-text {
+  color: #424242;
 }
 
 @keyframes slidein {

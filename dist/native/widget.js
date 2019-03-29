@@ -1,6 +1,10 @@
 (function (global) {
   var WIDGET_VERSION = "0.6.2";
-  var incrementDeploy = 20;
+  var incrementDeploy = 24;
+
+  function getUrlParam(name) {
+    return new URLSearchParams(location.search).get(name);
+  }
 
   function initKyberWidget() {
     function getCurrentScriptDir() {
@@ -153,6 +157,9 @@
           });
 
           var element = '';
+          var embeddedIframe = getUrlParam("embeddedIframe");
+          var embeddedIframeClass = embeddedIframe === 'true' ? 'embedded-iframe' : false;
+
           if (mode === 'popup') {
             var productNames = [];
             var productQtys = [];
@@ -199,6 +206,10 @@
               });
             };
             element.src = tag.href;
+          }
+
+          if (embeddedIframeClass) {
+            element.classList.add(embeddedIframeClass);
           }
 
           // add the tags to body
