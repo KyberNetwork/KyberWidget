@@ -610,6 +610,10 @@ const exchange = (state = initState, action) => {
       newState.isApproveZero = action.payload;
       return newState;
     }
+    case "EXCHANGE.SET_FLUCTUATING_RATE": {
+      newState.fluctuatingRate = action.payload;
+      return newState;
+    }
   }
   return state
 }
