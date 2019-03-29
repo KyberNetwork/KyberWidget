@@ -25,7 +25,7 @@ const ExchangeBodyLayout = (props) => {
       sourceTokenSymbol = props.destTokenSymbol;
       destTokenSymbol = props.sourceTokenSymbol;
       rate = converter.convertBuyRate(props.exchange.offeredRate);
-      rateUSD = rate * props.sourceToken.rateUSD
+      rateUSD = !isSourceEqualToDestToken ? rate * props.sourceToken.rateUSD : props.sourceToken.rateUSD;
     } else {
       sourceTokenSymbol = props.sourceTokenSymbol;
       destTokenSymbol = props.destTokenSymbol;
