@@ -420,11 +420,6 @@
       font-size: 14px;
       font-weight: 500;
       color: #9ea8b3;
-
-      img {
-        width: 20px;
-        height: 18px;
-      }
     }
 
     &--active,
@@ -444,6 +439,14 @@
       margin-top: -5px;
       right: 11px;
     }
+  }
+
+  &__loading {
+    width: 20px;
+    height: 18px;
+    display: inline-block;
+    background-image: url($image-path + 'icons/loading-emerald.gif');
+    background-size: contain;
   }
 }
 
