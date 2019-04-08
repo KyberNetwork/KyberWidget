@@ -292,6 +292,7 @@ label input, select, .pointer {
 }
 
 .widget-config__btn {
+  margin-bottom: 15px;
   display: inline-block;
   border-radius: 30px;
   font-size: 14px;
@@ -321,6 +322,10 @@ label input, select, .pointer {
 
 .widget-config__btn:active {
   top: 1px;
+}
+
+.widget-config__btn:last-child {
+  margin-bottom: 0;
 }
 
 .widget-config__form {
@@ -633,6 +638,15 @@ label input, select, .pointer {
   background-size: contain;
   position: relative;
   margin-right: 30px;
+  margin-bottom: 30px;
+}
+
+.no-bot-padding {
+  padding-bottom: 0 !important;
+}
+
+.no-top-padding {
+  padding-top: 0 !important;
 }
 
 .widget-config__theme-item:last-child {
@@ -945,6 +959,17 @@ label input, select, .pointer {
 
   .widget-config__form-section:first-child {
     padding-bottom: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .widget-config__option {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  .widget-config__option:last-child {
+    margin-bottom: 0;
   }
 }
 
