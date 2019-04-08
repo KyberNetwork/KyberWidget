@@ -32,7 +32,7 @@ const TransactionLoadingView = (props) => {
 
         {!broadcastError &&
         <div className={addPrefixClass("broadcast__header")}>
-          <div className={addPrefixClass("broadcast__icon broadcast")}/>
+          <div className={addPrefixClass("broadcast__icon broadcast theme-broadcasted-icon")}/>
           <div className={addPrefixClass("broadcast__title")}>{ props.translate('transaction.broadcasting') || "Broadcasting" }</div>
         </div>
         }
@@ -66,7 +66,7 @@ const TransactionLoadingView = (props) => {
   return (
     <div className={addPrefixClass("broadcast")}>
       <div className={addPrefixClass("broadcast__header")}>
-        <div className={addPrefixClass("broadcast__icon broadcast")}/>
+        <div className={addPrefixClass("broadcast__icon broadcast theme-broadcasted-icon")}/>
         <div className={addPrefixClass("broadcast__title")}>{ props.translate('transaction.broadcasted') || "Broadcasted!" }</div>
       </div>
 
@@ -83,7 +83,7 @@ const TransactionLoadingView = (props) => {
                onClick={props.handleCopy}
                onMouseLeave={props.resetCopy} >
               <CopyToClipboard text={props.txHash}>
-                <img src={require("../../../assets/img/icons/icon-copy.svg")} />
+                <div className={addPrefixClass("broadcast__copy-icon theme-copy-icon")} />
               </CopyToClipboard>
             </a>
             <ReactTooltip getContent={[() => getTooltipCopy()]} place="right" id="copy-tx-tip" type="light" />

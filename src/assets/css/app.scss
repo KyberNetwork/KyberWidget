@@ -9,7 +9,6 @@ $alert-color: #ff5d00;
   z-index: 999999999;
   position: relative;
   @import 'modals';
-  @import 'custom_react_modals';
 }
 
 body {
@@ -33,7 +32,6 @@ body {
   @import 'addresses';
   @import 'custom';
   @import "token-select";
-  @import "icon";
   @import "advance-config";
   @import "exchange";
   @import "import-account";
