@@ -107,11 +107,6 @@ function* checkMaxCap(address) {
   try {
     var result = yield call([ethereum, ethereum.call], "getUserMaxCap", address)
 
-    if (result.kyced) {
-      yield put(exchangeActions.throwErrorExchange("exceed_cap", ""))
-      return
-    }
-
     var maxCapOneExchange = result.cap
 
     yield put(exchangeActions.setCapExchange(maxCapOneExchange))
