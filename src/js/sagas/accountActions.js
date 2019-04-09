@@ -99,7 +99,7 @@ function* checkMaxCap(address) {
   }
   
   var sourceTokenSymbol = exchange.sourceTokenSymbol
-  if (exchange.sourceTokenSymbol === exchange.destTokenSymbol) {
+  if (sourceTokenSymbol === exchange.destTokenSymbol) {
     yield put(exchangeActions.throwErrorExchange("exceed_cap", ""))
     return
   }
@@ -120,7 +120,6 @@ function* checkMaxCap(address) {
     }
 
     var srcAmount
-    var sourceTokenSymbol = exchange.sourceTokenSymbol    
     if (exchange.isHaveDestAmount) {
       var minConversionRate = converter.toTWei(exchange.minConversionRate, 18)
       srcAmount = converter.caculateSourceAmount(exchange.destAmount, minConversionRate, 6)
@@ -135,12 +134,13 @@ function* checkMaxCap(address) {
       var rate = tokens[sourceTokenSymbol].rate
       srcAmount = converter.toT(srcAmount, tokens[sourceTokenSymbol].decimals)
       srcAmount = converter.caculateDestAmount(srcAmount, rate, 6)
-      srcAmount = converter.toTWei(srcAmount, 18)
+      srcAmount = converter.toTWei(srcAmount, 18);
+      maxCapOneExchange *= constants.MAX_CAP_PERCENT;
     }
 
     if (converter.compareTwoNumber(srcAmount, maxCapOneExchange) === 1) {
       var maxCap = converter.toEther(maxCapOneExchange)
-      yield put(exchangeActions.throwErrorExchange("exceed_cap", translate("error.source_amount_too_high_cap", { cap: maxCap * constants.MAX_CAP_PERCENT })))
+      yield put(exchangeActions.throwErrorExchange("exceed_cap", translate("error.source_amount_too_high_cap", { cap: maxCap })))
     } else {
       yield put(exchangeActions.throwErrorExchange("exceed_cap", ""))
     }
