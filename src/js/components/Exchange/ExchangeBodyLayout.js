@@ -38,7 +38,7 @@ const ExchangeBodyLayout = (props) => {
         <span>1 {sourceTokenSymbol}</span>
 
         {props.exchange.isSelectToken && (
-          <div className={"common__inline-loading theme-loading-icon"}/>
+          <div className={addPrefixClass("common__inline-loading theme-loading-icon")}/>
         )}
 
         {!props.exchange.isSelectToken && (
