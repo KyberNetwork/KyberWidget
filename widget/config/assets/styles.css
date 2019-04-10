@@ -656,7 +656,8 @@ label input, select, .pointer {
 .widget-config__theme-item::after {
   content: '';
   display: block;
-  width: 0;
+  width: 1px;
+  opacity: 0;
   height: 4px;
   position: absolute;
   bottom: -10px;
@@ -795,6 +796,7 @@ label input, select, .pointer {
 .widget-config__theme-item:hover::after,
 .widget-config__theme-item.active::after{
   width: 100%;
+  opacity: 1;
 }
 
 .widget-config__theme-item.emerald {
