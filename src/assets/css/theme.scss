@@ -65,6 +65,18 @@
   .theme-gradient {
     background-image: $theme-emerald-gradient;
   }
+
+  .theme-loading-icon {
+    background-image: url($image-path + 'icons/loading-emerald.gif');
+  }
+
+  .theme-broadcasted-icon {
+    background-image: url($image-path + 'icons/broadcasted-emerald.svg');
+  }
+
+  .theme-copy-icon {
+    background-image: url($image-path + 'icons/copy-emerald.svg');
+  }
 }
 
 /* ========== Theme Sunset ========= */
@@ -112,6 +124,18 @@
 
   .theme-gradient {
     background-image: $theme-sunset-gradient;
+  }
+
+  .theme-loading-icon {
+    background-image: url($image-path + 'icons/loading-sunset.gif');
+  }
+
+  .theme-broadcasted-icon {
+    background-image: url($image-path + 'icons/broadcasted-sunset.svg');
+  }
+
+  .theme-copy-icon {
+    background-image: url($image-path + 'icons/copy-sunset.svg');
   }
 }
 
@@ -161,6 +185,18 @@
   .theme-gradient {
     background-image: $theme-ocean-gradient;
   }
+
+  .theme-loading-icon {
+    background-image: url($image-path + 'icons/loading-ocean.gif');
+  }
+
+  .theme-broadcasted-icon {
+    background-image: url($image-path + 'icons/broadcasted-ocean.svg');
+  }
+
+  .theme-copy-icon {
+    background-image: url($image-path + 'icons/copy-ocean.svg');
+  }
 }
 
 /* ========== Theme Dark ========= */
@@ -208,5 +244,17 @@
 
   .theme-gradient {
     background-image: $theme-dark-gradient;
+  }
+
+  .theme-loading-icon {
+    background-image: url($image-path + 'icons/loading-dark.gif');
+  }
+
+  .theme-broadcasted-icon {
+    background-image: url($image-path + 'icons/broadcasted-dark.svg');
+  }
+
+  .theme-copy-icon {
+    background-image: url($image-path + 'icons/copy-dark.svg');
   }
 }

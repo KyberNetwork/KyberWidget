@@ -7,7 +7,7 @@ const ProcessingModal = (props) => {
       {props.isEnable && (
         <div className={addPrefixClass("common__overlay")}>
           <div className={addPrefixClass("common__overlay-content")}>
-            <div className={addPrefixClass("common__overlay-loading")}/>
+            <div className={addPrefixClass("common__overlay-loading theme-loading-icon")}/>
             <div className={addPrefixClass("common__overlay-text")}>
               {props.translate("transaction.processing") || "Processing"}
             </div>

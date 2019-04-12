@@ -234,23 +234,18 @@
     document.querySelectorAll(".widget-config__theme-item").forEach(function (item) {
       item.addEventListener("click", function () {
         var theme = this.getAttribute("data-theme");
-        var body = document.querySelector(".widget-config__body");
 
         document.querySelector(".widget-config__theme-item.active").classList.remove("active");
         this.classList.add("active");
-        body.className = "widget-config__body " + theme;
         activeTheme = theme;
-      })
+        document.querySelector(".widget-config__body").className = "widget-config__body " + theme;
+
+        generateTag();
+      });
     });
 
     document.getElementById("widget-html-source").addEventListener("click", function () {
       generateTag();
-    });
-
-    document.querySelectorAll(".widget-config__theme-item").forEach(function (item) {
-      item.addEventListener("click", function () {
-        generateTag();
-      })
     });
 
     document.querySelectorAll(".widget-config__dropdown-trigger").forEach(function (item) {

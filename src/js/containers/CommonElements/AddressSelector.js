@@ -40,7 +40,7 @@ export default class AddressSelector extends React.Component {
             <div className={addPrefixClass("address-selector__item-address")}>{address.addressString}</div>
             <div className={addPrefixClass("address-selector__item-balance")}>
               {address.balance == '-1' ?
-                <img src={require('../../../assets/img/icons/icon-loading.gif')} />
+                <div className={addPrefixClass("address-selector__loading theme-loading-icon")} />
                 : <span>{roundingNumber(address.balance)} ETH</span>
               }
             </div>

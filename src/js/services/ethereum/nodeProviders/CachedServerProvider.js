@@ -12,7 +12,7 @@ export default class CachedServerProvider extends React.Component {
 
     getGasPrice() {
         return new Promise((resolve, rejected) => {
-            fetch(this.rpcUrl + '/getGasPrice', {
+            fetch(this.rpcUrl + '/gasPrice', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
@@ -34,24 +34,9 @@ export default class CachedServerProvider extends React.Component {
         })
     }
 
-    // getGasFromEthgasstation() {
-    //     return new Promise((resolve, rejected) => {
-    //         fetch(BLOCKCHAIN_INFO.gasstation_endpoint)
-    //             .then((response) => {
-    //                 return response.json()
-    //             })
-    //             .then((data) => {
-    //                 resolve(data)
-    //             })
-    //             .catch((err) => {
-    //                 rejected(err)
-    //             })
-    //     })
-    // }
-
     checkKyberEnable() {
         return new Promise((resolve, rejected) => {
-            fetch(this.rpcUrl + '/getKyberEnabled', {
+            fetch(this.rpcUrl + '/kyberEnabled', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
@@ -75,7 +60,7 @@ export default class CachedServerProvider extends React.Component {
 
     getMaxGasPrice() {
         return new Promise((resolve, rejected) => {
-            fetch(this.rpcUrl + '/getMaxGasPrice', {
+            fetch(this.rpcUrl + '/maxGasPrice', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
@@ -99,7 +84,7 @@ export default class CachedServerProvider extends React.Component {
 
     getLatestBlock() {
         return new Promise((resolve, rejected) => {
-            fetch(this.rpcUrl + '/getLatestBlock', {
+            fetch(this.rpcUrl + '/latestBlock', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
@@ -120,39 +105,9 @@ export default class CachedServerProvider extends React.Component {
         })
     }
 
-    // getLog() {
-    //     return new Promise((resolve, rejected) => {
-    //         fetch(this.rpcUrl + '/getHistoryOneColumn', {
-    //             method: 'GET',
-    //             headers: {
-    //                 'Accept': 'application/json, text/plain, */*',
-    //                 'Content-Type': 'application/json'
-    //             },
-    //         })
-    //             .then((response) => {
-    //                 return response.json()
-    //             })
-    //             .then((result) => {
-    //                 if (result.success) {
-    //                     var data = result.data.filter(item => {
-    //                         return (this.tokenIsSupported(item.dest) && this.tokenIsSupported(item.source))
-    //                     })
-    //                     resolve(data)
-    //                 } else {
-    //                     rejected(new Error("Events in server not fetching"))
-    //                 }
-    //             })
-    //             .catch((err) => {
-    //                 console.log(err.message)
-    //                 rejected(new Error("Cannot get events from server"))
-    //             })
-    //     })
-    // }
-
-
     getAllRates(tokensObj) {
         return new Promise((resolve, rejected) => {
-            fetch(this.rpcUrl + '/getRate', {
+            fetch(this.rpcUrl + '/rate', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
@@ -177,7 +132,7 @@ export default class CachedServerProvider extends React.Component {
 
     getAllRatesUSD() {
         return new Promise((resolve, rejected) => {
-            fetch(this.rpcUrl + '/getRateUSD', {
+            fetch(this.rpcUrl + '/rateUSD', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
@@ -201,7 +156,7 @@ export default class CachedServerProvider extends React.Component {
 
     getRateETH() {
         return new Promise((resolve, rejected) => {
-            fetch(this.rpcUrl + '/getRateETH', {
+            fetch(this.rpcUrl + '/rateETH', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
@@ -256,7 +211,7 @@ export default class CachedServerProvider extends React.Component {
 
     getMarketData() {
         return new Promise((resolve, rejected) => {
-            fetch(this.rpcUrl + '/getMarketData', {
+            fetch(this.rpcUrl + '/marketData', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
@@ -280,7 +235,7 @@ export default class CachedServerProvider extends React.Component {
 
     getGeneralTokenInfo(){
         return new Promise((resolve, rejected) => {
-            fetch(this.rpcUrl + '/getTokenInfo', {
+            fetch(this.rpcUrl + '/tokenInfo', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
@@ -320,7 +275,7 @@ export default class CachedServerProvider extends React.Component {
 
     getMarketInfo() {
         return new Promise((resolve, rejected) => {
-            fetch(this.rpcUrl + '/getMarketInfo', {
+            fetch(this.rpcUrl + '/marketInfo', {
             }).then((response) => {
                 return response.json()
             })

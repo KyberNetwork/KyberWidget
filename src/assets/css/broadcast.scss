@@ -42,15 +42,11 @@
     margin-right: 15px;
 
     &.broadcast {
-      background-image: url($image-path + 'icons/icon-broadcast.svg');
+      background-image: url($image-path + 'icons/broadcasted-emerald.svg');
     }
 
     &.failed {
       background-image: url($image-path + 'icons/icon-error.svg');
-    }
-
-    &.success {
-      background-image: url($image-path + 'icons/icon-success.svg');
     }
   }
 
@@ -98,6 +94,13 @@
 
   &__copy {
     margin-left: 10px;
+
+    &-icon {
+      display: inline-block;
+      width: 13px;
+      height: 16px;
+      background-image: url($image-path + 'icons/copy-emerald.svg');
+    }
   }
 
   &__content {
