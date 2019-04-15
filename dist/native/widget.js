@@ -251,8 +251,9 @@
   }
 
   global.addEventListener("message", function (e) {
-    if (e.data === "Broadcasted") {
+    if (e.data.name === "Broadcasted") {
       global.kyberWidgetOptions.isBroadcasted = true;
+      global.kyberWidgetOptions.txHash = e.data.txHash;
     }
   });
 
