@@ -206,7 +206,7 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   yield put(actions.doTransactionComplete(hash))
   yield put(actions.finishExchange())
   yield put(actions.resetSignError())
-  widgetOptions.postMessageBroadCasted();
+  widgetOptions.postMessageBroadCasted(tx.hash);
 }
 
 function* getInfo(hash) {
