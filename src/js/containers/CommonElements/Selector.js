@@ -1,14 +1,11 @@
 import React from "react"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
-import { getTranslate } from 'react-localize-redux';
 import {addPrefixClass} from "../../utils/className"
 
 
 export default class Selector extends React.Component {
     constructor(props) {
         super(props);
-        // console.log(props.defaultItem)
-        // console.log(props.listItem)
         console.log("list item: ", props.listItem, props.defaultItem)
         this.state = {
             open: false,
@@ -17,11 +14,6 @@ export default class Selector extends React.Component {
             onChange: props.onChange ? props.onChange : null
         }
     }
-
-    //   changeWord = (e) => {
-    //     var value = e.target.value.toLowerCase()
-    //     this.setState({ searchWord: value })
-    //   }
 
     showSelector = (e) => {
         this.setState({ open: true })
@@ -62,7 +54,7 @@ export default class Selector extends React.Component {
                             </div>
                             {/* <div><i className={'k k-angle ' + (this.state.open ? 'up' : 'down')}></i></div> */}
                             <div>
-                                <img src={require('../../../assets/img/landing/arrow_down.svg')} />
+                                {/*<img src={require('../../../assets/img/landing/arrow_down.svg')} />*/}
                             </div>                            
                         </div>
                     </DropdownTrigger>

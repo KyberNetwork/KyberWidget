@@ -1,6 +1,3 @@
-import { REHYDRATE } from 'redux-persist/lib/constants'
-import Tx from "../services/tx"
-
 const initState = {
 }
 
@@ -34,12 +31,7 @@ const txs = (state = initState, action) => {
       }
     }
   }
-  // let tsx = null;
-  // if(localStorage.getItem("txs")){
-  //   tsx = JSON.parse(localStorage.getItem("txs"))
-  // }
-  // let merged = {...tsx, ...state};
-  //localStorage.setItem("txs",JSON.stringify(state));
+
   return state
 }
 

@@ -1,18 +1,8 @@
 import React from "react"
 import { connect } from "react-redux"
-import { push } from 'react-router-redux'
-import constants from "../../services/constants"
 import AddressGenerator from "../../services/device/addressGenerator";
 import { ImportByDeviceView } from "../../components/ImportAccount"
-import {
-  importNewAccount,
-  importLoading,
-  closeImportLoading,
-  throwError,
-  checkTimeImportLedger,
-  resetCheckTimeImportLedger,
-  setWallet
-} from "../../actions/accountActions"
+import { importLoading, closeImportLoading, throwError, checkTimeImportLedger, resetCheckTimeImportLedger, setWallet, setDPath } from "../../actions/accountActions"
 import { toEther } from "../../utils/converter"
 import { getTranslate } from 'react-localize-redux'
 import bowser from 'bowser';
@@ -30,7 +20,8 @@ import { roundingNumber } from "../../utils/converter";
     tokens: supportTokens,
     deviceService: props.deviceService,
     translate: getTranslate(store.locale),
-    screen: props.screen
+    screen: props.screen,
+    analytics: store.global.analytics
   }
 })
 export default class ImportByDevice extends React.Component {
@@ -51,7 +42,7 @@ export default class ImportByDevice extends React.Component {
       { path: "m/0'/0'/0'", desc: 'SingularDTV', notSupport: true },
       { path: "m/44'/1'/0'/0", desc: 'Network: Testnets' },
       { path: "m/44'/40'/0'/0", desc: 'Network: Expanse', notSupport: true },
-      { path: 0, desc: 'modal.custom_path', defaultP: "m/44'/60'/1'/0", custom: false },
+      { path: 0, desc: 'Custom Path', defaultP: "m/44'/60'/1'/0", custom: false },
     ]
   }
 
@@ -84,8 +75,9 @@ export default class ImportByDevice extends React.Component {
     }
     this.props.deviceService.getPublicKey(selectedPath, this.state.modalOpen)
       .then((result) => {
-        this.dPath = (dpath != 0) ? result.dPath : dpath;
+        const currentDPath = (dpath != 0) ? result.dPath : dpath
         this.generateAddress(result);
+        this.props.dispatch(setDPath(currentDPath));
         this.props.dispatch(closeImportLoading());
       })
       .catch((err) => {
@@ -173,6 +165,7 @@ export default class ImportByDevice extends React.Component {
           isFirstList: false
         })
       }
+      this.props.analytics.callTrack("clickNavigateAddressColdWallet", "next")
     } else {
       this.props.dispatch(throwError('Cannot connect to ' + this.walletType))
     }
@@ -191,25 +184,11 @@ export default class ImportByDevice extends React.Component {
         isFirstList: true
       })
     }
-  }
-
-  getAddress() {
-    this.props.dispatch(importNewAccount(
-      this.props.account.wallet.address,
-      this.walletType,
-      this.dPath + '/' + this.props.account.wallet.index
-    ))
+    this.props.analytics.callTrack("clickNavigateAddressColdWallet", "previous")
   }
 
   setWallet(index, address, balance, type) {
-    const wallet = {
-      index: index,
-      address: address,
-      balance: roundingNumber(balance),
-      type: type
-    }
-
-    this.props.dispatch(setWallet(wallet));
+    this.props.dispatch(setWallet(index, address, roundingNumber(balance), type));
   }
 
   choosePath(selectedPath, dpath) {
@@ -242,14 +221,12 @@ export default class ImportByDevice extends React.Component {
   }
 
   showLoading(walletType) {
-    let browser = bowser.name;
+    if (this.props.account.loading) return;
+
+    const browser = bowser.getParser(window.navigator.userAgent);
+    const browserName = browser.getBrowserName();
     this.props.dispatch(resetCheckTimeImportLedger())
     if (walletType == 'ledger') {
-      if (browser != 'Chrome') {
-        let erroMsg = this.props.translate("error.browser_not_support_ledger", { browser: browser }) || `Ledger is not supported on ${browser}, you can use Chrome instead.`
-        this.props.dispatch(throwError(erroMsg));
-        return;
-      }
       this.props.dispatch(importLoading());
       this.connectDevice(walletType);
       this.ledgerLoading = setTimeout(() => {
@@ -271,15 +248,13 @@ export default class ImportByDevice extends React.Component {
         getPreAddress={() => this.preAddress()}
         getMoreAddress={() => this.moreAddress()}
         dPath={this.DPATH}
-        currentDPath={this.dPath}
+        currentDPath={this.props.account.wallet.dPath}
         wallet={this.props.account.wallet}
         setWallet={this.setWallet.bind(this)}
         currentAddresses={this.state.currentAddresses}
         walletType={this.walletType}
         choosePath={this.choosePath.bind(this)}
-        getAddress={this.getAddress.bind(this)}
         translate={this.props.translate}
-        onCloseImportAccount={this.props.onCloseImportAccount}
         chosenImportAccount={this.props.account.chosenImportAccount}
       />
     )

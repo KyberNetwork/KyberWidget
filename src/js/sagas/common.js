@@ -14,8 +14,7 @@ export function* handleRequest(sendRequest, ...args) {
 		timeout: call(delay, 9 * 1000)
     })
         
-	if (timeout) {     
-        //console.log("timeout")
+	if (timeout) {
         yield cancel(task)
         return {status: "timeout"}   
     }
@@ -25,17 +24,6 @@ export function* handleRequest(sendRequest, ...args) {
     }else{
         return { status: "fail", data: res.err }    
     }
-   // return { status: "success", data: res }
-
-    // console.log(res)
-	// if (res.err) {
-    //     return new Promise(resolve => {
-    //         resolve ({
-    //             status: "error",
-    //             data: res.err
-    //         })
-    //     })
-	// }
 }
 
 export function getNetworkId(){
@@ -66,7 +54,6 @@ export function* submitCallback(hash){
       var submitUrl = exchange.callback 
       var params = {
         tx: hash,
-       // network: global.params.network
       }
       if (exchange.paramForwarding !== false && exchange.paramForwarding !== 'false'){
         Object.keys(global.params).map(key=>{
@@ -111,52 +98,53 @@ export function* retrySubmit(path, params, method, timeout){
   throw Error("Cannot submit data to callback URL, please contact the merchant for more information");
 }
 
+export function* estimateEthTransfer(address) {
+  const state = store.getState();
+  const exchange = state.exchange;
+  const ethereum = state.connection.ethereum;
+  const toContract = BLOCKCHAIN_INFO[exchange.network].payWrapper;
+  const tokens = state.tokens.tokens;
+  const sourceTokenSymbol = exchange.sourceTokenSymbol;
+  const sourceToken = exchange.sourceToken;
+  const commissionID = converter.numberToHexAddress(exchange.blockNo);
+  const paymentData = exchange.paymentData;
+  const hint = exchange.hint;
+  const decimals = tokens[exchange.sourceTokenSymbol].decimals;
+  let sourceDecimal = 18;
+  let amount;
+  let gas;
+  let sourceAmount;
+  let data;
+  let txObj;
 
-export function* submitData(path, params, method, timeout){
-  var maxTry = 3
-  console.log("retry_callback")
-  for (var i = 0; i < maxTry; i++){
-    console.log("callback_times: " + i)
-    try{
-       var response = yield call(commonFunc.submitUrlEncoded, path, params, method, timeout)
-       console.log(response)
-       if (response.success){
-         return true
-       }
-    }catch(e){
-      console.log(e)    
-    }
-    
-    try{
-      var response = yield call(commonFunc.submitForm, path, params, method, timeout)
-      console.log(response)
-      if (response.success){
-        return true
-      }
-    }catch(e){
-      console.log(e)    
-    }
-
-    try{
-      var response = yield call(commonFunc.submitPayloadOption, path, params, method, timeout)
-      console.log(response)
-      if (response.success){
-        return true
-      }
-    }catch(e){
-      console.log(e)    
-    }
-
-    try{
-      var response = yield call(commonFunc.submitPayload, path, params, method, timeout)
-      console.log(response)
-      if (response.success){
-        return true
-      }
-    }catch(e){
-      console.log(e)    
-    }
-
+  if (exchange.isHaveDestAmount) {
+    amount = converter.stringToHex(exchange.destAmount, decimals)
+  } else {
+    amount = converter.stringToHex(exchange.sourceAmount, decimals)
   }
-  return false
+
+  if (tokens[sourceTokenSymbol]) {
+    sourceDecimal = tokens[sourceTokenSymbol].decimals
+  }
+
+  sourceAmount = converter.stringToHex(exchange.sourceAmount, sourceDecimal);
+
+  data = yield call([ethereum, ethereum.call], "getPaymentEncodedData", sourceToken, sourceAmount,
+    sourceToken, address, sourceAmount, 0, commissionID, paymentData, hint);
+
+  txObj = {
+    from: address,
+    value: amount,
+    to: toContract,
+    data: data
+  };
+
+  try {
+    gas = yield call([ethereum, ethereum.call], "estimateGas", txObj);
+    gas = Math.round(gas * 120 / 100);
+  } catch (e) {
+    gas = 250000;
+  }
+
+  return gas;
 }

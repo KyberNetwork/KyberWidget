@@ -1,83 +1,57 @@
 import React from "react"
 import { connect } from "react-redux"
-import { push } from 'react-router-redux';
-import constants from "../../services/constants"
 import { TransactionLoadingView } from "../../components/Transaction"
 import { getTranslate } from 'react-localize-redux'
-import * as exchangeActions from "../../actions/exchangeActions"
-import * as transferActions from "../../actions/transferActions"
-import { Modal } from "../../components/CommonElement"
-
 
 @connect((store, props) => {
-    // var type = props.type
-    // var isOpen = false
-    // if (props.type === "exchange"){
-    //     isOpen = store.exchange.step === 3
-    // }
-    // if (props.type === "transfer"){
-    //     isOpen = store.transfer.step === 3
-    // }
-    
-    var returnProps = {}
-    if (props.broadcasting) {
-        returnProps = {
-            broadcasting: true,
-            error: ""
-        }
-    } else if (props.broadcastingError !== "") {
-        returnProps = { broadcasting: true, error: props.broadcastingError }
-    } else {
-        returnProps = {
-         //   ...props.tempTx,
-            broadcasting: false,
-         //   makeNewTransaction: props.makeNewTransaction,
-        //    type: props.type,
-        //    balanceInfo: props.balanceInfo,
-            txHash: props.tx,
-         //   analyze: props.analyze,
-          //  address: props.address,
-         //   isOpen: props.isOpen,
-        }
+  var returnProps = {}
+  if (props.broadcasting) {
+    returnProps = {
+      broadcasting: true,
+      error: ""
     }
-    return { ...returnProps, translate: getTranslate(store.locale), network: store.exchange.network, analytics: store.global.analytics }
+  } else if (props.broadcastingError !== "") {
+    returnProps = { broadcasting: true, error: props.broadcastingError }
+  } else {
+    returnProps = {
+      broadcasting: false,
+      txHash: props.tx,
+    }
+  }
+  return {
+    ...returnProps,
+    translate: getTranslate(store.locale),
+    network: store.exchange.network,
+    analytics: store.global.analytics,
+    exchange: store.exchange
+  }
 })
 
 export default class TransactionLoading extends React.Component {
-
-    constructor() {
-        super();
-        this.state = {
-         //   isOpenModal: false,
-            isCopied: false,
-        }
+  constructor() {
+    super();
+    this.state = {
+      isCopied: false,
     }
+  }
 
-    // toogleModal() {
-    //     this.setState({
-    //         isOpenModal: !this.state.isOpenModal
-    //     })
-    // }
+  handleCopy() {
+    this.setState({
+      isCopied: true
+    })
+    this.props.analytics.callTrack("copyTx")
+  }
 
-    handleCopy() {
-        this.setState({
-            isCopied: true
-        })
-        this.props.analytics.callTrack("copyTx")
-    }
+  resetCopy(){
+    this.setState({
+      isCopied: false
+    })
+  }
 
-    resetCopy(){
-        this.setState({
-            isCopied: false
-        })
-    }
-
-    // closeModal = () => {
-    //    this.props.makeNewTransaction()
-    // }
-
-    render() {
-      return <TransactionLoadingView
+  render() {
+    return (
+      <TransactionLoadingView
+        exchange={this.props.exchange}
         broadcasting={this.props.broadcasting}
         error={this.props.error}
         txHash={this.props.txHash}
@@ -88,5 +62,6 @@ export default class TransactionLoading extends React.Component {
         network = {this.props.network}
         analytics = {this.props.analytics}
       />
-    }
+    )
+  }
 }

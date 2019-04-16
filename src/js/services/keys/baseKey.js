@@ -1,5 +1,4 @@
-import { biggestNumber } from "../../utils/converter"
-import * as converter from "../../utils/converter"
+import { biggestNumber } from "../../utils/converter";
 
 export const sendEtherFromAccount = (
   id, ethereum, account, sourceToken, sourceAmount, destAddress,
@@ -43,32 +42,17 @@ export const etherToOthersFromAccount = (
 };
 
 export const tokenToOthersFromAccount = (
-  id, ethereum, account, sourceToken, sourceAmount, getTxData, maxDestAmount, minConversionRate,
-  walletId, nonce, gas, gasPrice, keystring, accountType,
-  password, networkId) => {
+  id, ethereum, account, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
+  commissionId, nonce, gas, gasPrice, keystring, accountType, password, networkId, kyberNetwork
+) => {
+  return new Promise((resolve) => {
+    ethereum.call("exchangeData", sourceToken, sourceAmount, destToken, destAddress,
+      maxDestAmount, minConversionRate, commissionId).then(result => {
 
-  return new Promise((resolve, reject) => {
-    getTxData(
-    sourceToken, sourceAmount,
-    maxDestAmount, minConversionRate, walletId).then(result => {
-        var {value, data, gasLimit, to} = result
+      const txParams = createTxParams(account, nonce, gasPrice, gas, kyberNetwork, "0x0", result, networkId);
 
-        gasLimit = converter.toHex(gasLimit)
-        value = converter.toHex(value)
-
-        const txParams = {
-          from: account,
-          nonce: nonce,
-          gasPrice: gasPrice,
-          gasLimit: gasLimit,
-          to: to,
-          value: value,
-          data: data,
-          // EIP 155 chainId - mainnet: 1, ropsten: 3
-          chainId: networkId
-        }
-        resolve({ txParams, keystring, password })
-      })
+      resolve({ txParams, keystring, password })
+    })
   })
 };
 
@@ -132,12 +116,14 @@ export const tokenToOthersPayment = (
   })
 };
 
-export const getAppoveToken = (
-  ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
-  keystring, password, accountType, account, networkId, spender
+export const getApproveToken = (
+  isPayMode, ethereum, sourceToken, sourceAmount, nonce, gas, gasPrice,
+  keystring, password, accountType, account, networkId, isApproveZero = false
 ) => {
+  const value = isApproveZero ? 0 : biggestNumber();
+
   return new Promise((resolve) => {
-    ethereum.call("approveTokenData", sourceToken, biggestNumber(), spender).then(result => {
+    ethereum.call("approveTokenData", sourceToken, value, isPayMode).then(result => {
 
       const txParams = createTxParams(account, nonce, gasPrice, gas, sourceToken, "0x0", result, networkId);
 

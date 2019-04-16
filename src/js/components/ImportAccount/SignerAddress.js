@@ -3,14 +3,11 @@ import {addPrefixClass} from "../../utils/className"
 
 const SignerAddress = (props) => {
   return (
-    <div className={addPrefixClass("signer-address")}>
-      <div className={addPrefixClass("signer-address__title")}>Access in one of these Addresses</div>
+    <div className={addPrefixClass("signer-address common__information box")}>
+      <div className={addPrefixClass("signer-address__title")}>Please check these access Addresses</div>
       <div className={addPrefixClass("signer-address__container")}>
         {props.signerAddresses.map((address, index) =>
-          <div className={addPrefixClass("signer-address__wallet")} key={index}>
-          <div className={addPrefixClass("signer-address__wallet-name")}>Address {index + 1}:</div>
-          <div className={addPrefixClass("signer-address__wallet-hash")}>{address}</div>
-          </div>
+          <div className={addPrefixClass("signer-address__wallet")} key={index}>{address}</div>
         )}
       </div>
     </div>

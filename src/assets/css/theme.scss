@@ -1,0 +1,260 @@
+.theme-shadow-large {
+  box-shadow: $theme-shadow-container;
+}
+
+.theme-shadow-small {
+  box-shadow: $theme-shadow-header;
+}
+
+.theme-icon-hover:hover {
+  box-shadow: $theme-shadow-icon;
+  border-color: $theme-border;
+}
+
+.theme-border {
+  border-color: $theme-border;
+}
+
+.theme-button {
+  border-color: $theme-border;
+}
+
+/* ========== Theme Emerald ========= */
+
+&.theme-emerald {
+  .theme-text {
+    color: $theme-emerald-regular;
+  }
+
+  .theme-text-light {
+    color: $theme-emerald-light;
+  }
+
+  .theme-text-hover:hover {
+    color: $theme-emerald-hover;
+  }
+
+  .theme-bg {
+    color: white;
+    background-color: $theme-emerald-regular;
+  }
+
+  .theme-checkbox:checked ~.common__checkbox-icon,
+  .theme-radio:checked ~.common__radio-icon {
+    background-color: $theme-emerald-regular;
+    border-color: $theme-emerald-regular;
+  }
+
+  .theme-bg-light {
+    background-color: $theme-emerald-light;
+  }
+
+  .theme-bg-hover:hover {
+    background-color: $theme-emerald-hover;
+  }
+
+  .theme-button:hover {
+    color: white;
+    background-color: $theme-emerald-regular;
+  }
+
+  .theme-border-top {
+    border-top-color: $theme-emerald-regular;
+  }
+
+  .theme-gradient {
+    background-image: $theme-emerald-gradient;
+  }
+
+  .theme-loading-icon {
+    background-image: url($image-path + 'icons/loading-emerald.gif');
+  }
+
+  .theme-broadcasted-icon {
+    background-image: url($image-path + 'icons/broadcasted-emerald.svg');
+  }
+
+  .theme-copy-icon {
+    background-image: url($image-path + 'icons/copy-emerald.svg');
+  }
+}
+
+/* ========== Theme Sunset ========= */
+
+&.theme-sunset {
+  .theme-text {
+    color: $theme-sunset-regular;
+  }
+
+  .theme-text-light {
+    color: $theme-sunset-light;
+  }
+
+  .theme-text-hover:hover {
+    color: $theme-sunset-hover;
+  }
+
+  .theme-bg {
+    color: white;
+    background-color: $theme-sunset-regular;
+  }
+
+  .theme-checkbox:checked ~.common__checkbox-icon,
+  .theme-radio:checked ~.common__radio-icon {
+    background-color: $theme-sunset-regular;
+    border-color: $theme-sunset-regular;
+  }
+
+  .theme-bg-light {
+    background-color: $theme-sunset-light;
+  }
+
+  .theme-bg-hover:hover {
+    background-color: $theme-sunset-hover;
+  }
+
+  .theme-button:hover {
+    color: white;
+    background-color: $theme-sunset-regular;
+  }
+
+  .theme-border-top {
+    border-top-color: $theme-sunset-regular;
+  }
+
+  .theme-gradient {
+    background-image: $theme-sunset-gradient;
+  }
+
+  .theme-loading-icon {
+    background-image: url($image-path + 'icons/loading-sunset.gif');
+  }
+
+  .theme-broadcasted-icon {
+    background-image: url($image-path + 'icons/broadcasted-sunset.svg');
+  }
+
+  .theme-copy-icon {
+    background-image: url($image-path + 'icons/copy-sunset.svg');
+  }
+}
+
+/* ========== Theme Ocean ========= */
+
+&.theme-ocean {
+  .theme-text {
+    color: $theme-ocean-regular;
+  }
+
+  .theme-text-light {
+    color: $theme-ocean-light;
+  }
+
+  .theme-text-hover:hover {
+    color: $theme-ocean-hover;
+  }
+
+  .theme-bg {
+    color: white;
+    background-color: $theme-ocean-regular;
+  }
+
+  .theme-checkbox:checked ~.common__checkbox-icon,
+  .theme-radio:checked ~.common__radio-icon {
+    background-color: $theme-ocean-regular;
+    border-color: $theme-ocean-regular;
+  }
+
+  .theme-bg-light {
+    background-color: $theme-ocean-light;
+  }
+
+  .theme-bg-hover:hover {
+    background-color: $theme-ocean-hover;
+  }
+
+  .theme-button:hover {
+    color: white;
+    background-color: $theme-ocean-regular;
+  }
+
+  .theme-border-top {
+    border-top-color: $theme-ocean-regular;
+  }
+
+  .theme-gradient {
+    background-image: $theme-ocean-gradient;
+  }
+
+  .theme-loading-icon {
+    background-image: url($image-path + 'icons/loading-ocean.gif');
+  }
+
+  .theme-broadcasted-icon {
+    background-image: url($image-path + 'icons/broadcasted-ocean.svg');
+  }
+
+  .theme-copy-icon {
+    background-image: url($image-path + 'icons/copy-ocean.svg');
+  }
+}
+
+/* ========== Theme Dark ========= */
+
+&.theme-dark {
+  .theme-text {
+    color: $theme-dark-regular;
+  }
+
+  .theme-text-light {
+    color: $theme-dark-light;
+  }
+
+  .theme-text-hover:hover {
+    color: $theme-dark-hover;
+  }
+
+  .theme-bg {
+    color: white;
+    background-color: $theme-dark-regular;
+  }
+
+  .theme-checkbox:checked ~.common__checkbox-icon,
+  .theme-radio:checked ~.common__radio-icon {
+    background-color: $theme-dark-regular;
+    border-color: $theme-dark-regular;
+  }
+
+  .theme-bg-light {
+    background-color: $theme-dark-light;
+  }
+
+  .theme-bg-hover:hover {
+    background-color: $theme-dark-hover;
+  }
+
+  .theme-button:hover {
+    color: white;
+    background-color: $theme-dark-regular;
+  }
+
+  .theme-border-top {
+    border-top-color: $theme-dark-regular;
+  }
+
+  .theme-gradient {
+    background-image: $theme-dark-gradient;
+  }
+
+  .theme-loading-icon {
+    background-image: url($image-path + 'icons/loading-dark.gif');
+  }
+
+  .theme-broadcasted-icon {
+    background-image: url($image-path + 'icons/broadcasted-dark.svg');
+  }
+
+  .theme-copy-icon {
+    background-image: url($image-path + 'icons/copy-dark.svg');
+  }
+}

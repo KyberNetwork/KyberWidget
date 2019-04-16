@@ -1,6 +1,4 @@
-import * as converter from "../utils/converter"
-
-export function updateBlock(ethereum, block) {
+export function updateBlock(ethereum) {
   return {
     type: "GLOBAL.NEW_BLOCK_INCLUDED_PENDING",
     payload: ethereum
@@ -20,13 +18,6 @@ export function updateBlockFailed(error) {
     payload: error
   }
 }
-
-// export function updateRate(ethereum, source, reserve, ownerAddr) {
-//   return {
-//     type: "GLOBAL.RATE_UPDATED_PENDING",
-//     payload: {ethereum, source, reserve, ownerAddr}
-//   }
-// }
 
 export function updateAllRate(ethereum, tokens) {
   return {
@@ -68,12 +59,6 @@ export function hideBalanceUSD(){
   }
 }
 
-export function acceptTermOfService() {
-  return {
-    type: "GLOBAL.TERM_OF_SERVICE_ACCEPTED"
-  }
-}
-
 export function clearSession() {
   return {
     type: "GLOBAL.CLEAR_SESSION"
@@ -100,40 +85,10 @@ export function clearSessionComplete() {
   }
 }
 
-export function goToRoute(route) {
-  return {
-    type: "GLOBAL.GO_TO_ROUTE",
-    payload: route
-  }
-}
-
-
-// export function updateHistoryExchange(ethereum, page, itemPerPage, isAutoFetch) {
-//   return {
-//     type: "GLOBAL.UPDATE_HISTORY_EXCHANGE",
-//     payload: { ethereum, page, itemPerPage, isAutoFetch }
-//   }
-// }
-
-// export function updateHistory(logs, latestBlock, page, eventsCount, isAutoFetch) {
-//   return {
-//     type: "GLOBAL.UPDATE_HISTORY",
-//     payload: { logs, latestBlock, page, eventsCount, isAutoFetch }
-//   }
-// }
-
 export function checkConnection(ethereum, count, maxCount, isCheck) {
   return {
     type: "GLOBAL.CHECK_CONNECTION",
     payload: { ethereum, count, maxCount, isCheck }
-  }
-}
-
-
-export function updateIsCheck(isCheck){
-  return {
-    type: "GLOBAL.CONNECTION_UPDATE_IS_CHECK",
-    payload: isCheck
   }
 }
 
@@ -150,40 +105,6 @@ export function setGasPrice(ethereum){
     payload: ethereum
   }
 }
-
-export function visitExchange(){
-  return {
-    type: "GLOBAL.VISIT_EXCHANGE",
-  }
-}
-
-export function caculateGasPrice(gasStationPrice){
-  return {
-    type: "GLOBAL.CACULATE_GASPRICE",
-    payload: gasStationPrice
-  }
-}
-
-export function toggleAnalyze(){
-  return {
-    type: "GLOBAL.TOGGLE_ANALYZE"
-  }
-}
-
-export function openAnalyze(txHash){
-  return {
-    type: "GLOBAL.OPEN_ANALYZE",
-    payload: txHash
-  }
-}
-
-export function setAnalyzeError(networkIssues, reserveIssues, txHash){
-  return {
-    type: "GLOBAL.SET_ANALYZE_ERROR",
-    payload: { networkIssues, reserveIssues, txHash }
-  }
-}
-
 
 export function throwErrorMematamask(err){
   return {

@@ -1,0 +1,359 @@
+$animation-time: 0.5s;
+
+.importer__icon {
+  height: 30px;
+  background: center no-repeat;
+  transition: 0.5s;
+
+  &.metamask {
+    background-image: url($image-path + 'import-account/import-metamask.svg');
+  }
+
+  &.ledger {
+    background-image: url($image-path + 'import-account/import-ledger.svg');
+  }
+
+  &.trezor {
+    background-image: url($image-path + 'import-account/import-trezor.svg');
+  }
+
+  &.keystore {
+    background-image: url($image-path + 'import-account/import-keystore.svg');
+  }
+
+  &.private-key {
+    background-image: url($image-path + 'import-account/import-private-key.svg');
+  }
+}
+
+.signer-address {
+  &__title {
+    margin-bottom: 15px;
+  }
+
+  &__wallet {
+    color: #5a5e67;
+    margin-bottom: 7px;
+    padding-left: 20px;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: $info-color;
+      position: absolute;
+      left: 0;
+      top: 8px;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.coinbase {
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  background-color: #f8fbfd;
+  padding: 15px;
+  margin-bottom: 25px;
+
+  &__logo {
+    width: 30px;
+    height: 30px;
+    background-image: url($image-path + 'coinbase.svg');
+    background-size: contain;
+    margin-right: 10px;
+  }
+
+  &__content {
+    width: 200px;
+    border-right: 1px solid #dae3e9;
+    display: flex;
+    padding-right: 15px;
+  }
+
+  &__name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #677c94;
+    text-transform: uppercase;
+  }
+
+  &__desc {
+    font-size: 11px;
+    font-weight: 500;
+    color: #757575;
+  }
+
+  &__download {
+    width: calc(100% - 200px);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: $theme-emerald-regular;
+    text-decoration: none;
+  }
+
+  @media (max-width: 820px) and (min-width: 600px) {
+    display: block;
+
+    &__content {
+      border-right: none;
+      margin-right: 0;
+      padding-right: 0;
+      margin-bottom: 10px;
+    }
+  }
+
+  @include screen-max-width(370px) {
+    display: block;
+
+    &__content {
+      border-right: none;
+      margin-right: 0;
+      padding-right: 0;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.import-account {
+  display: flex;
+  position: relative;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
+
+  &__json {
+    input {
+      max-width: 100%;
+    }
+  }
+
+  &__eye-icon {
+    width: 20px;
+    height: 20px;
+    background: url(../img/unlock-pass.svg) center no-repeat;
+    background-size: contain;
+    cursor: pointer;
+
+    &.unlock {
+      background-image: url(../img/lock-pass.svg);
+    }
+  }
+
+  &__item {
+    max-height: 170px;
+    position: relative;
+    text-align: center;
+    width: calc(50% - 10px);
+    max-width: 135px;
+    margin: 0 0 20px;
+    border-radius: 3px;
+    background-color: #ffffff;
+    border: solid 1px transparent;
+    cursor: pointer;
+    transition: all .3s;
+
+    >div{
+      padding: 20px 0;
+      &:focus{
+        outline: none;
+      }
+    }
+
+    &:hover {
+      box-shadow: $theme-shadow-icon;
+      border-color: $theme-border;
+    }
+
+    .column-block {
+      margin-bottom: 0;
+    }
+
+    .importer {
+      &__button {
+        line-height: 1.2;
+        color: white;
+        font-size: 0.8rem;
+        width: 100%;
+        cursor: pointer;
+        padding: 13px 15px;
+        margin-bottom: 15px;
+        border-radius: 3px;
+        background-image: linear-gradient(to right, $swap-color 50%, $color-swap-light 50%);
+        background-size: 200% 100%;
+        position: relative;
+        transition: all .3s;
+
+        &::after {
+          content: '';
+          position: absolute;
+          width: 6px;
+          height: 9px;
+          right: 5px;
+          top: 50%;
+          opacity: 0;
+          transform: translateY(-50%);
+          background: url($image-path + 'angle-right.svg') no-repeat;
+          background-size: contain;
+          transition: opacity .25s;
+        }
+
+        &:hover {
+          background-position: -100% 0;
+
+          &::after {
+            opacity: 1;
+          }
+        }
+      }
+
+      &__name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #677c94;
+        margin-top: 20px;
+        text-transform: uppercase;
+      }
+
+      &__balance {
+        font-weight: 500;
+      }
+
+      &.metamask {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 0.9375rem;
+      }
+
+      &__button {
+        opacity: 0;
+        animation: fade-in $animation-time forwards;
+      }
+    }
+  }
+
+  &-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50px);
+    transition: transform .3s, opacity .3s;
+    box-sizing: border-box;
+    z-index: 2;
+
+    &__wrapper {
+      margin-top: 35px;
+    }
+
+    &__title {
+      font-family: $font-cera;
+      font-size: 22px;
+      letter-spacing: -0.4px;
+    }
+
+    &--active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0);
+
+      ~ .import-account {
+        min-height: 340px;
+      }
+    }
+
+    &__info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .title {
+        font-size: 14px;
+        color: #9ea8b3;
+      }
+
+      .address {
+        font-size: 14px;
+        font-weight: 500;
+        color: #394b5e;
+      }
+    }
+
+    &__info-type {
+      width: 135px;
+      height: 115px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      border: solid 1px $theme-border;
+      line-height: 1.4;
+
+      &.error {
+        border-color: $error-color !important;
+      }
+    }
+
+    &__info-text {
+      width: calc(100% - 135px);
+      padding-left: 20px;
+    }
+
+    &__info-type-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: #677c94;
+      text-transform: uppercase;
+      margin-top: 10px;
+    }
+
+    &__info-text-address,
+    &__info-text-balance {
+      line-height: 1.4;
+    }
+
+    &__info-text-address {
+      margin-bottom: 10px;
+    }
+  }
+
+  @include screen-max-width(600px) {
+    &__item {
+      width: 30%;
+      max-width: unset;
+
+      &:nth-child(3n + 2) {
+        margin-left: 5% !important;
+        margin-right: 5% !important;
+      }
+    }
+  }
+
+  @include screen-max-width(380px) {
+    justify-content: space-between !important;
+
+    &__item {
+      width: 45%;
+
+      &:nth-child(3n + 2) {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+    }
+  }
+}

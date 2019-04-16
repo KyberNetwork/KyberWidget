@@ -38,6 +38,7 @@ export function caculateSourceAmount(destAmount, offeredRate, precision) {
   if (!destAmount || !offeredRate || acceptableTyping(destAmount) || acceptableTyping(offeredRate)) {
     return "0"
   }
+  if (offeredRate == 0) return "0"
   var bigDest = new BigNumber(destAmount)
   var bigOfferedRate = new BigNumber(offeredRate)
 
@@ -264,6 +265,11 @@ export function numberToHexAddress(number){
 }
 
 export function biggestNumber() {
+  var initNumber = new BigNumber(2)
+  return "0x" + (initNumber.pow(255).toString(16))
+}
+
+export function maskNumber() {
   var initNumber = new BigNumber(2)
   return "0x" + (initNumber.pow(255).toString(16))
 }
@@ -550,4 +556,12 @@ export function getSourceAmountZero(sourceTokenSymbol, decimal, rateSell){
 export function toHex(number){
   var bigNumber = new BigNumber(number)
   return "0x" + bigNumber.toString(16)
+}
+
+
+export function sumOfTwoNumber(num1, num2){
+  var num1 = new BigNumber(num1.toString())
+  var num2 = new BigNumber(num2.toString())
+  var sum = num1.plus(num2)       
+  return sum.toString()
 }

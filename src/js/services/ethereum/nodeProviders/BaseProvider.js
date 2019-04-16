@@ -1,11 +1,11 @@
 import Web3 from "web3"
 import constants from "../../constants"
 import * as ethUtil from 'ethereumjs-util'
-
 import BLOCKCHAIN_INFO from "../../../../../env"
 import abiDecoder from "abi-decoder"
 import EthereumTx from "ethereumjs-tx"
 import * as common from "../../../utils/common";
+import * as converters from "../../../utils/converter"
 
 export default class BaseProvider {
     // constructor(props) {
@@ -14,43 +14,23 @@ export default class BaseProvider {
     // }
     
     initContract(network) {
-        this.network = network
-        
-        this.rpc = new Web3(new Web3.providers.HttpProvider(this.rpcUrl, 3000))
+      this.network = network
 
-        this.erc20Contract = new this.rpc.eth.Contract(constants.ERC20)
+      this.rpc = new Web3(new Web3.providers.HttpProvider(this.rpcUrl, 3000))
 
-        
-        this.networkAddress = BLOCKCHAIN_INFO[this.network].network
-        this.wrapperAddress = BLOCKCHAIN_INFO[this.network].wrapper
-        this.wrapperEtheremonAddr = BLOCKCHAIN_INFO[this.network].ethermon_wrapper
-        // console.log(BLOCKCHAIN_INFO)
-        // console.log(this.wrapperAddress)
-         this.networkContract = new this.rpc.eth.Contract(constants.KYBER_NETWORK, this.networkAddress)
-         this.wrapperContract = new this.rpc.eth.Contract(constants.KYBER_WRAPPER, this.wrapperAddress)
-
-         this.wapperEtheremon = new this.rpc.eth.Contract(constants.ETHEREMON_WRAPPER, this.wrapperEtheremonAddr)
+      this.erc20Contract = new this.rpc.eth.Contract(constants.ERC20)
+      this.networkAddress = BLOCKCHAIN_INFO[this.network].network
+      this.wrapperAddress = BLOCKCHAIN_INFO[this.network].wrapper
+      this.wrapperEtheremonAddr = BLOCKCHAIN_INFO[this.network].ethermon_wrapper
+      this.networkContract = new this.rpc.eth.Contract(constants.KYBER_NETWORK, this.networkAddress)
+      this.wrapperContract = new this.rpc.eth.Contract(constants.KYBER_WRAPPER, this.wrapperAddress)
+      this.wapperEtheremon = new this.rpc.eth.Contract(constants.ETHEREMON_WRAPPER, this.wrapperEtheremonAddr)
     }
 
     version() {
         return this.rpc.version.api
     }
 
-
-
-
-    // getMonsterPriceInETH (etheremonAddr, monsterId, payPrice){
-    //     return new Promise((resolve, reject) => {
-    //         var data = this.wapperEtheremon.methods.getMonsterPriceInETH(etheremonAddr, monsterId, payPrice).call()
-    //                     .then(result => {
-    //                         const {monsterInETH, catchable} = result
-    //                         resolve({monsterInETH, catchable})
-    //                     }).catch(e => {
-    //                         console.log(e)
-    //                         reject(e)
-    //                     })
-    //     })
-    // }
 
     isConnectNode() {
         return new Promise((resolve, reject) => {
@@ -214,17 +194,17 @@ export default class BaseProvider {
     }
 
     exchangeData(sourceToken, sourceAmount, etheremonAddr, monsterId, monsterName,
-        maxDestAmount, minConversionRate, walletId) {            
+        maxDestAmount, minConversionRate, walletId) {
         if (!this.rpc.utils.isAddress(walletId)) {
             walletId = "0x" + Array(41).join("0")
-        }        
+        }
         var data = this.wapperEtheremon.methods.catchMonster(
             this.networkAddress,
             etheremonAddr,
             monsterId,
-            monsterName,            
-            sourceToken, 
-            sourceAmount, 
+            monsterName,
+            sourceToken,
+            sourceAmount,
             maxDestAmount,
             minConversionRate,
             walletId).encodeABI()
@@ -234,8 +214,10 @@ export default class BaseProvider {
         })
     }
 
-    approveTokenData(sourceToken, sourceAmount, spender) {
-        var tokenContract = this.erc20Contract
+    approveTokenData(sourceToken, sourceAmount, isPayMode = false) {
+        var tokenContract = this.erc20Contract;
+        const spender = isPayMode ? this.payWrapperAddress : this.networkAddress;
+
         tokenContract.options.address = sourceToken
 
         var data = tokenContract.methods.approve(spender, sourceAmount).encodeABI()
@@ -253,11 +235,11 @@ export default class BaseProvider {
         })
     }
 
-    getAllowanceAtLatestBlock(sourceToken, owner, spender) {
-        var tokenContract = this.erc20Contract
-        tokenContract.options.address = sourceToken
+    getAllowanceAtLatestBlock(sourceToken, owner, isPayMode = false) {
+        var tokenContract = this.erc20Contract;
+        const spender = isPayMode ? this.payWrapperAddress : this.networkAddress;
 
-        console.log({sourceToken, owner, spender})
+        tokenContract.options.address = sourceToken
 
         var data = tokenContract.methods.allowance(owner, spender).encodeABI()
 
@@ -280,6 +262,8 @@ export default class BaseProvider {
     if (!this.rpc.utils.isAddress(walletId)) {
       walletId = "0x" + Array(41).join("0")
     }
+
+    hint = this.rpc.utils.utf8ToHex(constants.PERM_HINT)
 
     const data = this.payWrapperContract.methods.pay(
       sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
@@ -314,9 +298,14 @@ export default class BaseProvider {
 
     }
 
-    getRate(source, dest, quantity) {
+    getRate(source, dest, srcAmount) {
+
+        var mask = converters.maskNumber()
+        var srcAmountEnableFirstBit = converters.sumOfTwoNumber(srcAmount,  mask)
+        srcAmountEnableFirstBit = converters.toHex(srcAmountEnableFirstBit)
+
         return new Promise((resolve, reject) => {
-            this.networkContract.methods.getExpectedRate(source, dest, quantity).call()
+            this.networkContract.methods.getExpectedRate(source, dest, srcAmountEnableFirstBit).call()
                 .then((result) => {
                     if (result != null) {
                         resolve(result)
@@ -426,7 +415,8 @@ export default class BaseProvider {
 
         var arrayEthAddress = Array(arrayTokenAddress.length).fill(constants.ETH.address)
 
-        var arrayQty = Array(arrayTokenAddress.length * 2).fill("0x0")
+        var mask = converters.maskNumber()
+        var arrayQty = Array(arrayTokenAddress.length * 2).fill(mask)
 
         return this.getAllRate(arrayTokenAddress.concat(arrayEthAddress), arrayEthAddress.concat(arrayTokenAddress), arrayQty).then((result) => {
             var returnData = []
@@ -654,7 +644,12 @@ export default class BaseProvider {
     }
 
     getRateAtSpecificBlock(source, dest, srcAmount, blockno) {
-        var data = this.networkContract.methods.getExpectedRate(source, dest, srcAmount).encodeABI()
+
+        var mask = converters.maskNumber()
+        var srcAmountEnableFistBit = converters.sumOfTwoNumber(srcAmount,  mask)
+        srcAmountEnableFistBit = converters.toHex(srcAmountEnableFistBit)
+
+        var data = this.networkContract.methods.getExpectedRate(source, dest, srcAmountEnableFistBit).encodeABI()
 
         return new Promise((resolve, reject) => {
             this.rpc.eth.call({

@@ -1,32 +1,25 @@
 import React from "react";
 import { addPrefixClass } from "../../../utils/className";
-import { getAssetUrl } from "../../../utils/common";
 
 const ImportByKeystoreView = (props) => {
   return (
     <div>
-      <div className={addPrefixClass("payment-gateway__step-title payment-gateway__step-title--2")}>
+      <div className={addPrefixClass("widget-exchange__text theme-text")}>
         {props.translate("import.from_json_title") || "Choose your JSON file"}
       </div>
       <div className={addPrefixClass("import-account-content__wrapper")}>
         <div className={addPrefixClass("import-account-content__info")}>
-          <div className={addPrefixClass("import-account-content__info-type")}>
-            <img
-                className={addPrefixClass("import-account-content__info-type-image")}
-                src={getAssetUrl(`wallets/keystore.svg`)}/>
-            <div className={addPrefixClass("import-account-content__info-type-text")}>
-              {props.translate("import.json") || "JSON"}
+          <div className={addPrefixClass(`import-account-content__info-type theme-border ${props.error ? 'error' : ''}`)}>
+            <div>
+              <div className={addPrefixClass(`importer__icon keystore`)}/>
+              <div className={addPrefixClass("import-account-content__info-type-text")}>
+                {props.translate("import.json") || "JSON"}
+              </div>
             </div>
           </div>
         </div>
 
-        <div className={addPrefixClass("import-account-content__error")}>{props.error}</div>
-
-        <div className={addPrefixClass("import-account-content__button-container")}>
-          <div className={addPrefixClass("import-account-content__button payment-gateway__button--back")} onClick={props.onCloseImportAccount}>
-            {props.translate("transaction.back") || "Back"}
-          </div>
-        </div>
+        <div className={addPrefixClass("common__error box")}>{props.error}</div>
       </div>
     </div>
   )

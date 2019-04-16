@@ -20,7 +20,6 @@ export default class ImportByDeviceWithTrezor extends React.Component {
         type={constants.IMPORT_ACCOUNT_TYPE.trezor}
         deviceService={this.deviceService} 
         screen={this.props.screen}
-        onCloseImportAccount={this.props.onCloseImportAccount}
       />
     )
   }

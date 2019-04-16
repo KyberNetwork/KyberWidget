@@ -1,6 +1,10 @@
 (function (global) {
+  var WIDGET_VERSION = "0.6.2";
+  var incrementDeploy = 27;
 
-  var WIDGET_VERSION = "0.2";
+  function getUrlParam(name) {
+    return new URLSearchParams(location.search).get(name);
+  }
 
   function initKyberWidget() {
     function getCurrentScriptDir() {
@@ -69,6 +73,12 @@
 
         setTimeout(function () {
           overlay.remove();
+
+          const onCloseCallBack = window.kyberWidgetOptions.onCloseCallBack;
+
+          if (onCloseCallBack && typeof onCloseCallBack === "function") {
+            onCloseCallBack()
+          }
         }, 300);
       }
     }
@@ -86,7 +96,7 @@
         script.onload = function () {
           document.getElementById("kyber-widget") && global.kyberWidgetInstance.render();
         };
-        script.src = baseUrl + "/app.min.js?t=" + Date.now();
+        script.src = baseUrl + "/app.min.js?v=" + incrementDeploy;
         document.body.appendChild(script);
       }
       // add CSS tag
@@ -94,7 +104,7 @@
         var css = document.createElement("link");
         css.id = "kyber-widget-css";
         css.setAttribute("rel", "stylesheet")
-        css.setAttribute("href", baseUrl + "/app.bundle.css?t=" + Date.now());
+        css.setAttribute("href", baseUrl + "/app.css?v=" + incrementDeploy);
         document.head.appendChild(css);
       }
     }
@@ -147,17 +157,43 @@
           });
 
           var element = '';
+          var embeddedIframe = getUrlParam("embeddedIframe");
+          var embeddedIframeClass = embeddedIframe === 'true' ? 'embedded-iframe' : false;
+
           if (mode === 'popup') {
+            var productNames = [];
+            var productQtys = [];
+            var productImages = [];
+
             // create the widget container
             element = document.createElement("DIV");
             element.id = "kyber-widget";
             element.classList.add("kyber_widget");
+
             // set widget attributes
             element.setAttribute("data-widget-attribute", "true");
+
             for (var pair of params) {
-              element.setAttribute("data-widget-" +
-                decodeURIComponent(pair[0]).replace(/([a-z])([A-Z])/g,
-                  '$1-$2'), decodeURIComponent(pair[1]));
+              var name = decodeURIComponent(pair[0]).replace(/([a-z])([A-Z])/g, '$1-$2');
+              var value = decodeURIComponent(pair[1]);
+
+              if (name === 'product-Name') {
+                productNames.push(value);
+                continue;
+              } else if (name === 'product-Qty') {
+                productQtys.push(value);
+                continue;
+              } else if (name === 'product-Image') {
+                productImages.push(value);
+                continue;
+              }
+
+              element.setAttribute("data-widget-" + name, value);
+            }
+
+            if (productNames.length) {
+              var products = generateProductDataAttribute(productNames, productQtys, productImages);
+              element.setAttribute("data-widget-products", JSON.stringify(products));
             }
           } else {
             element = document.createElement("IFRAME");
@@ -170,6 +206,10 @@
               });
             };
             element.src = tag.href;
+          }
+
+          if (embeddedIframeClass) {
+            element.classList.add(embeddedIframeClass);
           }
 
           // add the tags to body
@@ -189,6 +229,19 @@
 
     })();
 
+    function generateProductDataAttribute(productNames, productQtys, productImages) {
+      var products = [];
+
+      for (var i = 0; i < productNames.length; i++) {
+        var productQty = +productQtys[i] ? +productQtys[i] : 1;
+        var productImage = productImages[i] ? productImages[i] : null;
+
+        products.push({"name": productNames[i], "qty": productQty, "image": productImage})
+      }
+
+      return products;
+    }
+
   }
 
   if (document.readyState === "loading") {
@@ -196,5 +249,12 @@
   } else {  // `DOMContentLoaded` already fired
     initKyberWidget();
   }
+
+  global.addEventListener("message", function (e) {
+    if (e.data.name === "Broadcasted") {
+      global.kyberWidgetOptions.isBroadcasted = true;
+      global.kyberWidgetOptions.txHash = e.data.txHash;
+    }
+  });
 
 })(this);
