@@ -1,5 +1,5 @@
 (function (global) {
-  var WIDGET_VERSION = "0.6.2";
+  var WIDGET_VERSION = "0.6.3";
   var incrementDeploy = 28;
 
   function getUrlParam(name) {
