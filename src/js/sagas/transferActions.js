@@ -38,7 +38,7 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
   yield put(exchangeActions.doTransactionComplete(hash))
   yield put(exchangeActions.finishExchange())
   yield put(exchangeActions.resetSignError())
-  widgetOptions.postMessageBroadCasted();
+  widgetOptions.postMessageBroadCasted(tx.hash);
 }
 
 function* doTxFail(ethereum, account, e) {
