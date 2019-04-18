@@ -11,16 +11,12 @@ import { estimateGasTransfer, verifyTransfer } from "../../actions/transferActio
 import * as marketActions from "../../actions/marketActions"
 import BLOCKCHAIN_INFO from "../../../../env"
 import { store } from "../../store"
-import * as converter from "../../utils/converter"
 import * as providers from "./nodeProviders"
 import * as common from "../../utils/common"
 
 export default class EthereumService extends React.Component {
   constructor(props) {
     super(props)
-
-    console.log("network_name")
-    console.log(props.network)
     
     this.network = props.network
 
@@ -44,7 +40,6 @@ export default class EthereumService extends React.Component {
   }
 
   subcribe() {
-    console.log("subcribe")
     var callBackAsync = this.fetchData.bind(this)
     callBackAsync()
     this.intervalAsyncID = setInterval(callBackAsync, 10000)
@@ -175,36 +170,22 @@ export default class EthereumService extends React.Component {
   }
 
   fetchRateExchange = (isManual = false) => {
-    var state = store.getState()
-    var exchange = state.exchange
-    var tokens = state.tokens.tokens
-    var tokens = state.tokens.tokens
+    const state = store.getState()
+    const exchange = state.exchange
+    const source = exchange.sourceToken
+    const dest = exchange.destToken
+    const sourceTokenSymbol = exchange.sourceTokenSymbol
+    let sourceAmount;
 
     if (exchange.sourceTokenSymbol === exchange.destTokenSymbol){
       return
     }
 
-    var source = exchange.sourceToken
-    var dest = exchange.destToken
-    var sourceAmount
-
-    if (exchange.isHaveDestAmount){
-      //get rate source by eth
-      var rateSource = Math.pow(10,18)     
-      if (exchange.sourceTokenSymbol !== "ETH"){
-        rateSource = tokens[exchange.sourceTokenSymbol].rate
-      }
-      var rateDest = Math.pow(10,18)     
-      if (exchange.destTokenSymbol !== "ETH"){
-        rateDest = tokens[exchange.destTokenSymbol].rateEth
-      }
-      var rate = rateSource * rateDest / Math.pow(10,18)      
-      sourceAmount = converter.caculateSourceAmount(exchange.destAmount, rate.toString(), 6)
-    }else{
-      sourceAmount = exchange.sourceAmount
+    if (exchange.isHaveDestAmount) {
+      sourceAmount = false;
+    } else {
+      sourceAmount = exchange.sourceAmount;
     }
-
-    var sourceTokenSymbol = exchange.sourceTokenSymbol
 
     store.dispatch(updateRateExchange(source, dest, sourceAmount, sourceTokenSymbol, isManual))
   }
