@@ -68,7 +68,6 @@ export default class ExchangeBody extends React.Component {
     }
   }
 
-
   acceptedTerm = () => {
     var checked = document.getElementById('term-agree').checked
 
@@ -149,40 +148,23 @@ export default class ExchangeBody extends React.Component {
   }
 
   dispatchUpdateRateExchange = (sourceValue) => {
-    var sourceTokenSymbol = this.props.exchange.sourceTokenSymbol
+    const sourceTokenSymbol = this.props.exchange.sourceTokenSymbol;
+    const source = this.props.exchange.sourceToken;
+    const dest = this.props.exchange.destToken;
 
-    if (sourceTokenSymbol === "ETH") {
-      if (parseFloat(sourceValue) > constansts.MAX_AMOUNT_RATE_HANDLE) {
-        this.props.dispatch(exchangeActions.setLoadingSelectToken(false));
-        this.props.dispatch(exchangeActions.throwErrorHandleAmount())
-        return
-      }
-    } else {
-      var destValue = converter.caculateDestAmount(sourceValue, this.props.exchange.rateSourceToEth, 6)
-      if (parseFloat(destValue) > constansts.MAX_AMOUNT_RATE_HANDLE) {
-        this.props.dispatch(exchangeActions.setLoadingSelectToken(false));
-        this.props.dispatch(exchangeActions.throwErrorHandleAmount())
-        return
-      }
-    }
-
-    //update rate
-    if (this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol) {
+    if (sourceTokenSymbol === this.props.exchange.destTokenSymbol) {
       this.props.dispatch(exchangeActions.setLoadingSelectToken(false));
       return
     }
 
-    var source = this.props.exchange.sourceToken
-    var dest = this.props.exchange.destToken
-
     this.props.dispatch(exchangeActions.updateRateExchange(source, dest, sourceValue, sourceTokenSymbol, true))
-  }
+  };
 
-  lazyUpdateRateExchange = _.debounce(this.dispatchUpdateRateExchange, 500)
+  lazyUpdateRateExchange = _.debounce(this.dispatchUpdateRateExchange, 500);
 
   validateRateAndSource = (sourceValue) => {
     this.lazyUpdateRateExchange(sourceValue)
-  }
+  };
 
   changeSourceAmount = (e) => {
     var value = e.target.value
@@ -190,19 +172,22 @@ export default class ExchangeBody extends React.Component {
 
     this.props.dispatch(exchangeActions.resetHandleAmountError());
     this.props.dispatch(exchangeActions.setLoadingSelectToken());
+    this.props.dispatch(exchangeActions.setDestAmountLoading(true));
     this.props.dispatch(exchangeActions.inputChange('source', value));
 
     this.validateRateAndSource(value)
   }
 
   changeDestAmount = (e) => {
-    var value = e.target.value
-    if (value < 0) return
-    this.props.dispatch(exchangeActions.inputChange('dest', value))
+    const value = e.target.value;
+    if (value < 0) return;
 
-    var valueSource = converter.caculateSourceAmount(value, this.props.exchange.offeredRate, 6)
-    this.validateRateAndSource(valueSource)
-  }
+    this.props.dispatch(exchangeActions.setLoadingSelectToken());
+    this.props.dispatch(exchangeActions.setSrcAmountLoading(true));
+    this.props.dispatch(exchangeActions.inputChange('dest', value));
+
+    this.validateRateAndSource(false)
+  };
 
   focusSource = () => {
     this.props.dispatch(exchangeActions.focusInput('source'));
