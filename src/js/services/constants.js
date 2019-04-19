@@ -108,6 +108,8 @@ const INIT_EXCHANGE_FORM_STATE = {
   isSwap:true,
   theme: '',
   fluctuatingRate: 0,
+  isSrcAmountLoading: false,
+  isDestAmountLoading: false,
 };
 
 const INIT_TRANSFER_FORM_STATE = {

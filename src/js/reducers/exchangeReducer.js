@@ -614,6 +614,14 @@ const exchange = (state = initState, action) => {
       newState.fluctuatingRate = action.payload;
       return newState;
     }
+    case "EXCHANGE.SET_SRC_AMOUNT_LOADING": {
+      newState.isSrcAmountLoading = action.payload;
+      return newState;
+    }
+    case "EXCHANGE.SET_DEST_AMOUNT_LOADING": {
+      newState.isDestAmountLoading = action.payload;
+      return newState;
+    }
   }
   return state
 }
