@@ -512,6 +512,13 @@ export function setIsApproveZero(isApproveZero){
   }
 }
 
+export function setFluctuatingRate(fluctuatingRate) {
+  return {
+    type: "EXCHANGE.SET_FLUCTUATING_RATE",
+    payload: fluctuatingRate
+  }
+}
+
 export function setSrcAmountLoading(isLoading) {
   return {
     type: "EXCHANGE.SET_SRC_AMOUNT_LOADING",

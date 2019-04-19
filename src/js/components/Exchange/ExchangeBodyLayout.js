@@ -38,6 +38,8 @@ const ExchangeBodyLayout = (props) => {
       rateUSD = props.sourceToken.rateUSD
     }
 
+    rateUSD -= rateUSD * (fluctuatingRate / 100);
+
     return (
       <div className={addPrefixClass("widget-exchange__swap-text")}>
         <span>1 {sourceTokenSymbol}</span>
@@ -135,7 +137,7 @@ const ExchangeBodyLayout = (props) => {
                     <div>
                       <input
                         min="0" step="0.000001" placeholder="0" type="text"
-                        maxLength="12" autoComplete="off" value={props.exchange.isDestAmountLoading ? 'Loading...' : props.exchange.destAmount}
+                        maxLength="12" autoComplete="off" value={props.exchange.isDestAmountLoading ? 'Loading...' : props.exchange.destAmount || '' }
                         onFocus={props.input.destAmount.onFocus} onBlur={props.input.destAmount.onBlur}
                         onChange={handleChangeDestAmount} className={addPrefixClass("widget-exchange__input")}
                       />
