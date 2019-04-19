@@ -807,7 +807,7 @@ function* getSourceAmountZero(sourceTokenSymbol) {
   return sourceAmountHex
 }
 
-function* setFluctuatingRate(ethereum, source, dest, sourceAmountRefined, sourceAmountZero) {
+function* validateExpectedPriceAndSetFluctuatingRate(expectedPrice, ethereum, source, dest, sourceAmountRefined, sourceAmountZero) {
   try {
     const latestBlock = yield call([ethereum, ethereum.call], "getLatestBlock")
     const rate = yield call([ethereum, ethereum.call], "getRateAtSpecificBlock", source, dest, sourceAmountRefined, latestBlock);
@@ -818,9 +818,16 @@ function* setFluctuatingRate(ethereum, source, dest, sourceAmountRefined, source
       fluctuatingRate = (rateZero.expectedPrice - rate.expectedPrice) / rateZero.expectedPrice;
       fluctuatingRate = Math.round(fluctuatingRate * 1000) / 10;
       if (fluctuatingRate <= 0.1) fluctuatingRate = 0;
+
+      if (fluctuatingRate == 100) {
+        fluctuatingRate = 0;
+        expectedPrice = "0";
+      }
     }
 
     yield put(actions.setFluctuatingRate(fluctuatingRate));
+
+    return expectedPrice;
   } catch (e) {
     console.log(e);
   }
@@ -846,8 +853,6 @@ function* updateRatePending(action) {
     handleAmount: translate("error.handle_amount") || "Kyber cannot handle your amount, please reduce amount",
   };
 
-  yield call(setFluctuatingRate, ethereum, source, dest, sourceAmoutRefined, sourceAmoutZero);
-
   if (isManual) {
     var rateRequest = yield call(common.handleRequest, getRate, ethereum, source, dest, sourceAmoutRefined)
     if (rateRequest.status === "success") {
@@ -870,6 +875,8 @@ function* updateRatePending(action) {
           return
         }
       }
+
+      expectedPrice = yield call(validateExpectedPriceAndSetFluctuatingRate, expectedPrice, ethereum, source, dest, sourceAmoutRefined, sourceAmoutZero);
       yield put.resolve(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true, errors))
     }
 
@@ -904,6 +911,7 @@ function* updateRatePending(action) {
         }
       }
 
+      expectedPrice = yield call(validateExpectedPriceAndSetFluctuatingRate, expectedPrice, ethereum, source, dest, sourceAmoutRefined, sourceAmoutZero);
       yield put.resolve(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true, errors))
     }
   }
