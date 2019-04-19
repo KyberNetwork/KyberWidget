@@ -13,6 +13,11 @@ const ExchangeBodyLayout = (props) => {
     if (check) props.input.sourceAmount.onChange(e)
   }
 
+  function handleChangeDestAmount(e) {
+    var check = filterInputNumber(e, e.target.value, props.input.destAmount.value)
+    if (check) props.input.destAmount.onChange(e)
+  }
+
   function getContentForTooltipRate(fluctuatingRate) {
     return `Price is dependent on your source amount. There is a ${fluctuatingRate}% difference in price for the requested quantity compared to the default source amount of 0.5 ETH`
   }
@@ -108,7 +113,7 @@ const ExchangeBodyLayout = (props) => {
                     <div>
                       <input
                         min="0" step="0.000001" placeholder="0" autoFocus type="text"
-                        maxLength="12" autoComplete="off" value={props.input.sourceAmount.value || ''}
+                        maxLength="12" autoComplete="off" value={props.exchange.isSrcAmountLoading ? 'Loading...' : props.input.sourceAmount.value || ''}
                         onFocus={props.input.sourceAmount.onFocus} onBlur={props.input.sourceAmount.onBlur}
                         onChange={handleChangeSource} className={addPrefixClass("widget-exchange__input")}
                       />
@@ -126,8 +131,15 @@ const ExchangeBodyLayout = (props) => {
                 <div className={addPrefixClass("widget-exchange__text theme-text")}>To Token</div>
                 <div className={addPrefixClass("common__input-panel short-margin")}>
                   {props.tokenDestSelect}
-                  <div className={addPrefixClass("common__input-panel-label")}>
-                    {props.exchange.isSelectToken ? "Loading..." : `${props.exchange.destAmount}`}
+                  <div className={addPrefixClass("common__input-panel-label input-container")}>
+                    <div>
+                      <input
+                        min="0" step="0.000001" placeholder="0" type="text"
+                        maxLength="12" autoComplete="off" value={props.exchange.isDestAmountLoading ? 'Loading...' : props.exchange.destAmount}
+                        onFocus={props.input.destAmount.onFocus} onBlur={props.input.destAmount.onBlur}
+                        onChange={handleChangeDestAmount} className={addPrefixClass("widget-exchange__input")}
+                      />
+                    </div>
                   </div>
                 </div>
                 {renderEstimatedRate()}

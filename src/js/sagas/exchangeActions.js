@@ -907,6 +907,9 @@ function* updateRatePending(action) {
       yield put.resolve(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true, errors))
     }
   }
+
+  yield put(actions.setSrcAmountLoading(false));
+  yield put(actions.setDestAmountLoading(false));
 }
 
 
