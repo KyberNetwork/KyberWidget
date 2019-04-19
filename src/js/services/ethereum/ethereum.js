@@ -181,7 +181,7 @@ export default class EthereumService extends React.Component {
       return
     }
 
-    if (exchange.isHaveDestAmount) {
+    if (exchange.isHaveDestAmount || exchange.inputFocus === 'dest') {
       sourceAmount = false;
     } else {
       sourceAmount = exchange.sourceAmount;

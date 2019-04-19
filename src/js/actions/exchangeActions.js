@@ -518,3 +518,17 @@ export function setFluctuatingRate(fluctuatingRate) {
     payload: fluctuatingRate
   }
 }
+
+export function setSrcAmountLoading(isLoading) {
+  return {
+    type: "EXCHANGE.SET_SRC_AMOUNT_LOADING",
+    payload: isLoading
+  }
+}
+
+export function setDestAmountLoading(isLoading) {
+  return {
+    type: "EXCHANGE.SET_DEST_AMOUNT_LOADING",
+    payload: isLoading
+  }
+}
