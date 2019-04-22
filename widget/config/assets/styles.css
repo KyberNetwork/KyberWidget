@@ -561,10 +561,6 @@ label input, select, .pointer {
   top: 0;
 }
 
-.widget-config__select-title {
-
-}
-
 .widget-config__select-container {
   border-radius: 5px;
   box-shadow: 0 8px 26px 0 rgba(0, 0, 0, 0.09);
@@ -574,13 +570,32 @@ label input, select, .pointer {
   width: 100%;
   left: 0;
   margin-top: 18px;
+  padding: 10px 10px 10px 0;
   text-align: left;
-  padding: 10px 0;
   opacity: 0;
   transform: translateY(20px);
   transition: all .3s;
   z-index: 3;
   pointer-events: none;
+}
+
+.widget-config__select-wrapper {
+  height: 180px;
+  overflow: auto;
+}
+
+.widget-config__select-wrapper::-webkit-scrollbar-track {
+  border-radius: 8px;
+  background-color: rgba(163, 165, 175, .2);
+}
+
+.widget-config__select-wrapper::-webkit-scrollbar {
+  width: 4px;
+}
+
+.widget-config__select-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: #c7cce2;
 }
 
 .widget-config__select.active {
@@ -603,10 +618,6 @@ label input, select, .pointer {
 
 .widget-config__select-item:hover {
   background-color: #f1f4f7;
-}
-
-.widget-config__select-item.selected {
-
 }
 
 .kyber-widget-button.theme-supported {
