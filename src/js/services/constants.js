@@ -113,7 +113,7 @@ const INIT_EXCHANGE_FORM_STATE = {
   isSwap:true,
   theme: '',
   fluctuatingRate: 0,
-  isProductPriceFetched: false
+  isProductPriceFetched: false,
   isSrcAmountLoading: false,
   isDestAmountLoading: false,
 };
