@@ -9,15 +9,11 @@ import { initParamsExchange } from "./actions/exchangeActions"
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import { persistor, store } from "./store"
 import Modal from 'react-modal';
-import * as common from "./utils/common"
 import * as validator from "./utils/validators"
 import AnalyticFactory from "./services/analytics"
 
 function getListTokens(network) {
-
-  //in ropsten
   return new Promise((resolve, reject) => {
-    //return list of object tokens
     fetch(BLOCKCHAIN_INFO[network].api_tokens, {
       method: 'GET',
       headers: {
@@ -37,11 +33,7 @@ function getListTokens(network) {
             tokens[val.symbol] = val
           })
           resolve(tokens)
-
-          //resolve(result.data)
         } else {
-          //rejected(new Error("Cannot get data"))
-          //get from snapshot
           var tokens = BLOCKCHAIN_INFO[network].tokens
           resolve(tokens)
         }
@@ -55,24 +47,6 @@ function getListTokens(network) {
 }
 
 function initParams(appId, wrapper, getPrice, getTxData, params, errors) {
-  // var widgetParent = document.getElementById(appId)
-  // var attributeWidget = widgetParent.getAttribute('data-widget-attribute')
-  // var query = {}
-
-  // if (attributeWidget === true || attributeWidget === 'true') {
-  //   for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++) {
-  //     var nodeName = atts[i].nodeName
-  //     if (nodeName.includes('data-widget')) {
-  //       var key = nodeName.replace('data-widget-', '');
-
-  //       key = common.lineToCamel(key)
-
-  //       query[key] = atts[i].nodeValue
-  //     }
-  //   }
-  // } else {
-  //   query = common.getQueryParams(window.location.search)
-  // }
   var query = {...params}
 
   getListTokens(params.network).then(tokens => {
@@ -84,15 +58,15 @@ function initParams(appId, wrapper, getPrice, getTxData, params, errors) {
       store.dispatch(haltPayment(errors))
     } else {
       store.dispatch(initParamsExchange(
-        params.productId, params.productName, params.productAvatar, params.callback, params.network, params.paramForwarding,
-        params.signer, params.commissionID, params.pinnedTokens, params.disabledTokens, getPrice, getTxData, wrapper, tokens
+        null, 'ETH', null, params.amount, params.products, params.callback, params.network, params.paramForwarding,
+        params.signer, params.commissionId, false, 'pay', params.pinnedTokens, null, params.paymentData, params.hint, tokens, params.theme,
+        getPrice, getTxData, wrapper
       ));
 
-      //init analytic
       var analytic = new AnalyticFactory({ listWorker: ["mix"], network: params.network })
       store.dispatch(initAnalytics(analytic))
     }
-  }).catch(() => {
+  }).catch((e) => {
     store.dispatch(haltPayment({ tokens: "Cannot get list tokens" }))
   })
 }
@@ -101,7 +75,6 @@ Modal.setAppElement('body');
 
 window.kyberWidgetInstance = {}
 
-//console.log(document.getElementById(constants.APP_NAME))
 window.kyberWidgetInstance.render = (obj) => {
   const { appId, getPrice, getTxData, wrapper, params, errors } = obj;
   var widgetId = appId ? appId : constants.APP_NAME
