@@ -47,18 +47,20 @@ function getListTokens(network) {
 }
 
 function initParams(appId, wrapper, getPrice, getTxData, params, errors) {
-  var query = {...params}
+  const query = {...params};
+  query.appId = appId;
+  query.network = params.network;
 
   getListTokens(params.network).then(tokens => {
-    query.appId = appId
-    query.network = params.network
     store.dispatch(initParamsGlobal(query))
 
     if (validator.anyErrors(errors)) {
       store.dispatch(haltPayment(errors))
     } else {
+      const tokenAddr = tokens[params.receiveToken].address;
+
       store.dispatch(initParamsExchange(
-        null, 'ETH', null, params.amount, params.products, params.callback, params.network, params.paramForwarding,
+        null, params.receiveToken, tokenAddr, params.receiveAmount, params.products, params.callback, params.network, params.paramForwarding,
         params.signer, params.commissionId, false, 'pay', params.pinnedTokens, null, params.paymentData, params.hint, tokens, params.theme,
         getPrice, getTxData, wrapper
       ));
