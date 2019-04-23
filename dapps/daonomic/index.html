@@ -193,7 +193,6 @@
 
                 },
                 getTxData: function (sourceToken, sourceAmount, maxDestAmount, minConversionRate, walletId) {
-                    console.log(minConversionRate)
                     if (!web3.utils.isAddress(walletId)) {
                         walletId = "0x" + Array(41).join("0")
                     }

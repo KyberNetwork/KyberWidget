@@ -62,7 +62,7 @@ function initParams(appId, wrapper, getPrice, getTxData, params, errors) {
       const paymentData = Web3.utils.utf8ToHex(params.paymentData);
 
       store.dispatch(initParamsExchange(
-        null, params.receiveToken, tokenAddr, params.receiveAmount, params.products, params.callback, params.network, params.paramForwarding,
+        params.saleAddr, params.receiveToken, tokenAddr, params.receiveAmount, params.products, params.callback, params.network, params.paramForwarding,
         params.signer, params.commissionId, false, 'pay', params.pinnedTokens, null, paymentData, params.hint, tokens, params.theme,
         getPrice, getTxData, wrapper
       ));
