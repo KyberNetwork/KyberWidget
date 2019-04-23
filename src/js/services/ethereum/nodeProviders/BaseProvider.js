@@ -4,27 +4,24 @@ import * as ethUtil from 'ethereumjs-util'
 import BLOCKCHAIN_INFO from "../../../../../env"
 import abiDecoder from "abi-decoder"
 import EthereumTx from "ethereumjs-tx"
-import * as common from "../../../utils/common";
 import * as converters from "../../../utils/converter"
 
 export default class BaseProvider {
-    // constructor(props) {
-    //     super(props)
-    //     this.network = props.network     
-    // }
-    
     initContract(network) {
       this.network = network
 
       this.rpc = new Web3(new Web3.providers.HttpProvider(this.rpcUrl, 3000))
 
-      this.erc20Contract = new this.rpc.eth.Contract(constants.ERC20)
-      this.networkAddress = BLOCKCHAIN_INFO[this.network].network
-      this.wrapperAddress = BLOCKCHAIN_INFO[this.network].wrapper
-      this.wrapperEtheremonAddr = BLOCKCHAIN_INFO[this.network].ethermon_wrapper
-      this.networkContract = new this.rpc.eth.Contract(constants.KYBER_NETWORK, this.networkAddress)
-      this.wrapperContract = new this.rpc.eth.Contract(constants.KYBER_WRAPPER, this.wrapperAddress)
-      this.wapperEtheremon = new this.rpc.eth.Contract(constants.ETHEREMON_WRAPPER, this.wrapperEtheremonAddr)
+      this.erc20Contract = new this.rpc.eth.Contract(constants.ERC20);
+      this.networkAddress = BLOCKCHAIN_INFO[this.network].network;
+      this.wrapperAddress = BLOCKCHAIN_INFO[this.network].wrapper;
+      this.payWrapperAddress = BLOCKCHAIN_INFO[this.network].payWrapper;
+      this.wrapperEtheremonAddr = BLOCKCHAIN_INFO[this.network].ethermon_wrapper;
+
+      this.networkContract = new this.rpc.eth.Contract(constants.KYBER_NETWORK, this.networkAddress);
+      this.wrapperContract = new this.rpc.eth.Contract(constants.KYBER_WRAPPER, this.wrapperAddress);
+      this.payWrapperContract = new this.rpc.eth.Contract(constants.KYBER_PAY_WRAPPER, this.payWrapperAddress);
+      this.wapperEtheremon = new this.rpc.eth.Contract(constants.ETHEREMON_WRAPPER, this.wrapperEtheremonAddr);
     }
 
     version() {
