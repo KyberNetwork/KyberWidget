@@ -23,7 +23,7 @@ const INIT_EXCHANGE_FORM_STATE = {
   selected: false,
   isSelectToken: false,
   sourceToken: ETHER_ADDRESS,
-  sourceTokenSymbol: "KNC",
+  sourceTokenSymbol: "ETH",
   sourceAmount: "",
   destAmount: "",
   isHaveDestAmount: true,
