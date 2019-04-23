@@ -100,11 +100,11 @@ function* selectToken(action) {
     return
   }
 
-
   if (exchange.isHaveDestAmount) {
     if (exchange.destTokenSymbol === "ETH") {
       if (parseFloat(exchange.destAmount) > constants.MAX_AMOUNT_RATE_HANDLE) {
-        yield put(actions.throwErrorHandleAmount())
+        yield put(actions.throwErrorHandleAmount());
+        yield put(actions.selectTokenComplete());
         return
       }
     } else {
@@ -112,7 +112,8 @@ function* selectToken(action) {
       var destValue = converter.calculateDest(exchange.destAmount, tokens[exchange.destTokenSymbol].rate, 6)
 
       if (parseFloat(destValue) > constants.MAX_AMOUNT_RATE_HANDLE) {
-        yield put(actions.throwErrorHandleAmount())
+        yield put(actions.throwErrorHandleAmount());
+        yield put(actions.selectTokenComplete());
         return
       }
     }
@@ -806,30 +807,44 @@ function* getSourceAmountZero(sourceTokenSymbol) {
   return sourceAmountHex
 }
 
-function* setFluctuatingRate(ethereum, source, dest, sourceAmountRefined, sourceAmountZero) {
+function* validateExpectedPriceAndSetFluctuatingRate(expectedPrice, ethereum, source, dest, sourceAmountRefined, sourceAmountZero) {
   try {
-    const latestBlock = yield call([ethereum, ethereum.call], "getLatestBlock");
+    const latestBlock = yield call([ethereum, ethereum.call], "getLatestBlock")
     const rate = yield call([ethereum, ethereum.call], "getRateAtSpecificBlock", source, dest, sourceAmountRefined, latestBlock);
     const rateZero = yield call([ethereum, ethereum.call], "getRateAtSpecificBlock", source, dest, sourceAmountZero, latestBlock);
     let fluctuatingRate = 0;
 
-    if (rateZero.expectedPrice) {
+    if (+rateZero.expectedPrice && +rate.expectedPrice) {
       fluctuatingRate = (rateZero.expectedPrice - rate.expectedPrice) / rateZero.expectedPrice;
       fluctuatingRate = Math.round(fluctuatingRate * 1000) / 10;
-      if (fluctuatingRate <= 0.1 || fluctuatingRate > 80) fluctuatingRate = 0;
+      if (fluctuatingRate <= 0.1) fluctuatingRate = 0;
+
+      if (fluctuatingRate == 100) {
+        fluctuatingRate = 0;
+        expectedPrice = "0";
+      }
     }
 
     yield put(actions.setFluctuatingRate(fluctuatingRate));
+
+    return expectedPrice;
   } catch (e) {
     console.log(e);
   }
 }
 
 function* updateRatePending(action) {
-  const { source, dest, sourceAmount, sourceTokenSymbol, isManual } = action.payload
-  var state = store.getState()
-  var ethereum = state.connection.ethereum
-  var translate = getTranslate(state.locale)
+  let { source, dest, sourceAmount, sourceTokenSymbol, isManual } = action.payload
+  const state = store.getState();
+  const exchange = state.exchange;
+  const ethereum = state.connection.ethereum
+  const translate = getTranslate(state.locale)
+
+  if (sourceAmount === false) {
+    const calculatedSourceAmountRate = yield call([ethereum, ethereum.call], "calculateSourceAmountFromDestToken", sourceTokenSymbol, exchange.destTokenSymbol, exchange.destAmount);
+    sourceAmount = calculatedSourceAmountRate.value;
+  }
+
   var sourceAmoutRefined = yield call(getSourceAmount, sourceTokenSymbol, sourceAmount)
   var sourceAmoutZero = yield call(getSourceAmountZero, sourceTokenSymbol)
   const errors = {
@@ -837,8 +852,6 @@ function* updateRatePending(action) {
     kyberMaintain: translate("error.kyber_maintain") || "This pair is temporarily under maintenance",
     handleAmount: translate("error.handle_amount") || "Kyber cannot handle your amount, please reduce amount",
   };
-
-  yield call(setFluctuatingRate, ethereum, source, dest, sourceAmoutRefined, sourceAmoutZero);
 
   if (isManual) {
     var rateRequest = yield call(common.handleRequest, getRate, ethereum, source, dest, sourceAmoutRefined)
@@ -862,6 +875,8 @@ function* updateRatePending(action) {
           return
         }
       }
+
+      expectedPrice = yield call(validateExpectedPriceAndSetFluctuatingRate, expectedPrice, ethereum, source, dest, sourceAmoutRefined, sourceAmoutZero);
       yield put.resolve(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true, errors))
     }
 
@@ -896,9 +911,13 @@ function* updateRatePending(action) {
         }
       }
 
+      expectedPrice = yield call(validateExpectedPriceAndSetFluctuatingRate, expectedPrice, ethereum, source, dest, sourceAmoutRefined, sourceAmoutZero);
       yield put.resolve(actions.updateRateExchangeComplete(rateInit, expectedPrice, slippagePrice, lastestBlock, isManual, true, errors))
     }
   }
+
+  yield put(actions.setSrcAmountLoading(false));
+  yield put(actions.setDestAmountLoading(false));
 }
 
 
@@ -1444,32 +1463,30 @@ export function* initParamsExchange(action) {
   var dest = tokenAddr
 
   if (receiveAmount) {
+    const isSameToken = sourceTokenSymbol === receiveToken;
+
     try {
-      if (receiveToken === "ETH") {
-        if (parseFloat(receiveAmount) > constants.MAX_AMOUNT_RATE_HANDLE) {
-          yield put(actions.throwErrorHandleAmount())
-          return
-        }
-      } else {
-        var rateETH = yield call([ethereum, ethereum.call], "getRate", tokens["ETH"].address, tokenAddr, "0x0")
-        var destValue = converter.caculateSourceAmount(receiveAmount, rateETH.expectedRate, 6)
-        if (parseFloat(destValue) > constants.MAX_AMOUNT_RATE_HANDLE) {
-          yield put(actions.throwErrorHandleAmount())
-          return
+      if (type !== 'pay' && !isSameToken) {
+        if (receiveToken === "ETH") {
+          if (parseFloat(receiveAmount) > constants.MAX_AMOUNT_RATE_HANDLE) {
+            yield put(actions.throwErrorHandleAmount())
+            return
+          }
+        } else {
+          var rateETH = yield call([ethereum, ethereum.call], "getRate", tokens["ETH"].address, tokenAddr, "0x0")
+          var destValue = converter.caculateSourceAmount(receiveAmount, rateETH.expectedRate, 6)
+          if (parseFloat(destValue) > constants.MAX_AMOUNT_RATE_HANDLE) {
+            yield put(actions.throwErrorHandleAmount())
+            return
+          }
         }
       }
 
-      if (sourceTokenSymbol !== receiveToken) {
-        var rate = yield call([ethereum, ethereum.call], "getRate", source, dest, "0x0")
-
-        var sourceAmount = converter.caculateSourceAmount(receiveAmount, rate.expectedRate, 6)
-        yield put(actions.updateRateExchange(source, dest, sourceAmount, sourceTokenSymbol, true))
+      if (!isSameToken) {
+        yield put(actions.updateRateExchange(source, dest, false, sourceTokenSymbol, true))
       }
-
-
     } catch (e) {
-      console.log(e)
-      yield put(actions.updateRateExchange(source, dest, 0, sourceTokenSymbol, true))
+      yield put(actions.updateRateExchange(source, dest, false, sourceTokenSymbol, true))
     }
   } else {
     yield put(actions.updateRateExchange(source, dest, 0, sourceTokenSymbol, true))

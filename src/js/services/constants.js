@@ -54,8 +54,6 @@ const INIT_EXCHANGE_FORM_STATE = {
   max_gas_approve: 120000,
   normal_max_gas: 330000,
   max_gas_catch_mons: 470000,
-  //max_gas_total: 430000,
-
   isFetchingGas: false,
   gasPrice: 20,
   selectedGas: 'f',
@@ -116,6 +114,8 @@ const INIT_EXCHANGE_FORM_STATE = {
   theme: '',
   fluctuatingRate: 0,
   isProductPriceFetched: false
+  isSrcAmountLoading: false,
+  isDestAmountLoading: false,
 };
 
 const INIT_TRANSFER_FORM_STATE = {
