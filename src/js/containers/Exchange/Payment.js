@@ -251,7 +251,7 @@ export default class Payment extends React.Component {
         formId, ethereum, account.address, params.sourceToken, params.sourceAmount, params.destToken, params.destAddress,
         params.maxDestAmount, params.minConversionRate, params.throwOnFailure, params.nonce, params.gas, params.gasPrice,
         account.keystring, account.type, password, account, data, this.props.keyService, params.balanceData,
-        params.sourceTokenSymbol, params.blockNo, params.paymentData, params.hint
+        params.sourceTokenSymbol, params.blockNo, params.paymentData, params.hint, this.props.exchange.getTxData
       ))
     } catch (e) {
       console.log(e)

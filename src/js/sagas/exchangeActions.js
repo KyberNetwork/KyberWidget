@@ -497,7 +497,7 @@ function* exchangeTokentoETHKeystore(action) {
   let {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
     nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    sourceTokenSymbol, blockNo, paymentData, hint } = action.payload;
+    sourceTokenSymbol, blockNo, paymentData, hint, getTxData } = action.payload;
 
   const networkId = common.getNetworkId();
   const isPayMode = checkIsPayMode();
@@ -547,7 +547,7 @@ function* exchangeTokentoETHKeystore(action) {
         txRaw = yield callService(
           "tokenToOthersFromAccount", "tokenToOthersPayment",
           keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-          minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+          minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint, getTxData
         );
       } catch (e) {
         yield call(doTxFail, ethereum, account, e.message);
@@ -570,7 +570,7 @@ function* exchangeTokentoETHKeystore(action) {
       txRaw = yield callService(
         "tokenToOthersFromAccount", "tokenToOthersPayment",
         keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint, getTxData
       );
     } catch (e) {
       yield put(actions.throwPassphraseError(e.message))
@@ -595,7 +595,7 @@ export function* exchangeTokentoETHPrivateKey(action) {
   let {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
     nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    sourceTokenSymbol, blockNo, paymentData, hint } = action.payload;
+    sourceTokenSymbol, blockNo, paymentData, hint, getTxData } = action.payload;
 
   const networkId = common.getNetworkId();
   const isPayMode = checkIsPayMode();
@@ -650,7 +650,7 @@ export function* exchangeTokentoETHPrivateKey(action) {
       txRaw = yield callService(
         "tokenToOthersFromAccount", "tokenToOthersPayment",
         keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint, getTxData
       );
     } catch (e) {
       yield put(actions.setSignError(e.message))
@@ -671,7 +671,7 @@ function* exchangeTokentoETHColdWallet(action) {
   const {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
     nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    blockNo, paymentData, hint } = action.payload;
+    blockNo, paymentData, hint, getTxData } = action.payload;
 
   var networkId = common.getNetworkId()
 
@@ -682,7 +682,7 @@ function* exchangeTokentoETHColdWallet(action) {
       txRaw = yield callService(
         "tokenToOthersFromAccount", "tokenToOthersPayment",
         keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint, getTxData
       );
     } catch (e) {
       console.log(e)
@@ -713,7 +713,7 @@ export function* exchangeTokentoETHMetamask(action) {
   const {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
     nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    blockNo, paymentData, hint } = action.payload
+    blockNo, paymentData, hint, getTxData } = action.payload
 
   var networkId = common.getNetworkId()
 
@@ -724,7 +724,7 @@ export function* exchangeTokentoETHMetamask(action) {
       hash = yield callService(
         "tokenToOthersFromAccount", "tokenToOthersPayment",
         keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint, getTxData
       );
     } catch (e) {
       yield put(actions.setSignError(e))
@@ -743,7 +743,7 @@ export function* exchangeTokentoETHMetamask(action) {
 
 function* callService(
   swapMethod, paymentMethod, keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress,
-  maxDestAmount, minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+  maxDestAmount, minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint, getTxData = null
 ) {
   let toContract;
 
@@ -760,7 +760,7 @@ function* callService(
 
     return yield call(keyService.callSignTransaction, swapMethod, formId, ethereum, address,
       sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-      blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, toContract
+      blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, toContract, getTxData
     )
   }
 }
@@ -1552,9 +1552,7 @@ function isLedgerError(accountType, error) {
 }
 
 function checkIsPayMode() {
-  const state = store.getState();
-
-  return !state.exchange.isSwap;
+  return false;
 }
 
 function *setApproveState(isApproveZero) {

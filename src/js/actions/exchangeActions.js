@@ -176,13 +176,13 @@ export function throwPassphraseError(message) {
 export function processExchange(
   formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
   throwOnFailure, nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-  sourceTokenSymbol, blockNo, paymentData, hint) {
+  sourceTokenSymbol, blockNo, paymentData, hint, getTxData) {
   return {
     type: "EXCHANGE.PROCESS_EXCHANGE",
     payload: {
       formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
       throwOnFailure, nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-      sourceTokenSymbol, blockNo, paymentData, hint
+      sourceTokenSymbol, blockNo, paymentData, hint, getTxData
     }
   }
 }
