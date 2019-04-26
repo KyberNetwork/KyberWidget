@@ -541,6 +541,10 @@
       margin-top: 20px;
       word-break: break-word;
     }
+
+    &--mb2 {
+      margin: 0 0 20px !important;
+    }
   }
 
   &__information {
@@ -618,7 +622,7 @@
 
     &-container-bold {
       margin-top: 20px;
-      margin-bottom: 25px;
+      margin-bottom: 10px;
     }
 
     &.small-margin-right {
