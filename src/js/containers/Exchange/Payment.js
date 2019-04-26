@@ -386,6 +386,11 @@ export default class Payment extends React.Component {
                     </div>
                   )}
                 </div>
+                {this.props.exchange.fluctuatingRate >= 10 && (
+                  <div className={addPrefixClass("common__error common__error--mb2 box")}>
+                    There is {this.props.exchange.fluctuatingRate}% difference in price for the requested quantity compared to the default rate of 0.5 ETH
+                  </div>
+                )}
                 <div className={addPrefixClass("common__text-container")}>
                   <span className={addPrefixClass("common__text small-margin-right")}>Your address: </span>
                   <span className={addPrefixClass("common__text")}>
