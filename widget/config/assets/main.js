@@ -176,6 +176,14 @@
 
   function wireEvents() {
     var form = document.querySelector("form");
+
+    document.addEventListener("click", function () {
+      const $clickOutsideElements = document.querySelectorAll(".click-outside");
+      $clickOutsideElements.forEach(function(element) {
+        element.classList.remove("active");
+      })
+    });
+
     form.querySelectorAll("input, select").forEach(function (node) {
       node.addEventListener('change', generateTag);
       node.addEventListener('keyup', generateTag);
@@ -215,8 +223,9 @@
     });
 
     document.querySelectorAll(".widget-config__select.version").forEach(function (item) {
-      item.addEventListener("click", function () {
+      item.addEventListener("click", function (event) {
         this.classList.toggle("active");
+        event.stopPropagation();
       })
     });
 
@@ -249,7 +258,7 @@
     });
 
     document.querySelectorAll(".widget-config__dropdown-trigger").forEach(function (item) {
-      item.addEventListener("click", function () {
+      item.addEventListener("click", function (event) {
         var network = document.getElementById('widget-network').value;
 
         if (network === "test" || network === "ropsten") {
@@ -264,6 +273,8 @@
         }
 
         this.classList.toggle("active");
+
+        event.stopPropagation();
       })
     });
 
@@ -277,6 +288,10 @@
         $tokenTrigger.classList.remove("active");
         generateTag();
       }
+    });
+
+    document.getElementById("widget-config__token-search").addEventListener("click", function(event) {
+      event.stopPropagation();
     });
 
     document.getElementById("widget-config__token-search").addEventListener("keyup", function() {

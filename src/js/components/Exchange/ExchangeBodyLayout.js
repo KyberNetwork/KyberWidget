@@ -64,9 +64,9 @@ const ExchangeBodyLayout = (props) => {
             )}
             {fluctuatingRate > 0 && (
               <div className={addPrefixClass("common__inline-block common__fade-in")}>
-                <span className={addPrefixClass("common__decreased-number common__ml-5")}>{fluctuatingRate.toFixed(1)}%</span>
+                <span className={addPrefixClass("common__decreased-number common__ml-5")}>{fluctuatingRate}%</span>
                 <span className={addPrefixClass("common__tooltip common__ml-5")} data-tip=""/>
-                <ReactTooltip className={addPrefixClass("custom__tooltip")} effect="solid" getContent={() => getContentForTooltipRate(fluctuatingRate.toFixed(1))}/>
+                <ReactTooltip className={addPrefixClass("custom__tooltip")} effect="solid" getContent={() => getContentForTooltipRate(fluctuatingRate)}/>
               </div>
             )}
           </Fragment>
