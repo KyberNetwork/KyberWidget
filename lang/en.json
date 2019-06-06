@@ -3,6 +3,7 @@
   "pack_icon": "uk.svg",
   "pack_label": "English",
   "pack_active": true,
+
   "layout": {
     "info": "Info",
     "terms_of_service": "Terms of Service",
@@ -81,7 +82,7 @@
     "analyze": "Show reasons",
     "no_reason_found": "We cannot find any reason for your transaction. Please try again in a while.",
     "error_no_reason": "Cannot find any reason for your failed transaction. Please try again in a while.",
-    
+
     "broadcast": "Broadcast",
     "transaction": "Transaction hash",
     "broadcasted_title": "Transaction added to the blockchain",
@@ -231,7 +232,7 @@
     "ledger_not_enable_contract": "Please check if: </br>- \"Contract Data\" has been enabled in your Ledger. Instruction <a href=\"${link}\" target=\"_blank\">here</a>.",
     "invalid_path_or_session_expired": "Cannot get address from this path. Please check your path is valid or Ledger is connected.",
     "path_is_invalid": "Invalid path. Please choose another one.",
-    "ledger_time_out": "Your session on Ledger is expired. Please log in  again to continue.", 
+    "ledger_time_out": "Your session on Ledger is expired. Please log in  again to continue.",
     "eth_balance_not_enough_for_fee": "Your ETH balance is not enough for this transaction fee",
     "handle_amount":"Kyber cannot handle your amount, please reduce amount",
     "kyber_maintain":"This pair is temporarily under maintenance",
@@ -241,7 +242,7 @@
     "min_rate_greater_expected_rate": "Your configured minimal exchange rate is higher than what is recommended by KyberNetwork. Your exchange has high chance to fail",
     "exceed_daily_volumn": "You may want to <a target='_blank' href='${link}'>register with us</a> to have higher trade limits",
     "broadcast_tx": "Potentially Failed! We likely couldn't broadcast the transaction to the blockchain. Please check on <a target='_blank' href='${link}'>Etherscan</a> to verify.",
-    
+
     "receive_address_must_be_ethereum_addr": "Receive address must be a valid ethereum address",
     "receive_token_is_not_support": "Receive token is not supported by kyber",
     "receive_token_must_be_required": "Receive token must be required",
@@ -287,7 +288,7 @@
     "warning": "DO NOT send real ethers or tokens to any of the addresses above.<br></br>They are testnet addresses only!",
     "here": "here"
   },
-  
+
   "footer": {
     "info": "Info",
     "language": "Language"
@@ -377,12 +378,112 @@
     "step_swap": "Swap"
   },
 
-  "home": "Home",
-  "tracker": "Tracker",
-  "product_feedback": "Product Feedback",
-  "help": "Help",
-  "low": "Slow",
-  "standard": "Standard",
-  "fast": "Fast",
-  "search": "Search"
+  "exchange": {
+    "rate_tooltip": "Price is dependent on your source amount. There is a ${fluctuatingRate}% difference in price for the requested quantity compared to the default source amount of 0.5 ETH",
+    "token_conversion": "You are performing token conversion, Please choose",
+    "from_token": "From Token",
+    "to_token": "To Token",
+    "buy_title": "You are buying ${receiveAmount} ${destSymbol}, Please select your token for the payment",
+    "choose_token": "Choose your Token",
+    "receive_token": "Receive Token",
+    "agree": "Agree to",
+    "term": "Terms & Conditions"
+  },
+
+  "import": {
+    "import": "Import",
+    "keystore": "Keystore",
+    "keystore_invalid": "JSON file is invalid. Please upload a correct JSON keystore.",
+    "keystore_title": "Choose your JSON file",
+    "private_key": "Private Key",
+    "private_key_title": "Enter your Private Key",
+    "coinbase_wallet": "Coinbase Wallet",
+    "eth_wallet": "Ethereum Wallet & DApp",
+    "unlock_wallet": "Unlock your Wallet",
+    "select_trezor": "Select Trezor address",
+    "select_ledger": "Select Ledger address",
+    "select_address": "Select the Address you'd like to use",
+    "select_hd": "Select HD derivation path",
+    "access_signer": "Please check these access Addresses",
+    "custom_path": "Your Custom Path"
+  },
+
+  "order_details": {
+    "title": "Order Details"
+  },
+
+  "token": {
+    "stable": "Stable Coin"
+  },
+
+  "transaction": {
+    "title": "Transaction Details",
+    "fee": "Transaction Fee",
+    "copy_tx": "Copy transaction hash",
+    "copied": "Copied!",
+    "failed": "Failed!",
+    "broadcasted": "Broadcasted!",
+    "broadcasting": "Broadcasting!",
+    "waiting_broadcast": "Waiting for the transaction to be mined",
+    "broadcast_error": "Couldn't broadcast your transaction to the blockchain",
+    "back_to_website": "Back to Website",
+    "hash": "Transaction hash",
+    "view_on_etherscan": "View on Etherscan",
+    "contact_merchant": "Please contact your merchant for wrong params",
+    "approve": "You need to grant permission for KyberWidget to interact with <strong>${token}</strong> in this address",
+    "approve_zero": "You need to grant permission for KyberWidget to reset your previous allowance of ${srcSymbol} since it's insufficient to make the transaction",
+    "tx_waiting": "Waiting for confirmation from your wallet",
+    "tx_sending": "Sending Transactions"
+  },
+
+  "error": {
+    "make_sure": "Please make sure",
+    "ledger_plugged_in": "- Your Ledger is properly plugged in.",
+    "ledger_logged_in": "- You have logged into your Ledger.",
+    "source_amount_is_not_number": "Source amount is not a number",
+    "source_amount_too_small": "Source amount is too small. Minimum amount is ${minAmount} ETH equivalent.",
+    "gas_price_not_number": "Gas price is not number",
+    "gas_price_limit": "Gas price must be smaller than or equal to ${maxGas} Gwei",
+    "time_out": "Time out",
+    "clear_data_timeout": "We've cleared all your data because your session is timed out ${time} minutes",
+    "invalid_private_key": "Invalid private key",
+    "error_occurred": "Error occurred",
+    "metamask_not_installed": "Metamask is not installed"
+  },
+
+  "advanced": {
+    "title": "Advanced (Optional)",
+    "gas_fee": "GAS fee (Gwei)",
+    "slippage_rate_info": "Still proceed if ${srcSymbol}-${destSymbol} rate goes down by",
+    "slippage_rate_warning": "Transaction will be reverted if rate of ${srcSymbol}-{destSymbol} is lower than ${slippageExchangeRate} (Current rate <b>${roundExchangeRate}</b>)"
+  },
+
+  "payment": {
+    "swap_title": "You are about to swap",
+    "buy_title": "You are about to buy",
+    "pay_title": "You are about to pay"
+  },
+
+  "common": {
+    "error": "Error",
+    "loading": "Loading",
+    "next": "Next",
+    "swap": "Swap",
+    "download": "Download",
+    "back": "Back",
+    "address": "Address",
+    "amount": "Amount",
+    "processing": "Processing",
+    "from": "From",
+    "to": "To",
+    "fast": "Fast",
+    "regular": "Regular",
+    "slow": "Slow",
+    "custom": "Custom",
+    "you_have": "You have",
+    "your_address": "Your address",
+    "enter_password": "Enter your Password",
+    "approve": "Approve",
+    "confirm": "Confirm"
+  }
 }

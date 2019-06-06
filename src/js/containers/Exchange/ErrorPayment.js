@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { getTranslate } from 'react-localize-redux'
 import * as widgetOptions from "../../utils/widget-options"
-import {addPrefixClass} from "../../utils/className"
+import { addPrefixClass } from "../../utils/className"
 
 @connect((store) => {
   const translate = getTranslate(store.locale)
@@ -28,7 +28,7 @@ export default class ErrorPayment extends React.Component {
       <div className={addPrefixClass("broadcast")}>
         <div className={addPrefixClass("broadcast__header")}>
           <div className={addPrefixClass("broadcast__icon failed")}/>
-          <div className={addPrefixClass("broadcast__title")}>{ this.props.translate('transaction.error') || "Error" }</div>
+          <div className={addPrefixClass("broadcast__title")}>{this.props.translate('common.error') || "Error"}</div>
         </div>
         <div className={addPrefixClass("broadcast__body list")}>
           <div className={addPrefixClass("broadcast__list broadcast__text-light")}>{this.getErrorPayment()}</div>

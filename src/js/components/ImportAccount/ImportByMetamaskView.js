@@ -8,27 +8,8 @@ const ImportByMetamaskView = (props) => {
         <div className={addPrefixClass("importer metamask")}>
           <div className={addPrefixClass("importer__symbol")}>
             <div className={addPrefixClass("importer__icon metamask")}/>
-            <div className={addPrefixClass("importer__name")}>{props.translate("import.from_metamask") || "METAMASK"}</div>
+            <div className={addPrefixClass("importer__name")}>Metamask</div>
           </div>
-
-          {/*<div className={addPrefixClass("more-info")}>*/}
-            {/*{props.metamask.error !== "" && (*/}
-              {/*<div className={addPrefixClass("error")}>{props.metamask.error}</div>*/}
-            {/*)}*/}
-
-            {/*{props.metamask.error === "" && (*/}
-              {/*<div className={addPrefixClass("info")}>*/}
-                {/*<div className={addPrefixClass("address")}>*/}
-                  {/*<div>*/}
-                    {/*{props.translate("import.address") || "Address"}: {props.metamask.address.slice(0, 8)}...{props.metamask.address.slice(-6)}*/}
-                  {/*</div>*/}
-                {/*</div>*/}
-                {/*<div className={addPrefixClass("importer__balance payment-gateway__color")}>*/}
-                  {/*{props.translate("import.balance") || "Balance"}: {props.metamask.balance} ETH*/}
-                {/*</div>*/}
-              {/*</div>*/}
-            {/*)}*/}
-          {/*</div>*/}
         </div>
       </div>
     </div>

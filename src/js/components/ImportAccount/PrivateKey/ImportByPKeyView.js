@@ -9,7 +9,7 @@ const ImportByPKeyView = (props) => {
         <div className={addPrefixClass("importer pkey")}>
           <div className={addPrefixClass("importer__symbol")}>
             <div className={addPrefixClass("importer__icon private-key")}/>
-            <div className={addPrefixClass("importer__name")}>{props.translate("import.from_private_key") || "PRIVATE KEY"}</div>
+            <div className={addPrefixClass("importer__name")}>{props.translate("import.private_key") || "Private Key"}</div>
           </div>
         </div>
       </div>

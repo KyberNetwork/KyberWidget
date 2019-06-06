@@ -10,7 +10,7 @@ const AdvanceConfigLayout = (props) => {
       <SlideDown active={props.isAdvConfigActive}>
         <SlideDownTrigger onToggleContent={() => props.toggleAdvConfig()}>
           <div className={addPrefixClass("advance-config__trigger")}>
-            <div className={addPrefixClass("advance-config__title")}>Advanced (Optional)</div>
+            <div className={addPrefixClass("advance-config__title")}>{props.translate('advanced.title') || 'Advanced (Optional)'}</div>
             <div className={addPrefixClass(`common__triangle common__triangle--small theme-border-top ${props.isAdvConfigActive ? 'up' : ''}`)}/>
           </div>
         </SlideDownTrigger>
@@ -30,6 +30,7 @@ const AdvanceConfigLayout = (props) => {
             )}
 
             <GasConfig
+              translate={props.translate}
               selectedGas={props.exchange.selectedGas}
               gasPriceSuggest={props.exchange.gasPriceSuggest}
               handleGasChanged={props.handleGasChanged}

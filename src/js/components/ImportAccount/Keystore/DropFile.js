@@ -1,52 +1,25 @@
 import React from "react"
 import Dropzone from 'react-dropzone'
-import {addPrefixClass} from "../../../utils/className"
-import { getAssetUrl } from "../../../utils/common";
+import { addPrefixClass } from "../../../utils/className"
 
 const DropFile = (props) => {
-  var keystring
-  var message
-  try {
-    if (props.keystring) {
-      keystring = JSON.parse(props.keystring)
-      message = <p className={addPrefixClass("file-name")}>
-        Uploaded keystore file for address: <span>{keystring.address}</span>
-        <i class={addPrefixClass("k-icon k-icon-cloud")}></i>
-      </p>
-    }
-  } catch (e) {
-    console.log(e)
-    if (props.error != "") {
-      message = <p className={addPrefixClass("file-name")}>
-        {props.error}
-      </p>
-    } else {
-      message = <p className={addPrefixClass("file-name")}>
-        Upload a valid keystore file
-        <i className={addPrefixClass("k-icon k-icon-cloud")}></i>
-      </p>
-    }
-  }
-
   return (
     <div className={addPrefixClass("import-account__item theme-icon-hover")} onDrop={(e) => props.onDrop(e)} onClick={(e) => props.onDrop(e)}>
       <Dropzone onDrop={props.onDrop} disablePreview={true} className={addPrefixClass("column column-block import-account__json")}>
-      {({getRootProps, getInputProps, isDragActive}) => {
-        return (
-          <div className={addPrefixClass("importer json")} {...getRootProps()}>
-            <input {...getInputProps()} />
-            <div className={addPrefixClass("importer__symbol")}>
-              {/* <img src={require('../../../../assets/img/landing/keystore_disable.png')} /> */}
-              <div className={addPrefixClass("importer__icon keystore")}/>
-              <div className={addPrefixClass("importer__name")}>{props.translate("import.json") || "Keystore"}</div>
+        {({getRootProps, getInputProps, isDragActive}) => {
+          return (
+            <div className={addPrefixClass("importer json")} {...getRootProps()}>
+              <input {...getInputProps()} />
+              <div className={addPrefixClass("importer__symbol")}>
+                <div className={addPrefixClass("importer__icon keystore")}/>
+                <div className={addPrefixClass("importer__name")}>{props.translate("import.keystore") || "Keystore"}</div>
+              </div>
             </div>
-          </div>
-        )
-      }}
-      
+          )
+        }}
       </Dropzone>
     </div>
   )  
-}
+};
 
 export default DropFile
