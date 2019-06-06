@@ -1,6 +1,6 @@
 (function (global) {
-  var WIDGET_VERSION = "0.6.2";
-  var incrementDeploy = 24;
+  var WIDGET_VERSION = "0.6.4";
+  var incrementDeploy = 32;
 
   function getUrlParam(name) {
     return new URLSearchParams(location.search).get(name);
@@ -251,8 +251,9 @@
   }
 
   global.addEventListener("message", function (e) {
-    if (e.data === "Broadcasted") {
+    if (e.data.name === "Broadcasted") {
       global.kyberWidgetOptions.isBroadcasted = true;
+      global.kyberWidgetOptions.txHash = e.data.txHash;
     }
   });
 

@@ -36,7 +36,7 @@
     margin: 0 auto;
     width: 40px;
     height: 40px;
-    background-image: url($image-path + 'icons/icon-loading.gif');
+    background-image: url($image-path + 'icons/loading-emerald.gif');
     background-size: contain;
   }
 
@@ -162,6 +162,9 @@
       font-size: 24px;
       font-weight: 500;
       color: #616877;
+      max-width: 220px;
+      word-break: break-word;
+      text-align: right;
     }
 
     &-text-small {
@@ -263,7 +266,7 @@
     margin-top: 25px;
   }
 
-  @include screen-max-width(600px) {
+  @include screen-max-width($break-point-extra-small) {
     &__title {
       text-align: left;
     }

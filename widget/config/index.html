@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="https://kyber.network/favicon.ico">
+  <link rel="icon" href="assets/images/favicon.png">
   <title>KyberWidget Configuration</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css">
   <link rel="stylesheet" href="assets/styles.css?v=34">
@@ -22,16 +22,20 @@
 
       <div class="widget-config__header-item">
         <div class="widget-config__btn widget-config__select version click-outside" id="version-selector">
-          <div class="widget-config__select-title">Version v<span id="selected-version">0.6.2</span></div>
+          <div class="widget-config__select-title">Version v<span id="selected-version">0.6.4</span></div>
           <div class="widget-config__select-container">
-            <div class="widget-config__select-item" data-version="0.1">Version v0.1</div>
-            <div class="widget-config__select-item" data-version="0.2">Version v0.2</div>
-            <div class="widget-config__select-item" data-version="0.3">Version v0.3</div>
-            <div class="widget-config__select-item" data-version="0.4">Version v0.4</div>
-            <div class="widget-config__select-item" data-version="0.5">Version v0.5</div>
-            <div class="widget-config__select-item" data-version="0.6">Version v0.6</div>
-            <div class="widget-config__select-item" data-version="0.6.1">Version v0.6.1</div>
-            <div class="widget-config__select-item" data-version="0.6.2">Version v0.6.2</div>
+            <div class="widget-config__select-wrapper">
+              <div class="widget-config__select-item" data-version="0.6.4">Version v0.6.4</div>
+              <div class="widget-config__select-item" data-version="0.6.3">Version v0.6.3</div>
+              <div class="widget-config__select-item" data-version="0.6.2">Version v0.6.2</div>
+              <div class="widget-config__select-item" data-version="0.6.1">Version v0.6.1</div>
+              <div class="widget-config__select-item" data-version="0.6">Version v0.6</div>
+              <div class="widget-config__select-item" data-version="0.5">Version v0.5</div>
+              <div class="widget-config__select-item" data-version="0.4">Version v0.4</div>
+              <div class="widget-config__select-item" data-version="0.3">Version v0.3</div>
+              <div class="widget-config__select-item" data-version="0.2">Version v0.2</div>
+              <div class="widget-config__select-item" data-version="0.1">Version v0.1</div>
+            </div>
           </div>
         </div>
 
@@ -41,7 +45,7 @@
 
     <div class="widget-config__content">
       <form class="widget-config__form">
-        <section class="widget-config__form-section">
+        <section class="widget-config__form-section no-bot-padding">
           <h3 class="section-title">
             <div class="section-title__text">Appearance</div>
           </h3>
@@ -85,7 +89,7 @@
               </label>
             </div>
           </div>
-          <div id="theme-selector" class="item border-item">
+          <div id="theme-selector" class="item border-item no-bot-padding">
             <label class="item-name">Widget Theme</label>
             <div class="widget-config__theme-container">
               <div class="widget-config__theme-item emerald active" data-theme="theme-emerald"></div>
@@ -96,7 +100,7 @@
           </div>
         </section>
 
-        <section class="widget-config__form-section">
+        <section class="widget-config__form-section no-top-padding">
           <h3 class="section-title">
             <div class="section-title__text">Parameters</div>
           </h3>
@@ -113,7 +117,7 @@
               <input id="dest-token" name="receiveToken" class="input-box uppercase" type="hidden" data-type-swap="" spellcheck="false" maxlength="6" value="ETH">
 
               <div class="widget-config__dropdown">
-                <div id="token-trigger" class="widget-config__dropdown-trigger">ETH</div>
+                <div id="token-trigger" class="widget-config__dropdown-trigger click-outside">ETH</div>
                 <div class="widget-config__dropdown-content">
                   <div class="widget-config__dropdown-search">
                     <input id="widget-config__token-search" placeholder="Search" type="text" value="">

@@ -474,7 +474,7 @@
 
       &.input-container {
         z-index: 2;
-        width: 50%;
+        width: 55%;
 
         input {
           border: none;
@@ -540,6 +540,10 @@
       background-color: #ffeeee;
       margin-top: 20px;
       word-break: break-word;
+    }
+
+    &--mb2 {
+      margin: 0 0 20px !important;
     }
   }
 
@@ -618,7 +622,7 @@
 
     &-container-bold {
       margin-top: 20px;
-      margin-bottom: 25px;
+      margin-bottom: 10px;
     }
 
     &.small-margin-right {
@@ -653,7 +657,7 @@
       height: 32px;
       margin: 0 auto;
       background-size: contain;
-      background-image: url($image-path + 'icons/icon-loading.gif');
+      background-image: url($image-path + 'icons/loading-emerald.gif');
     }
 
     &-text {
@@ -733,7 +737,7 @@
   &__inline-loading {
     width: 18px;
     height: 18px;
-    background-image: url($image-path + 'icons/icon-loading.gif');
+    background-image: url($image-path + 'icons/loading-emerald.gif');
     background-size: contain;
     display: inline-block;
     margin: 0 4px;

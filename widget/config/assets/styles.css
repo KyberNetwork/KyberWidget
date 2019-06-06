@@ -292,6 +292,7 @@ label input, select, .pointer {
 }
 
 .widget-config__btn {
+  margin-bottom: 15px;
   display: inline-block;
   border-radius: 30px;
   font-size: 14px;
@@ -321,6 +322,10 @@ label input, select, .pointer {
 
 .widget-config__btn:active {
   top: 1px;
+}
+
+.widget-config__btn:last-child {
+  margin-bottom: 0;
 }
 
 .widget-config__form {
@@ -556,10 +561,6 @@ label input, select, .pointer {
   top: 0;
 }
 
-.widget-config__select-title {
-
-}
-
 .widget-config__select-container {
   border-radius: 5px;
   box-shadow: 0 8px 26px 0 rgba(0, 0, 0, 0.09);
@@ -569,13 +570,32 @@ label input, select, .pointer {
   width: 100%;
   left: 0;
   margin-top: 18px;
+  padding: 10px 10px 10px 0;
   text-align: left;
-  padding: 10px 0;
   opacity: 0;
   transform: translateY(20px);
   transition: all .3s;
   z-index: 3;
   pointer-events: none;
+}
+
+.widget-config__select-wrapper {
+  height: 180px;
+  overflow: auto;
+}
+
+.widget-config__select-wrapper::-webkit-scrollbar-track {
+  border-radius: 8px;
+  background-color: rgba(163, 165, 175, .2);
+}
+
+.widget-config__select-wrapper::-webkit-scrollbar {
+  width: 4px;
+}
+
+.widget-config__select-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: #c7cce2;
 }
 
 .widget-config__select.active {
@@ -598,10 +618,6 @@ label input, select, .pointer {
 
 .widget-config__select-item:hover {
   background-color: #f1f4f7;
-}
-
-.widget-config__select-item.selected {
-
 }
 
 .kyber-widget-button.theme-supported {
@@ -633,6 +649,15 @@ label input, select, .pointer {
   background-size: contain;
   position: relative;
   margin-right: 30px;
+  margin-bottom: 30px;
+}
+
+.no-bot-padding {
+  padding-bottom: 0 !important;
+}
+
+.no-top-padding {
+  padding-top: 0 !important;
 }
 
 .widget-config__theme-item:last-child {
@@ -642,7 +667,8 @@ label input, select, .pointer {
 .widget-config__theme-item::after {
   content: '';
   display: block;
-  width: 0;
+  width: 1px;
+  opacity: 0;
   height: 4px;
   position: absolute;
   bottom: -10px;
@@ -781,6 +807,7 @@ label input, select, .pointer {
 .widget-config__theme-item:hover::after,
 .widget-config__theme-item.active::after{
   width: 100%;
+  opacity: 1;
 }
 
 .widget-config__theme-item.emerald {
@@ -945,6 +972,17 @@ label input, select, .pointer {
 
   .widget-config__form-section:first-child {
     padding-bottom: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .widget-config__option {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  .widget-config__option:last-child {
+    margin-bottom: 0;
   }
 }
 

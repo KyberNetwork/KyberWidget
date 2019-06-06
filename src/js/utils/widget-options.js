@@ -9,6 +9,9 @@ export function onClose(){
     }
 }
 
-export function postMessageBroadCasted() {
-    window.parent.postMessage("Broadcasted", "*")
+export function postMessageBroadCasted(txHash) {
+    window.parent.postMessage({
+      name: "Broadcasted",
+      txHash: txHash
+    }, "*")
 }
