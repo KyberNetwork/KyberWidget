@@ -35,7 +35,7 @@ const OrderDetails = (props) => {
 
   return (
     <div className={addPrefixClass(`widget-exchange__order theme-border ${isUnlockWalletStep ? 'common__desktop-display' : ''}`)}>
-      <div className={addPrefixClass("widget-exchange__order-header")}>{props.translate('order_details.title') || "Order Details"}</div>
+      <div className={addPrefixClass("widget-exchange__order-header")}>{props.translate('exchange.order_details') || "Order Details"}</div>
 
       <div className={addPrefixClass("widget-exchange__order-body")}>
         {renderProducts()}
