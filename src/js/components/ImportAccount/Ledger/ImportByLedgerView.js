@@ -1,6 +1,6 @@
 import React from "react";
 import constants from '../../../services/constants';
-import {addPrefixClass} from "../../../utils/className"
+import { addPrefixClass } from "../../../utils/className"
 
 const ImportByLedgerView = (props) => {
   return (
@@ -9,7 +9,7 @@ const ImportByLedgerView = (props) => {
         <div className={addPrefixClass("importer ledger")}>
           <div className={addPrefixClass("importer__symbol")}>
             <div className={addPrefixClass("importer__icon ledger")}/>
-            <div className={addPrefixClass("importer__name")}>{props.translate("import.from_ledger") || "LEDGER"}</div>
+            <div className={addPrefixClass("importer__name")}>Ledger</div>
           </div>
         </div>
       </div>

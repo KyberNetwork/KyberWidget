@@ -35,19 +35,19 @@ const OrderDetails = (props) => {
 
   return (
     <div className={addPrefixClass(`widget-exchange__order theme-border ${isUnlockWalletStep ? 'common__desktop-display' : ''}`)}>
-      <div className={addPrefixClass("widget-exchange__order-header")}>Order Details</div>
+      <div className={addPrefixClass("widget-exchange__order-header")}>{props.translate('order_details.title') || "Order Details"}</div>
 
       <div className={addPrefixClass("widget-exchange__order-body")}>
         {renderProducts()}
         <div className={addPrefixClass("widget-exchange__order-box")}>
           <div className={addPrefixClass(`widget-exchange__order-text widget-exchange__order-amount ${!isEthDest ? 'align-top' : ''}`)}>
-            {props.translate("transaction.amount") || "Amount"}:
+            {props.translate("common.amount") || "Amount"}:
           </div>
           <div className={addPrefixClass("widget-exchange__order-text-bolder")}>
             {(!props.global.params.receiveToken || !props.global.params.receiveAmount) && (
               <div className={addPrefixClass("widget-exchange__order-rate")}>
                 {props.exchange.isSelectToken && (
-                  <div>Loading...</div>
+                  <div>{props.translate("common.loading") || "Loading"}...</div>
                 )}
                 {!props.exchange.isSelectToken && (
                   <div>
@@ -77,7 +77,7 @@ const OrderDetails = (props) => {
         {isConfirmStep && (
           <div className={addPrefixClass("widget-exchange__order-box")}>
             <div className={addPrefixClass("widget-exchange__order-text")}>
-              {props.translate("transaction.transaction_fee") || "Transaction fee"}:
+              {props.translate("transaction.fee") || "Transaction fee"}:
             </div>
             <div className={addPrefixClass("widget-exchange__order-text-bold")}>
               {props.exchange.isFetchingGas ? "Loading..." : converter.calculateGasFee(props.exchange.gasPrice, gasUsed)} ETH

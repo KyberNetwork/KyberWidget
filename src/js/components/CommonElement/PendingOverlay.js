@@ -5,6 +5,6 @@ const PendingOverlay = (props)=> {
   return (
       props.isEnable ? <div id="waiting" className={addPrefixClass("pending")}></div> : ''
   )
-  
-}
+};
+
 export default PendingOverlay

@@ -9,13 +9,13 @@ const ProcessingModal = (props) => {
           <div className={addPrefixClass("common__overlay-content")}>
             <div className={addPrefixClass("common__overlay-loading theme-loading-icon")}/>
             <div className={addPrefixClass("common__overlay-text")}>
-              {props.translate("transaction.processing") || "Processing"}
+              {props.translate("common.processing") || "Processing"}
             </div>
 
             {props.checkTimeImportLedger && (
               <div className={addPrefixClass("common__overlay-warning")}>
                 <React.Fragment>
-                  <div>{props.translate("error.please_make_sure") || "Please make sure"}:</div>
+                  <div>{props.translate("error.make_sure") || "Please make sure"}:</div>
                   <div className={addPrefixClass("text-left")}>
                     <div>{props.translate("error.ledger_plugged_in") || "- Your Ledger is properly plugged in."}</div>
                     <div>{props.translate("error.ledger_logged_in") || "- You have logged into your Ledger."}</div>

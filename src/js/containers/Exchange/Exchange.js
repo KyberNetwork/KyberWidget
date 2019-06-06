@@ -108,7 +108,7 @@ export default class Exchange extends React.Component {
   };
 
   render() {
-    let detailBox = <TransactionDetails exchange={this.props.exchange}/>;
+    let detailBox = <TransactionDetails exchange={this.props.exchange} translate={this.props.translate} />;
 
     if (this.props.exchange.type === "pay") {
       detailBox = this.renderOrderDetailComponent();

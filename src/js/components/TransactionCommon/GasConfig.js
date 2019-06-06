@@ -4,14 +4,14 @@ import { addPrefixClass } from "../../utils/className";
 const GasConfig = (props) => {
   const gasPriceSuggest = props.gasPriceSuggest;
   const gasOptions = [
-    {key: "f", text: "FAST", value: gasPriceSuggest.fastGas},
-    {key: "s", text: "REGULAR", value: gasPriceSuggest.standardGas},
-    {key: "l", text: "SLOW", value: gasPriceSuggest.safeLowGas}
+    {key: "f", text: props.translate('common.fast') || "Fast", value: gasPriceSuggest.fastGas},
+    {key: "s", text: props.translate('common.regular') || "Regular", value: gasPriceSuggest.standardGas},
+    {key: "l", text: props.translate('common.slow') || "Slow", value: gasPriceSuggest.safeLowGas}
   ];
 
   return (
     <div className={addPrefixClass("advance-config__gas")}>
-      <div className={addPrefixClass("advance-config__gas-title")}>GAS fee (Gwei)</div>
+      <div className={addPrefixClass("advance-config__gas-title")}>{props.translate('advanced.gas_fee') || "GAS fee (Gwei"})</div>
       <div className={addPrefixClass("common__flexbox between")}>
         {gasOptions.map((item, index) => {
           return (
