@@ -372,7 +372,7 @@ export function* importMetamask(action) {
         return
       } else {
         yield put(utilActions.openInfoModal(translate("error.error_occurred") || "Error occurred",
-          translate("error.network_not_match_unknow", { expectedName: expectedName }) || "Network is not match"))
+          translate("error.network_not_match_unknown", { expectedName: expectedName }) || "Network is not match"))
         return
       }
     }

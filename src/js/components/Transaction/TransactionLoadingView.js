@@ -26,14 +26,14 @@ const TransactionLoadingView = (props) => {
         {broadcastError  &&
         <div className={addPrefixClass("broadcast__header")}>
           <div className={addPrefixClass("broadcast__icon failed")}/>
-          <div className={addPrefixClass("broadcast__title")}>{ props.translate('transaction.failed') || "Failed!" }</div>
+          <div className={addPrefixClass("broadcast__title")}>{props.translate('transaction.failed') || "Failed!"}</div>
         </div>
         }
 
         {!broadcastError &&
         <div className={addPrefixClass("broadcast__header")}>
           <div className={addPrefixClass("broadcast__icon broadcast theme-broadcasted-icon")}/>
-          <div className={addPrefixClass("broadcast__title")}>{ props.translate('transaction.broadcasting') || "Broadcasting" }</div>
+          <div className={addPrefixClass("broadcast__title")}>{props.translate('transaction.broadcasting') || "Broadcasting"}</div>
         </div>
         }
 
@@ -42,12 +42,12 @@ const TransactionLoadingView = (props) => {
             {!broadcastError &&
               <div className={addPrefixClass("broadcast__content")}>
                 <img src={require("../../../assets/img/icons/icon-loading-circle.gif")} />
-                <div className={addPrefixClass("broadcast__text-light")}>{props.translate("transaction.broadcasting_blockchain") || "Waiting for the transaction to be mined"}</div>
+                <div className={addPrefixClass("broadcast__text-light")}>{props.translate("transaction.waiting_broadcast") || "Waiting for the transaction to be mined"}</div>
               </div>
             }
             {broadcastError &&
             <div>
-              <div className={addPrefixClass("common__error")}>{props.translate("transaction.cound_not_broadcast") || "Couldn't broadcast your transaction to the blockchain"}</div>
+              <div className={addPrefixClass("common__error")}>{props.translate("transaction.broadcast_error") || "Couldn't broadcast your transaction to the blockchain"}</div>
               <div className={addPrefixClass("common__error box")}>{broadcastError}</div>
             </div>
             }
@@ -67,16 +67,16 @@ const TransactionLoadingView = (props) => {
     <div className={addPrefixClass("broadcast")}>
       <div className={addPrefixClass("broadcast__header")}>
         <div className={addPrefixClass("broadcast__icon broadcast theme-broadcasted-icon")}/>
-        <div className={addPrefixClass("broadcast__title")}>{ props.translate('transaction.broadcasted') || "Broadcasted!" }</div>
+        <div className={addPrefixClass("broadcast__title")}>{props.translate('transaction.broadcasted') || "Broadcasted!"}</div>
       </div>
 
       <div className={addPrefixClass("broadcast__body")}>
         <div className={addPrefixClass("broadcast__body-item")}>
-          <div className={addPrefixClass("broadcast__text")}>{props.translate("transaction.transaction") || "Transaction hash"}:</div>
+          <div className={addPrefixClass("broadcast__text")}>{props.translate("transaction.hash") || "Transaction hash"}:</div>
 
           <div className={addPrefixClass("broadcast__content")}>
             <a className={addPrefixClass("broadcast__text-bold link theme-text-hover")} href={BLOCKCHAIN_INFO[props.network].ethScanUrl + 'tx/' + props.txHash} target="_blank"
-               title={props.translate("modal.view_on_etherscan") || "View on Etherscan"} onClick={(e) => props.analytics.callTrack("viewTxOnEtherscan")}>
+               title={props.translate("transaction.view_on_etherscan") || "View on Etherscan"} onClick={(e) => props.analytics.callTrack("viewTxOnEtherscan")}>
               {props.txHash}
             </a>
             <a className={addPrefixClass("broadcast__copy")} data-for='copy-tx-tip' data-tip=""

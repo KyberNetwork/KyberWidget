@@ -2,9 +2,11 @@ import React from "react"
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import { connect } from "react-redux"
 import {addPrefixClass} from "../../utils/className"
+import {getTranslate} from "react-localize-redux/lib/index";
 
 @connect((store) => {
   return {
+    translate: getTranslate(store.locale),
     analytics: store.global.analytics
   }
 })
@@ -106,7 +108,7 @@ export default class PathSelector extends React.Component {
                     type="text"
                     name="customPath"
                     defaultValue={dPath.defaultP}
-                    placeholder="Your Custom Path"
+                    placeholder={this.props.translate('import.custom_path') || "Your Custom Path"}
                     onFocus={() => this.props.analytics.callTrack("clickFocusToInPutNewPathColdWallet", this.state.walletType)}
                   />
                   <div className={addPrefixClass("common__arrow right")} onClick={() => this.handleSelectAddress(dPath)}/>

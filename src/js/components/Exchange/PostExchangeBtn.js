@@ -7,7 +7,9 @@ const PostExchangeBtn = (props) => {
     <div className={addPrefixClass("exchange-wrapper-btn")}>
       <div>
         <div>
-          <a class={addPrefixClass(props.className)} onClick={props.submit} data-open="passphrase-modal">{props.translate("transaction.swap") ||  "Swap" }</a>
+          <a className={addPrefixClass(props.className)} onClick={props.submit} data-open="passphrase-modal">
+            {props.translate("common.swap") || "Swap"}
+          </a>
         </div>
           {props.rateToken}
       </div>                
