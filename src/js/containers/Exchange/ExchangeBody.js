@@ -16,20 +16,18 @@ import { importAccountMetamask } from "../../actions/accountActions";
 import BLOCKCHAIN_INFO from "../../../../env";
 
 @connect((store, props) => {
-
   const langs = store.locale.languages
   var currentLang = common.getActiveLanguage(langs)
-
   const ethereum = store.connection.ethereum
   const account = store.account
   const tokens = store.tokens.tokens
   const translate = getTranslate(store.locale)
-
   var sourceTokenSymbol = store.exchange.sourceTokenSymbol
   var sourceBalance = 0
   var sourceDecimal = 18
   var sourceName = "Ether"
   var rateSourceToEth = 0
+
   if (tokens[sourceTokenSymbol]) {
     sourceBalance = tokens[sourceTokenSymbol].balance
     sourceDecimal = tokens[sourceTokenSymbol].decimals
@@ -41,6 +39,7 @@ import BLOCKCHAIN_INFO from "../../../../env";
   var destBalance = 0
   var destDecimal = 18
   var destName = "Kybernetwork"
+
   if (tokens[destTokenSymbol]) {
     destBalance = tokens[destTokenSymbol].balance
     destDecimal = tokens[destTokenSymbol].decimals

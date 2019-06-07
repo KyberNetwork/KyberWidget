@@ -1,14 +1,11 @@
 {
   "pack": "en",
-  "pack_icon": "uk.svg",
   "pack_label": "English",
   "pack_active": true,
 
   "payment_header": {
     "step_method": "Payment Method",
-    "step_import": "Unlock Wallet",
-    "step_confirm": "Confirm",
-    "step_swap": "Swap"
+    "step_import": "Unlock Wallet"
   },
 
   "exchange": {
