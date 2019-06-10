@@ -92,14 +92,11 @@ function* checkMaxCap(address) {
   var ethereum = state.connection.ethereum
   var global = state.global
   const translate = getTranslate(state.locale)
+  const srcSymbol = exchange.sourceTokenSymbol;
+  const destSymbol = exchange.destTokenSymbol;
+  const isEthToWeth = ((srcSymbol === 'ETH' || srcSymbol === 'WETH') && (destSymbol === 'ETH' || destSymbol === 'WETH'))
 
-  if (global.params.mode === 'popup') {
-    yield put(exchangeActions.throwErrorExchange("exceed_cap", ""))
-    return
-  }
-  
-  var sourceTokenSymbol = exchange.sourceTokenSymbol
-  if (sourceTokenSymbol === exchange.destTokenSymbol) {
+  if (global.params.mode === 'popup' || srcSymbol === destSymbol || isEthToWeth) {
     yield put(exchangeActions.throwErrorExchange("exceed_cap", ""))
     return
   }
@@ -123,16 +120,16 @@ function* checkMaxCap(address) {
     if (exchange.isHaveDestAmount) {
       var minConversionRate = converter.toTWei(exchange.minConversionRate, 18)
       srcAmount = converter.caculateSourceAmount(exchange.destAmount, minConversionRate, 6)
-      srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimals)
+      srcAmount = converter.toTWei(srcAmount, tokens[srcSymbol].decimals)
 
     } else {
       srcAmount = exchange.sourceAmount
-      srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimals)
+      srcAmount = converter.toTWei(srcAmount, tokens[srcSymbol].decimals)
     }
 
-    if (sourceTokenSymbol !== "ETH") {
-      var rate = tokens[sourceTokenSymbol].rate
-      srcAmount = converter.toT(srcAmount, tokens[sourceTokenSymbol].decimals)
+    if (srcSymbol !== "ETH") {
+      var rate = tokens[srcSymbol].rate
+      srcAmount = converter.toT(srcAmount, tokens[srcSymbol].decimals)
       srcAmount = converter.caculateDestAmount(srcAmount, rate, 6)
       srcAmount = converter.toTWei(srcAmount, 18);
       maxCapOneExchange *= constants.MAX_CAP_PERCENT;
