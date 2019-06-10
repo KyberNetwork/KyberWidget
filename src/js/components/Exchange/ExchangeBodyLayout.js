@@ -153,7 +153,7 @@ const ExchangeBodyLayout = (props) => {
         {props.exchange.type === 'buy' && (
           <div className={addPrefixClass("widget-exchange__wrapper")}>
             <div className={addPrefixClass("widget-exchange__title")}>
-              {props.translate('exchange.buy_title', {receiveAmount: props.global.params.receiveAmount, destSymbol: props.exchange.destTokenSymbol})
+              {props.translate('exchange.buy_title', {receiveAmount: props.global.params.receiveAmount || '', destSymbol: props.exchange.destTokenSymbol})
               || `You are buying ${props.global.params.receiveAmount} ${props.exchange.destTokenSymbol}, Please select your token for the payment`}
             </div>
             <div className={addPrefixClass("widget-exchange__swap-container")}>
