@@ -7,7 +7,6 @@ import history from "./history"
 import { routerMiddleware } from 'react-router-redux'
 import { localeReducer } from 'react-localize-redux';
 import rootSaga from './sagas'
-import {initLanguage} from "../js/services/language"
 
 const routeMiddleware = routerMiddleware(history)
 
@@ -26,8 +25,6 @@ const middleware = applyMiddleware(
 const store = createStore(
   reducer, undefined, compose(middleware))
 sagaMiddleware.run(rootSaga)
-
-initLanguage(store);
 
 const persistor =  persistStore(store)
 
