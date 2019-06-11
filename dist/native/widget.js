@@ -72,6 +72,7 @@
         overlay.classList.add("hidden-overlay");
 
         setTimeout(function () {
+          global.kyberWidgetInstance.destroy();
           overlay.remove();
 
           const onCloseCallBack = window.kyberWidgetOptions.onCloseCallBack;
