@@ -328,9 +328,11 @@ function initParams(appId) {
 }
 
 Modal.setAppElement('body');
-window.kyberWidgetInstance = {}
+
+window.kyberWidgetInstance = {};
 window.kyberWidgetInstance.render = (widgetId) => {
-  var appId = widgetId ? widgetId : constants.APP_NAME
+  var appId = widgetId ? widgetId : constants.APP_NAME;
+  const appContainer = document.getElementById(appId);
 
   if (!document.getElementById(appId)) {
     return
@@ -343,6 +345,13 @@ window.kyberWidgetInstance.render = (widgetId) => {
       <Provider store={store}>
         <Layout />
       </Provider>
-    </PersistGate>, document.getElementById(appId));
-}
+    </PersistGate>, appContainer
+  );
+};
+window.kyberWidgetInstance.destroy = (widgetId) => {
+  const appId = widgetId ? widgetId : constants.APP_NAME;
+  const appContainer = document.getElementById(appId);
+  ReactDOM.unmountComponentAtNode(appContainer);
+};
+
 window.kyberWidgetInstance.render()

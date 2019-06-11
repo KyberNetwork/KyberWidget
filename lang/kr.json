@@ -55,7 +55,7 @@
     "view_on_etherscan": "Etherscan에서보기",
     "contact_merchant": "잘못된 매개 변수 문제는 판매자에게 문의하십시오 ",
     "approve": "KyberWidget에 <strong>${token}</ strong>과 상호 작용할 수있는 권한을 부여해야합니다.",
-    "approve_zero": "거래를하기에 토큰이 충분하지 않으므로 KyberWidget이 $ {srcSymbol}의 이전 수당을 재설정 할 수있는 권한을 부여해야합니다",
+    "approve_zero": "거래를하기에 토큰이 충분하지 않으므로 KyberWidget이 ${srcSymbol}의 이전 수당을 재설정 할 수있는 권한을 부여해야합니다",
     "tx_waiting": "월렛 확인을 기다리는 중입니다.",
     "tx_sending": "트랜잭션 보내기"
   },

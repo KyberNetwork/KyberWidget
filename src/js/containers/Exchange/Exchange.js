@@ -43,7 +43,7 @@ export default class Exchange extends React.Component {
       this.props.exchange.sourceAmount, this.props.exchange.gas + this.props.exchange.gas_approve, gasPrice)
 
     if (validateWithFee) {
-      this.props.dispatch(exchangeActions.thowErrorEthBalance("error.eth_balance_not_enough_for_fee"))
+      this.props.dispatch(exchangeActions.throwErrorExchange('exceed_balance_fee', this.props.translate("error.eth_balance_not_enough_for_fee") || "Your ETH balance is not enough for this transaction fee"))
       return
     }
   };

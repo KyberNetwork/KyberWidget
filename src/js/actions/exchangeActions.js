@@ -315,21 +315,6 @@ export function setGasPriceSwapComplete(safeLowGas, standardGas, fastGas, defaul
   }
 }
 
-export function analyzeError(ethereum, txHash) {
-  return {
-    type: "EXCHANGE.ANALYZE_ERROR",
-    payload: { ethereum, txHash}
-  }
-}
-
-export function setAnalyzeError(networkIssues, txHash){
-  return {
-    type: "EXCHANGE.SET_ANALYZE_ERROR",
-    payload: { networkIssues  , txHash}
-  }
-}
-
-
 export function fetchGas(){
   return {
     type: "EXCHANGE.FETCH_GAS"

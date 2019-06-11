@@ -45,17 +45,13 @@ export default class EthereumService extends React.Component {
     this.intervalAsyncID = setInterval(callBackAsync, 10000)
   }
 
-  clearSubcription() {
-    clearInterval(this.intervalID)
-    clearInterval(this.intervalSyncID)
-  }
-
   fetchData() {
     var state = store.getState()
     if (!common.checkComponentExist(state.global.params.appId)){
-      this.clearSubcription()
+      clearInterval(this.intervalAsyncID)
       return
     }
+
     this.checkKyberEnable()
     this.fetchRateData()
     this.fetchRateUSD()
