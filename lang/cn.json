@@ -117,7 +117,7 @@
     "title": "高级（可选）",
     "gas_fee": "GAS费用（Gwei）",
     "slippage_rate_info": "如果${srcSymbol}-${destSymbol}费率下降，仍然继续",
-    "slippage_rate_warning": "如果${srcSymbol}-$ {destSymbol}的汇率低于${slippageExchangeRate}（当前汇率<b> ${roundExchangeRate} </b>），则将恢复交易"
+    "slippage_rate_warning": "如果${srcSymbol}-${destSymbol}的汇率低于${slippageExchangeRate}（当前汇率<b> ${roundExchangeRate} </b>），则将恢复交易"
   },
 
   "payment": {

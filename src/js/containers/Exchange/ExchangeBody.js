@@ -211,13 +211,6 @@ export default class ExchangeBody extends React.Component {
     this.props.dispatch(exchangeActions.makeNewExchange());
   }
 
-  analyze = () => {
-    var ethereum = this.props.ethereum
-    var exchange = this.props.exchange
-    //var tokens = this.props.tokens
-    this.props.dispatch(exchangeActions.analyzeError(ethereum, exchange.txHash))
-  }
-
   swapToken = () => {
     this.props.dispatch(exchangeActions.swapToken(this.props.exchange.sourceTokenSymbol, this.props.exchange.destTokenSymbol))
     this.props.ethereum.fetchRateExchange(true)
