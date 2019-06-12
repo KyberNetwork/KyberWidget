@@ -110,7 +110,8 @@
     "commission_address_must_be_valid": "Commission address must be a valid ethereum address",
     "signer_include_invalid_address": "Signer include invalid addresses",
     "invalid_network": "Current network is not supported",
-    "signer_invalid": "You access an invalid address"
+    "signer_invalid": "You access an invalid address",
+    "keystore_wrong_pass": "Key derivation failed - possibly wrong password"
   },
 
   "advanced": {
