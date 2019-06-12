@@ -110,7 +110,8 @@
     "commission_address_must_be_valid": "佣金地址必须是有效的以太坊地址",
     "signer_include_invalid_address": "签名者包含无效地址",
     "invalid_network": "不支持当前网络",
-    "signer_invalid": "您访问了无效的地址"
+    "signer_invalid": "您访问了无效的地址",
+    "keystore_wrong_pass": "密钥派生失败 - 可能是密码错误"
   },
 
   "advanced": {

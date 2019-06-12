@@ -62,8 +62,9 @@
 
     })();
 
-    var closeWidget = global.kyberWidgetOptions.onClose = function () {
+    var closeWidget = global.kyberWidgetOptions.onClose = function (mode = 'tab') {
       var overlay = document.getElementById("kyber-widget-overlay");
+
       if (overlay) {
         var body = document.body,
           oldValue = body.getAttribute("data-overflow") || null;
@@ -72,7 +73,10 @@
         overlay.classList.add("hidden-overlay");
 
         setTimeout(function () {
-          global.kyberWidgetInstance.destroy();
+          if (mode === 'popup') {
+            global.kyberWidgetInstance.destroy();
+          }
+
           overlay.remove();
 
           const onCloseCallBack = window.kyberWidgetOptions.onCloseCallBack;
@@ -136,7 +140,7 @@
           e.preventDefault();
 
           // remove old overlay, just to ensure
-          closeWidget();
+          closeWidget(mode);
 
           // Delegate to KyberWidget extension if installed
           var paramObj = {};
@@ -153,7 +157,7 @@
           overlay.id = "kyber-widget-overlay";
           overlay.addEventListener("click", function (e) {
             if (e.target === this) {
-              closeWidget();
+              closeWidget(mode);
             }
           });
 
@@ -202,7 +206,7 @@
             element.onload = function () {
               global.addEventListener("message", function (e) {
                 if (e.data === "CloseWidget") {
-                  closeWidget();
+                  closeWidget(mode);
                 }
               });
             };

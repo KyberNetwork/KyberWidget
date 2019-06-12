@@ -110,7 +110,8 @@
     "commission_address_must_be_valid": "Commission Address는 유효한 Ethereum 주소 여야합니다.",
     "signer_include_invalid_address": "서명자에 잘못된 주소가 있습니다.",
     "invalid_network": "현재 네트워크가 지원되지 않습니다.",
-    "signer_invalid": "잘못된 주소에 액세스했습니다."
+    "signer_invalid": "잘못된 주소에 액세스했습니다.",
+    "keystore_wrong_pass": "키 인증 실패 - 잘못된 패스워드"
   },
 
   "advanced": {
