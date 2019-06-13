@@ -66,6 +66,11 @@
     .widget-background {
       display: none;
     }
+
+    .widget-footer {
+      width: 135px;
+      background-image: url($image-path + 'footer-logo-white.svg');
+    }
   }
 
   &.tab::after {
