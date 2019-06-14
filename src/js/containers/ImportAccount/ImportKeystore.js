@@ -33,20 +33,6 @@ export default class ImportKeystore extends React.Component {
     this.props.dispatch(push('/exchange'));
   }
 
-//   onDrop = (acceptedFiles) => {
-//     acceptedFiles.forEach(file => {
-//         const reader = new FileReader();
-//         reader.onload = () => {
-//             const fileAsBinaryString = reader.result;
-//             // do whatever you want with the file content
-//         };
-//         reader.onabort = () => console.log('file reading was aborted');
-//         reader.onerror = () => console.log('file reading has failed');
-
-//         reader.readAsBinaryString(file);
-//     });
-// }
-
   onDrop = (files) => {
     try {
       var file = files[0]
@@ -58,12 +44,10 @@ export default class ImportKeystore extends React.Component {
         errors["keyError"] = verifyKey(keystring)
         if (anyErrors(errors)) {
           this.props.onOpenImportAccount(constants.IMPORT_ACCOUNT_TYPE.keystore);
-          this.props.dispatch(throwError("Your uploaded JSON file is invalid. Please upload a correct JSON keystore."))
+          this.props.dispatch(throwError(this.props.translate('import.keystore_invalid') || "Your uploaded JSON file is invalid. Please upload a correct JSON keystore."))
         } else {
           var address = addressFromKey(keystring)
-          this.props.dispatch(importNewAccount(address,
-            "keystore",
-            keystring))
+          this.props.dispatch(importNewAccount(address, "keystore", keystring))
         }
       }
       fileReader.readAsBinaryString(file)
@@ -74,7 +58,7 @@ export default class ImportKeystore extends React.Component {
 
   render() {
     return (
-      <DropFile id="import_json"
+      <DropFile
         error={this.props.account.error}
         onDrop={this.onDrop}
         translate={this.props.translate}

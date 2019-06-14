@@ -352,13 +352,13 @@ export default class Payment extends React.Component {
             <div className={addPrefixClass("widget-exchange__column-item")}>
               <div className={addPrefixClass("widget-exchange__text theme-text")}>
                 {this.props.exchange.type === 'swap' && (
-                  <div>You are about to swap</div>
+                  <div>{this.props.translate("payment.swap_title") || "You are about to swap"}</div>
                 )}
                 {this.props.exchange.type === 'buy' && (
-                  <div>{this.props.translate("transaction.you_about_to_buy") || "You are about to buy"}</div>
+                  <div>{this.props.translate("payment.buy_title") || "You are about to buy"}</div>
                 )}
                 {this.props.exchange.type === 'pay' && (
-                  <div>{this.props.translate("transaction.you_about_to_pay") || "You are about to pay"}</div>
+                  <div>{this.props.translate("payment.pay_title") || "You are about to pay"}</div>
                 )}
               </div>
 
@@ -381,24 +381,24 @@ export default class Payment extends React.Component {
                   {(this.props.exchange.type === 'swap' || this.props.exchange.type === 'buy') && (
                     <div className={addPrefixClass("common__text-semibold")}>
                       <span>{this.props.exchange.sourceAmount} {this.props.exchange.sourceTokenSymbol}</span>
-                      <span className={addPrefixClass("common__text-small")}> to </span>
+                      <span className={addPrefixClass("common__text-small")}> {this.props.translate("common.to") || 'to'} </span>
                       <span>{this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</span>
                     </div>
                   )}
                 </div>
                 {this.props.exchange.fluctuatingRate >= 10 && (
                   <div className={addPrefixClass("common__error common__error--mb2 box")}>
-                    There is {this.props.exchange.fluctuatingRate}% difference in price for the requested quantity compared to the default rate of 0.5 ETH
+                    {this.props.translate('exchange.rate_tooltip', {fluctuatingRate: this.props.exchange.fluctuatingRate}) || `There is ${this.props.exchange.fluctuatingRate}% difference in price for the requested quantity compared to the default rate of 0.5 ETH`}
                   </div>
                 )}
                 <div className={addPrefixClass("common__text-container")}>
-                  <span className={addPrefixClass("common__text small-margin-right")}>Your address: </span>
+                  <span className={addPrefixClass("common__text small-margin-right")}>{this.props.translate('common.your_address') || "Your address"}: </span>
                   <span className={addPrefixClass("common__text")}>
                     {this.props.account.address.slice(0, 12)}...{this.props.account.address.slice(-10)}
                   </span>
                 </div>
                 <div className={addPrefixClass("common__text-container")}>
-                  <span className={addPrefixClass("common__text small-margin-right")}>You have: </span>
+                  <span className={addPrefixClass("common__text small-margin-right")}>{this.props.translate("common.you_have") || "You have"}: </span>
                   <span className={addPrefixClass("common__text")}>
                     {sourceTokenSymbol !== "ETH" && (
                       <span>{converter.roundingNumber(converter.toT(sourceBalance, sourceDecimal))} {sourceTokenSymbol}</span>
@@ -416,13 +416,13 @@ export default class Payment extends React.Component {
               </div>
 
               {this.getSignerAddresses().length !== 0 && (
-                <SignerAddress signerAddresses={this.getSignerAddresses()}/>
+                <SignerAddress signerAddresses={this.getSignerAddresses()} translate={this.props.translate}/>
               )}
 
               <div className={addPrefixClass("widget-exchange__info")}>
                 {this.props.account.type === "keystore" && (
                   <div id="import-account">
-                    <div className={addPrefixClass("widget-exchange__text theme-text")}>Enter your Password</div>
+                    <div className={addPrefixClass("widget-exchange__text theme-text")}>{this.props.translate("common.enter_password") || "Enter your Password"}</div>
                     <div className={addPrefixClass("common__input-panel")}>
                       <input
                         className={addPrefixClass(`common__input theme-border`)}
@@ -448,25 +448,25 @@ export default class Payment extends React.Component {
 
                 {this.props.exchange.isNeedApprove && (
                   <div className={addPrefixClass("common__information box")}>
-                    {this.props.translate("modal.approve_exchange", { token: this.props.exchange.sourceTokenSymbol }) || `You need to grant permission for Kyber Payment to interact with ${this.props.exchange.sourceTokenSymbol} with this address`}
+                    {this.props.translate("transaction.approve", { token: this.props.exchange.sourceTokenSymbol }) || `You need to grant permission for KyberWidget to interact with ${this.props.exchange.sourceTokenSymbol} in this address`}
                   </div>
                 )}
 
                 {this.props.exchange.isApproveZero && (
                   <div className={addPrefixClass("common__information box")}>
-                    You need to grant permission for KyberWidget to reset your previous allowance of {this.props.exchange.sourceTokenSymbol} since it's insufficient to make the transaction
+                    {this.props.translate("transaction.approve_zero", { srcSymbol: this.props.exchange.sourceTokenSymbol }) || `You need to grant permission for KyberWidget to reset your previous allowance of ${this.props.exchange.sourceTokenSymbol} since it's insufficient to make the transaction`}
                   </div>
                 )}
 
                 {(isConfirming && !isKeystoreOrPrivateKey) && (
                   <div className={addPrefixClass("common__information box")}>
-                    {this.props.translate("modal.waiting_for_confirmation") || "Waiting for confirmation from your wallet"}
+                    {this.props.translate("transaction.tx_waiting") || "Waiting for confirmation from your wallet"}
                   </div>
                 )}
 
                 {(isConfirming && isKeystoreOrPrivateKey) && (
                   <div className={addPrefixClass("common__information box")}>
-                    Sending Transactions...
+                    {this.props.translate("transaction.tx_sending") || "Sending Transactions"}...
                   </div>
                 )}
 
@@ -487,18 +487,18 @@ export default class Payment extends React.Component {
 
         <div className={addPrefixClass("widget-exchange__bot common__flexbox between mobile-column-reverse")}>
           <div className={addPrefixClass(`common__button hollow theme-button ${isConfirming ? "disable" : ""}`)} onClick={this.reImportAccount}>
-            {this.props.translate("transaction.back") || "Back"}
+            {this.props.translate("common.back") || "Back"}
           </div>
 
           {isApprove && (
             <div className={addPrefixClass("common__button widget-exchange__import theme-gradient" + classDisable)} onClick={this.approveToken}>
-              {this.props.translate("transaction.approve") || "Approve"}
+              {this.props.translate("common.approve") || "Approve"}
             </div>
           )}
 
           {!isApprove && (
             <div className={addPrefixClass("common__button widget-exchange__import theme-gradient" + classDisable)} onClick={this.payment}>
-              {this.props.translate("transaction.confirm") || "Confirm"}
+              {this.props.translate("common.confirm") || "Confirm"}
             </div>
           )}
         </div>

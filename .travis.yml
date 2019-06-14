@@ -10,7 +10,7 @@ node_js:
   - "8"
 
 env:
-  - WIDGET_VERSION=v0.6.4
+  - WIDGET_VERSION=v0.7.0
 script: 
   - echo "npm test temporarily disabled"
 

@@ -7,6 +7,7 @@ import { toEther } from "../../utils/converter"
 import { getTranslate } from 'react-localize-redux'
 import bowser from 'bowser';
 import { roundingNumber } from "../../utils/converter";
+import * as common from "../../utils/common";
 
 @connect((store, props) => {
   var tokens = store.tokens.tokens
@@ -15,6 +16,7 @@ import { roundingNumber } from "../../utils/converter";
     supportTokens.push(tokens[key])
   })
   return {
+    appId: store.global.params.appId,
     ethereumNode: store.connection.ethereum,
     account: store.account,
     tokens: supportTokens,
@@ -49,9 +51,11 @@ export default class ImportByDevice extends React.Component {
   componentDidMount() {
     this.showLoading(this.props.type);
   }
+
   componentWillUnmount () {
     clearInterval(this.interval)
   }
+
   setDeviceState() {
     this.addressIndex = 0;
     this.currentIndex = 0;
@@ -61,6 +65,11 @@ export default class ImportByDevice extends React.Component {
 
   updateBalance() {
     this.interval = setInterval(() => {
+      if (!common.checkComponentExist(this.props.appId)){
+        clearInterval(this.interval)
+        return
+      }
+
       this.state.addresses.forEach((address, index) => {
         this.addBalance(address.addressString, index);
       })
@@ -213,10 +222,6 @@ export default class ImportByDevice extends React.Component {
         if (shouldSetWallet) {
           this.setWallet(index, address, result, this.walletType);
         }
-
-        this.setState({
-          currentList: addresses
-        })
       })
   }
 

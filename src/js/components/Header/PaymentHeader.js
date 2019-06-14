@@ -20,7 +20,7 @@ const PaymentHeader = (props) => {
       {props.type === "swap" && (
         <div className={addPrefixClass("step-breadcrumb__item")}>
           <span className={addPrefixClass(getStepClass(1))}>1</span>
-          <span className={addPrefixClass("step-breadcrumb__text")}>{props.translate("payment_header.step_swap") || "Swap"}</span>
+          <span className={addPrefixClass("step-breadcrumb__text")}>{props.translate("common.swap") || "Swap"}</span>
         </div>
       )}
 
@@ -38,7 +38,7 @@ const PaymentHeader = (props) => {
 
       <div className={addPrefixClass("step-breadcrumb__item")}>
         <span className={addPrefixClass(getStepClass(3))}>3</span>
-        <span className={addPrefixClass("step-breadcrumb__text")}>{props.translate("payment_header.step_confirm") || "Confirm"}</span>
+        <span className={addPrefixClass("step-breadcrumb__text")}>{props.translate("common.confirm") || "Confirm"}</span>
       </div>
     </div>
   )

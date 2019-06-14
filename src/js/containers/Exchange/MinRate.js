@@ -42,7 +42,7 @@ export default class MinRate extends React.Component {
     return (
       <div className={addPrefixClass("advance-config__rate")}>
         <div className={addPrefixClass("advance-config__rate-title")}>
-          Still proceed if {this.props.sourceTokenSymbol}-{this.props.destTokenSymbol} rate goes down by:
+          {this.props.translate('advanced.slippage_rate_info', {srcSymbol: this.props.sourceTokenSymbol, destSymbol: this.props.destTokenSymbol}) || `Still proceed if ${this.props.sourceTokenSymbol}-${this.props.destTokenSymbol} rate goes down by`}:
         </div>
         <div className={addPrefixClass("common__flexbox between")}>
           <label className={addPrefixClass("common__radio")}>
@@ -58,7 +58,7 @@ export default class MinRate extends React.Component {
             <span className={addPrefixClass("common__radio-icon")}/>
           </label>
           <label className={addPrefixClass("common__radio")}>
-            <span className={addPrefixClass("common__radio-text")}>Custom</span>
+            <span className={addPrefixClass("common__radio-text")}>{this.props.translate('common.custom') || "Custom"}</span>
             <input
               className={addPrefixClass("common__radio-input theme-radio")}
               type="radio"
@@ -76,7 +76,14 @@ export default class MinRate extends React.Component {
             <span className={addPrefixClass("common__radio-text")}> %</span>
           </label>
         </div>
-        <div className={addPrefixClass("advance-config__rate-desc")}>Transaction will be reverted if rate of {this.props.sourceTokenSymbol}-{this.props.destTokenSymbol} is lower than {slippageExchangeRate} (Current rate <b>{roundExchangeRate}</b>)</div>
+        <div className={addPrefixClass("advance-config__rate-desc")}>
+          {this.props.translate('advanced.slippage_rate_warning', {
+            srcSymbol: this.props.sourceTokenSymbol,
+            destSymbol: this.props.destTokenSymbol,
+            slippageExchangeRate: slippageExchangeRate,
+            roundExchangeRate: roundExchangeRate,
+          }) || `Transaction will be reverted if rate of ${this.props.sourceTokenSymbol}-${this.props.destTokenSymbol} is lower than ${slippageExchangeRate} (Current rate <b>${roundExchangeRate}</b>)`}
+        </div>
       </div>
     )
   }

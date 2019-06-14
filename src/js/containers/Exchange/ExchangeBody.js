@@ -16,20 +16,18 @@ import { importAccountMetamask } from "../../actions/accountActions";
 import BLOCKCHAIN_INFO from "../../../../env";
 
 @connect((store, props) => {
-
   const langs = store.locale.languages
   var currentLang = common.getActiveLanguage(langs)
-
   const ethereum = store.connection.ethereum
   const account = store.account
   const tokens = store.tokens.tokens
   const translate = getTranslate(store.locale)
-
   var sourceTokenSymbol = store.exchange.sourceTokenSymbol
   var sourceBalance = 0
   var sourceDecimal = 18
   var sourceName = "Ether"
   var rateSourceToEth = 0
+
   if (tokens[sourceTokenSymbol]) {
     sourceBalance = tokens[sourceTokenSymbol].balance
     sourceDecimal = tokens[sourceTokenSymbol].decimals
@@ -41,6 +39,7 @@ import BLOCKCHAIN_INFO from "../../../../env";
   var destBalance = 0
   var destDecimal = 18
   var destName = "Kybernetwork"
+
   if (tokens[destTokenSymbol]) {
     destBalance = tokens[destTokenSymbol].balance
     destDecimal = tokens[destTokenSymbol].decimals
@@ -92,7 +91,7 @@ export default class ExchangeBody extends React.Component {
     if (!this.props.exchange.isHaveDestAmount) {
       srcAmount = parseFloat(this.props.exchange.sourceAmount)
       if (isNaN(srcAmount)) {
-        this.props.dispatch(exchangeActions.thowErrorSourceAmount(this.props.translate("error.source_amount_is_not_number")))
+        this.props.dispatch(exchangeActions.thowErrorSourceAmount(this.props.translate("error.source_amount_is_not_number") || "Source amount is not a number"))
         isValidate = false
         sourceAmountIsNumber = false
       }
@@ -123,7 +122,7 @@ export default class ExchangeBody extends React.Component {
       isValidate = false
     } else {
       if (gasPrice > this.props.exchange.maxGasPrice) {
-        this.props.dispatch(exchangeActions.throwErrorExchange("gasPriceError", this.props.translate("error.gas_price_limit", { maxGas: this.props.exchange.maxGasPrice }) || "Gas price exceeds limit"))
+        this.props.dispatch(exchangeActions.throwErrorExchange("gasPriceError", this.props.translate("error.gas_price_limit", { maxGas: this.props.exchange.maxGasPrice }) || `Gas price must be smaller than or equal to ${this.props.exchange.maxGasPrice} Gwei`))
         isValidate = false
       }
     }
@@ -210,13 +209,6 @@ export default class ExchangeBody extends React.Component {
 
   makeNewExchange = () => {
     this.props.dispatch(exchangeActions.makeNewExchange());
-  }
-
-  analyze = () => {
-    var ethereum = this.props.ethereum
-    var exchange = this.props.exchange
-    //var tokens = this.props.tokens
-    this.props.dispatch(exchangeActions.analyzeError(ethereum, exchange.txHash))
   }
 
   swapToken = () => {
