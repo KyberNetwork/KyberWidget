@@ -31,14 +31,14 @@ const ExchangeBodyLayout = (props) => {
       destTokenSymbol = props.sourceTokenSymbol;
       rate = converter.convertBuyRate(props.exchange.offeredRate);
       rateUSD = !isSourceEqualToDestToken ? rate * props.sourceToken.rateUSD : props.sourceToken.rateUSD;
+      if (isSourceEqualToDestToken) rateUSD -= rateUSD * (fluctuatingRate / 100);
     } else {
       sourceTokenSymbol = props.sourceTokenSymbol;
       destTokenSymbol = props.destTokenSymbol;
       rate = converter.toT(props.exchange.offeredRate, 18);
-      rateUSD = props.sourceToken.rateUSD
+      rateUSD = props.sourceToken.rateUSD;
+      rateUSD -= rateUSD * (fluctuatingRate / 100);
     }
-
-    rateUSD -= rateUSD * (fluctuatingRate / 100);
 
     return (
       <div className={addPrefixClass("widget-exchange__swap-text")}>
