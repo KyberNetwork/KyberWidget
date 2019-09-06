@@ -528,7 +528,7 @@ const exchange = (state = initState, action) => {
     }
     case "EXCHANGE.INIT_PARAMS_EXCHANGE":{
       const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, products, network,
-        paramForwarding, signer, commissionID, isSwap, type, paymentData, hint, theme} = action.payload
+        paramForwarding, signer, commissionID, isSwap, type, paymentData, hint, theme, title} = action.payload
       newState.destTokenSymbol = receiveToken
       newState.destAmount = receiveAmount
 
@@ -551,6 +551,7 @@ const exchange = (state = initState, action) => {
       newState.paymentData = paymentData
       newState.hint = hint
       newState.theme = theme
+      newState.title = title
 
       return newState
     }

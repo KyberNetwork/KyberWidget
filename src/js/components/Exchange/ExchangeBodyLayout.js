@@ -206,6 +206,10 @@ const ExchangeBodyLayout = (props) => {
 
         {props.exchange.type === 'pay' && (
           <div className={addPrefixClass("widget-exchange__wrapper")}>
+            {props.exchange.title &&
+              <div className={addPrefixClass("widget-exchange__title")}>{props.exchange.title}</div>
+            }
+
             <div className={addPrefixClass('widget-exchange__column')}>
               <div className={addPrefixClass("widget-exchange__column-item")}>
                 <div className={addPrefixClass("widget-exchange__text theme-text")}>{props.translate('exchange.choose_token') || 'Choose your Token'}:</div>
