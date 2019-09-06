@@ -107,6 +107,7 @@ const INIT_EXCHANGE_FORM_STATE = {
   network: 'ropsten',
   isSwap:true,
   theme: '',
+  title: null,
   fluctuatingRate: 0,
   isSrcAmountLoading: false,
   isDestAmountLoading: false,
