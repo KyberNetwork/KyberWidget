@@ -7,7 +7,7 @@
     "@ledgerhq/hw-app-eth": "^4.7.3",
     "@ledgerhq/hw-transport-u2f": "^4.7.3",
     "abi-decoder": "^1.0.9",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "babel-plugin-add-module-exports": "^1.0.0",
     "babel-plugin-react-html-attrs": "^2.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
