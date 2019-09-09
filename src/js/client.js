@@ -92,6 +92,7 @@ function initParams(appId) {
   var theme
   var mode
   var language
+  var title
 
   if (attributeWidget === true || attributeWidget === 'true') {
     for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++) {
@@ -123,6 +124,7 @@ function initParams(appId) {
     products = widgetParent.getAttribute('data-widget-products')
     products = products ? JSON.parse(products) : [];
     language = widgetParent.getAttribute('data-widget-lang') || "en"
+    title = widgetParent.getAttribute('data-widget-title')
   } else {
     query = common.getQueryParams(window.location.search)
     receiveAddr = common.getParameterByName("receiveAddr")
@@ -145,6 +147,7 @@ function initParams(appId) {
     mode = common.getParameterByName("mode")
     products = productNames ? common.getProductsFromParam(productNames, productQtys, productImages) : [];
     language = common.getParameterByName("lang") || 'en'
+    title = common.getParameterByName("title")
   }
 
   initLanguage(language, store);
@@ -312,7 +315,7 @@ function initParams(appId) {
 
       store.dispatch(initParamsExchange(
         receiveAddr, receiveToken, tokenAddr, receiveAmount, products, callback, network, paramForwarding,
-        signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme
+        signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme, title
       ));
 
       //init analytic
