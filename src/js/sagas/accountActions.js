@@ -269,7 +269,7 @@ function* fetchingGas(address) {
   if (isETHSource) {
     gas = yield common.estimateEthTransfer(address);
   } else {
-    gas = constants.PAYMENT_TOKEN_TRANSFER_GAS;
+    gas = constants.SPECIAL_PAYMENT_GAS_LIMIT['default'].gasUsed;
   }
 
   yield put(exchangeActions.setEstimateGas(gas, gasApprove));
