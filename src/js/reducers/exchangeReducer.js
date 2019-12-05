@@ -174,7 +174,7 @@ const exchange = (state = initState, action) => {
       if (!isSuccess) {
         newState.errors.rateSystem = errors.getRate;
       } else {
-        if (expectedPrice === "0") {
+        if (newState.sourceToken !== newState.destToken && expectedPrice === "0") {
           if(rateInit === "0" || rateInit === 0 || rateInit === undefined || rateInit === null) {
             newState.errors.rateSystem = errors.kyberMaintain;
           } else {
