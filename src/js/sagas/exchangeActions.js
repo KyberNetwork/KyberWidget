@@ -1060,7 +1060,6 @@ function* getMaxGasExchange(srcSymbol, destSymbol) {
     
     if (state.exchange.type === 'pay') {
       return Math.round((gasLimitResult.data * 1.2) + 100000);
-      
     } else {
       return gasLimitResult.data;
     }
