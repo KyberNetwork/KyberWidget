@@ -1057,8 +1057,12 @@ function* getMaxGasExchange(srcSymbol, destSymbol) {
     if (gasLimitResult.error) {
       return yield call(getMaxGasExchangeFromTokens, srcSymbol, destSymbol);
     }
-
-    return gasLimitResult.data;
+    
+    if (state.exchange.type === 'pay') {
+      return Math.round((gasLimitResult.data * 1.2) + 100000);
+    } else {
+      return gasLimitResult.data;
+    }
   } catch (err) {
     console.log(err);
     return yield call(getMaxGasExchangeFromTokens, srcSymbol, destSymbol);
