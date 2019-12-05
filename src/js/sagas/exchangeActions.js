@@ -972,7 +972,7 @@ function* updateRateSnapshot(action) {
       var rate = rateRequest.data
       var expectedPrice = rate.expectedRate ? rate.expectedRate : "0"
       var slippagePrice = rate.slippageRate ? rate.slippageRate : "0"
-      if (expectedPrice == 0) {
+      if (source !== dest && expectedPrice == 0) {
         yield put(utilActions.openInfoModal(translate("error.error_occurred") || "Error occurred",
           translate("error.node_error") || "There are some problems with nodes. Please try again in a while."))
         yield put(actions.hideApprove())
