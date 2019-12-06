@@ -140,18 +140,14 @@ export function* estimateGasUsed(source, dest) {
 
   if (exchange.type === "pay") {
     if (source === dest) {
-      switch (source) {
-        case "ETH":
-          gasUsed = constants.PAYMENT_ETH_TRANSFER_GAS
-          break
-        case "DGX":
-          gasUsed = 250000
-          gasApproved = 120000
-          break
-        default:
-          gasUsed = constants.PAYMENT_TOKEN_TRANSFER_GAS;
-          gasApproved = 120000;
-          break
+      const specialGasLimit = constants.SPECIAL_PAYMENT_GAS_LIMIT[source];
+      
+      if (specialGasLimit) {
+        gasUsed = specialGasLimit.gasUsed;
+        gasApproved = specialGasLimit.gasApproved;
+      } else {
+        gasUsed = constants.SPECIAL_PAYMENT_GAS_LIMIT['default'].gasUsed;
+        gasApproved = constants.SPECIAL_PAYMENT_GAS_LIMIT['default'].gasApproved;
       }
     } else {
       gasUsed = yield call(getMaxGasExchange, source, dest)
@@ -159,20 +155,18 @@ export function* estimateGasUsed(source, dest) {
     }
   } else {
     if (source === dest) {
-      switch (source) {
-        case "ETH":
-          gasUsed = 21000
-          break
-        case "DGX":
-          gasUsed = 250000
-          break
-        default:
-          gasUsed = 120000;
-          break
+      const specialGasLimit = constants.SPECIAL_OTHER_GAS_LIMIT[source];
+      
+      if (specialGasLimit) {
+        gasUsed = specialGasLimit.gasUsed;
+      } else {
+        gasUsed = constants.SPECIAL_OTHER_GAS_LIMIT['default'].gasUsed;
       }
+      
       gasApproved = 0
     } else {
-      gasUsed = yield call(getMaxGasExchange, source, dest)
+      gasUsed = yield call(getMaxGasExchange, source, dest);
+      
       if (source !== "ETH") {
         gasApproved = yield call(getMaxGasApprove, tokens[source].gasApprove)
       }
@@ -978,7 +972,7 @@ function* updateRateSnapshot(action) {
       var rate = rateRequest.data
       var expectedPrice = rate.expectedRate ? rate.expectedRate : "0"
       var slippagePrice = rate.slippageRate ? rate.slippageRate : "0"
-      if (expectedPrice == 0) {
+      if (source !== dest && expectedPrice == 0) {
         yield put(utilActions.openInfoModal(translate("error.error_occurred") || "Error occurred",
           translate("error.node_error") || "There are some problems with nodes. Please try again in a while."))
         yield put(actions.hideApprove())
@@ -1063,8 +1057,12 @@ function* getMaxGasExchange(srcSymbol, destSymbol) {
     if (gasLimitResult.error) {
       return yield call(getMaxGasExchangeFromTokens, srcSymbol, destSymbol);
     }
-
-    return gasLimitResult.data;
+    
+    if (state.exchange.type === 'pay') {
+      return Math.round((gasLimitResult.data * 1.2) + 100000);
+    } else {
+      return gasLimitResult.data;
+    }
   } catch (err) {
     console.log(err);
     return yield call(getMaxGasExchangeFromTokens, srcSymbol, destSymbol);
@@ -1176,94 +1174,6 @@ function* getGasApprove() {
     }
     return { status: "success", res: gas_approve }
   } catch (e) {
-    console.log(e)
-    return { status: "fail", err: e }
-  }
-}
-
-function* getGasUsed() {
-  var state = store.getState()
-  const ethereum = state.connection.ethereum
-  const exchange = state.exchange
-  const kyber_address = BLOCKCHAIN_INFO[exchange.network].network
-  const maxGas = yield call(getMaxGasExchange)
-  const maxGasApprove = yield call(getMaxGasApprove)
-  var gas = maxGas
-  var gas_approve = 0
-  var account = state.account.account
-  var address = account.address
-  var tokens = state.tokens.tokens
-  var sourceDecimal = 18
-  var sourceTokenSymbol = exchange.sourceTokenSymbol
-
-  if (tokens[sourceTokenSymbol]) {
-    sourceDecimal = tokens[sourceTokenSymbol].decimals
-  }
-
-  try {
-    const sourceToken = exchange.sourceToken
-    const sourceAmount = converter.stringToHex(exchange.sourceAmount, sourceDecimal)
-    const destToken = exchange.destToken
-    const maxDestAmount = converter.biggestNumber()
-    const minConversionRate = converter.numberToHex(converter.toTWei(exchange.slippageRate, 18))
-    const blockNo = converter.numberToHexAddress(exchange.blockNo)
-    const paymentData = exchange.paymentData;
-    const hint = exchange.hint;
-    var data
-
-    if (checkIsPayMode()) {
-      data = yield call([ethereum, ethereum.call], "getPaymentEncodedData", sourceToken, sourceAmount,
-        destToken, address, maxDestAmount, minConversionRate, blockNo, paymentData, hint)
-    } else {
-      data = yield call([ethereum, ethereum.call], "exchangeData", sourceToken, sourceAmount,
-        destToken, address, maxDestAmount, minConversionRate, blockNo)
-    }
-
-    var value = '0'
-    if (exchange.sourceTokenSymbol === 'ETH') {
-      value = sourceAmount
-    } else {
-      const isPayMode = checkIsPayMode();
-      //calculate gas approve
-      const remainStr = yield call([ethereum, ethereum.call], "getAllowanceAtLatestBlock", sourceToken, address, isPayMode)
-      const remain = converter.hexToBigNumber(remainStr)
-      const sourceAmountBig = converter.hexToBigNumber(sourceAmount)
-
-      if (!remain.isGreaterThanOrEqualTo(sourceAmountBig)) {
-        //calcualte gas approve
-        var dataApprove = yield call([ethereum, ethereum.call], "approveTokenData", sourceToken, converter.biggestNumber(), isPayMode)
-        var txObjApprove = {
-          from: address,
-          to: sourceToken,
-          data: dataApprove,
-          value: '0x0',
-        }
-        gas_approve = yield call([ethereum, ethereum.call], "estimateGas", txObjApprove)
-        gas_approve = Math.round(gas_approve * 120 / 100)
-        if (gas_approve > maxGasApprove) {
-          gas_approve = maxGasApprove
-        }
-      } else {
-        gas_approve = 0
-      }
-    }
-    var txObj = {
-      from: address,
-      to: kyber_address,
-      data: data,
-      value: value
-    }
-
-    gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
-    console.log("get_gas:" + gas)
-    gas = Math.round(gas * 120 / 100)
-    if (gas > maxGas) {
-      gas = maxGas
-    }
-
-    return { status: "success", res: { gas, gas_approve } }
-  } catch (e) {
-    console.log("Cannot estimate gas")
     console.log(e)
     return { status: "fail", err: e }
   }

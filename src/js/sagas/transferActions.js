@@ -250,15 +250,16 @@ function* callService(keyService, formId, ethereum, address, token, amount, dest
 }
 
 function* getMaxGasTransfer(){
-  var state = store.getState()
-  const transfer = state.transfer
-  if (transfer.tokenSymbol !== 'DGX') {
-    return transfer.gas_limit
-  }else{
-    return 250000
+  const state = store.getState();
+  const transfer = state.transfer;
+  const specialGasLimit = constants.SPECIAL_TRANSFER_GAS_LIMIT[transfer.tokenSymbol];
+  
+  if (!specialGasLimit) {
+    return transfer.gas_limit;
   }
+  
+  return specialGasLimit;
 }
-
 
 function* estimateGasUsedWhenChangeAmount(action){
   var amount = action.payload

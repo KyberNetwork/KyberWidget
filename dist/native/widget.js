@@ -1,6 +1,6 @@
 (function (global) {
-  var WIDGET_VERSION = "0.7.3";
-  var incrementDeploy = 43;
+  var WIDGET_VERSION = "0.7.4";
+  var incrementDeploy = 48;
 
   function getUrlParam(name) {
     return new URLSearchParams(location.search).get(name);
