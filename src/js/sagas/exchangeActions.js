@@ -133,47 +133,31 @@ function* selectToken(action) {
 
 export function* estimateGasUsed(source, dest) {
   const state = store.getState();
-  const exchange = state.exchange;
   const tokens = state.tokens.tokens;
-  let gasUsed;
-  let gasApproved = 0;
-
-  if (exchange.type === "pay") {
-    if (source === dest) {
-      const specialGasLimit = constants.SPECIAL_PAYMENT_GAS_LIMIT[source];
-      
-      if (specialGasLimit) {
-        gasUsed = specialGasLimit.gasUsed;
-        gasApproved = specialGasLimit.gasApproved;
-      } else {
-        gasUsed = constants.SPECIAL_PAYMENT_GAS_LIMIT['default'].gasUsed;
-        gasApproved = constants.SPECIAL_PAYMENT_GAS_LIMIT['default'].gasApproved;
-      }
+  const isPayMode = checkIsPayMode();
+  let exchangeGasLimit;
+  let approveGasLimit;
+  
+  if (source === dest) {
+    const specialGasLimit = isPayMode ? constants.SPECIAL_PAYMENT_GAS_LIMIT : constants.SPECIAL_OTHER_GAS_LIMIT;
+    
+    if (specialGasLimit[source]) {
+      exchangeGasLimit = specialGasLimit.gasUsed;
+      approveGasLimit = specialGasLimit.gasApproved;
     } else {
-      gasUsed = yield call(getMaxGasExchange, source, dest)
-      gasApproved = yield call(getMaxGasApprove, tokens[source].gasApprove)
+      exchangeGasLimit = specialGasLimit['default'].gasUsed;
+      approveGasLimit = specialGasLimit['default'].gasApproved;
     }
   } else {
-    if (source === dest) {
-      const specialGasLimit = constants.SPECIAL_OTHER_GAS_LIMIT[source];
-      
-      if (specialGasLimit) {
-        gasUsed = specialGasLimit.gasUsed;
-      } else {
-        gasUsed = constants.SPECIAL_OTHER_GAS_LIMIT['default'].gasUsed;
-      }
-      
-      gasApproved = 0
-    } else {
-      gasUsed = yield call(getMaxGasExchange, source, dest);
-      
-      if (source !== "ETH") {
-        gasApproved = yield call(getMaxGasApprove, tokens[source].gasApprove)
-      }
+    exchangeGasLimit = yield call(getMaxGasExchange, source, dest);
+    approveGasLimit = 0;
+    
+    if (!isPayMode && source !== "ETH") {
+      approveGasLimit = yield call(getMaxGasApprove, tokens[source].gasApprove);
     }
   }
 
-  yield put(actions.setEstimateGas(gasUsed, gasApproved))
+  yield put(actions.setEstimateGas(exchangeGasLimit, approveGasLimit))
 }
 
 export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {

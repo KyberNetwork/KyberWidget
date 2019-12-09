@@ -235,9 +235,9 @@ const SPECIAL_PAYMENT_GAS_LIMIT = {
   'default': { gasUsed: 260000, gasApproved: 160000 }
 };
 const SPECIAL_OTHER_GAS_LIMIT = {
-  'ETH': { gasUsed: 21000 },
-  'DGX': { gasUsed: 330000 },
-  'default': { gasUsed: 160000 }
+  'ETH': { gasUsed: 21000, gasApproved: 0 },
+  'DGX': { gasUsed: 330000, gasApproved: 0 },
+  'default': { gasUsed: 160000, gasApproved: 0 }
 };
 
 module.exports = {
