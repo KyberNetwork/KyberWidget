@@ -1,11 +1,11 @@
 import React from "react";
-import {addPrefixClass} from "../../../utils/className"
+import { addPrefixClass } from "../../../utils/className"
 
 const ImportByPKeyContent = (props) => {
   return (
     <div>
       <div className={addPrefixClass("widget-exchange__text theme-text")}>
-        {props.translate("import.from_private_key_input_title") || "Enter your Private Key"}
+        {props.translate("import.private_key_title") || "Enter your Private Key"}
       </div>
       <div className={addPrefixClass("import-account-content__wrapper")}>
         <div className={addPrefixClass("common__input-panel")}>

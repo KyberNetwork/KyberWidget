@@ -13,6 +13,7 @@ import * as common from "./utils/common"
 import * as validator from "./utils/validators"
 import AnalyticFactory from "./services/analytics"
 import Web3 from "web3";
+import { initLanguage } from "./services/language";
 
 function getListTokens(network) {
   return new Promise((resolve, reject) => {
@@ -90,6 +91,8 @@ function initParams(appId) {
   var defaultPair
   var theme
   var mode
+  var language
+  var title
 
   if (attributeWidget === true || attributeWidget === 'true') {
     for (var i = 0, atts = widgetParent.attributes, n = atts.length, arr = []; i < n; i++) {
@@ -120,6 +123,8 @@ function initParams(appId) {
     mode = widgetParent.getAttribute('data-widget-mode')
     products = widgetParent.getAttribute('data-widget-products')
     products = products ? JSON.parse(products) : [];
+    language = widgetParent.getAttribute('data-widget-lang') || "en"
+    title = widgetParent.getAttribute('data-widget-title')
   } else {
     query = common.getQueryParams(window.location.search)
     receiveAddr = common.getParameterByName("receiveAddr")
@@ -141,7 +146,11 @@ function initParams(appId) {
     theme = common.getParameterByName("theme") || "theme-emerald"
     mode = common.getParameterByName("mode")
     products = productNames ? common.getProductsFromParam(productNames, productQtys, productImages) : [];
+    language = common.getParameterByName("lang") || 'en'
+    title = common.getParameterByName("title")
   }
+
+  initLanguage(language, store);
 
   paramForwarding = paramForwarding === "true" || paramForwarding === true ? paramForwarding : "false"
   switch (network) {
@@ -306,7 +315,7 @@ function initParams(appId) {
 
       store.dispatch(initParamsExchange(
         receiveAddr, receiveToken, tokenAddr, receiveAmount, products, callback, network, paramForwarding,
-        signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme
+        signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme, title
       ));
 
       //init analytic
@@ -322,9 +331,11 @@ function initParams(appId) {
 }
 
 Modal.setAppElement('body');
-window.kyberWidgetInstance = {}
+
+window.kyberWidgetInstance = {};
 window.kyberWidgetInstance.render = (widgetId) => {
-  var appId = widgetId ? widgetId : constants.APP_NAME
+  var appId = widgetId ? widgetId : constants.APP_NAME;
+  const appContainer = document.getElementById(appId);
 
   if (!document.getElementById(appId)) {
     return
@@ -337,6 +348,13 @@ window.kyberWidgetInstance.render = (widgetId) => {
       <Provider store={store}>
         <Layout />
       </Provider>
-    </PersistGate>, document.getElementById(appId));
-}
+    </PersistGate>, appContainer
+  );
+};
+window.kyberWidgetInstance.destroy = (widgetId) => {
+  const appId = widgetId ? widgetId : constants.APP_NAME;
+  const appContainer = document.getElementById(appId);
+  ReactDOM.unmountComponentAtNode(appContainer);
+};
+
 window.kyberWidgetInstance.render()

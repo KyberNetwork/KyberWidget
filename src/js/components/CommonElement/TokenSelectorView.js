@@ -44,7 +44,7 @@ const TokenSelectorView = (props) => {
             <div className={addPrefixClass("token-item")}>
               <span className={addPrefixClass("token-item__symbol")}>{item.symbol}</span>
               <span className={addPrefixClass("token-item__name")}>
-                {constants.STABLE_COINS.includes(item.symbol) ? 'Stable Coin' : item.name}
+                {constants.STABLE_COINS.includes(item.symbol) ? props.translate('exchange.stable_coin') || 'Stable Coin' : item.name}
               </span>
             </div>
           </div>

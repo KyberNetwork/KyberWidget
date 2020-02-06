@@ -46,10 +46,10 @@ const INIT_EXCHANGE_FORM_STATE = {
   slippageRate: 0,
   blockNo: 0,
   throwOnFailure: "0x0000000000000000000000000000000000000000",
-  gas: 400000,
-  max_gas: 400000,
-  gas_approve: 120000,
-  max_gas_approve: 120000,
+  gas: 520000,
+  max_gas: 520000,
+  gas_approve: 160000,
+  max_gas_approve: 160000,
   isFetchingGas: false,
   gasPrice: 20,
   selectedGas: 'f',
@@ -107,6 +107,7 @@ const INIT_EXCHANGE_FORM_STATE = {
   network: 'ropsten',
   isSwap:true,
   theme: '',
+  title: null,
   fluctuatingRate: 0,
   isSrcAmountLoading: false,
   isDestAmountLoading: false,
@@ -124,7 +125,7 @@ const INIT_TRANSFER_FORM_STATE = {
   destAddress: "",
   throwOnFailure: "0x0000000000000000000000000000000000000000",
   gas: 21000,
-  gas_limit: 100000,
+  gas_limit: 200000,
   isFetchingGas: false,
   gasPrice: 20,
   selectedGas: 'f',
@@ -220,20 +221,30 @@ const SUPPORTED_NETWORK = [
 ];
 
 const STABLE_COINS = ['DAI'];
-
 const APP_NAME='kyber-widget'
 const VERSION='v0.1';
 const ASSET_URL = 'https://files.kyber.network/DesignAssets/';
-const PAYMENT_TOKEN_TRANSFER_GAS = 200000;
-const PAYMENT_ETH_TRANSFER_GAS = 48500;
+const PERM_HINT = "PERM";
 
-//const TRADE_TOPIC = "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c"
-const PERM_HINT = "PERM"
+const SPECIAL_TRANSFER_GAS_LIMIT = {
+  'DGX': 330000
+};
+const SPECIAL_PAYMENT_GAS_LIMIT = {
+  'ETH': { gasUsed: 65000, gasApproved: 0 },
+  'DGX': { gasUsed: 330000, gasApproved: 160000 },
+  'default': { gasUsed: 260000, gasApproved: 160000 }
+};
+const SPECIAL_OTHER_GAS_LIMIT = {
+  'ETH': { gasUsed: 21000 },
+  'DGX': { gasUsed: 330000 },
+  'default': { gasUsed: 160000 }
+};
 
 module.exports = {
   ERC20, KYBER_NETWORK, KYBER_WRAPPER, EPSILON, ETHER_ADDRESS, ETH, RESERVES, KYBER_WALLET, KYBER_PAY_WRAPPER,
   KYBER_WALLET_DATA, INIT_EXCHANGE_FORM_STATE, INIT_TRANSFER_FORM_STATE, ASSET_URL,
-  RATE_EPSILON, IDLE_TIME_OUT, HISTORY_EXCHANGE, STORAGE_KEY, CONNECTION_CHECKER, PAYMENT_TOKEN_TRANSFER_GAS, PAYMENT_ETH_TRANSFER_GAS,
+  RATE_EPSILON, IDLE_TIME_OUT, HISTORY_EXCHANGE, STORAGE_KEY, CONNECTION_CHECKER,
   MAX_CAP_ONE_EXCHANGE_BASE_VALUE, MAX_CAP_ONE_EXCHANGE_BASE_RESERVE, MAX_CAP_PERCENT, CONFIG_ENV_LEDGER_LINK, LEDGER_SUPPORT_LINK, TRANSFER_TOPIC, BASE_HOST,
-  IMPORT_ACCOUNT_TYPE, MAX_AMOUNT_RATE_HANDLE, SUPPORTED_NETWORK, APP_NAME, PAYMENT_PATH, VERSION, PERM_HINT, STABLE_COINS
+  IMPORT_ACCOUNT_TYPE, MAX_AMOUNT_RATE_HANDLE, SUPPORTED_NETWORK, APP_NAME, PAYMENT_PATH, VERSION, PERM_HINT, STABLE_COINS,
+  SPECIAL_TRANSFER_GAS_LIMIT, SPECIAL_PAYMENT_GAS_LIMIT, SPECIAL_OTHER_GAS_LIMIT
 }

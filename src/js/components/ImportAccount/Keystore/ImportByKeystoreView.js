@@ -5,16 +5,14 @@ const ImportByKeystoreView = (props) => {
   return (
     <div>
       <div className={addPrefixClass("widget-exchange__text theme-text")}>
-        {props.translate("import.from_json_title") || "Choose your JSON file"}
+        {props.translate("import.keystore_title") || "Choose your JSON file"}
       </div>
       <div className={addPrefixClass("import-account-content__wrapper")}>
         <div className={addPrefixClass("import-account-content__info")}>
           <div className={addPrefixClass(`import-account-content__info-type theme-border ${props.error ? 'error' : ''}`)}>
             <div>
               <div className={addPrefixClass(`importer__icon keystore`)}/>
-              <div className={addPrefixClass("import-account-content__info-type-text")}>
-                {props.translate("import.json") || "JSON"}
-              </div>
+              <div className={addPrefixClass("import-account-content__info-type-text")}>JSON</div>
             </div>
           </div>
         </div>

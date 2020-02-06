@@ -361,7 +361,7 @@ label input, select, .pointer {
 
 .section-title__text {
   display: inline-block;
-  background: white;
+  background: #fcfcfe;
   position: relative;
   z-index: 1;
   padding-right: 20px;

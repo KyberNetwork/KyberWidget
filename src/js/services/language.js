@@ -1,50 +1,25 @@
 import Language from "../../../lang/index"
 import { initialize, addTranslationForLanguage } from 'react-localize-redux';
 
-// const onMissingTranslation = (key, languageCode) => {
-// };
-
-function getParameterByName(name, url) {
-  if (!url) url = window.location.href;
-  name = name.replace(/[\[\]]/g, "\\$&");
-  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-      results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return '';
-  return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
-export function initLanguage(store){
-  var packName = "en"
+export function initLanguage(language, store) {
   let languagePack
+
   try {
-    packName = getParameterByName('lang')
-    if (packName){
-      languagePack = require("../../../lang/" + packName + ".json")
-    }else{
-      packName = Language.defaultLanguage
-      languagePack = require("../../../lang/" + packName + ".json")  
-    }
+    languagePack = require("../../../lang/" + language + ".json")
   } catch (e) {
-    console.log(e)
-    packName = Language.defaultLanguage
-    languagePack = require("../../../lang/" + packName + ".json")
+    language = Language.defaultLanguage
+    languagePack = require("../../../lang/" + Language.defaultLanguage + ".json")
   }
-  console.log("________________ load loanguage ", packName)
-  // store.dispatch(initialize([packName], { 
-  //   missingTranslationCallback: onMissingTranslation, 
-  //   showMissingTranslationMsg: false,
-  //   defaultLanguage: packName
-  // }));
+
   store.dispatch(initialize({
     languages: [
-      { name: "", code: packName },      
+      { name: "", code: language }
     ],
-    //translation: globalTranslations,
     options: {
       renderToStaticMarkup: false,
       renderInnerHtml: true
     }
   }));
-  store.dispatch(addTranslationForLanguage(languagePack, packName));
+
+  store.dispatch(addTranslationForLanguage(languagePack, language));
 }

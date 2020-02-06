@@ -18,7 +18,7 @@ const ImportByDeviceView = (props) => {
   return (
     <div>
       <div className={addPrefixClass("widget-exchange__text theme-text")}>
-        {props.translate(`modal.select_${props.chosenImportAccount}_address`) || 'Select Address'}
+        {props.translate(`import.select_${props.chosenImportAccount}`) || 'Select Address'}
       </div>
 
       <div className={addPrefixClass("import-account-content__info")}>
@@ -33,11 +33,11 @@ const ImportByDeviceView = (props) => {
         {!props.hasError &&
         <div className={addPrefixClass("import-account-content__info-text")}>
           <div className={addPrefixClass("import-account-content__info-text-address")}>
-            <div className={addPrefixClass("title")}>{props.translate("transaction.address") || "Address"}: </div>
+            <div className={addPrefixClass("title")}>{props.translate("common.address") || "Address"}: </div>
             <div className={addPrefixClass("address common__one-line")}>{props.wallet.address.slice(0, 12)}...{props.wallet.address.slice(-6)}</div>
           </div>
           <div className={addPrefixClass("import-account-content__info-text-balance")}>
-            <div className={addPrefixClass("title")}>You have: </div>
+            <div className={addPrefixClass("title")}>{props.translate("common.you_have") || "You have"}: </div>
             <div className={addPrefixClass("address common__one-line")}>{props.wallet.balance} ETH</div>
           </div>
         </div>
@@ -50,7 +50,7 @@ const ImportByDeviceView = (props) => {
             <div className={addPrefixClass("address-list-path")}>
               <div className={addPrefixClass("k-content")}>
                 <div className={addPrefixClass("block-title")}>
-                  {props.translate("modal.select_hd_path") || "Select HD derivation path"}
+                  {props.translate("import.select_hd") || "Select HD derivation path"}
                 </div>
                 <div className={addPrefixClass("block-choose-path")}>
                   <PathSelector
@@ -62,7 +62,7 @@ const ImportByDeviceView = (props) => {
                 </div>
 
                 <div className={addPrefixClass("block-title")}>
-                  {props.translate("modal.select_address") || "Select the Address you'd' like to use"}
+                  {props.translate("import.select_address") || "Select the Address you'd like to use"}
                 </div>
                 <div className={addPrefixClass("block-choose-path block-choose-path__select-address")}>
                   <AddressSelector

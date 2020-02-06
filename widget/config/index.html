@@ -22,9 +22,14 @@
 
       <div class="widget-config__header-item">
         <div class="widget-config__btn widget-config__select version click-outside" id="version-selector">
-          <div class="widget-config__select-title">Version v<span id="selected-version">0.6.4</span></div>
+          <div class="widget-config__select-title">Version v<span id="selected-version">0.7.4</span></div>
           <div class="widget-config__select-container">
             <div class="widget-config__select-wrapper">
+              <div class="widget-config__select-item" data-version="0.7.4">Version v0.7.4</div>
+              <div class="widget-config__select-item" data-version="0.7.3">Version v0.7.3</div>
+              <div class="widget-config__select-item" data-version="0.7.2">Version v0.7.2</div>
+              <div class="widget-config__select-item" data-version="0.7.1">Version v0.7.1</div>
+              <div class="widget-config__select-item" data-version="0.7.0">Version v0.7.0</div>
               <div class="widget-config__select-item" data-version="0.6.4">Version v0.6.4</div>
               <div class="widget-config__select-item" data-version="0.6.3">Version v0.6.3</div>
               <div class="widget-config__select-item" data-version="0.6.2">Version v0.6.2</div>
@@ -45,7 +50,7 @@
 
     <div class="widget-config__content">
       <form class="widget-config__form">
-        <section class="widget-config__form-section no-bot-padding">
+        <section class="widget-config__form-section">
           <h3 class="section-title">
             <div class="section-title__text">Appearance</div>
           </h3>
@@ -89,7 +94,7 @@
               </label>
             </div>
           </div>
-          <div id="theme-selector" class="item border-item no-bot-padding">
+          <div id="theme-selector" class="item no-bot-padding">
             <label class="item-name">Widget Theme</label>
             <div class="widget-config__theme-container">
               <div class="widget-config__theme-item emerald active" data-theme="theme-emerald"></div>
@@ -98,9 +103,45 @@
               <div class="widget-config__theme-item dark" data-theme="theme-dark"></div>
             </div>
           </div>
+
+          <h3 class="section-title" style="margin-top: 36px">
+            <div class="section-title__text">Customization</div>
+          </h3>
+          <div class="item hidden-type-swap hidden-type-buy">
+            <label class="item-name">Widget Title</label>
+            <div class="item-value">
+              <input name="title" class="input-box full-length" type="text" placeholder="Your Customized Title">
+            </div>
+          </div>
+          <div class="item">
+            <label class="item-name">Language</label>
+            <div class="item-value">
+              <select name="lang" class="widget-config__select-default full-width">
+                <option value="en" selected>English</option>
+                <option value="cn">Chinese</option>
+                <option value="kr">Korean</option>
+              </select>
+            </div>
+          </div>
+          <div class="item">
+            <label class="item-name">Pinned Tokens (since v0.2)</label>
+            <div class="item-value">
+              <input name="pinnedTokens" class="input-box full-length" type="text"
+                     pattern="^[A-Za-z0-9]+(_[A-Za-z0-9]+){0,}$"
+                     placeholder="ETH_KNC_DAI_..." message="Pinned Tokens must be in TOKEN_TOKEN_TOKEN format.">
+            </div>
+          </div>
+          <div class="item hidden-type-pay hidden-type-buy">
+            <label class="item-name">Default Pair (since v0.2)</label>
+            <div class="item-value">
+              <input name="defaultPair" class="input-box full-length" type="text"
+                     pattern="^[A-Za-z0-9]+_[A-Za-z0-9]+$"
+                     placeholder="ETH_KNC" message="Default Pair must be in TOKEN_TOKEN format.">
+            </div>
+          </div>
         </section>
 
-        <section class="widget-config__form-section no-top-padding">
+        <section class="widget-config__form-section">
           <h3 class="section-title">
             <div class="section-title__text">Parameters</div>
           </h3>
@@ -159,22 +200,6 @@
                 <option value="production">Production</option>
                 <option value="mainnet">Mainnet</option>
               </select>
-            </div>
-          </div>
-          <div class="item">
-            <label class="item-name">Pinned Tokens (since v0.2)</label>
-            <div class="item-value">
-              <input name="pinnedTokens" class="input-box full-length" type="text"
-                     pattern="^[A-Za-z0-9]+(_[A-Za-z0-9]+){0,}$"
-                     placeholder="ETH_KNC_DAI_..." message="Pinned Tokens must be in TOKEN_TOKEN_TOKEN format.">
-            </div>
-          </div>
-          <div class="item hidden-type-pay hidden-type-buy">
-            <label class="item-name">Default Pair (since v0.2)</label>
-            <div class="item-value">
-              <input name="defaultPair" class="input-box full-length" type="text"
-                     pattern="^[A-Za-z0-9]+_[A-Za-z0-9]+$"
-                     placeholder="ETH_KNC" message="Default Pair must be in TOKEN_TOKEN format.">
             </div>
           </div>
           <div class="item">

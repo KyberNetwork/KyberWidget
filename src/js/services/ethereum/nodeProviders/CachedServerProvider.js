@@ -32,6 +32,20 @@ export default class CachedServerProvider extends React.Component {
     })
   }
 
+  getGasLimit(srcTokenAddress, destTokenAddress, srcAmount) {
+    if (!srcAmount) srcAmount = 0;
+
+    return new Promise((resolve, reject) => {
+      fetch( `${BLOCKCHAIN_INFO[this.network].api_url}/gas_limit?source=${srcTokenAddress}&dest=${destTokenAddress}&amount=${srcAmount}`)
+        .then((response) => {
+          resolve(response.json())
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  }
+
   checkKyberEnable() {
     return new Promise((resolve, rejected) => {
       fetch(this.rpcUrl + '/kyberEnabled', {
@@ -181,16 +195,6 @@ export default class CachedServerProvider extends React.Component {
       rejected(new Error("This api /getLanguagePack will comming soon"))
     })
   }
-
-  // tokenIsSupported(address) {
-  //     let tokens = BLOCKCHAIN_INFO[this.network].tokens
-  //     for (let token in tokens) {
-  //         if (tokens[token].address.toLowerCase() == address.toLowerCase()) {
-  //             return true
-  //         }
-  //     }
-  //     return false
-  // }
 
   getInfo(infoObj) {
     console.log(infoObj)

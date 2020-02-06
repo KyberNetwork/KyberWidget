@@ -1,6 +1,8 @@
 import * as ethUtil from 'ethereumjs-util'
 import scrypt from 'scryptsy'
 import crypto from 'crypto'
+import { store } from "../store"
+import { getTranslate } from 'react-localize-redux'
 
 function decipherBuffer(decipher, data) {
   return Buffer.concat([decipher.update(data), decipher.final()])
@@ -20,6 +22,8 @@ export function addressFromKey(keystring) {
 }
 
 export function unlock(input, password, nonStrict) {
+    const translate = getTranslate(store.getState().locale);
+
     var json = (typeof input === 'object') ? input : JSON.parse(nonStrict ? input.toLowerCase() : input)
     if (json.version !== 3) {
         throw new Error('Not a V3 wallet')
@@ -41,7 +45,7 @@ export function unlock(input, password, nonStrict) {
     var ciphertext = new Buffer(json.crypto.ciphertext, 'hex')
     var mac = ethUtil.keccak(Buffer.concat([derivedKey.slice(16, 32), ciphertext]))
     if (mac.toString('hex') !== json.crypto.mac) {
-        throw new Error('Key derivation failed - possibly wrong password')
+      throw new Error(translate("error.keystore_wrong_pass") || 'Key derivation failed - possibly wrong password')
     }
     var decipher = crypto.createDecipheriv(json.crypto.cipher, derivedKey.slice(0, 16), new Buffer(json.crypto.cipherparams.iv, 'hex'))
     var seed = decipherBuffer(decipher, ciphertext, 'hex')

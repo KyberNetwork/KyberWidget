@@ -174,7 +174,7 @@ const exchange = (state = initState, action) => {
       if (!isSuccess) {
         newState.errors.rateSystem = errors.getRate;
       } else {
-        if (expectedPrice === "0") {
+        if (newState.sourceToken !== newState.destToken && expectedPrice === "0") {
           if(rateInit === "0" || rateInit === 0 || rateInit === undefined || rateInit === null) {
             newState.errors.rateSystem = errors.kyberMaintain;
           } else {
@@ -332,22 +332,30 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.INPUT_CHANGE": {
-      let focus = action.payload.focus
-      let value = action.payload.value
-      if (focus == "source") {
+      const { focus, value } = action.payload;
+      
+      if (focus === "source") {
         newState.sourceAmount = value
         newState.errors.sourceAmountError = ""
         newState.errors.ethBalanceError = ""
-        if (state.errors.selectSameToken || state.errors.selectTokenToken) return newState
-        newState.destAmount = converter.caculateDestAmount(value, state.offeredRate, 6)
-      }
-      else if (focus == "dest") {
+        if (state.errors.selectSameToken || state.errors.selectTokenToken) {
+          newState.isDestAmountLoading = false;
+          newState.destAmount = 0;
+        } else {
+          newState.destAmount = converter.caculateDestAmount(value, state.offeredRate, 6)
+        }
+      } else if (focus === "dest") {
         newState.destAmount = value
         newState.errors.destAmountError = ""
         newState.errors.sourceAmountError = ""
-        if (state.errors.selectSameToken || state.errors.selectTokenToken) return newState
-        newState.sourceAmount = converter.caculateSourceAmount(value, state.offeredRate, 6)
+        if (state.errors.selectSameToken || state.errors.selectTokenToken) {
+          newState.isSrcAmountLoading = false;
+          newState.sourceAmount = 0;
+        } else {
+          newState.sourceAmount = converter.caculateSourceAmount(value, state.offeredRate, 6)
+        }
       }
+      
       return newState
     }
     case "EXCHANGE.FOCUS_INPUT": {
@@ -528,7 +536,7 @@ const exchange = (state = initState, action) => {
     }
     case "EXCHANGE.INIT_PARAMS_EXCHANGE":{
       const {receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, products, network,
-        paramForwarding, signer, commissionID, isSwap, type, paymentData, hint, theme} = action.payload
+        paramForwarding, signer, commissionID, isSwap, type, paymentData, hint, theme, title} = action.payload
       newState.destTokenSymbol = receiveToken
       newState.destAmount = receiveAmount
 
@@ -551,6 +559,7 @@ const exchange = (state = initState, action) => {
       newState.paymentData = paymentData
       newState.hint = hint
       newState.theme = theme
+      newState.title = title
 
       return newState
     }

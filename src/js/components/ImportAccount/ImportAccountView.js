@@ -6,7 +6,7 @@ import ImportByKeystoreView from "./Keystore/ImportByKeystoreView";
 import { ImportByMetamask } from "../../containers/ImportAccount";
 import { ImportByPrivateKey, ImportByDeviceWithLedger, ImportByDeviceWithTrezor, ImportKeystore } from "../../containers/ImportAccount";
 import constants from "../../services/constants";
-import {addPrefixClass} from "../../utils/className"
+import { addPrefixClass } from "../../utils/className"
 import { isMobile } from '../../utils/common'
 
 const ImportAccountView = (props) => {
@@ -42,17 +42,17 @@ const ImportAccountView = (props) => {
                 <div className={addPrefixClass("coinbase__content")}>
                   <div className={addPrefixClass("coinbase__logo")}/>
                   <div>
-                    <div className={addPrefixClass("coinbase__name")}>Coinbase Wallet</div>
-                    <div className={addPrefixClass("coinbase__desc")}>Ethereum Wallet & DApp</div>
+                    <div className={addPrefixClass("coinbase__name")}>{props.translate("import.coinbase_wallet") || "Coinbase Wallet"}</div>
+                    <div className={addPrefixClass("coinbase__desc")}>{props.translate("import.eth_wallet") || "Ethereum Wallet & DApp"}</div>
                   </div>
                 </div>
                 <a className={addPrefixClass("coinbase__download theme-text")} href={isMobile.iOS() ? "https://itunes.apple.com/us/app/coinbase-wallet/id1278383455?mt=8" : "https://play.google.com/store/apps/details?id=org.toshi&hl=en"} target="_blank">
-                  Download
+                  {props.translate("common.download") || "Download"}
                 </a>
               </div>
             )}
 
-            <div className={addPrefixClass("widget-exchange__text theme-text")}>Unlock your Wallet</div>
+            <div className={addPrefixClass("widget-exchange__text theme-text")}>{props.translate("import.unlock_wallet") || "Unlock your Wallet"}</div>
 
             <div className={addPrefixClass("import-account-content " + (props.chosenImportAccount && props.isLoading === false ? 'import-account-content--active' : ''))}>
               {importComponent}
@@ -85,12 +85,12 @@ const ImportAccountView = (props) => {
           className={addPrefixClass("common__button hollow theme-button")}
           onClick={props.chosenImportAccount ? props.onCloseImportAccount : props.backToFirstStep}
         >
-          {props.translate("transaction.back") || "Back"}
+          {props.translate("common.back") || "Back"}
         </div>
 
         {props.chosenImportAccount && (
           <div className={addPrefixClass(`widget-exchange__import common__button theme-gradient ${props.error ? 'disabled' : ''}`)} onClick={handleImportWallet}>
-            {props.translate("modal.import") || "Import"}
+            {props.translate("import.import") || "Import"}
           </div>
         )}
       </div>
