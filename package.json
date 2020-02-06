@@ -1,6 +1,6 @@
 {
   "name": "kyber-wallet",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "Ethereum wallet developed by KyberNetwork team. It supports instant exchange between wide range of tokens.",
   "main": "webpack.config.js",
   "dependencies": {
