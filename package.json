@@ -33,7 +33,7 @@
     "history": "^4.7.2",
     "localforage": "^1.5.5",
     "lodash": "^4.17.4",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.3",
     "node-fetch": "^2.3.0",
     "platform": "^1.3.4",
     "postcss-class-prefix": "^0.3.0",
