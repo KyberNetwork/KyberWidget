@@ -216,7 +216,6 @@ const SUPPORTED_NETWORK = [
   'ropsten',
   'production',
   'mainnet',
-  'rinkeby',
   'staging'
 ];
 

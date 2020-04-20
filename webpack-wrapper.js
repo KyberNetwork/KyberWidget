@@ -179,7 +179,7 @@ var webpack = require('webpack');
 
 async function saveBackupTokens() {
   //get backup tokens
-  var listFiles = ["production", "rinkeby", "ropsten", "staging"]
+  var listFiles = ["production", "ropsten", "staging"]
   for (var i = 0; i < listFiles.length; i++) {
     var file = "./env/config-env/" + listFiles[i] + ".json"
     var obj = JSON.parse(fs.readFileSync(file, 'utf8'));
