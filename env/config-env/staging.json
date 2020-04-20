@@ -10,10 +10,6 @@
                 "type": "cached"
             },
             {
-                "endPoint": "https://mainnet.infura.io/v3/c1d32946e55e45b78c330954cf543fc7",
-                "type": "prune"
-            },
-            {
                 "endPoint": "https://api.mycryptoapi.com/eth",
                 "type": "none_prune"
             },

@@ -158,9 +158,6 @@ function initParams(appId) {
     case "mainnet":
       network = "production"
       break
-    case "rinkeby":
-      network = "rinkeby"
-      break
     case "staging":
       network = "staging"
       break
