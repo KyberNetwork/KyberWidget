@@ -4,7 +4,6 @@ import * as ethUtil from 'ethereumjs-util'
 import BLOCKCHAIN_INFO from "../../../../../env"
 import abiDecoder from "abi-decoder"
 import EthereumTx from "ethereumjs-tx"
-import * as common from "../../../utils/common";
 import * as converters from "../../../utils/converter"
 
 export default class BaseProvider {
@@ -296,13 +295,8 @@ export default class BaseProvider {
     }
 
     getRate(source, dest, srcAmount) {
-
-        var mask = converters.maskNumber()
-        var srcAmountEnableFirstBit = converters.sumOfTwoNumber(srcAmount,  mask)
-        srcAmountEnableFirstBit = converters.toHex(srcAmountEnableFirstBit)
-
         return new Promise((resolve, reject) => {
-            this.networkContract.methods.getExpectedRate(source, dest, srcAmountEnableFirstBit).call()
+            this.networkContract.methods.getExpectedRate(source, dest, srcAmount).call()
                 .then((result) => {
                     if (result != null) {
                         resolve(result)
@@ -641,12 +635,7 @@ export default class BaseProvider {
     }
 
     getRateAtSpecificBlock(source, dest, srcAmount, blockno) {
-
-        var mask = converters.maskNumber()
-        var srcAmountEnableFistBit = converters.sumOfTwoNumber(srcAmount,  mask)
-        srcAmountEnableFistBit = converters.toHex(srcAmountEnableFistBit)
-
-        var data = this.networkContract.methods.getExpectedRate(source, dest, srcAmountEnableFistBit).encodeABI()
+        var data = this.networkContract.methods.getExpectedRate(source, dest, srcAmount).encodeABI()
 
         return new Promise((resolve, reject) => {
             this.rpc.eth.call({
@@ -654,8 +643,6 @@ export default class BaseProvider {
                 data: data
             }, blockno)
                 .then(result => {
-                    //    console.log({source, dest, srcAmount, blockno})
-                    //     console.log("rate: " + result)
                     if (result === "0x") {
                         reject(new Error("Cannot get rate"))
                         return
@@ -668,14 +655,9 @@ export default class BaseProvider {
                             type: 'uint256',
                             name: 'slippagePrice'
                         }], result)
-                        //   console.log(rates)
                         resolve(rates)
                     } catch (e) {
                         reject(e)
-                        // resolve({
-                        //     expectedPrice: "0",
-                        //     slippagePrice: "0"
-                        // })
                     }
                 }).catch((err) => {
                     reject(err)

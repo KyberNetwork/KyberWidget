@@ -87,6 +87,8 @@
       }
 
       .widget-exchange__column-item {
+        word-break: break-word;
+
         &:first-child {
           width: 54%;
         }
