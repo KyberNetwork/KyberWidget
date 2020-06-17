@@ -46,7 +46,7 @@ export default class Tx {
             var theLog
             for (var i = 0; i < logs.length; i++) {
               if (logs[i].address.toLowerCase() == BLOCKCHAIN_INFO[network].network.toLowerCase() &&
-                logs[i].topics[0].toLowerCase() == BLOCKCHAIN_INFO[network].trade_topic.toLowerCase()) {
+                logs[i].topics[0].toLowerCase() == constants.TRADE_TOPIC.toLowerCase()) {
                 theLog = logs[i]
                 newTx.eventTrade = theLog.data
                 break
