@@ -1,11 +1,10 @@
 import React from 'react';
 import constants from "../constants"
 import {
-  updateBlock, updateRate, updateAllRate, updateAllRateUSD,
+  updateBlock, updateAllRate, updateAllRateUSD,
   checkConnection, setGasPrice, setMaxGasPrice
 } from "../../actions/globalActions"
 import { updateAccount, updateTokenBalance } from "../../actions/accountActions"
-import { updateTx, updateApproveTxsData } from "../../actions/txActions"
 import { updateRateExchange, estimateGas, checkKyberEnable, verifyExchange } from "../../actions/exchangeActions"
 import { estimateGasTransfer, verifyTransfer } from "../../actions/transferActions"
 import * as marketActions from "../../actions/marketActions"
@@ -104,50 +103,6 @@ export default class EthereumService extends React.Component {
     var tokens = state.tokens.tokens
     
     store.dispatch(updateAllRateUSD(ethereum, tokens))
-  }
-
-  fetchTxsData = () => {
-    var state = store.getState()
-    var tx
-    var txs = state.txs
-    var ethereum = state.connection.ethereum
-
-    var account = state.account.account
-    var listToken = {}
-    Object.keys(txs).forEach((hash) => {
-      tx = txs[hash]
-      if (tx.status == "pending") {
-        if (tx.type === "exchange") {
-          var exchange = state.exchange
-          listToken = {
-            source: {
-              symbol: exchange.sourceTokenSymbol,
-              address: exchange.sourceToken
-            },
-            dest: {
-              symbol: exchange.destTokenSymbol,
-              address: exchange.destToken
-            }
-          }
-          store.dispatch(updateTx(ethereum, tx, account, listToken))
-        } else {
-          var transfer = state.transfer
-          listToken = {
-            token: {
-              symbol: transfer.tokenSymbol,
-              address: transfer.token
-            }
-          }
-          store.dispatch(updateTx(ethereum, tx, account, listToken))
-        }
-
-      }
-    })
-  }
-
-
-  fetchApproveTxsData = () =>{
-    store.dispatch(updateApproveTxsData())
   }
 
   fetchAccountData = () => {
