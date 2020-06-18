@@ -222,7 +222,7 @@ const SUPPORTED_NETWORK = [
 const STABLE_COINS = ['DAI'];
 const APP_NAME='kyber-widget'
 const VERSION='v0.1';
-const ASSET_URL = 'https://files.kyber.network/DesignAssets/';
+const ASSET_URL = 'https://files.kyberswap.com/DesignAssets/';
 const PERM_HINT = "PERM";
 
 const SPECIAL_TRANSFER_GAS_LIMIT = {

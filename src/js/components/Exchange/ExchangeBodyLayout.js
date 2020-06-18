@@ -285,7 +285,7 @@ const ExchangeBodyLayout = (props) => {
         <label className={addPrefixClass("common__checkbox")}>
           <span className={addPrefixClass("common__checkbox-text")}>
             <span>{props.translate("exchange.agree") || "Agree to"} </span>
-            <a className={addPrefixClass("theme-text theme-text-hover")} href="https://files.kyber.network/tac.html" target="_blank" onClick={(e) => {if (props.global.analytics) props.global.analytics.callTrack("clickTermAndCondition")}}>
+            <a className={addPrefixClass("theme-text theme-text-hover")} href="https://files.kyberswap.com/tac.pdf" target="_blank" onClick={(e) => {if (props.global.analytics) props.global.analytics.callTrack("clickTermAndCondition")}}>
               {props.translate("exchange.term") || "Terms & Conditions"}
             </a>
           </span>
