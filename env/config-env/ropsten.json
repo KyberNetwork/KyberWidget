@@ -6,7 +6,7 @@
                 "type": "cached"
             },
             {
-                "endPoint": "https://ropsten.infura.io/v3/c1d32946e55e45b78c330954cf543fc7",
+                "endPoint": "https://eth-ropsten.alchemyapi.io/v2/qLuPihYhIIQcd7-S3Iw9V0YBTLsgU_Vz",
                 "type": "prune"
             }
         ],
@@ -230,10 +230,9 @@
     },
     "ethScanUrl": "https://ropsten.etherscan.io/",
     "reserve": "0x0fc1cf3e7dd049f7b42e6823164a64f76fc06be0",
-    "network": "0x818E6FECD516Ecc3849DAf6845e3EC868087B755",
+    "network": "0xa16Fc6e9b5D359797999adA576F7f4a4d57E8F75",
     "wrapper": "0x665d34f192f4940da4e859ff7768c0a80ed3ae10",
     "payWrapper": "0x5211e6196d2a8e4ea7ee3dd961c8d667fbc4727c",
-    "trade_topic": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
     "endpoint": "https://ropsten.infura.io/DtzEYY0Km2BA3YwyJcBG",
     "averageBlockTime": 6000,
     "networkId": 3,
