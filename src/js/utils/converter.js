@@ -15,9 +15,8 @@ export function calculateMinAmount(source, rate) {
   return minAmount
 }
 
-export function calculateDest(source, rate, precision) {
-  //console.log({source, rate})
-  if (isNaN(source) || source === ""){
+export function calculateDest(source, rate, fee, precision) {
+  if (isNaN(source) || source === "") {
     source = 0
   }
   var bigSource = new BigNumber(source)
@@ -27,6 +26,11 @@ export function calculateDest(source, rate, precision) {
     return "0"
   }
   var dest = bigSource.times(bigRate).div(1000000000000000000)
+  var percent = new BigNumber(fee / 10000)
+  var weight = new BigNumber(1)
+  weight = weight.minus(percent)
+
+  dest = dest.times(weight)
   if (precision) {
     return dest.toFixed(precision)
   } else {
@@ -34,7 +38,7 @@ export function calculateDest(source, rate, precision) {
   }
 }
 
-export function caculateSourceAmount(destAmount, offeredRate, precision) {
+export function caculateSourceAmount(destAmount, offeredRate, fee, precision) {
   if (!destAmount || !offeredRate || acceptableTyping(destAmount) || acceptableTyping(offeredRate)) {
     return "0"
   }
@@ -44,22 +48,17 @@ export function caculateSourceAmount(destAmount, offeredRate, precision) {
 
   bigOfferedRate = bigOfferedRate.div(1000000000000000000)
   var result = bigDest.div(bigOfferedRate)
-  if (precision) {
-    return result.toFixed(precision)
-  } else {
-    return result.toString()
-  }
-}
 
-export function caculateDestAmount(sourceAmount, offeredRate, precision) {
-  if (!sourceAmount || !offeredRate || acceptableTyping(sourceAmount) || acceptableTyping(offeredRate)) {
-    return "0"
-  }
-  var bigSource = new BigNumber(sourceAmount)
-  var bigOfferedRate = new BigNumber(offeredRate)
+  var percent = new BigNumber(fee / 10000)
+  var weight = new BigNumber(1)
+  weight = weight.minus(percent)
 
-  bigOfferedRate = bigOfferedRate.div(1000000000000000000)
-  var result = bigSource.times(bigOfferedRate)
+  if (weight.comparedTo(new BigNumber(0)) == 0) {
+    return 0
+  }
+
+  result = result.div(weight)
+
   if (precision) {
     return result.toFixed(precision)
   } else {
@@ -78,8 +77,8 @@ export function calculateRate(source, dest) {
   return rate
 }
 
-export function caculateEthBalance(token){
-  if(token.symbol.toLowerCase() == 'eth'){
+export function caculateEthBalance(token) {
+  if (token.symbol.toLowerCase() == 'eth') {
     return token.balance
   } else {
     var rateBig = new BigNumber(token.rate)
@@ -92,35 +91,35 @@ export function caculateEthBalance(token){
   }
 }
 
-export function shortEthBalance(tokens){
+export function shortEthBalance(tokens) {
   var shortedTokens = []
-  let removedEth = {...tokens}
+  let removedEth = { ...tokens }
   delete removedEth[constants.ETH.symbol]
-  if(tokens){
+  if (tokens) {
     shortedTokens = Object.values(removedEth).sort((a, b) => {
-      var balanceEthA = new BigNumber(caculateEthBalance(a)) 
-      var balanceEthB = new BigNumber(caculateEthBalance(b)) 
+      var balanceEthA = new BigNumber(caculateEthBalance(a))
+      var balanceEthB = new BigNumber(caculateEthBalance(b))
       return balanceEthB.minus(balanceEthA)
     })
-  } 
-  if(tokens[constants.ETH.symbol]){
+  }
+  if (tokens[constants.ETH.symbol]) {
     shortedTokens.unshift(tokens[constants.ETH.symbol])
   }
   return shortedTokens
 }
 
-export function shortASCEthBalance(tokens){
+export function shortASCEthBalance(tokens) {
   var shortedTokens = []
-  let removedEth = {...tokens}
+  let removedEth = { ...tokens }
   delete removedEth[constants.ETH.symbol]
-  if(tokens){
+  if (tokens) {
     shortedTokens = Object.values(removedEth).sort((a, b) => {
-      var balanceEthA = new BigNumber(caculateEthBalance(a)) 
-      var balanceEthB = new BigNumber(caculateEthBalance(b)) 
+      var balanceEthA = new BigNumber(caculateEthBalance(a))
+      var balanceEthB = new BigNumber(caculateEthBalance(b))
       return balanceEthA.minus(balanceEthB)
     })
-  } 
-  if(tokens[constants.ETH.symbol]){
+  }
+  if (tokens[constants.ETH.symbol]) {
     shortedTokens.unshift(tokens[constants.ETH.symbol])
   }
   return shortedTokens
@@ -220,23 +219,31 @@ export function toT(number, decimal, round) {
   }
 }
 
-export function convertSellRate(rate){
+export function convertSellRate(rate, fee=0) {
   var bigNumber = new BigNumber(rate.toString())
-  var  result = bigNumber.div(Math.pow(10, 18));
-  return result.toString()
+  var result = bigNumber.div(Math.pow(10, 18));
+  result = result.toNumber()
+  var weight = 1 - fee / 10000
+
+  return result * weight
 }
 
-export function convertBuyRate(rate){
+export function convertBuyRate(rate, fee = 0) {
   var bigNumber = new BigNumber(rate.toString())
-  var  result = bigNumber.div(Math.pow(10, 18));
-  var zero = new BigNumber(0)
-  if (result.comparedTo(zero) !== 0){
-    var oneNumber = new BigNumber(1)
-    result = oneNumber.div(result)
-    return result.toString()
-  }else{
+  var result = bigNumber.div(Math.pow(10, 18));
+  result = result.toNumber()
+
+  if (result == 0) {
     return 0
   }
+
+  var weight = 1 - fee / 10000
+  if (weight == 0) {
+    return 0
+  }
+
+  return (1/result) / weight
+
 }
 
 
@@ -255,12 +262,12 @@ export function numberToHex(number) {
   return "0x" + (new BigNumber(number)).toString(16)
 }
 
-export function numberToHexAddress(number){
-  var hex =  (new BigNumber(number)).toString(16)
-  if(hex.length > 40){
-    return  "0x" + Array(41).join("0")
-  }else{
-    return  "0x" + Array(40 - hex.length + 1).join("0") + hex.toLowerCase()
+export function numberToHexAddress(number) {
+  var hex = (new BigNumber(number)).toString(16)
+  if (hex.length > 40) {
+    return "0x" + Array(41).join("0")
+  } else {
+    return "0x" + Array(40 - hex.length + 1).join("0") + hex.toLowerCase()
   }
 }
 
@@ -338,14 +345,14 @@ export function roundingNumber(number) {
 
   let count_0 = 0
   for (let j of numberStr) {
-    if(j == '.') continue
-    if(j == 0) 
-      count_0++ 
-    else 
+    if (j == '.') continue
+    if (j == 0)
+      count_0++
+    else
       break
   }
 
-  let minDisplay = MAX_DIGIS - count_0 < 4? 4: MAX_DIGIS - count_0
+  let minDisplay = MAX_DIGIS - count_0 < 4 ? 4 : MAX_DIGIS - count_0
 
   let precision = number.toPrecision((number < 1 && number > 0) ? minDisplay : MAX_DIGIS),
     arr = precision.split('.'),
@@ -383,31 +390,31 @@ export function caculateTokenEpsilon(rate, decimal, symbol) {
 
 export function getDifferentAmount(sourceAmount, prevAmount, sourceDecimal,
   minRate, sourceTokenSymbol) {
-    if((sourceAmount === "") || isNaN(sourceAmount)) sourceAmount = 0
-    if(sourceTokenSymbol === 'ETH'){
-      return Math.abs(sourceAmount - prevAmount) 
-    }else{
-      var valueChange = Math.abs(sourceAmount - prevAmount) 
-      var rate = new BigNumber(minRate)
-      var rateWeight = new BigNumber(10).pow(18)
-      rate = rate.div(rateWeight)
+  if ((sourceAmount === "") || isNaN(sourceAmount)) sourceAmount = 0
+  if (sourceTokenSymbol === 'ETH') {
+    return Math.abs(sourceAmount - prevAmount)
+  } else {
+    var valueChange = Math.abs(sourceAmount - prevAmount)
+    var rate = new BigNumber(minRate)
+    var rateWeight = new BigNumber(10).pow(18)
+    rate = rate.div(rateWeight)
 
-      var value = new BigNumber(valueChange + "")
-      value = value.multipliedBy(rate)
+    var value = new BigNumber(valueChange + "")
+    value = value.multipliedBy(rate)
 
-      return value.toNumber()
-    }
+    return value.toNumber()
+  }
 }
 
-export function compareTwoNumber(num1, num2){
+export function compareTwoNumber(num1, num2) {
   var num1Big = new BigNumber(num1.toString())
   var num2Big = new BigNumber(num2.toString())
   return num1Big.comparedTo(num2Big)
 }
 
-export function compareRate(minRate, expectedRate){
-  if((minRate === "") || isNaN(minRate)) return -1
-  if((expectedRate === "") || isNaN(expectedRate)) return -1
+export function compareRate(minRate, expectedRate) {
+  if ((minRate === "") || isNaN(minRate)) return -1
+  if ((expectedRate === "") || isNaN(expectedRate)) return -1
 
   var minRateBig = new BigNumber(minRate)
   var rateWeight = Math.pow(10, 18)
@@ -417,9 +424,9 @@ export function compareRate(minRate, expectedRate){
   return minRateBig.comparedTo(expectedRateBig)
 }
 
-export function calculatePercentRate(minRate, expectedRate){
-  if((minRate === "") || isNaN(minRate)) return 0
-  if((expectedRate === "") || isNaN(expectedRate)) return 0
+export function calculatePercentRate(minRate, expectedRate) {
+  if ((minRate === "") || isNaN(minRate)) return 0
+  if ((expectedRate === "") || isNaN(expectedRate)) return 0
   if (+expectedRate == 0) return 0
 
   var minRateBig = new BigNumber(minRate)
@@ -433,14 +440,14 @@ export function calculatePercentRate(minRate, expectedRate){
   var fullNumber = new BigNumber(100)
 
   var remainPercent = fullNumber.minus(percent)
-  
+
   var remainPercentStr = remainPercent.toFixed(1)
 
   return parseFloat(remainPercentStr)
 }
 
 
-export function calculateGasFee(gasPrice, gasUsed){
+export function calculateGasFee(gasPrice, gasUsed) {
   var gasPrice = stringToBigNumber(gweiToEth(gasPrice))
   var totalGas = gasPrice.multipliedBy(gasUsed)
   return roundingNumber(totalGas.toString())
@@ -448,18 +455,18 @@ export function calculateGasFee(gasPrice, gasUsed){
 
 
 
-export function sliceErrorMsg(err){
-  if(err.length > 70){
-    err = err.slice(0,70) + '...'
+export function sliceErrorMsg(err) {
+  if (err.length > 70) {
+    err = err.slice(0, 70) + '...'
   }
   return err
 }
 
 
 
-export function calculatePercent(numerator, denumerator){
+export function calculatePercent(numerator, denumerator) {
   if (denumerator === 0) return 0
-  var percent =  ((numerator / denumerator) - 1) * 100
+  var percent = ((numerator / denumerator) - 1) * 100
   var roundPercent = Math.round(percent * 10) / 10
   return roundPercent
 }
@@ -475,50 +482,49 @@ export function formatNumber(number) {
   return numberFormat.toFormat()
 }
 
-export function caculatorPercentageToRate(number,total){
-  if(new BigNumber(total)!==0){
-    return (new BigNumber(number)/new BigNumber(total))*100000000000000000000
+export function caculatorPercentageToRate(number, total) {
+  if (new BigNumber(total) !== 0) {
+    return (new BigNumber(number) / new BigNumber(total)) * 100000000000000000000
   }
   return 0;
 }
 
-export function caculatorRateToPercentage(number,total){
-  if(new BigNumber(total)!==0){
-    return (new BigNumber(number)*new BigNumber(total))/100000000000000000000
+export function caculatorRateToPercentage(number, total) {
+  if (new BigNumber(total) !== 0) {
+    return (new BigNumber(number) * new BigNumber(total)) / 100000000000000000000
   }
   return 0;
 }
 
 
-export function estimateSlippagerate(expectedRate){
+export function estimateSlippagerate(expectedRate) {
   var bigNumber = new BigNumber(expectedRate.toString())
   var result = bigNumber.div(1000000000000000000).times(0.97)
   return result.toString()
 }
 
 
-export function getMinrate(rate, minRate){
-  if (isNaN(rate) || rate === ""){
+export function getMinrate(rate, minRate) {
+  if (isNaN(rate) || rate === "") {
     rate = 0
   }
-  if (isNaN(minRate) || minRate === ""){
+  if (isNaN(minRate) || minRate === "") {
     minRate = 0
   }
   rate = rate.toString()
   minRate = minRate.toString()
 
-  if(minRate === "0"){
+  if (minRate === "0") {
     var bigNumber = new BigNumber(rate)
     var result = bigNumber.div(1000000000000000000).times(0.97)
     return result.toString()
-  }else{
+  } else {
     return minRate
   }
 }
 
 
-export function calculateMinSource(sourceTokenSymbol, sourceAmount, decimal, rateSell){
-  console.log({sourceAmount, decimal, rateSell})
+export function calculateMinSource(sourceTokenSymbol, sourceAmount, decimal, rateSell) {
   if ((sourceAmount === "") || isNaN(sourceAmount)) sourceAmount = 0
 
   var minSourceAllow = new BigNumber(getSourceAmountZero(sourceTokenSymbol, decimal, rateSell))
@@ -526,9 +532,9 @@ export function calculateMinSource(sourceTokenSymbol, sourceAmount, decimal, rat
   var sourceAmountBig = new BigNumber(sourceAmount.toString())
   sourceAmountBig = sourceAmountBig.times(Math.pow(10, decimal))
 
-  if (minSourceAllow.comparedTo(sourceAmountBig) === 1){
+  if (minSourceAllow.comparedTo(sourceAmountBig) === 1) {
     return "0x" + minSourceAllow.toString(16)
-  }else{
+  } else {
     var sourceAmountDecimal = sourceAmountBig.toFixed(0)
     var sourceAmountHex = new BigNumber(sourceAmountDecimal)
     return "0x" + sourceAmountHex.toString(16)
@@ -536,31 +542,31 @@ export function calculateMinSource(sourceTokenSymbol, sourceAmount, decimal, rat
 }
 
 
-export function getSourceAmountZero(sourceTokenSymbol, decimal, rateSell){
+export function getSourceAmountZero(sourceTokenSymbol, decimal, rateSell) {
   var epsilon = constants.EPSILON
   var minETHAllow = new BigNumber(epsilon.toString())
 
-  if (sourceTokenSymbol === "ETH"){
+  if (sourceTokenSymbol === "ETH") {
     return minETHAllow.toFixed(0)
   }
   var rate = new BigNumber(rateSell)
-  if (rate.comparedTo(0) === 0){
+  if (rate.comparedTo(0) === 0) {
     return "0"
   }
-  var minSourceAllow = minETHAllow.div(rate).times(Math.pow(10,decimal))
-  return  minSourceAllow.toFixed(0)
+  var minSourceAllow = minETHAllow.div(rate).times(Math.pow(10, decimal))
+  return minSourceAllow.toFixed(0)
 }
 
 
-export function toHex(number){
+export function toHex(number) {
   var bigNumber = new BigNumber(number)
   return "0x" + bigNumber.toString(16)
 }
 
 
-export function sumOfTwoNumber(num1, num2){
+export function sumOfTwoNumber(num1, num2) {
   var num1 = new BigNumber(num1.toString())
   var num2 = new BigNumber(num2.toString())
-  var sum = num1.plus(num2)       
+  var sum = num1.plus(num2)
   return sum.toString()
 }

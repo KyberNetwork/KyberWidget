@@ -74,8 +74,8 @@ function* approveTx(action) {
 }
 
 function* swapToken(action) {
-  const {source, dest} = action.payload
-  yield call(estimateGasUsed,dest, source)
+  const { source, dest } = action.payload
+  yield call(estimateGasUsed, dest, source)
 }
 
 function* changeInputValue() {
@@ -117,7 +117,7 @@ function* selectToken(action) {
       }
     } else {
       var tokens = state.tokens.tokens
-      var destValue = converter.calculateDest(exchange.destAmount, tokens[exchange.destTokenSymbol].rate, 6)
+      var destValue = converter.calculateDest(exchange.destAmount, tokens[exchange.destTokenSymbol].rate, exchange.commissionFee, 6)
 
       if (parseFloat(destValue) > constants.MAX_AMOUNT_RATE_HANDLE) {
         yield put(actions.throwErrorHandleAmount());
@@ -141,7 +141,7 @@ export function* estimateGasUsed(source, dest) {
   if (exchange.type === "pay") {
     if (source === dest) {
       const specialGasLimit = constants.SPECIAL_PAYMENT_GAS_LIMIT[source];
-      
+
       if (specialGasLimit) {
         gasUsed = specialGasLimit.gasUsed;
         gasApproved = specialGasLimit.gasApproved;
@@ -156,17 +156,17 @@ export function* estimateGasUsed(source, dest) {
   } else {
     if (source === dest) {
       const specialGasLimit = constants.SPECIAL_OTHER_GAS_LIMIT[source];
-      
+
       if (specialGasLimit) {
         gasUsed = specialGasLimit.gasUsed;
       } else {
         gasUsed = constants.SPECIAL_OTHER_GAS_LIMIT['default'].gasUsed;
       }
-      
+
       gasApproved = 0
     } else {
       gasUsed = yield call(getMaxGasExchange, source, dest);
-      
+
       if (source !== "ETH") {
         gasApproved = yield call(getMaxGasApprove, tokens[source].gasApprove)
       }
@@ -178,8 +178,8 @@ export function* estimateGasUsed(source, dest) {
 
 export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
 
-  if(account.type === 'metamask'){
-     yield put (actions.goToStep(4))
+  if (account.type === 'metamask') {
+    yield put(actions.goToStep(4))
   }
 
   try {
@@ -467,7 +467,7 @@ function* exchangeETHtoTokenMetamask(action) {
   const {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
     nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    blockNo, paymentData, hint } = action.payload
+    blockNo, commissionFee, paymentData, hint } = action.payload
 
   var networkId = common.getNetworkId()
 
@@ -477,7 +477,7 @@ function* exchangeETHtoTokenMetamask(action) {
       hash = yield callService(
         "etherToOthersFromAccount", "etherToOthersPayment",
         keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+        minConversionRate, blockNo, commissionFee, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
       )
     } catch (e) {
       yield put(actions.setSignError(e))
@@ -497,7 +497,7 @@ function* exchangeTokentoETHKeystore(action) {
   let {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
     nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    sourceTokenSymbol, blockNo, paymentData, hint } = action.payload;
+    sourceTokenSymbol, blockNo, commissionFee, paymentData, hint } = action.payload;
 
   const networkId = common.getNetworkId();
   const isPayMode = checkIsPayMode();
@@ -547,7 +547,7 @@ function* exchangeTokentoETHKeystore(action) {
         txRaw = yield callService(
           "tokenToOthersFromAccount", "tokenToOthersPayment",
           keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-          minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+          minConversionRate, blockNo, commissionFee, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
         );
       } catch (e) {
         yield call(doTxFail, ethereum, account, e.message);
@@ -570,7 +570,7 @@ function* exchangeTokentoETHKeystore(action) {
       txRaw = yield callService(
         "tokenToOthersFromAccount", "tokenToOthersPayment",
         keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+        minConversionRate, blockNo, commissionFee, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
       );
     } catch (e) {
       yield put(actions.throwPassphraseError(e.message))
@@ -595,7 +595,7 @@ export function* exchangeTokentoETHPrivateKey(action) {
   let {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
     nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    sourceTokenSymbol, blockNo, paymentData, hint } = action.payload;
+    sourceTokenSymbol, blockNo, commissionFee, paymentData, hint } = action.payload;
 
   const networkId = common.getNetworkId();
   const isPayMode = checkIsPayMode();
@@ -650,7 +650,7 @@ export function* exchangeTokentoETHPrivateKey(action) {
       txRaw = yield callService(
         "tokenToOthersFromAccount", "tokenToOthersPayment",
         keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+        minConversionRate, blockNo, commissionFee, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
       );
     } catch (e) {
       yield put(actions.setSignError(e.message))
@@ -671,7 +671,7 @@ function* exchangeTokentoETHColdWallet(action) {
   const {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
     nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    blockNo, paymentData, hint } = action.payload;
+    blockNo, commissionFee, paymentData, hint } = action.payload;
 
   var networkId = common.getNetworkId()
 
@@ -682,7 +682,7 @@ function* exchangeTokentoETHColdWallet(action) {
       txRaw = yield callService(
         "tokenToOthersFromAccount", "tokenToOthersPayment",
         keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+        minConversionRate, blockNo, commissionFee, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
       );
     } catch (e) {
       console.log(e)
@@ -713,7 +713,7 @@ export function* exchangeTokentoETHMetamask(action) {
   const {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
     nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    blockNo, paymentData, hint } = action.payload
+    blockNo, commissionFee, paymentData, hint } = action.payload
 
   var networkId = common.getNetworkId()
 
@@ -724,7 +724,7 @@ export function* exchangeTokentoETHMetamask(action) {
       hash = yield callService(
         "tokenToOthersFromAccount", "tokenToOthersPayment",
         keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+        minConversionRate, blockNo, commissionFee, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
       );
     } catch (e) {
       yield put(actions.setSignError(e))
@@ -743,7 +743,7 @@ export function* exchangeTokentoETHMetamask(action) {
 
 function* callService(
   swapMethod, paymentMethod, keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress,
-  maxDestAmount, minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+  maxDestAmount, minConversionRate, blockNo, commissionFee, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
 ) {
   let toContract;
 
@@ -753,14 +753,14 @@ function* callService(
     return yield call(
       keyService.callSignTransaction, paymentMethod, formId, ethereum, address,
       sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-      blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, toContract, paymentData, hint
+      blockNo, commissionFee, nonce, gas, gasPrice, keystring, type, password, networkId, toContract, paymentData, hint
     )
   } else {
     toContract = common.getKyberAddress();
 
     return yield call(keyService.callSignTransaction, swapMethod, formId, ethereum, address,
       sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-      blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, toContract
+      blockNo, commissionFee, nonce, gas, gasPrice, keystring, type, password, networkId, toContract
     )
   }
 }
@@ -958,7 +958,7 @@ function* updateRateSnapshot(action) {
     var sourceAmount
 
     if (exchangeSnapshot.isHaveDestAmount) {
-      sourceAmount = converter.caculateSourceAmount(exchangeSnapshot.destAmount, exchangeSnapshot.offeredRate, 6)
+      sourceAmount = converter.caculateSourceAmount(exchangeSnapshot.destAmount, exchangeSnapshot.offeredRate, state.exchange.commissionFee, 6)
     } else {
       sourceAmount = exchangeSnapshot.sourceAmount
     }
@@ -1048,16 +1048,16 @@ function* getMaxGasExchange(srcSymbol, destSymbol) {
   let srcAmount = state.exchange.sourceAmount;
 
   if (!srcAmount && state.exchange.type === 'pay' && state.exchange.destAmount && state.exchange.offeredRate) {
-    srcAmount = converter.caculateSourceAmount(state.exchange.destAmount, state.exchange.offeredRate, 6);
+    srcAmount = converter.caculateSourceAmount(state.exchange.destAmount, state.exchange.offeredRate, state.exchange.commissionFee, 6);
   }
 
   try {
-    const gasLimitResult =  yield call([ethereum, ethereum.call], "getGasLimit", srcTokenAddress, destTokenAddress, srcAmount);
+    const gasLimitResult = yield call([ethereum, ethereum.call], "getGasLimit", srcTokenAddress, destTokenAddress, srcAmount);
 
     if (gasLimitResult.error) {
       return yield call(getMaxGasExchangeFromTokens, srcSymbol, destSymbol);
     }
-    
+
     if (state.exchange.type === 'pay') {
       return Math.round((gasLimitResult.data * 1.2) + 100000);
     } else {
@@ -1081,7 +1081,7 @@ function* getMaxGasExchangeFromTokens(srcSymbol, destSymbol) {
   return sourceGasLimit + destGasLimit
 }
 
-function* getMaxGasApprove(tokenGasApprove) {  
+function* getMaxGasApprove(tokenGasApprove) {
   return tokenGasApprove ? tokenGasApprove : 100000;
 }
 
@@ -1106,7 +1106,8 @@ function* getGasConfirm() {
   const destToken = exchange.destToken
   const maxDestAmount = converter.biggestNumber()
   const minConversionRate = converter.numberToHex(converter.toTWei(exchange.slippageRate, 18))
-  const blockNo = converter.numberToHexAddress(exchange.blockNo)
+  const blockNo = converter.numberToHexAddress(exchange.commissionId)
+  const commissionFee = converter.numberToHexAddress(exchange.commissionFee)
   const paymentData = exchange.paymentData;
   const hint = exchange.hint;
   var data
@@ -1209,7 +1210,7 @@ function* verifyExchange() {
 
   if (exchange.isHaveDestAmount) {
     var offeredRate = exchange.offeredRate
-    srcAmount = converter.caculateSourceAmount(exchange.destAmount, offeredRate, 6)
+    srcAmount = converter.caculateSourceAmount(exchange.destAmount, offeredRate, exchange.commissionFee, 6)
     srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimals)
   } else {
     srcAmount = exchange.sourceAmount
@@ -1220,7 +1221,7 @@ function* verifyExchange() {
     var rate = tokens[sourceTokenSymbol].rate
     var decimals = tokens[sourceTokenSymbol].decimals
     srcAmount = converter.toT(srcAmount, decimals)
-    srcAmount = converter.caculateDestAmount(srcAmount, rate, 6)
+    srcAmount = converter.calculateDest(srcAmount, rate, exchange.commissionFee, 6)
     srcAmount = converter.toTWei(srcAmount, 18)
   }
 
@@ -1243,7 +1244,7 @@ export function* initParamsExchange(action) {
   var ethereum = new EthereumService({ network })
 
 
-  if (type === 'swap' && defaultPairArr.length === 2){
+  if (type === 'swap' && defaultPairArr.length === 2) {
     sourceTokenSymbol = defaultPairArr[0]
     source = tokens[sourceTokenSymbol].address
     var destSymbol = defaultPairArr[1]
@@ -1276,7 +1277,7 @@ export function* initParamsExchange(action) {
           }
         } else {
           var rateETH = yield call([ethereum, ethereum.call], "getRate", tokens["ETH"].address, tokenAddr, "0x0")
-          var destValue = converter.caculateSourceAmount(receiveAmount, rateETH.expectedRate, 6)
+          var destValue = converter.caculateSourceAmount(receiveAmount, rateETH.expectedRate, exchange.commissionFee, 6)
           if (parseFloat(destValue) > constants.MAX_AMOUNT_RATE_HANDLE) {
             yield put(actions.throwErrorHandleAmount())
             return
@@ -1298,11 +1299,11 @@ export function* initParamsExchange(action) {
 
 
   const web3Service = web3Package.newWeb3Instance()
-  if(web3Service !== false){
+  if (web3Service !== false) {
     const watchMetamask = yield fork(watchMetamaskAccount, ethereum, web3Service, network)
     yield take('GLOBAL.INIT_SESSION')
     yield cancel(watchMetamask)
-  }else{
+  } else {
     yield put(globalActions.throwErrorMematamask("Metamask is not installed"))
   }
 
@@ -1359,7 +1360,7 @@ function checkIsPayMode() {
   return !state.exchange.isSwap;
 }
 
-function *setApproveState(isApproveZero) {
+function* setApproveState(isApproveZero) {
   if (isApproveZero) {
     yield put(actions.setIsApproveZero(false));
     yield put(actions.setApprove(true));

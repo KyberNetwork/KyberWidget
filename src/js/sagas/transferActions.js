@@ -10,15 +10,15 @@ import Tx from "../services/tx"
 import { updateAccount, incManualNonceAccount } from '../actions/accountActions'
 import { addTx } from '../actions/txActions'
 import { store } from "../store"
-import {getTranslate} from "react-localize-redux/lib/index";
+import { getTranslate } from "react-localize-redux/lib/index";
 import BLOCKCHAIN_INFO from "../../../env";
 import * as widgetOptions from "../utils/widget-options";
 
 export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
 
-  if(account.type === 'metamask'){
-    yield put (exchangeActions.goToStep(4))
- }
+  if (account.type === 'metamask') {
+    yield put(exchangeActions.goToStep(4))
+  }
 
   //track complete trade
   var state = store.getState()
@@ -44,14 +44,14 @@ export function* runAfterBroadcastTx(ethereum, txRaw, hash, account, data) {
 function* doTxFail(ethereum, account, e) {
   var state = store.getState()
   var exchange = state.exchange
-  
-  yield put (exchangeActions.goToStep(4))
+
+  yield put(exchangeActions.goToStep(4))
 
   let error = e;
-  if (!error){
+  if (!error) {
     var translate = getTranslate(store.getState().locale);
     var link = BLOCKCHAIN_INFO[exchange.network].ethScanUrl + "address/" + account.address;
-    error = translate("error.broadcast_tx", {link: link}) || "Potentially Failed! We likely couldn't broadcast the transaction to the blockchain. Please check on Etherscan to verify."
+    error = translate("error.broadcast_tx", { link: link }) || "Potentially Failed! We likely couldn't broadcast the transaction to the blockchain. Please check on Etherscan to verify."
   }
 
   yield put(exchangeActions.setBroadcastError(error))
@@ -78,7 +78,7 @@ export function* processTransfer(action) {
 
 function* doBeforeMakeTransaction(txRaw) {
   yield put(exchangeActions.goToStep(4))
-  
+
   var state = store.getState()
   var ethereum = state.connection.ethereum
 
@@ -87,11 +87,11 @@ function* doBeforeMakeTransaction(txRaw) {
   return true
 }
 
-function *transferKeystoreAndPrivateKey(action) {
+function* transferKeystoreAndPrivateKey(action) {
   let {
     formId, ethereum, address, token, amount, destAddress, nonce, gas, gasPrice, keystring, type, password,
-    account, data, keyService, balanceData, commissionID, paymentData, hint, sourceTokenSymbol } = action.payload;
-  const networkId  = common.getNetworkId();
+    account, data, keyService, balanceData, commissionID, commissionFee, paymentData, hint, sourceTokenSymbol } = action.payload;
+  const networkId = common.getNetworkId();
   let rawTx, hash;
 
   if (sourceTokenSymbol !== "ETH") {
@@ -142,7 +142,7 @@ function *transferKeystoreAndPrivateKey(action) {
 
   try {
     rawTx = yield callService(keyService, formId, ethereum, address, token, amount, destAddress, nonce,
-      gas, gasPrice, keystring, type, password, networkId, commissionID, paymentData, hint);
+      gas, gasPrice, keystring, type, password, networkId, commissionID, commissionFee, paymentData, hint);
   } catch (e) {
     yield put(exchangeActions.throwPassphraseError(e.message));
     return
@@ -151,7 +151,7 @@ function *transferKeystoreAndPrivateKey(action) {
   try {
     yield put(actions.prePareBroadcast(balanceData));
     yield call(doBeforeMakeTransaction, rawTx);
-    hash = yield call([ethereum, ethereum.callMultiNode],"sendRawTransaction", rawTx);
+    hash = yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", rawTx);
     yield call(runAfterBroadcastTx, ethereum, rawTx, hash, account, data);
   } catch (e) {
     yield call(doTxFail, ethereum, account, e.message)
@@ -160,36 +160,36 @@ function *transferKeystoreAndPrivateKey(action) {
 
 function* transferColdWallet(action) {
   const { formId, ethereum, address, token, amount, destAddress, nonce, gas, gasPrice, keystring, type, password,
-    account, data, keyService, balanceData, commissionID, paymentData, hint } = action.payload;
+    account, data, keyService, balanceData, commissionID, commissionFee, paymentData, hint } = action.payload;
 
-  var networkId  = common.getNetworkId()
+  var networkId = common.getNetworkId()
 
   try {
     var rawTx
     try {
       rawTx = yield callService(keyService, formId, ethereum, address, token, amount, destAddress, nonce,
-        gas, gasPrice, keystring, type, password, networkId, commissionID, paymentData, hint);
+        gas, gasPrice, keystring, type, password, networkId, commissionID, commissionFee, paymentData, hint);
     } catch (e) {
       let msg = ''
-      if(isLedgerError(type, e)){
+      if (isLedgerError(type, e)) {
         msg = keyService.getLedgerError(e.native)
       }
       yield put(exchangeActions.setSignError(msg))
       return
     }
-    
+
     yield put(exchangeActions.prePareBroadcast(balanceData))
 
     var response = yield call(doBeforeMakeTransaction, rawTx)
     console.log(response)
 
-    const hash = yield call([ethereum, ethereum.callMultiNode],"sendRawTransaction", rawTx)
+    const hash = yield call([ethereum, ethereum.callMultiNode], "sendRawTransaction", rawTx)
     yield call(runAfterBroadcastTx, ethereum, rawTx, hash, account, data)
   } catch (e) {
     let msg = ''
-    if(isLedgerError(type, e)){
+    if (isLedgerError(type, e)) {
       msg = keyService.getLedgerError(e.native)
-    }else{
+    } else {
       msg = e.message
     }
     yield call(doTxFail, ethereum, account, msg)
@@ -200,15 +200,15 @@ function* transferColdWallet(action) {
 function* transferMetamask(action) {
   const {
     formId, ethereum, address, token, amount, destAddress, nonce, gas, gasPrice, keystring, type, password,
-    account, data, keyService, balanceData, commissionID, paymentData, hint } = action.payload;
+    account, data, keyService, balanceData, commissionID, commissionFee, paymentData, hint } = action.payload;
 
-    var networkId  = common.getNetworkId()  
+  var networkId = common.getNetworkId()
 
   try {
     var hash
     try {
       hash = yield callService(keyService, formId, ethereum, address, token, amount, destAddress, nonce,
-        gas, gasPrice, keystring, type, password, networkId, commissionID, paymentData, hint);
+        gas, gasPrice, keystring, type, password, networkId, commissionID, commissionFee, paymentData, hint);
     } catch (e) {
       console.log(e)
       yield put(exchangeActions.setSignError(e))
@@ -216,7 +216,7 @@ function* transferMetamask(action) {
     }
 
     yield put(exchangeActions.prePareBroadcast(balanceData))
-    const rawTx = {gas, gasPrice, nonce}
+    const rawTx = { gas, gasPrice, nonce }
     yield call(runAfterBroadcastTx, ethereum, rawTx, hash, account, data)
   } catch (e) {
     console.log(e)
@@ -227,7 +227,7 @@ function* transferMetamask(action) {
 }
 
 function* callService(keyService, formId, ethereum, address, token, amount, destAddress, nonce,
-    gas, gasPrice, keystring, type, password, networkId, commissionID, paymentData, hint) {
+  gas, gasPrice, keystring, type, password, networkId, commissionID, commissionFee, paymentData, hint) {
   let service;
   let toContract;
 
@@ -237,7 +237,7 @@ function* callService(keyService, formId, ethereum, address, token, amount, dest
 
     return yield call(
       keyService.callSignTransaction, service, formId, ethereum, address, token, amount, destAddress,
-      nonce, gas, gasPrice, keystring, type, password, networkId, toContract, commissionID, paymentData, hint
+      nonce, gas, gasPrice, keystring, type, password, networkId, toContract, commissionID, commissionFee, paymentData, hint
     );
   } else {
     service = token == constants.ETHER_ADDRESS ? "sendEtherFromAccount" : "sendTokenFromAccount"
@@ -249,19 +249,19 @@ function* callService(keyService, formId, ethereum, address, token, amount, dest
   }
 }
 
-function* getMaxGasTransfer(){
+function* getMaxGasTransfer() {
   const state = store.getState();
   const transfer = state.transfer;
   const specialGasLimit = constants.SPECIAL_TRANSFER_GAS_LIMIT[transfer.tokenSymbol];
-  
+
   if (!specialGasLimit) {
     return transfer.gas_limit;
   }
-  
+
   return specialGasLimit;
 }
 
-function* estimateGasUsedWhenChangeAmount(action){
+function* estimateGasUsedWhenChangeAmount(action) {
   var amount = action.payload
 
   var state = store.getState()
@@ -278,17 +278,17 @@ function* estimateGasUsedWhenChangeAmount(action){
   var fromAddr = account.address
 
   var gasRequest = yield call(common.handleRequest, calculateGasUse, fromAddr, tokenSymbol, transfer.token, decimal, amount)
-  if (gasRequest.status === "success"){
+  if (gasRequest.status === "success") {
     const gas = gasRequest.data
     yield put(actions.setGasUsed(gas))
   }
-  if ((gasRequest.status === "timeout") || (gasRequest.status === "fail")){
+  if ((gasRequest.status === "timeout") || (gasRequest.status === "fail")) {
     var gasLimit = yield call(getMaxGasTransfer)
     yield put(actions.setGasUsed(gasLimit))
   }
 }
 
-function* fetchGasSnapshot(){
+function* fetchGasSnapshot() {
   var state = store.getState()
   var transfer = state.transfer
   var tokens = state.tokens.tokens
@@ -302,11 +302,11 @@ function* fetchGasSnapshot(){
   var account = state.account.account
   var fromAddr = account.address
   var gasRequest = yield call(common.handleRequest, calculateGasUse, fromAddr, tokenSymbol, transfer.token, decimal, transfer.amount)
-  if (gasRequest.status === "success"){
+  if (gasRequest.status === "success") {
     const gas = gasRequest.data
     yield put(actions.setGasUsedSnapshot(gas))
   }
-  if ((gasRequest.status === "timeout") || (gasRequest.status === "fail")){
+  if ((gasRequest.status === "timeout") || (gasRequest.status === "fail")) {
     var gasLimit = yield call(getMaxGasTransfer)
     yield put(actions.setGasUsedSnapshot(gasLimit))
   }
@@ -314,55 +314,55 @@ function* fetchGasSnapshot(){
   yield put(actions.fetchSnapshotGasSuccess())
 }
 
-function* calculateGasUse(fromAddr, tokenSymbol, tokenAddr, tokenDecimal, sourceAmount){
-    var state = store.getState()
-    var ethereum = state.connection.ethereum
-    var transfer = state.transfer
-    const amount = converter.stringToHex(sourceAmount, tokenDecimal)
-    var gasLimit = yield call(getMaxGasTransfer)
-    var gas = 0
-    var internalAdrr = "0x3cf628d49ae46b49b210f0521fbd9f82b461a9e1"
-    var txObj
-    if (tokenSymbol === 'ETH'){
-      var destAddr = transfer.destAddress !== "" ? transfer.destAddress : internalAdrr
-      txObj = {
-        from : fromAddr,
-        value: amount,
-        to:destAddr
-      }
-      try{
-        gas = yield call([ethereum, ethereum.call],"estimateGas", txObj)
-        if(gas > 21000){
-          gas = Math.round(gas * 120 / 100)
-        }
-        return {status: "success", res: gas}
-      //  yield put(actions.setGasUsed(gas))
-      }catch(e){
-        console.log(e.message)
-        return {"status": "success", res: gasLimit}
-        //yield put(actions.setGasUsed(gasLimit))
-      }
-    }else{
-      try{
-        var destAddr = transfer.destAddress !== "" ? transfer.destAddress : internalAdrr
-        var data = yield call([ethereum, ethereum.call],"sendTokenData", tokenAddr, amount, destAddr)
-        txObj = {
-          from : fromAddr,
-          value:"0",
-          to:tokenAddr,
-          data: data
-        }
-        gas = yield call([ethereum, ethereum.call],"estimateGas", txObj)
-        gas = Math.round(gas * 120 / 100)
-        return {"status": "success", res: gas}
-      }catch(e){
-        console.log(e.message)
-        return {"status": "success", res: gasLimit}
-      }
+function* calculateGasUse(fromAddr, tokenSymbol, tokenAddr, tokenDecimal, sourceAmount) {
+  var state = store.getState()
+  var ethereum = state.connection.ethereum
+  var transfer = state.transfer
+  const amount = converter.stringToHex(sourceAmount, tokenDecimal)
+  var gasLimit = yield call(getMaxGasTransfer)
+  var gas = 0
+  var internalAdrr = "0x3cf628d49ae46b49b210f0521fbd9f82b461a9e1"
+  var txObj
+  if (tokenSymbol === 'ETH') {
+    var destAddr = transfer.destAddress !== "" ? transfer.destAddress : internalAdrr
+    txObj = {
+      from: fromAddr,
+      value: amount,
+      to: destAddr
     }
+    try {
+      gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
+      if (gas > 21000) {
+        gas = Math.round(gas * 120 / 100)
+      }
+      return { status: "success", res: gas }
+      //  yield put(actions.setGasUsed(gas))
+    } catch (e) {
+      console.log(e.message)
+      return { "status": "success", res: gasLimit }
+      //yield put(actions.setGasUsed(gasLimit))
+    }
+  } else {
+    try {
+      var destAddr = transfer.destAddress !== "" ? transfer.destAddress : internalAdrr
+      var data = yield call([ethereum, ethereum.call], "sendTokenData", tokenAddr, amount, destAddr)
+      txObj = {
+        from: fromAddr,
+        value: "0",
+        to: tokenAddr,
+        data: data
+      }
+      gas = yield call([ethereum, ethereum.call], "estimateGas", txObj)
+      gas = Math.round(gas * 120 / 100)
+      return { "status": "success", res: gas }
+    } catch (e) {
+      console.log(e.message)
+      return { "status": "success", res: gasLimit }
+    }
+  }
 }
 
-export function* verifyTransfer(){
+export function* verifyTransfer() {
   var state = store.getState()
   var transfer = state.transfer
 
@@ -370,12 +370,12 @@ export function* verifyTransfer(){
   if (isNaN(amount) || amount === "") {
     amount = 0
   }
-  
+
   var testBalanceWithFee = validators.verifyBalanceForTransaction(state.tokens.tokens['ETH'].balance,
-  transfer.tokenSymbol, amount, transfer.gas, transfer.gasPrice)
+    transfer.tokenSymbol, amount, transfer.gas, transfer.gasPrice)
   if (testBalanceWithFee) {
     yield put(actions.thowErrorEthBalance("error.eth_balance_not_enough_for_fee"))
-  }else{
+  } else {
     yield put(actions.thowErrorEthBalance(""))
   }
 }

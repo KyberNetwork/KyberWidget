@@ -108,6 +108,8 @@
     "receive_amount_is_invalid_number": "接收数量无效",
     "receive_amount_must_be_positive": "接收数量必须为正数",
     "commission_address_must_be_valid": "佣金地址必须是有效的以太坊地址",
+    "commission_fee_must_be_valid": "Commission fee must be an integer number",
+    "commission_fee_too_large": "Commission fee must be smaller than 20bps",
     "signer_include_invalid_address": "签名者包含无效地址",
     "invalid_network": "不支持当前网络",
     "signer_invalid": "您访问了无效的地址",
