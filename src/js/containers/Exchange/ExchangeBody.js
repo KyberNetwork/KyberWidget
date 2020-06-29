@@ -99,13 +99,13 @@ export default class ExchangeBody extends React.Component {
       if (this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol) {
         srcAmount = this.props.exchange.destAmount
       } else {
-        srcAmount = converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)
+        srcAmount = converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, this.props.exchange.commissionFee, 6)
       }
     }
 
     if (sourceAmountIsNumber) {
       if (this.props.exchange.sourceTokenSymbol !== "ETH") {
-        srcAmount = converter.calculateDest(srcAmount, this.props.exchange.rateSourceToEth, 6)
+        srcAmount = converter.calculateDest(srcAmount, this.props.exchange.rateSourceToEth, this.props.exchange.commissionFee, 6)
       }
 
       if (parseFloat(srcAmount) < parseFloat(converter.toEther(constansts.EPSILON))) {

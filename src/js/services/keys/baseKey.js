@@ -28,11 +28,11 @@ export const sendTokenFromAccount = (
 
 export const etherToOthersFromAccount = (
   id, ethereum, account, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-  minConversionRate, commissionId, nonce, gas, gasPrice, keystring, accountType, password, networkId, kyberNetwork
+  minConversionRate, commissionId,  commissionFee, nonce, gas, gasPrice, keystring, accountType, password, networkId, kyberNetwork
 ) => {
   return new Promise((resolve) => {
     ethereum.call("exchangeData", sourceToken, sourceAmount, destToken, destAddress,
-      maxDestAmount, minConversionRate, commissionId).then(result => {
+      maxDestAmount, minConversionRate, commissionId, commissionFee).then(result => {
 
       const txParams = createTxParams(account, nonce, gasPrice, gas, kyberNetwork, sourceAmount, result, networkId);
 
@@ -43,11 +43,11 @@ export const etherToOthersFromAccount = (
 
 export const tokenToOthersFromAccount = (
   id, ethereum, account, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-  commissionId, nonce, gas, gasPrice, keystring, accountType, password, networkId, kyberNetwork
+  commissionId, commissionFee, nonce, gas, gasPrice, keystring, accountType, password, networkId, kyberNetwork
 ) => {
   return new Promise((resolve) => {
     ethereum.call("exchangeData", sourceToken, sourceAmount, destToken, destAddress,
-      maxDestAmount, minConversionRate, commissionId).then(result => {
+      maxDestAmount, minConversionRate, commissionId, commissionFee).then(result => {
 
       const txParams = createTxParams(account, nonce, gasPrice, gas, kyberNetwork, "0x0", result, networkId);
 
@@ -58,7 +58,7 @@ export const tokenToOthersFromAccount = (
 
 export const sendEtherPayment = (
   id, ethereum, account, sourceToken, sourceAmount, destAddress, nonce, gas, gasPrice,
-  keystring, accountType, password, networkId, contract, commissionID, paymentData, hint
+  keystring, accountType, password, networkId, contract, commissionID, commissionFee, paymentData, hint
 ) => {
   return new Promise((resolve) => {
     ethereum.call("getPaymentEncodedData", sourceToken, sourceAmount, sourceToken, destAddress,
@@ -73,7 +73,7 @@ export const sendEtherPayment = (
 
 export const sendTokenPayment = (
   id, ethereum, account, sourceToken, sourceAmount, destAddress, nonce, gas, gasPrice,
-  keystring, accountType, password, networkId, contract, commissionID, paymentData, hint
+  keystring, accountType, password, networkId, contract, commissionID, commissionFee, paymentData, hint
 ) => {
   return new Promise((resolve) => {
     ethereum.call("getPaymentEncodedData", sourceToken, sourceAmount, sourceToken, destAddress,
@@ -92,7 +92,7 @@ export const etherToOthersPayment= (
 ) => {
   return new Promise((resolve) => {
     ethereum.call("getPaymentEncodedData", sourceToken, sourceAmount, destToken, destAddress,
-      maxDestAmount, minConversionRate, commissionId, paymentData, hint).then(result => {
+      maxDestAmount, minConversionRate, commissionId, commissionFee, paymentData, hint).then(result => {
 
       const txParams = createTxParams(account, nonce, gasPrice, gas, toContract, sourceAmount, result, networkId);
 
@@ -103,7 +103,7 @@ export const etherToOthersPayment= (
 
 export const tokenToOthersPayment = (
   id, ethereum, account, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-  commissionId, nonce, gas, gasPrice, keystring, accountType, password, networkId, toContract, paymentData, hint
+  commissionId, commissionFee, nonce, gas, gasPrice, keystring, accountType, password, networkId, toContract, paymentData, hint
 ) => {
   return new Promise((resolve) => {
     ethereum.call("getPaymentEncodedData", sourceToken, sourceAmount, destToken, destAddress,

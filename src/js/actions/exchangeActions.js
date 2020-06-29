@@ -31,7 +31,7 @@ export function caculateAmount() {
   }
 }
 
-export function caculateAmountInSnapshot(){
+export function caculateAmountInSnapshot() {
   return {
     type: "EXCHANGE.CACULATE_AMOUNT_SNAPSHOT"
   }
@@ -58,7 +58,7 @@ export function thowErrorSourceAmount(message) {
   }
 }
 
-export function thowErrorEthBalance(message){
+export function thowErrorEthBalance(message) {
   return {
     type: "EXCHANGE.THROW_ETH_BALANCE_ERROR",
     payload: message
@@ -68,7 +68,7 @@ export function thowErrorEthBalance(message){
 export function goToStep(step, oldStep) {
   return {
     type: "EXCHANGE.GO_TO_STEP",
-    payload: {step, oldStep}
+    payload: { step, oldStep }
   }
 }
 
@@ -79,10 +79,10 @@ export function specifyGas(value) {
   }
 }
 
-export function seSelectedGas(level){
+export function seSelectedGas(level) {
   return {
     type: "EXCHANGE.SET_SELECTED_GAS",
-    payload: {level: level}
+    payload: { level: level }
   }
 }
 
@@ -101,7 +101,7 @@ export function updateRateExchange(source, dest,
   }
 }
 
-export function updateRateSnapshot(ethereum){
+export function updateRateSnapshot(ethereum) {
   return {
     type: "EXCHANGE.UPDATE_RATE_SNAPSHOT",
     payload: ethereum
@@ -118,7 +118,7 @@ export function updateRateExchangeComplete(rateInit, expectedPrice, slippagePric
 export function updateRateSnapshotComplete(rateInit, expectedPrice, slippagePrice) {
   return {
     type: "EXCHANGE.UPDATE_RATE_SNAPSHOT_COMPLETE",
-    payload: { rateInit, expectedPrice, slippagePrice: converter.toT(slippagePrice, 18), rateInitSlippage:  converter.toT(rateInit, 18)}
+    payload: { rateInit, expectedPrice, slippagePrice: converter.toT(slippagePrice, 18), rateInitSlippage: converter.toT(rateInit, 18) }
   }
 
 }
@@ -176,13 +176,13 @@ export function throwPassphraseError(message) {
 export function processExchange(
   formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
   throwOnFailure, nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-  sourceTokenSymbol, blockNo, paymentData, hint) {
+  sourceTokenSymbol, blockNo, commissionFee, paymentData, hint) {
   return {
     type: "EXCHANGE.PROCESS_EXCHANGE",
     payload: {
       formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
       throwOnFailure, nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-      sourceTokenSymbol, blockNo, paymentData, hint
+      sourceTokenSymbol, blockNo, commissionFee, paymentData, hint
     }
   }
 }
@@ -266,7 +266,7 @@ export function setEstimateGas(gas, gas_approve) {
   }
 }
 
-export function setEstimateGasSnapshot(gas, gas_approve){
+export function setEstimateGasSnapshot(gas, gas_approve) {
   return {
     type: "EXCHANGE.SET_GAS_USED_SNAPSHOT",
     payload: { gas, gas_approve }
@@ -276,7 +276,7 @@ export function setEstimateGasSnapshot(gas, gas_approve){
 export function swapToken(source, dest) {
   return {
     type: "EXCHANGE.SWAP_TOKEN",
-    payload: {source, dest}
+    payload: { source, dest }
   }
 }
 
@@ -311,56 +311,56 @@ export function setMaxGasPriceComplete(maxGasPriceGwei) {
 export function setGasPriceSwapComplete(safeLowGas, standardGas, fastGas, defaultGas, selectedGas) {
   return {
     type: "EXCHANGE.SET_GAS_PRICE_SWAP_COMPLETE",
-    payload: {safeLowGas, standardGas, defaultGas, fastGas, selectedGas}
+    payload: { safeLowGas, standardGas, defaultGas, fastGas, selectedGas }
   }
 }
 
-export function fetchGas(){
+export function fetchGas() {
   return {
     type: "EXCHANGE.FETCH_GAS"
   }
 }
 
-export function fetchGasSuccess(){
+export function fetchGasSuccess() {
   return {
     type: "EXCHANGE.FETCH_GAS_SUCCESS"
   }
 }
 
-export function fetchGasSuccessSnapshot(){
+export function fetchGasSuccessSnapshot() {
   return {
     type: "EXCHANGE.FETCH_GAS_SUCCESS_SNAPSHOT"
   }
 }
 
-export function checkKyberEnable(){
+export function checkKyberEnable() {
   return {
     type: "EXCHANGE.CHECK_KYBER_ENABLE"
   }
 }
 
-export function setKyberEnable(enable){
+export function setKyberEnable(enable) {
   return {
     type: "EXCHANGE.SET_KYBER_ENABLE",
     payload: enable
   }
 }
 
-export function setApproveTx(hash, symbol){
+export function setApproveTx(hash, symbol) {
   return {
     type: "EXCHANGE.SET_APPROVE_TX",
-    payload: {hash, symbol}
+    payload: { hash, symbol }
   }
 }
 
-export function removeApproveTx(symbol){
+export function removeApproveTx(symbol) {
   return {
     type: "EXCHANGE.REMOVE_APPROVE_TX",
-    payload: {symbol}
+    payload: { symbol }
   }
 }
 
-export function setSnapshot(data){
+export function setSnapshot(data) {
   //data.isFetchingRate = true
   return {
     type: "EXCHANGE.SET_SNAPSHOT",
@@ -382,33 +382,33 @@ export function setSnapshotMinConversionRate(minConversionRate) {
   }
 }
 
-export function verifyExchange(){
+export function verifyExchange() {
   return {
     type: "EXCHANGE.VERIFY_EXCHANGE",
   }
 }
 
-export function setExchangeEnable(enable){
+export function setExchangeEnable(enable) {
   return {
     type: "EXCHANGE.SET_EXCHANGE_ENABLE",
     payload: enable
   }
 }
 
-export function updateBalanceData(balanceData, hash){
+export function updateBalanceData(balanceData, hash) {
   return {
     type: "EXCHANGE.UPDATE_BALANCE_DATA",
-    payload: {balanceData, hash}
+    payload: { balanceData, hash }
   }
 }
 
-export function throwErrorHandleAmount(){
+export function throwErrorHandleAmount() {
   return {
     type: "EXCHANGE.HANDLE_AMOUNT"
   }
 }
 
-export function resetHandleAmountError(){
+export function resetHandleAmountError() {
   return {
     type: "EXCHANGE.RESET_HANDLE_AMOUNT_ERROR"
   }
@@ -417,38 +417,38 @@ export function resetHandleAmountError(){
 
 export function initParamsExchange(
   receiveAddr, receiveToken, tokenAddr, receiveAmount, products, callback, network, paramForwarding,
-  signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme, title
+  signer, commissionID, commissionFee, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme, title
 ) {
   return {
     type: "EXCHANGE.INIT_PARAMS_EXCHANGE",
     payload: {
       receiveAddr, receiveToken, tokenAddr, receiveAmount, callback, products, network, paramForwarding,
-      signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme, title
+      signer, commissionID, commissionFee, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme, title
     }
   }
 }
 
-export function setApprove(isNeedApprove){
+export function setApprove(isNeedApprove) {
   return {
     type: "EXCHANGE.SET_APPROVE",
-    payload: {isNeedApprove}
+    payload: { isNeedApprove }
   }
 }
 
-export function throwErrorExchange(key, val){
+export function throwErrorExchange(key, val) {
   return {
     type: "EXCHANGE.THROW_ERROR_EXCHANGE",
-    payload: {key, val}
+    payload: { key, val }
   }
 }
 
-export function validateAccountComplete(){
+export function validateAccountComplete() {
   return {
     type: "EXCHANGE.VALIDATE_ACCOUNT_COMPLETE"
   }
 }
 
-export function selectTokenComplete(){
+export function selectTokenComplete() {
   return {
     type: "EXCHANGE.SELECT_TOKEN_COMPLETE"
   }
@@ -461,36 +461,36 @@ export function unsetConfirming() {
 }
 
 
-export function updateReceiveAddress(address){
+export function updateReceiveAddress(address) {
   return {
     type: "EXCHANGE.UPDATE_RECEIVE_ADDRESS",
-    payload: {address}
+    payload: { address }
   }
 }
 
 
-export function updateSourceToken(sourceTokenSymbol, source){
+export function updateSourceToken(sourceTokenSymbol, source) {
   return {
     type: "EXCHANGE.UPDATE_SOURCE_TOKEN",
-    payload: {sourceTokenSymbol, source}
+    payload: { sourceTokenSymbol, source }
   }
 }
 
-export function changeDefaultTokens(sourceSymbol, sourceAddress, destSymbol, destAddress){
+export function changeDefaultTokens(sourceSymbol, sourceAddress, destSymbol, destAddress) {
   return {
     type: "EXCHANGE.CHANGE_DEFAULT_TOKEN",
-    payload: {sourceSymbol, sourceAddress, destSymbol, destAddress}
+    payload: { sourceSymbol, sourceAddress, destSymbol, destAddress }
   }
 }
 
-export function setSourceAmount(amount){
+export function setSourceAmount(amount) {
   return {
     type: "EXCHANGE.SET_SOURCE_AMOUNT",
     payload: amount
   }
 }
 
-export function setIsApproveZero(isApproveZero){
+export function setIsApproveZero(isApproveZero) {
   return {
     type: "EXCHANGE.SET_IS_APPROVE_ZERO",
     payload: isApproveZero

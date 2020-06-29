@@ -108,6 +108,8 @@
     "receive_amount_is_invalid_number": "받으시려는 금액의 숫자가 올바르지 않습니다.",
     "receive_amount_must_be_positive": "받으시려는 금액은 0보다 커야 합니다.",
     "commission_address_must_be_valid": "Commission Address는 유효한 Ethereum 주소 여야합니다.",
+    "commission_fee_must_be_valid": "Commission fee must be an integer number",
+    "commission_fee_too_large": "Commission fee must be smaller than 20bps",
     "signer_include_invalid_address": "서명자에 잘못된 주소가 있습니다.",
     "invalid_network": "현재 네트워크가 지원되지 않습니다.",
     "signer_invalid": "잘못된 주소에 액세스했습니다.",

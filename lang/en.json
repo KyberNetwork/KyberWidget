@@ -108,6 +108,8 @@
     "receive_amount_is_invalid_number": "Receive amount is invalid number",
     "receive_amount_must_be_positive": "Receive amount must be positive number",
     "commission_address_must_be_valid": "Commission address must be a valid ethereum address",
+    "commission_fee_must_be_valid": "Commission fee must be an integer number",
+    "commission_fee_too_large": "Commission fee must be smaller than 20bps",
     "signer_include_invalid_address": "Signer include invalid addresses",
     "invalid_network": "Current network is not supported",
     "signer_invalid": "You access an invalid address",

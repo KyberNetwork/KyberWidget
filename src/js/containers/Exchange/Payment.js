@@ -137,7 +137,7 @@ export default class Payment extends React.Component {
 
   getSourceAmount = () => {
     var minConversionRate = converter.toTWei(this.props.snapshot.minConversionRate)
-    var sourceAmount = converter.caculateSourceAmount(this.props.snapshot.destAmount, minConversionRate, 6)
+    var sourceAmount = converter.caculateSourceAmount(this.props.snapshot.destAmount, minConversionRate, this.props.exchange.commissionFee, 6)
 
     this.props.dispatch(exchangeActions.setSourceAmount(sourceAmount));
 
@@ -151,6 +151,7 @@ export default class Payment extends React.Component {
     var destToken = this.props.snapshot.destToken
     var minConversionRate = converter.toTWei(this.props.snapshot.minConversionRate)
     var blockNo = this.props.exchange.commissionID
+    var commssionFee = this.props.exchange.commissionFee;    
     var destAddress
 
     minConversionRate = converter.numberToHex(minConversionRate)
@@ -181,7 +182,7 @@ export default class Payment extends React.Component {
 
     return {
       selectedAccount, sourceToken, sourceAmount, destToken, minConversionRate, destAddress, maxDestAmount,
-      throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo, paymentData, hint
+      throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo, commssionFee, paymentData, hint
     }
   }
 
@@ -192,6 +193,7 @@ export default class Payment extends React.Component {
     var destToken = this.props.snapshot.destToken
     var minConversionRate = converter.toTWei(this.props.snapshot.minConversionRate)
     var blockNo = this.props.exchange.commissionID;
+    var commssionFee = this.props.exchange.commissionFee;
     var destAddress
 
     minConversionRate = converter.numberToHex(minConversionRate)
@@ -222,7 +224,7 @@ export default class Payment extends React.Component {
 
     return {
       selectedAccount, sourceToken, sourceAmount, destToken, minConversionRate, destAddress, maxDestAmount,
-      throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo, paymentData, hint
+      throwOnFailure, nonce, gas, gas_approve, gasPrice, balanceData, sourceTokenSymbol, blockNo, commssionFee, paymentData, hint
     }
   }
 
@@ -251,7 +253,7 @@ export default class Payment extends React.Component {
         formId, ethereum, account.address, params.sourceToken, params.sourceAmount, params.destToken, params.destAddress,
         params.maxDestAmount, params.minConversionRate, params.throwOnFailure, params.nonce, params.gas, params.gasPrice,
         account.keystring, account.type, password, account, data, this.props.keyService, params.balanceData,
-        params.sourceTokenSymbol, params.blockNo, params.paymentData, params.hint
+        params.sourceTokenSymbol, params.blockNo, params.commssionFee, params.paymentData, params.hint
       ))
     } catch (e) {
       console.log(e)
@@ -367,7 +369,7 @@ export default class Payment extends React.Component {
                   {this.props.exchange.type === 'pay' && (
                     <div className={addPrefixClass("common__text-semibold")}>
                       {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol !== this.props.exchange.destTokenSymbol && (
-                        <div>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, 6)} {this.props.exchange.sourceTokenSymbol}</div>
+                        <div>{converter.caculateSourceAmount(this.props.exchange.destAmount, this.props.exchange.offeredRate, this.props.exchange.commissionFee, 6)} {this.props.exchange.sourceTokenSymbol}</div>
                       )}
                       {this.props.exchange.isHaveDestAmount && this.props.exchange.sourceTokenSymbol === this.props.exchange.destTokenSymbol && (
                         <div>{('' + this.props.exchange.destAmount).length > 8 ? converter.roundingNumber(this.props.exchange.destAmount) : this.props.exchange.destAmount} {this.props.exchange.destTokenSymbol}</div>

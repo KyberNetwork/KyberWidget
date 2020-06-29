@@ -55,7 +55,7 @@ function* checkApproveAccount(address, type) {
       sourceAmount = converter.toTWei(exchange.snapshot.destAmount, tokens[exchange.sourceTokenSymbol].decimals);
     } else if (exchange.isHaveDestAmount) {
       const minConversionRate = converter.toTWei(exchange.snapshot.minConversionRate);
-      sourceAmount = converter.caculateSourceAmount(exchange.snapshot.destAmount, minConversionRate, 6);
+      sourceAmount = converter.caculateSourceAmount(exchange.snapshot.destAmount, minConversionRate, exchange.commissionFee, 6);
       sourceAmount = converter.toTWei(sourceAmount, tokens[exchange.sourceTokenSymbol].decimals);
     } else {
       sourceAmount = converter.toTWei(exchange.sourceAmount, tokens[exchange.sourceTokenSymbol].decimals);
@@ -119,7 +119,7 @@ function* checkMaxCap(address) {
     var srcAmount
     if (exchange.isHaveDestAmount) {
       var minConversionRate = converter.toTWei(exchange.minConversionRate, 18)
-      srcAmount = converter.caculateSourceAmount(exchange.destAmount, minConversionRate, 6)
+      srcAmount = converter.caculateSourceAmount(exchange.destAmount, minConversionRate, exchange.commissionFee, 6)
       srcAmount = converter.toTWei(srcAmount, tokens[srcSymbol].decimals)
 
     } else {
@@ -130,7 +130,7 @@ function* checkMaxCap(address) {
     if (srcSymbol !== "ETH") {
       var rate = tokens[srcSymbol].rate
       srcAmount = converter.toT(srcAmount, tokens[srcSymbol].decimals)
-      srcAmount = converter.caculateDestAmount(srcAmount, rate, 6)
+      srcAmount = converter.calculateDest(srcAmount, rate, exchange.commissionFee, 6)
       srcAmount = converter.toTWei(srcAmount, 18);
       maxCapOneExchange *= constants.MAX_CAP_PERCENT;
     }
@@ -181,7 +181,7 @@ function* checkBalance(address) {
       srcAmount = converter.toTWei(destAmount, tokens[sourceTokenSymbol].decimals)
     } else {
       var minRate = converter.toTWei(exchange.minConversionRate, 18)
-      srcAmount = converter.caculateSourceAmount(exchange.destAmount, minRate, 6)
+      srcAmount = converter.caculateSourceAmount(exchange.destAmount, minRate, exchange.commissionFee, 6)
       srcAmount = converter.toTWei(srcAmount, tokens[sourceTokenSymbol].decimals)
     }
   } else {
