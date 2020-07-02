@@ -355,7 +355,7 @@ export function* exchangeETHtoTokenKeystore(action) {
   const {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
     nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    blockNo, paymentData, hint } = action.payload;
+    blockNo, commissionFee, paymentData, hint } = action.payload;
 
   var networkId = common.getNetworkId()
   var txRaw;
@@ -364,7 +364,7 @@ export function* exchangeETHtoTokenKeystore(action) {
     txRaw = yield callService(
       "etherToOthersFromAccount", "etherToOthersPayment",
       keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-      minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+      minConversionRate, blockNo, commissionFee, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
     )
   } catch (e) {
     console.log(e)
@@ -390,7 +390,7 @@ export function* exchangeETHtoTokenPrivateKey(action) {
   const {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
     nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    blockNo, paymentData, hint } = action.payload;
+    blockNo, commissionFee, paymentData, hint } = action.payload;
 
   var networkId = common.getNetworkId()
 
@@ -400,7 +400,7 @@ export function* exchangeETHtoTokenPrivateKey(action) {
       txRaw = yield callService(
         "etherToOthersFromAccount", "etherToOthersPayment",
         keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+        minConversionRate, blockNo, commissionFee, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
       )
     } catch (e) {
       console.log(e)
@@ -426,7 +426,7 @@ export function* exchangeETHtoTokenColdWallet(action) {
   const {
     formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
     nonce, gas, gasPrice, keystring, type, password, account, data, keyService, balanceData,
-    blockNo, paymentData, hint } = action.payload;
+    blockNo, commissionFee, paymentData, hint } = action.payload;
 
   var networkId = common.getNetworkId()
 
@@ -436,7 +436,7 @@ export function* exchangeETHtoTokenColdWallet(action) {
       txRaw = yield callService(
         "etherToOthersFromAccount", "etherToOthersPayment",
         keyService, formId, ethereum, address, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-        minConversionRate, blockNo, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
+        minConversionRate, blockNo, commissionFee, nonce, gas, gasPrice, keystring, type, password, networkId, paymentData, hint
       )
     } catch (e) {
       console.log(e)
@@ -958,20 +958,23 @@ function* updateRateSnapshot(action) {
     var sourceAmount
 
     if (exchangeSnapshot.isHaveDestAmount) {
-      sourceAmount = converter.caculateSourceAmount(exchangeSnapshot.destAmount, exchangeSnapshot.offeredRate, state.exchange.commissionFee, 6)
+      sourceAmount = converter.caculateSourceAmount(exchangeSnapshot.destAmount, exchangeSnapshot.offeredRate, 0, 6)
     } else {
       sourceAmount = exchangeSnapshot.sourceAmount
     }
 
+    
+
     var sourceDecimal = exchangeSnapshot.sourceDecimal
     var sourceAmountHex = converter.stringToHex(sourceAmount, sourceDecimal)
     var rateInit = 0
+    
     var rateRequest = yield call(common.handleRequest, getRateSnapshot, ethereum, source, dest, sourceAmountHex)
-
+    // console.log({source, sourceAmount, dest, sourceAmountHex, rateRequest})
     if (rateRequest.status === "success") {
       var rate = rateRequest.data
       var expectedPrice = rate.expectedRate ? rate.expectedRate : "0"
-      var slippagePrice = rate.slippageRate ? rate.slippageRate : "0"
+      var slippagePrice = rate.worstRate ? rate.worstRate : "0"
       if (source !== dest && expectedPrice == 0) {
         yield put(utilActions.openInfoModal(translate("error.error_occurred") || "Error occurred",
           translate("error.node_error") || "There are some problems with nodes. Please try again in a while."))
@@ -1114,10 +1117,10 @@ function* getGasConfirm() {
 
   if (checkIsPayMode()) {
     data = yield call([ethereum, ethereum.call], "getPaymentEncodedData", sourceToken, sourceAmount,
-      destToken, address, maxDestAmount, minConversionRate, blockNo, paymentData, hint)
+      destToken, address, maxDestAmount, minConversionRate, blockNo, commissionFee, paymentData, hint)
   } else {
     data = yield call([ethereum, ethereum.call], "exchangeData", sourceToken, sourceAmount,
-      destToken, address, maxDestAmount, minConversionRate, blockNo)
+      destToken, address, maxDestAmount, minConversionRate, blockNo, commissionFee)
   }
 
   var gas = 0
