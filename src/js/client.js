@@ -275,20 +275,19 @@ function initParams(appId) {
       if (validator.verifyAccount(commissionID)) {
         errors["commissionID"] = translate('error.commission_address_must_be_valid')
           || "Commission address must be a valid ethereum address"
+      }    
+    }
+    if (!commissionFee) {
+      commissionFee = 0
+    } else if (isNaN(commissionFee)) {
+      errors["commissionFee"] = translate('error.commission_fee_must_be_valid')
+        || "Commission fee must be an integer number"
+    } else {
+      commissionFee = parseInt(commissionFee)
+      if (commissionFee > 2000) {
+        errors["commissionFee"] = translate('error.commission_fee_too_large')
+        || "Commission fee must be smaller than 20bps"
       }
-      if (commissionFee == "") {
-        commissionFee = 0
-      } else if (isNaN(commissionFee)) {
-        errors["commissionFee"] = translate('error.commission_fee_must_be_valid')
-          || "Commission fee must be an integer number"
-      } else {
-        commissionFee = parseInt(commissionFee)
-        if (commissionFee > 2000) {
-          errors["commissionFee"] = translate('error.commission_fee_too_large')
-          || "Commission fee must be smaller than 20bps"
-        }
-      }
-
     }
 
     if (callback) {

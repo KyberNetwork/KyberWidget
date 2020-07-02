@@ -74,6 +74,7 @@ const INIT_EXCHANGE_FORM_STATE = {
   confirmColdWallet: false,
   signError: "",
   broadcastError: "",
+  commissionFee: 0,
   balanceData:{
     sourceName: "Ether",
     sourceSymbol: "ETH",
