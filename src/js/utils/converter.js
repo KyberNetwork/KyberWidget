@@ -277,8 +277,9 @@ export function biggestNumber() {
 }
 
 export function maskNumber() {
-  var initNumber = new BigNumber(2)
-  return "0x" + (initNumber.pow(255).toString(16))
+  // var initNumber = new BigNumber(2)
+  // return "0x" + (initNumber.pow(255).toString(16))
+  return "0x0"
 }
 
 export function biggestNumberDecimal() {

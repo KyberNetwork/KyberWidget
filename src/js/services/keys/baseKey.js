@@ -88,11 +88,11 @@ export const sendTokenPayment = (
 
 export const etherToOthersPayment= (
   id, ethereum, account, sourceToken, sourceAmount, destToken, destAddress, maxDestAmount, minConversionRate,
-  commissionId, nonce, gas, gasPrice, keystring, accountType, password, networkId, toContract, paymentData, hint
+  commissionId, commissionFee, nonce, gas, gasPrice, keystring, accountType, password, networkId, toContract, paymentData, hint
 ) => {
   return new Promise((resolve) => {
     ethereum.call("getPaymentEncodedData", sourceToken, sourceAmount, destToken, destAddress,
-      maxDestAmount, minConversionRate, commissionId, commissionFee, paymentData, hint).then(result => {
+      maxDestAmount, minConversionRate, commissionId, paymentData, hint).then(result => {
 
       const txParams = createTxParams(account, nonce, gasPrice, gas, toContract, sourceAmount, result, networkId);
 

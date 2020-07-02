@@ -18,7 +18,7 @@ export default class BaseProvider {
         this.rpc = new Web3(new Web3.providers.HttpProvider(this.rpcUrl, 3000))
 
         this.erc20Contract = new this.rpc.eth.Contract(constants.ERC20)
-        this.networkAddress = BLOCKCHAIN_INFO[this.network].network
+        this.networkAddress = BLOCKCHAIN_INFO[this.network].network        
         this.wrapperAddress = BLOCKCHAIN_INFO[this.network].wrapper
         this.payWrapperAddress = BLOCKCHAIN_INFO[this.network].payWrapper
 
@@ -255,15 +255,19 @@ export default class BaseProvider {
 
   getPaymentEncodedData(sourceToken, sourceAmount, destToken, destAddress,
                         maxDestAmount, minConversionRate, walletId, paymentData, hint) {
+                            
     if (!this.rpc.utils.isAddress(walletId)) {
       walletId = "0x" + Array(41).join("0")
     }
-    
+
+    console.log({sourceToken, sourceAmount, destToken, destAddress,
+        maxDestAmount, minConversionRate, walletId, paymentData, hint})
+
     hint = this.rpc.utils.utf8ToHex(constants.PERM_HINT)
 
     const data = this.payWrapperContract.methods.pay(
       sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-      minConversionRate, walletId, paymentData, hint, this.networkAddress
+      minConversionRate, walletId, paymentData, hint, BLOCKCHAIN_INFO[this.network].old_network
     ).encodeABI();
 
     return new Promise((resolve) => {

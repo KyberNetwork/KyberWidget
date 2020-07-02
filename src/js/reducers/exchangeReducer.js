@@ -25,7 +25,6 @@ const exchange = (state = initState, action) => {
       newState.bcError = ""
       newState.step = initState.step
       newState.minConversionRate = newState.slippageRate
-      newState.isEditRate = false
       newState.isAnalize = false
       newState.isAnalizeComplete = false
       return newState
@@ -52,7 +51,6 @@ const exchange = (state = initState, action) => {
       }
 
       newState.selected = true
-      newState.isEditRate = false
       return newState
     }
     case "EXCHANGE.CHECK_SELECT_TOKEN": {
@@ -104,8 +102,7 @@ const exchange = (state = initState, action) => {
       return newState
     }
     case "EXCHANGE.SPECIFY_GAS_PRICE": {
-      newState.gasPrice = action.payload
-      newState.isEditGasPrice = true
+      newState.gasPrice = action.payload      
       newState.errors.gasPriceError = ""
       newState.errors.ethBalanceError = ""
       return newState
@@ -207,9 +204,7 @@ const exchange = (state = initState, action) => {
           }
         }
       }
-      if (!newState.isEditRate) {
-        newState.minConversionRate = slippageRate
-      }
+      newState.minConversionRate = slippageRate      
       newState.isSelectToken = false
       return newState
     }
@@ -227,9 +222,8 @@ const exchange = (state = initState, action) => {
         newState.snapshot.minDestAmount = converter.calculateDest(newState.snapshot.sourceAmount, newState.commissionFee, expectedRate).toString(10)
       }
 
-      if (!newState.isEditRate) {
-        newState.snapshot.minConversionRate = slippageRate
-      }
+      newState.snapshot.minConversionRate = slippageRate
+
       newState.snapshot.isSelectToken = false
 
       return newState
@@ -376,13 +370,11 @@ const exchange = (state = initState, action) => {
     }
     case "EXCHANGE.SET_MIN_RATE": {
       newState.minConversionRate = action.payload.value
-      newState.errors.rateError = ''
-      newState.isEditRate = true
+      newState.errors.rateError = ''      
       return newState
     }
     case "EXCHANGE.RESET_MIN_RATE": {
       newState.minConversionRate = newState.offeredRate
-      newState.isEditRate = true
       newState.errors.rateError = ''
       return newState
     }
@@ -412,7 +404,6 @@ const exchange = (state = initState, action) => {
       newState.sourceAmount = ""
       newState.destAmount = 0
       newState.isSelectToken = true
-      newState.isEditRate = false
 
       newState.errors.sourceAmountError = initState.errors.sourceAmountError
       newState.errors.ethBalanceError = initState.errors.ethBalanceError
@@ -425,20 +416,18 @@ const exchange = (state = initState, action) => {
     }
     case "EXCHANGE.SET_GAS_PRICE_SWAP_COMPLETE": {
 
-      if (!newState.isEditGasPrice) {
-        var { safeLowGas, standardGas, fastGas, defaultGas, selectedGas } = action.payload
+      var { safeLowGas, standardGas, fastGas, defaultGas, selectedGas } = action.payload
 
-        var gasPriceSuggest = { ...newState.gasPriceSuggest }
+      var gasPriceSuggest = { ...newState.gasPriceSuggest }
 
-        gasPriceSuggest.fastGas = Math.round(fastGas * 10) / 10
-        gasPriceSuggest.standardGas = Math.round(standardGas * 10) / 10
-        gasPriceSuggest.safeLowGas = Math.round(safeLowGas * 10) / 10
+      gasPriceSuggest.fastGas = Math.round(fastGas * 10) / 10
+      gasPriceSuggest.standardGas = Math.round(standardGas * 10) / 10
+      gasPriceSuggest.safeLowGas = Math.round(safeLowGas * 10) / 10
 
-        newState.gasPriceSuggest = { ...gasPriceSuggest }
-        newState.gasPrice = Math.round(defaultGas * 10) / 10
+      newState.gasPriceSuggest = { ...gasPriceSuggest }
+      newState.gasPrice = Math.round(defaultGas * 10) / 10
 
-        newState.selectedGas = selectedGas
-      }
+      newState.selectedGas = selectedGas
       return newState
     }
     case "EXCHANGE.SET_MAX_GAS_PRICE_COMPLETE": {
