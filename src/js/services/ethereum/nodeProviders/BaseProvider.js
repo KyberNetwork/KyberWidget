@@ -459,11 +459,7 @@ export default class BaseProvider {
                 }
             })
         })
-    }
-
-    getListReserve() {
-        return Promise.resolve([BLOCKCHAIN_INFO[this.network].reserve])
-    }
+    }    
 
     getAbiByName(name, abi) {
         for (var value of abi) {
