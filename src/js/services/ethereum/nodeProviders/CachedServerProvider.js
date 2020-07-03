@@ -259,22 +259,6 @@ export default class CachedServerProvider extends React.Component {
     })
   }
 
-  getVolumnChart(){
-    return new Promise((resolve, rejected) => {
-      fetch(BLOCKCHAIN_INFO[this.network].tracker + '/api/tokens/rates', {
-      }).then((response) => {
-        return response.json()
-      })
-        .then((result) => {
-          resolve(result)
-        })
-        .catch((err) => {
-          console.log(err)
-          rejected(err)
-        })
-    })
-  }
-
   getMarketInfo() {
     return new Promise((resolve, rejected) => {
       fetch(this.rpcUrl + '/marketInfo', {
