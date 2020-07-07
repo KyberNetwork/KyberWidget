@@ -20,9 +20,17 @@
         ],
         "ws": "wss://mainnet.infura.io/ws"
     },
-    "api_usd": "https://api.coinmarketcap.com",
     "api_url": "https://api.kyber.network",
     "api_tokens": "https://api.kyber.network/internal/currencies",
+    "ethScanUrl": "https://etherscan.io/",
+    "network": "0x9aab3f75489902f3a48495025729a0af77d4b11e",
+    "old_network": "0x818e6fecd516ecc3849daf6845e3ec868087b755",
+    "wrapper": "0x6172afc8c00c46e0d07ce3af203828198194620a",
+    "payWrapper": "0xfa71b63935cf9878e009ba6595da08f6d75c4aa1",
+    "endpoint": "wss://mainnet.infura.io/ws",    
+    "networkId": 1,        
+    "networkName": "production",
+    "statEndPoint": "https://production-cache.kyber.network",    
     "tokens_gas": {
         "ETH": 0,
         "DAI": 450000,
@@ -557,19 +565,5 @@
             "cg_id": "blox",
             "listing_time": 1549976400
         }
-    },
-    "ethScanUrl": "https://etherscan.io/",
-    "bank": "0x0",
-    "reserve": "0x63825c174ab367968ec60f061753d3bbd36a0d8f",
-    "network": "0x818e6fecd516ecc3849daf6845e3ec868087b755",
-    "wrapper": "0x6172afc8c00c46e0d07ce3af203828198194620a",
-    "payWrapper": "0xfa71b63935cf9878e009ba6595da08f6d75c4aa1",
-    "endpoint": "wss://mainnet.infura.io/ws",
-    "averageBlockTime": 15000,
-    "networkId": 1,
-    "chainName": "Mainnet",
-    "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
-    "tracker": "https://tracker.kyber.network",
-    "networkName": "production",
-    "statEndPoint": "https://production-cache.kyber.network"
+    }
 }
