@@ -11,10 +11,18 @@
             }
         ],
         "ws": "wss://ropsten.kyber.network/ws/"
-    },
-    "api_usd": "https://api.coinmarketcap.com",
+    },    
     "api_url": "https://dev-api.knstats.com",
-    "api_tokens": "https://ropsten-api.kyber.network/internal/currencies",
+    "api_tokens": "https://dev-api.knstats.com/internal/currencies",
+    "ethScanUrl": "https://ropsten.etherscan.io/",    
+    "network": "0xd719c34261e099Fdb33030ac8909d5788D3039C4",
+    "old_network": "0x818e6fecd516ecc3849daf6845e3ec868087b755",
+    "wrapper": "0x665d34f192f4940da4e859ff7768c0a80ed3ae10",
+    "payWrapper": "0x5211e6196d2a8e4ea7ee3dd961c8d667fbc4727c",
+    "endpoint": "https://ropsten.infura.io/DtzEYY0Km2BA3YwyJcBG",    
+    "networkId": 3,               
+    "networkName": "ropsten",
+    "statEndPoint": "https://ropsten-cache.knstats.com",
     "tokens_gas": {
         "ETH": 0,
         "DGX": 750000
@@ -227,24 +235,5 @@
             "decimals": 18,
             "cg_id": "midas-protocol"
         }
-    },
-    "ethScanUrl": "https://ropsten.etherscan.io/",
-    "reserve": "0x0fc1cf3e7dd049f7b42e6823164a64f76fc06be0",
-    "network": "0x818E6FECD516Ecc3849DAf6845e3EC868087B755",
-    "wrapper": "0x665d34f192f4940da4e859ff7768c0a80ed3ae10",
-    "payWrapper": "0x5211e6196d2a8e4ea7ee3dd961c8d667fbc4727c",
-    "trade_topic": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
-    "endpoint": "https://ropsten.infura.io/DtzEYY0Km2BA3YwyJcBG",
-    "averageBlockTime": 6000,
-    "networkId": 3,
-    "chainName": "Ropsten",
-    "faucet": "https://faucet.kyber.network/",
-    "server_logs": {
-        "url": "ropsten.etherscan.io",
-        "api_key": "D8YAEQ3V4THAPDA9YSB1YGA1QY9KAMHY6M"
-    },
-    "gasstation_endpoint": "https://ethgasstation.info/json/ethgasAPI.json",
-    "tracker": "https://tracker.kyber.network",
-    "networkName": "ropsten",
-    "statEndPoint": "https://ropsten-cache.knstats.com"
+    }
 }

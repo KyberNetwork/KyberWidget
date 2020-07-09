@@ -52,7 +52,7 @@ const OrderDetails = (props) => {
                 {!props.exchange.isSelectToken && (
                   <div>
                     {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
-                      <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateDestAmount(props.exchange.sourceAmount, props.exchange.offeredRate, 6)} {props.exchange.destTokenSymbol}</div>
+                      <div>{props.exchange.offeredRate == "0" ? 0 : converter.calculateDest(props.exchange.sourceAmount, props.exchange.offeredRate, props.exchange.commissionFee, 6)} {props.exchange.destTokenSymbol}</div>
                     )}
                     {props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol && (
                       <div>{props.exchange.sourceAmount || 0} {props.exchange.sourceTokenSymbol}</div>

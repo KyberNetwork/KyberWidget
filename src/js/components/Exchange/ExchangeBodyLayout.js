@@ -29,13 +29,13 @@ const ExchangeBodyLayout = (props) => {
     if (props.sourceTokenSymbol === "ETH") {
       sourceTokenSymbol = props.destTokenSymbol;
       destTokenSymbol = props.sourceTokenSymbol;
-      rate = converter.convertBuyRate(props.exchange.offeredRate);
+      rate = converter.convertBuyRate(props.exchange.offeredRate, props.exchange.commissionFee);
       rateUSD = !isSourceEqualToDestToken ? rate * props.sourceToken.rateUSD : props.sourceToken.rateUSD;
       if (isSourceEqualToDestToken) rateUSD -= rateUSD * (fluctuatingRate / 100);
     } else {
       sourceTokenSymbol = props.sourceTokenSymbol;
       destTokenSymbol = props.destTokenSymbol;
-      rate = converter.toT(props.exchange.offeredRate, 18);
+      rate = converter.convertSellRate(props.exchange.offeredRate, props.exchange.commissionFee)
       rateUSD = props.sourceToken.rateUSD;
       rateUSD -= rateUSD * (fluctuatingRate / 100);
     }
@@ -165,7 +165,7 @@ const ExchangeBodyLayout = (props) => {
                   {props.exchange.isHaveDestAmount && (
                     <div className={addPrefixClass("common__input-panel-label")}>
                       {props.exchange.sourceTokenSymbol !== props.exchange.destTokenSymbol && (
-                        <div>{props.exchange.offeredRate == "0" ? 0 : props.exchange.isSelectToken ? "Loading..." : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)}</div>
+                        <div>{props.exchange.offeredRate == "0" ? 0 : props.exchange.isSelectToken ? "Loading..." : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, props.exchange.commissionFee, 6)}</div>
                       )}
                       {props.exchange.sourceTokenSymbol === props.exchange.destTokenSymbol && (
                         <div>{('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount}</div>
@@ -227,7 +227,7 @@ const ExchangeBodyLayout = (props) => {
                         <div>{props.translate('common.loading') || 'Loading'}...</div>
                       )}
                       {(!props.exchange.isSelectToken && !isSourceEqualToDestToken) && (
-                        <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, 6)}</div>
+                        <div>{props.exchange.offeredRate == "0" ? 0 : converter.caculateSourceAmount(props.exchange.destAmount, props.exchange.offeredRate, props.exchange.commissionFee, 6)}</div>
                       )}
                       {(!props.exchange.isSelectToken && isSourceEqualToDestToken) && (
                         <div>{('' + props.exchange.destAmount).length > 8 ? converter.roundingNumber(props.exchange.destAmount) : props.exchange.destAmount}</div>

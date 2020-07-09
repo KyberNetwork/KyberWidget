@@ -22,9 +22,10 @@
 
       <div class="widget-config__header-item">
         <div class="widget-config__btn widget-config__select version click-outside" id="version-selector">
-          <div class="widget-config__select-title">Version v<span id="selected-version">0.7.5</span></div>
+          <div class="widget-config__select-title">Version v<span id="selected-version">0.8.0</span></div>
           <div class="widget-config__select-container">
-            <div class="widget-config__select-wrapper">
+            <div class="widget-config__select-wrapper">              
+              <div class="widget-config__select-item" data-version="0.8.0">Version v0.8.0</div>
               <div class="widget-config__select-item" data-version="0.7.5">Version v0.7.5</div>
               <div class="widget-config__select-item" data-version="0.7.4">Version v0.7.4</div>
               <div class="widget-config__select-item" data-version="0.7.3">Version v0.7.3</div>
@@ -207,6 +208,12 @@
             <label class="item-name">Commision-receiving Address</label>
             <div class="item-value">
               <input name="commissionId" class="input-box full-length" spellcheck="false" type="text" pattern="^0x[a-fA-F0-9]{40}$" placeholder="0x..." message="Commision-receiving Address must be a valid Ethereum address.">
+            </div>
+          </div>
+          <div class="item">
+            <label class="item-name">Commision Fee</label>
+            <div class="item-value">
+              <input name="commissionFee" class="input-box full-length" spellcheck="false" type="number" placeholder="800" message="CommisionFee must be a number and smaller than 20bps.">
             </div>
           </div>
           <div class="item">

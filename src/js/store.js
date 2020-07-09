@@ -5,7 +5,6 @@ import { persistStore } from 'redux-persist'
 import reducer from "./reducers/index"
 import history from "./history"
 import { routerMiddleware } from 'react-router-redux'
-import { localeReducer } from 'react-localize-redux';
 import rootSaga from './sagas'
 
 const routeMiddleware = routerMiddleware(history)

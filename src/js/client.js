@@ -28,7 +28,7 @@ function getListTokens(network) {
     })
       .then((result) => {
         if (result.success) {
-          var now = Math.round(new Date().getTime()/1000)
+          var now = Math.round(new Date().getTime() / 1000)
           var tokens = {}
           result.data.map(val => {
             if (val.listing_time > now) return
@@ -80,6 +80,7 @@ function initParams(appId) {
   var paramForwarding
   var signer
   var commissionID
+  var commissionFee
   var products
   var productNames
   var productQtys
@@ -114,6 +115,7 @@ function initParams(appId) {
     paramForwarding = widgetParent.getAttribute('data-widget-param-forwarding')
     signer = widgetParent.getAttribute('data-widget-signer')
     commissionID = widgetParent.getAttribute('data-widget-commission-id')
+    commissionFee = widgetParent.getAttribute('data-widget-commission-fee')
     type = widgetParent.getAttribute('data-widget-type')
     pinnedTokens = widgetParent.getAttribute('data-widget-pinned-tokens') || []
     paymentData = widgetParent.getAttribute('data-widget-payment-data') || ""
@@ -135,6 +137,7 @@ function initParams(appId) {
     paramForwarding = common.getParameterByName("paramForwarding")
     signer = common.getParameterByName("signer")
     commissionID = common.getParameterByName("commissionId")
+    commissionFee = common.getParameterByName('commissionFee')
     productNames = common.getMultipleValuesByName("productName")
     productQtys = common.getMultipleValuesByName("productQty")
     productImages = common.getMultipleValuesByName("productImage")
@@ -202,6 +205,7 @@ function initParams(appId) {
         }
         break;
       case "buy":
+        commissionFee = 0
         type = "buy"
         if (receiveAddr) {
           errors["receiveAddr"] = "Buy token layout cannot include receiveAddr"
@@ -218,6 +222,7 @@ function initParams(appId) {
         break
       default:
         type = "pay"
+        commissionFee = 0
         if (receiveAddr) {
           if (validator.verifyAccount(receiveAddr)) {
             errors["receiveAddr"] = translate('error.receive_address_must_be_ethereum_addr')
@@ -266,10 +271,22 @@ function initParams(appId) {
     }
 
 
-    if (commissionID) {
+    if (commissionID) {      
       if (validator.verifyAccount(commissionID)) {
         errors["commissionID"] = translate('error.commission_address_must_be_valid')
           || "Commission address must be a valid ethereum address"
+      }    
+    }
+    if (!commissionFee) {
+      commissionFee = 0
+    } else if (isNaN(commissionFee)) {
+      errors["commissionFee"] = translate('error.commission_fee_must_be_valid')
+        || "Commission fee must be an integer number"
+    } else {
+      commissionFee = parseInt(commissionFee)
+      if (commissionFee > 2000) {
+        errors["commissionFee"] = translate('error.commission_fee_too_large')
+        || "Commission fee must be smaller than 20bps"
       }
     }
 
@@ -312,7 +329,7 @@ function initParams(appId) {
 
       store.dispatch(initParamsExchange(
         receiveAddr, receiveToken, tokenAddr, receiveAmount, products, callback, network, paramForwarding,
-        signer, commissionID, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme, title
+        signer, commissionID, commissionFee, isSwap, type, pinnedTokens, defaultPairArr, paymentData, hint, tokens, theme, title
       ));
 
       //init analytic

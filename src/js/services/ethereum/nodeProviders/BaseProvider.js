@@ -4,7 +4,6 @@ import * as ethUtil from 'ethereumjs-util'
 import BLOCKCHAIN_INFO from "../../../../../env"
 import abiDecoder from "abi-decoder"
 import EthereumTx from "ethereumjs-tx"
-import * as common from "../../../utils/common";
 import * as converters from "../../../utils/converter"
 
 export default class BaseProvider {
@@ -19,7 +18,7 @@ export default class BaseProvider {
         this.rpc = new Web3(new Web3.providers.HttpProvider(this.rpcUrl, 3000))
 
         this.erc20Contract = new this.rpc.eth.Contract(constants.ERC20)
-        this.networkAddress = BLOCKCHAIN_INFO[this.network].network
+        this.networkAddress = BLOCKCHAIN_INFO[this.network].network        
         this.wrapperAddress = BLOCKCHAIN_INFO[this.network].wrapper
         this.payWrapperAddress = BLOCKCHAIN_INFO[this.network].payWrapper
 
@@ -195,16 +194,16 @@ export default class BaseProvider {
     }
 
     exchangeData(sourceToken, sourceAmount, destToken, destAddress,
-        maxDestAmount, minConversionRate, walletId) {
+        maxDestAmount, minConversionRate, walletId, commisionFee) {
 
         if (!this.rpc.utils.isAddress(walletId)) {
             walletId = "0x" + Array(41).join("0")
         }
-        var hint = this.rpc.utils.utf8ToHex(constants.PERM_HINT)
+        var hint = this.rpc.utils.utf8ToHex("")
 
-        var data = this.networkContract.methods.tradeWithHint(
+        var data = this.networkContract.methods.tradeWithHintAndFee(
             sourceToken, sourceAmount, destToken, destAddress,
-            maxDestAmount, minConversionRate, walletId, hint).encodeABI()
+            maxDestAmount, minConversionRate, walletId, commisionFee,  hint).encodeABI()
 
         return new Promise((resolve, reject) => {
             resolve(data)
@@ -256,15 +255,19 @@ export default class BaseProvider {
 
   getPaymentEncodedData(sourceToken, sourceAmount, destToken, destAddress,
                         maxDestAmount, minConversionRate, walletId, paymentData, hint) {
+                            
     if (!this.rpc.utils.isAddress(walletId)) {
       walletId = "0x" + Array(41).join("0")
     }
-    
+
+    console.log({sourceToken, sourceAmount, destToken, destAddress,
+        maxDestAmount, minConversionRate, walletId, paymentData, hint})
+
     hint = this.rpc.utils.utf8ToHex(constants.PERM_HINT)
 
     const data = this.payWrapperContract.methods.pay(
       sourceToken, sourceAmount, destToken, destAddress, maxDestAmount,
-      minConversionRate, walletId, paymentData, hint, this.networkAddress
+      minConversionRate, walletId, paymentData, hint, BLOCKCHAIN_INFO[this.network].old_network
     ).encodeABI();
 
     return new Promise((resolve) => {
@@ -296,13 +299,8 @@ export default class BaseProvider {
     }
 
     getRate(source, dest, srcAmount) {
-
-        var mask = converters.maskNumber()
-        var srcAmountEnableFirstBit = converters.sumOfTwoNumber(srcAmount,  mask)
-        srcAmountEnableFirstBit = converters.toHex(srcAmountEnableFirstBit)
-
         return new Promise((resolve, reject) => {
-            this.networkContract.methods.getExpectedRate(source, dest, srcAmountEnableFirstBit).call()
+            this.networkContract.methods.getExpectedRate(source, dest, srcAmount).call()
                 .then((result) => {
                     if (result != null) {
                         resolve(result)
@@ -461,11 +459,7 @@ export default class BaseProvider {
                 }
             })
         })
-    }
-
-    getListReserve() {
-        return Promise.resolve([BLOCKCHAIN_INFO[this.network].reserve])
-    }
+    }    
 
     getAbiByName(name, abi) {
         for (var value of abi) {
@@ -641,12 +635,7 @@ export default class BaseProvider {
     }
 
     getRateAtSpecificBlock(source, dest, srcAmount, blockno) {
-
-        var mask = converters.maskNumber()
-        var srcAmountEnableFistBit = converters.sumOfTwoNumber(srcAmount,  mask)
-        srcAmountEnableFistBit = converters.toHex(srcAmountEnableFistBit)
-
-        var data = this.networkContract.methods.getExpectedRate(source, dest, srcAmountEnableFistBit).encodeABI()
+        var data = this.networkContract.methods.getExpectedRate(source, dest, srcAmount).encodeABI()
 
         return new Promise((resolve, reject) => {
             this.rpc.eth.call({
@@ -654,8 +643,6 @@ export default class BaseProvider {
                 data: data
             }, blockno)
                 .then(result => {
-                    //    console.log({source, dest, srcAmount, blockno})
-                    //     console.log("rate: " + result)
                     if (result === "0x") {
                         reject(new Error("Cannot get rate"))
                         return
@@ -668,14 +655,9 @@ export default class BaseProvider {
                             type: 'uint256',
                             name: 'slippagePrice'
                         }], result)
-                        //   console.log(rates)
                         resolve(rates)
                     } catch (e) {
                         reject(e)
-                        // resolve({
-                        //     expectedPrice: "0",
-                        //     slippagePrice: "0"
-                        // })
                     }
                 }).catch((err) => {
                     reject(err)
