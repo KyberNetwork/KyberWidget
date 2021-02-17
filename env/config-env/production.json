@@ -6,7 +6,7 @@
                 "type": "cached"
             },
             {
-                "endPoint": "https://eth-mainnet.alchemyapi.io/v2/V1GjKybGLx6rzSu517KSWpSrTSIIXmV7",
+                "endPoint": "https://ethereum.kyber.network/v1/mainnet/node?appId=prod-widget",
                 "type": "prune"
             },
             {

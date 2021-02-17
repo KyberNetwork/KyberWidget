@@ -6,7 +6,7 @@
                 "type": "cached"
             },
             {
-                "endPoint": "https://eth-ropsten.alchemyapi.io/v2/qLuPihYhIIQcd7-S3Iw9V0YBTLsgU_Vz",
+                "endPoint": "https://dev-ethereum.knstats.com/v1/ropsten/node?appId=ropsten-widget",
                 "type": "prune"
             }
         ],
