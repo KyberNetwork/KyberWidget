@@ -14,7 +14,7 @@
                 "type": "none_prune"
             },
             {
-                "endPoint": "https://semi-node.kyber.network",
+                "endPoint": "https://dev-ethereum.knstats.com/v1/mainnet/node?appId=staging-widget",
                 "type": "prune"
             }
         ],
